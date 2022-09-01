@@ -2,8 +2,7 @@
 output: github_document
 ---
 
-[![DOI](https://zenodo.org/badge/531484296.svg)](https://zenodo.org/badge/latestdoi/531484296)
-[![R-CMD-check](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml)
+[![DOI](https://zenodo.org/badge/531484296.svg)](https://zenodo.org/badge/latestdoi/531484296) [![R-CMD-check](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -16,34 +15,23 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Installation {#installation}
 
-# Development information
+You can install:
 
-## Aggregation Methods List
+-   the latest development version of `aggreCAT` package:
 
+```{r, eval = FALSE, message=FALSE,warning=FALSE}
+install.packages("devtools")
+devtools::install_github("metamelb-repliCATS/aggreCAT")
+```
 
-## pipeline overview
+-   the most recent official version of `aggreCAT` from CRAN:
 
-![](resources/pipeline.png)
+    -   TBD
 
-![](resources/pipeline-instructions.png)
+Then load the package:
 
-
-![](resources/pipeline.png)
-
-## installation{#installation}
-
-```{r, message=FALSE,warning=FALSE}
-# install this R package
-
-
-# dependent packages
-# install.packages("tidyverse") to install before using library first time
-library(tidyverse)
-# devtools::install_github("softloud/aggreCAT")
+```{r}
 library(aggreCAT)
-
-# ping David for access to the repo
-
-
 ```
