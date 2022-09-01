@@ -1,4 +1,4 @@
-
+[![DOI](https://zenodo.org/badge/531484296.svg)](https://zenodo.org/badge/latestdoi/531484296)
 [![R-CMD-check](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
