@@ -1,0 +1,57 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+) 
+```
+
+
+
+## test `aggreCAT::` output function 
+
+This checks the `aggregate_cs` function works.
+
+```{r}
+test_file("tests/testthat/test-aggregate-cs.R")
+```
+
+## placeholder methods
+
+Running this `context` identifies the functions that are putting out the TA2 formats for *unfinished* methods. This involves `NA` for confidence score and `0` for `n_experts`.
+
+```{r}
+
+# test_file("tests/testthat/test-identify-placeholder-methods.R")
+
+```
+
+## confidence scores in (0,1)
+
+This `context` informs us which confidence scores are not a number between, but not equal to, 0 and 1.
+
+Placeholder methods will be exposed here, too. 
+
+```{r}
+test_file("tests/testthat/test-cs.R")
+
+```
+
+
+## Compare with anca's methods
+
+```{r compare anca}
+test_file("tests/testthat/test-method-comparisons.R")
+
+```
+
+
+
+
+
