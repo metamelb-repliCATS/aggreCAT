@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+scratch.txt
+^inst/doc$
+.DS_Store
+aggreCAT/aggreCAT-focal-claim-figs.pdf
+/doc/
+/Meta/
