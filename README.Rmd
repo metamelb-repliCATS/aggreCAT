@@ -1,11 +1,25 @@
+---
+output: github_document
+---
 
 [![R-CMD-check](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+
 # Development information
 
 ## Aggregation Methods List
+
 
 ## pipeline overview
 
@@ -13,11 +27,12 @@
 
 ![](resources/pipeline-instructions.png)
 
+
 ![](resources/pipeline.png)
 
-## installation
+## installation{#installation}
 
-``` r
+```{r, message=FALSE,warning=FALSE}
 # install this R package
 
 
@@ -28,4 +43,6 @@ library(tidyverse)
 library(aggreCAT)
 
 # ping David for access to the repo
+
+
 ```

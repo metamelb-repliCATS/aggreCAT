@@ -1,0 +1,27 @@
+﻿time,activity,activity_type,description,lead,group_individual
+10:00,Kickoff,talk,"Brief overview of day, status update on manuscript, review of manuscript aim/audience/target journal etc.",Elliot,group
+10:15,Kickoff,talk,Overview of latest changes to package and function structure,David and or Aaron,group
+10:30,Planning: reflect package changes in manuscript,task,"Individually, generate list of changes that need to be made to manuscript in light of package and function overhal. Identify obsolete content to be removed, or updated.",,individually
+10:45,Planning: reflect package changes in manuscript,task,"Decide updated structure of manuscript and collate list of writing tasks on github, assign to reprocats members.",Elliot or Aaron or David,group
+11:00,break,break,NA,NA,NA
+11:15,writing,task,Individually work on writing tasks identified and assigned as a group,NA,individually
+11:30,writing,task,Individually work on writing tasks identified and assigned as a group,NA,individually
+11:45,writing,task,Individually work on writing tasks identified and assigned as a group,NA,individually
+12:00,writing,task,Individually work on writing tasks identified and assigned as a group,NA,individually
+12:15,writing,task,Individually work on writing tasks identified and assigned as a group,NA,individually
+12:30,writing,task,Individually work on writing tasks identified and assigned as a group,NA,individually
+12:45,Regroup and progress update,task,"Reconvene as group, update on writing progress. Identify outstanding tasks, set on timeline.",,group
+13:00,lunch,break,NA,NA,NA
+13:15,lunch,break,NA,NA,NA
+13:30,Planning: figures and tables,task,"Review focal claims figures - what needs to change to reflect package overhaul? Identify tasks, assignments",Elliot,group
+13:45,Planning: figures and tables,task,"Review focal claims figures - what needs to change to reflect package overhaul? Identify tasks, assignments",Elliot,group
+14:00,Planning: figures and tables,task,"Review all other figures and tables, collate task list and assignments",David and or Aaron,group
+14:15,update figures and tables,task,Individually work on assigned figure and table tasks,,individually
+14:30,update figures and tables,task,Individually work on assigned figure and table tasks,,individually
+14:45,update figures and tables,task,Individually work on assigned figure and table tasks,,individually
+15:00,break,break,NA,NA,NA
+15:15,Update documentation,task,"Identify a) types of documentation pages (e.g. aggregator man, processing funs, vignettes if any, evaluation and plotting funs etc) and b) decide on standard template and content for each, c) assign tasks amongst team",Bec,group
+15:30,Update documentation,task,Work on documentation updates individually,NA,individually
+15:45,Update documentation,task,Work on documentation updates individually,NA,individually
+16:00,Review and wrap-up,task,"For each of today's task (writing, figures and tables, and documentation), group to discuss outstanding tasks, challenges and sticking points.",Elliot,group
+16:15,Review and wrap-up,task,"By end, we should have a complete list of outstanding tasks, with individuals assigned to them and a timeline for fixing them. We could also discuss outstanding coding tasks if of use.",David,group
