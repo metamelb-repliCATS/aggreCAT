@@ -31,6 +31,10 @@ A tibble of confidence scores \code{cs} for each \code{paper_id}.
 }
 \description{
 Bayesian aggregation methods with either uninformative or informative prior distributions.
+
+\strong{JAGS Install}
+
+For instructions on installing JAGS onto your system visit \url{https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c}
 }
 \details{
 \code{type} may be one of the following:
