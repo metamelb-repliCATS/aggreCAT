@@ -9,3 +9,5 @@ scratch.txt
 aggreCAT/aggreCAT-focal-claim-figs.pdf
 /doc/
 /Meta/
+*reprex.R
+*reprex.md
