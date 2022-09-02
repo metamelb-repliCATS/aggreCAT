@@ -4,7 +4,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `aggreCAT`: methods for mathematically aggregating expert judgements
+# `agreCAT`: methods for mathematically aggregating expert judgements
 
 ## Problem Context
 
@@ -43,11 +43,28 @@ aggregation functions.
 
 ## The aggreCAT Package
 
-The `aggreCAT` package implements state-of-the-art methods for
-mathematically aggregating expert judgements, providing **XYZ** unique
-methods.
+The `aggreCAT` package aims to fill this void, implementing **XYZ**
+unique state-of-the-art and readily deployable methods for
+mathematically aggregating expert judgements.
 
-Does not force calibration! Provides
+Aggregation methods comprise unweighted linear combinations of
+judgements, weighted linear combinations of judgements where weights are
+proxies of forecasting performance constructed from characteristics of
+participants and/or their judgements, and, and Bayesian methods that use
+expert judgement to update uninformative and informative priors.
+
+Aside from prescribing elicited judgements be derived from any
+structured elicitation method that does not force behavioural consensus,
+the aggreCAT package does not force users into adhering to one
+particular approach to structured expert elicitation. However, some
+methods are more prescriptive about input data types and the elicitation
+method used to derive them than others. At minimum, a single
+point-estimate is required for aggregation, and for some methods,
+repliCATS IDEA protocol, is required to generate the necessary data as
+inputs to the aggregation function. The IDEA (Investigate, Discuss,
+Estimate, Aggregate) protocol generates robust estimates by leveraging
+the wisdom-of-the-crowd, and is more onerous than collecting only single
+point-estimates, but generates more robust and reliable estimates.
 
 ## Installation
 
@@ -69,4 +86,30 @@ Then load the package:
 
 ``` r
 library(aggreCAT)
+```
+
+# Attribution
+
+This package is the culmination of the hard work and persistence of a
+small team of researchers. Use of this package should be appropriately
+attributed and cited accordingly:
+
+``` r
+citation("aggreCAT")
+#> 
+#> To cite package 'aggreCAT' in publications use:
+#> 
+#>   Willcox A, Gray C, Gould E, Wilkinson D, Hanea A, Wintle B, E. O'Dea
+#>   R (????). _aggreCAT: Mathematically Aggregating Expert Judgments_. R
+#>   package version 0.0.0.9000,
+#>   <https://replicats.research.unimelb.edu.au/>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {aggreCAT: Mathematically Aggregating Expert Judgments},
+#>     author = {Aaron Willcox and Charles Gray and Elliot Gould and David Wilkinson and Anca Hanea and Bonnie Wintle and Rose {E. O'Dea}},
+#>     note = {R package version 0.0.0.9000},
+#>     url = {https://replicats.research.unimelb.edu.au/},
+#>   }
 ```
