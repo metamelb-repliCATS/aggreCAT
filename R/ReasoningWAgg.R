@@ -48,7 +48,7 @@
 #' \mjdeqn{\hat{p}_c(ReasonWAgg2) = \sum_{i=1}^N \tilde{w}\_varReason_{i,c}B_{i,c}}{ascii}
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
-#' @param reasons A dataframe in the form of [data_supp_ReasonWAgg]
+#' @param reasons A dataframe in the form of [data_supp_reasons]
 #' @param type One of `"ReasonWAgg"`, `"ReasonWAgg2"`.
 #' @param name Name for aggregation method. Defaults to `type` unless specified.
 #' @param beta_transform Toggle switch to extremise confidence scores with the beta distribution. Defaults to `FALSE`.

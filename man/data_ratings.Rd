@@ -8,12 +8,12 @@
 A table with 6880 rows and 7 columns:
 \describe{
 \item{round}{character string identifying whether the round was 1 (pre-discussion) or 2 (post-discussion)}
-\item{paper_id}{character string of the claim ids (25 claims total)}
-\item{user_name}{factor for anonymized IDs for each participant (25 participants included in this dataset)}
+\item{paper_id}{character string of the claim ids (25 unique claims total)}
+\item{user_name}{character string of anonymized IDs for each participant (25 participants included in this dataset)}
 \item{question}{character string for the question type, with four options: direct_replication, involved_binary, belief_binary, or comprehension}
 \item{element}{character string for the type of response coded in the row, with five options: three_point_lower, three_point_best, three_point_upper, binary_question, or likert_binary}
 \item{value}{numeric value for the participant's response}
-\item{timestamp}{character string for the date and time that the judegement was submitted, in the format of YYYY.MM.DD.H.M.S}
+\item{group}{character string of group IDs that contained the participants}
 }
 }
 \usage{

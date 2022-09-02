@@ -101,27 +101,8 @@ QuizWAgg <- LinearWAgg(data_ratings,
                        flag_loarmean = TRUE,
                        percent_toggle = TRUE)
 
-QuizWAgg2 <- LinearWAgg(data_ratings,
-                        weights = data_supp_quiz %>%
-                          dplyr::rename(weight = quiz_score_even),
-                        type = "Participant_LO",
-                        name = "QuizWAgg2",
-                        placeholder = FALSE,
-                        flag_loarmean = TRUE,
-                        percent_toggle = TRUE)
-
-QuizWAgg3 <- LinearWAgg(data_ratings,
-                        weights = data_supp_quiz %>%
-                          dplyr::rename(weight = quiz_score_stats),
-                        type = "Participant_LO",
-                        name = "QuizWAgg3",
-                        placeholder = FALSE,
-                        flag_loarmean = TRUE,
-                        percent_toggle = TRUE)
 
 method_test_loarmean(QuizWAgg)
-method_test_loarmean(QuizWAgg2)
-method_test_loarmean(QuizWAgg3)
 
 # Reasons -----------------------------------------------------------------
 

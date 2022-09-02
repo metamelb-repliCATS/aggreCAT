@@ -308,36 +308,25 @@ method_schema_linear_weights(LinearWAgg,
                                dplyr::rename(weight = quiz_score),
                              type = "Participant_LO",
                              name = "QuizWAgg")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_supp_quiz %>%
-                               dplyr::rename(weight = quiz_score_even),
-                             type = "Participant_LO",
-                             name = "QuizWAgg2")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights =  data_supp_quiz %>%
-                               dplyr::rename(weight = quiz_score_stats),
-                             type = "Participant_LO",
-                             name = "QuizWAgg3")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_ratings %>%
-                               dplyr::filter(element == "three_point_best",
-                                             round == "round_2") %>%
-                               dplyr::select(paper_id,
-                                             user_name,
-                                             timestamp) %>%
-                               dplyr::group_by(user_name) %>%
-                               dplyr::arrange(timestamp) %>%
-                               dplyr::mutate(claim_count = dplyr::row_number()) %>%
-                               dplyr::ungroup() %>%
-                               dplyr::mutate(weight = log(claim_count) + 1) %>%
-                               dplyr::select(paper_id,
-                                             user_name,
-                                             weight),
-                             type = "Judgement",
-                             name = "ExperienceWAgg")
+#
+#
+# method_schema_linear_weights(LinearWAgg,
+#                              weights = data_ratings %>%
+#                                dplyr::filter(element == "three_point_best",
+#                                              round == "round_2") %>%
+#                                dplyr::select(paper_id,
+#                                              user_name,
+#                                              timestamp) %>%
+#                                dplyr::group_by(user_name) %>%
+#                                dplyr::arrange(timestamp) %>%
+#                                dplyr::mutate(claim_count = dplyr::row_number()) %>%
+#                                dplyr::ungroup() %>%
+#                                dplyr::mutate(weight = log(claim_count) + 1) %>%
+#                                dplyr::select(paper_id,
+#                                              user_name,
+#                                              weight),
+#                              type = "Judgement",
+#                              name = "ExperienceWAgg")
 
 method_schema_linear_weights(LinearWAgg,
                              weights = data_ratings %>%

@@ -57,7 +57,7 @@
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
 #' @param type One of `"BayTriVar"`, or `"BayPRIORsAgg"`.
-#' @param priors (Optional) A dataframe of priors in the format of [data_supp_BayPRIORsAgg], required for `type` `BayPRIORsAgg`.
+#' @param priors (Optional) A dataframe of priors in the format of [data_supp_priors], required for `type` `BayPRIORsAgg`.
 #' @param name Name for aggregation method. Defaults to `type` unless specified.
 #' @param placeholder Toggle the output of the aggregation method to impute placeholder data.
 #' @param percent_toggle Change the values to probabilities. Default is `FALSE`.

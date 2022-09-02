@@ -8,7 +8,7 @@
 #' @details
 #' Individuals' weight is equal to the maximum number of judgement reasons given
 #'
-#' @param expert_reasons A dataframe in the form of [data_supp_ReasonWAgg]
+#' @param expert_reasons A dataframe in the form of [data_supp_reasons]
 #'
 #'
 #' @export

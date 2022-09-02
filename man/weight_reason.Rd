@@ -7,7 +7,7 @@
 weight_reason(expert_reasons)
 }
 \arguments{
-\item{expert_reasons}{A dataframe in the form of \link{data_supp_ReasonWAgg}}
+\item{expert_reasons}{A dataframe in the form of \link{data_supp_reasons}}
 }
 \description{
 This function is used by \link{ReasoningWAgg} to calculate weights for the aggregation

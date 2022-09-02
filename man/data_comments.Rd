@@ -5,7 +5,7 @@
 \alias{data_comments}
 \title{data_comments}
 \format{
-A tibble with 2 rows and 11 columns
+A tibble with 2 rows and 10 columns
 \describe{
 \item{round}{character string, both 'round_1' (before discussion)}
 \item{paper_id}{character string identifying 2 unique papers}
@@ -17,7 +17,7 @@ A tibble with 2 rows and 11 columns
 \item{comment}{character string with free-text response for the user}
 \item{vote_count}{numeric, both 0}
 \item{vote_sum}{numeric, both 0}
-\item{timestamp}{character string for the date and time that the judgement was submitted, in the format of YYYY.MM.DD.H.M.S}
+\item{group}{character string of group IDs that contained the participants}
 }
 }
 \usage{

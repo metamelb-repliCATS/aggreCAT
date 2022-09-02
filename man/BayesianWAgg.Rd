@@ -18,7 +18,7 @@ BayesianWAgg(
 
 \item{type}{One of \code{"BayTriVar"}, or \code{"BayPRIORsAgg"}.}
 
-\item{priors}{(Optional) A dataframe of priors in the format of \link{data_supp_BayPRIORsAgg}, required for \code{type} \code{BayPRIORsAgg}.}
+\item{priors}{(Optional) A dataframe of priors in the format of \link{data_supp_priors}, required for \code{type} \code{BayPRIORsAgg}.}
 
 \item{name}{Name for aggregation method. Defaults to \code{type} unless specified.}
 
