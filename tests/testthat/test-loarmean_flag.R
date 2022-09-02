@@ -93,7 +93,7 @@ method_test_loarmean <- function(df){
 
 
 QuizWAgg <- LinearWAgg(data_ratings,
-                       weights = data_supp_QuizWAgg %>%
+                       weights = data_supp_quiz %>%
                          dplyr::rename(weight = quiz_score),
                        type = "Participant_LO",
                        name = "QuizWAgg",
@@ -102,7 +102,7 @@ QuizWAgg <- LinearWAgg(data_ratings,
                        percent_toggle = TRUE)
 
 QuizWAgg2 <- LinearWAgg(data_ratings,
-                        weights = data_supp_QuizWAgg %>%
+                        weights = data_supp_quiz %>%
                           dplyr::rename(weight = quiz_score_even),
                         type = "Participant_LO",
                         name = "QuizWAgg2",
@@ -111,7 +111,7 @@ QuizWAgg2 <- LinearWAgg(data_ratings,
                         percent_toggle = TRUE)
 
 QuizWAgg3 <- LinearWAgg(data_ratings,
-                        weights = data_supp_QuizWAgg %>%
+                        weights = data_supp_quiz %>%
                           dplyr::rename(weight = quiz_score_stats),
                         type = "Participant_LO",
                         name = "QuizWAgg3",
@@ -127,21 +127,21 @@ method_test_loarmean(QuizWAgg3)
 
 
 ReasonWAgg <- ReasoningWAgg(data_ratings,
-                            reasons = data_supp_ReasonWAgg,
+                            reasons = data_supp_reasons,
                             type = "ReasonWAgg",
                             percent_toggle = TRUE,
                             flag_loarmean = TRUE,
                             placeholder = FALSE)
 
 ReasonWAgg2 <- ReasoningWAgg(data_ratings,
-                             reasons = data_supp_ReasonWAgg,
+                             reasons = data_supp_reasons,
                              type = "ReasonWAgg2",
                              placeholder = FALSE,
                              flag_loarmean = TRUE,
                              percent_toggle = TRUE)
 
 BetaReasonWAgg <- ReasoningWAgg(data_ratings,
-                                reasons = data_supp_ReasonWAgg,
+                                reasons = data_supp_reasons,
                                 type = "ReasonWAgg",
                                 name = "BetaReasonWAgg",
                                 beta_transform = TRUE,
@@ -151,7 +151,7 @@ BetaReasonWAgg <- ReasoningWAgg(data_ratings,
                                 percent_toggle = TRUE)
 
 BetaReasonWAgg2 <- ReasoningWAgg(data_ratings,
-                                 reasons = data_supp_ReasonWAgg,
+                                 reasons = data_supp_reasons,
                                  type = "ReasonWAgg2",
                                  name = "BetaReasonWAgg2",
                                  beta_transform = TRUE,

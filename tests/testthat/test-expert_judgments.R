@@ -58,15 +58,6 @@ test_that("column `value` exists", {
   )
 })
 
-test_that("column `timestamp` exists", {
-
-  pointblank::expect_col_exists(
-    tbl,
-    columns = c("timestamp"),
-    threshold = 1
-  )
-})
-
 test_that("column `round` is of type: character", {
 
   pointblank::expect_col_is_character(
@@ -112,14 +103,6 @@ test_that("column `element` is of type: character", {
   )
 })
 
-test_that("column `timestamp` is of type: character", {
-
-  pointblank::expect_col_is_character(
-    tbl,
-    columns = c("timestamp"),
-    threshold = 1
-  )
-})
 
 test_that("column `value` is of type: numeric", {
 
@@ -137,6 +120,15 @@ test_that("values in `value` should be between `-1` and `100`", {
     columns = c("value"),
     left = -1,
     right = 100,
+    threshold = 1
+  )
+})
+
+test_that("column `group` is of type: character", {
+
+  pointblank::expect_col_is_character(
+    tbl,
+    columns = c("group"),
     threshold = 1
   )
 })
