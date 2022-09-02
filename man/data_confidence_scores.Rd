@@ -3,14 +3,21 @@
 \docType{data}
 \name{data_confidence_scores}
 \alias{data_confidence_scores}
-\title{Data Confidence Scores}
+\title{Confidence Scores generated for 25 papers with 22 aggregation methods}
 \format{
-TODO
+a tibble with 550 rows and 5 columns
+\describe{
+\item{method}{character string of method name}
+\item{method_id}{integer of method IDs}
+\item{paper_id}{character string of paper IDs}
+\item{cs}{numeric of generated confidence scores}
+\item{n_experts}{numeric of the number of expert judgements aggregated in confidence score}
+}
 }
 \usage{
 data_confidence_scores
 }
 \description{
-Data Confidence Scores
+Confidence Scores generated for 25 papers with 22 aggregation methods
 }
 \keyword{datasets}

@@ -13,7 +13,7 @@
 #' \mjdeqn{w\_{varReason}_{i,c} =\sum_{r=1}^{R} \mathbf{CR_i}(c,r) \cdot (1 - \frac{\sum_{c=1}^C
 #' \mathbf{CR_i}(c,r)}{C})}{ascii}
 #'
-#' @param expert_reasons A dataframe in the form of [data_supp_ReasonWAgg]
+#' @param expert_reasons A dataframe in the form of [data_supp_reasons]
 #'
 #' @export
 

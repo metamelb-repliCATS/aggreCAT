@@ -3,14 +3,18 @@
 \docType{data}
 \name{data_outcomes}
 \alias{data_outcomes}
-\title{Data Outcomes}
+\title{Replication outcomes for the papers}
 \format{
-TODO
+a tibble with 25 rows and 2 columns
+\describe{
+\item{paper_id}{character string for the paper ID}
+\item{outcome}{numeric value of replication outcome. 1 = replication success, 0 = replication failure}
+}
 }
 \usage{
 data_outcomes
 }
 \description{
-Data Outcomes
+Replication outcomes for the papers
 }
 \keyword{datasets}

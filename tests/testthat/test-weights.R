@@ -4,12 +4,12 @@ weight_nans <- function(method_to_test) {
     preprocess_judgements() %>%
     method_to_test() %>%
     purrr::pluck("agg_weight")
-
+  
   expect_false(any(is.na(agg_weight)))
   expect_false(any(is.nan(agg_weight)))
   expect_false(any(is.infinite(agg_weight)))
   expect_type(agg_weight, "double")
-
+  
 }
 
 
@@ -39,60 +39,60 @@ test_that("weight_varIndivInterval method", {
 
 # Test Experience ---------------------------------------------------------
 
-
-
-tbl <- weight_experience(data_ratings, round_for_agg = "round_1")
-
-test_that("column `paper_id` exists", {
-
-  expect_col_exists(
-    tbl,
-    columns = vars(paper_id),
-    threshold = 1
-  )
-})
-
-test_that("column `user_name` exists", {
-
-  expect_col_exists(
-    tbl,
-    columns = vars(user_name),
-    threshold = 1
-  )
-})
-
-test_that("column `weight` exists", {
-
-  expect_col_exists(
-    tbl,
-    columns = vars(weight),
-    threshold = 1
-  )
-})
-
-test_that("column `weight` is of type: numeric", {
-
-  expect_col_is_numeric(
-    tbl,
-    columns = vars(weight),
-    threshold = 1
-  )
-})
-
-test_that("column `paper_id` is of type: character", {
-
-  expect_col_is_character(
-    tbl,
-    columns = vars(paper_id),
-    threshold = 1
-  )
-})
-
-test_that("column `user_name` is of type: character", {
-
-  expect_col_is_character(
-    tbl,
-    columns = vars(user_name),
-    threshold = 1
-  )
-})
+#
+#
+# tbl <- weight_experience(data_ratings, round_for_agg = "round_1")
+#
+# test_that("column `paper_id` exists", {
+#
+#   expect_col_exists(
+#     tbl,
+#     columns = vars(paper_id),
+#     threshold = 1
+#   )
+# })
+#
+# test_that("column `user_name` exists", {
+#
+#   expect_col_exists(
+#     tbl,
+#     columns = vars(user_name),
+#     threshold = 1
+#   )
+# })
+#
+# test_that("column `weight` exists", {
+#
+#   expect_col_exists(
+#     tbl,
+#     columns = vars(weight),
+#     threshold = 1
+#   )
+# })
+#
+# test_that("column `weight` is of type: numeric", {
+#
+#   expect_col_is_numeric(
+#     tbl,
+#     columns = vars(weight),
+#     threshold = 1
+#   )
+# })
+#
+# test_that("column `paper_id` is of type: character", {
+#
+#   expect_col_is_character(
+#     tbl,
+#     columns = vars(paper_id),
+#     threshold = 1
+#   )
+# })
+#
+# test_that("column `user_name` is of type: character", {
+#
+#   expect_col_is_character(
+#     tbl,
+#     columns = vars(user_name),
+#     threshold = 1
+#   )
+# })

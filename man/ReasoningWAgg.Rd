@@ -19,7 +19,7 @@ ReasoningWAgg(
 \arguments{
 \item{expert_judgements}{A dataframe in the format of \link{data_ratings}.}
 
-\item{reasons}{A dataframe in the form of \link{data_supp_ReasonWAgg}}
+\item{reasons}{A dataframe in the form of \link{data_supp_reasons}}
 
 \item{type}{One of \code{"ReasonWAgg"}, \code{"ReasonWAgg2"}.}
 

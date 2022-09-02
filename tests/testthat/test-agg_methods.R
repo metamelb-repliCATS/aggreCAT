@@ -2,50 +2,50 @@ library(pointblank)
 
 
 method_schema_default <- function(method_to_test, type){
-
+  
   tbl <- data_ratings %>%
     method_to_test(type = {{type}}, percent_toggle = TRUE)
-
+  
   test_that("column `method` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `paper_id` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("column `cs` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("column `n_experts` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `n_experts` should be between `0` and `25`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -54,10 +54,10 @@ method_schema_default <- function(method_to_test, type){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `cs` should be between `0` and `1`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -66,72 +66,72 @@ method_schema_default <- function(method_to_test, type){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `method` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("column `paper_id` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `n_experts` is of type: integer", {
-
+    
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `method` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `paper_id` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `cs` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `n_experts` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
 }
 
 # Measures of unweighted aggregation
@@ -167,50 +167,50 @@ method_schema_default(ShiftingWAgg, type = "DistIntShiftWAgg")
 
 
 method_schema_linear_weights <- function(method_to_test, weights, type, name){
-
+  
   tbl <- data_ratings %>%
     method_to_test(weights, type = {{type}} , name = {{name}}, percent_toggle = TRUE)
-
+  
   test_that("column `method` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `paper_id` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("column `cs` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("column `n_experts` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `n_experts` should be between `0` and `25`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -219,10 +219,10 @@ method_schema_linear_weights <- function(method_to_test, weights, type, name){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `cs` should be between `0` and `1`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -231,72 +231,72 @@ method_schema_linear_weights <- function(method_to_test, weights, type, name){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `method` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("column `paper_id` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `n_experts` is of type: integer", {
-
+    
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `method` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `paper_id` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `cs` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `n_experts` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
 }
 
 
@@ -304,66 +304,29 @@ method_schema_linear_weights <- function(method_to_test, weights, type, name){
 # LinearWAgg Additional Arguments -----------------------------------------
 
 method_schema_linear_weights(LinearWAgg,
-                             weights = data_supp_QuizWAgg %>%
+                             weights = data_supp_quiz %>%
                                dplyr::rename(weight = quiz_score),
                              type = "Participant_LO",
                              name = "QuizWAgg")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_supp_QuizWAgg %>%
-                               dplyr::rename(weight = quiz_score_even),
-                             type = "Participant_LO",
-                             name = "QuizWAgg2")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights =  data_supp_QuizWAgg %>%
-                               dplyr::rename(weight = quiz_score_stats),
-                             type = "Participant_LO",
-                             name = "QuizWAgg3")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_ratings %>%
-                               dplyr::filter(element == "three_point_best",
-                                             round == "round_2") %>%
-                               dplyr::select(paper_id,
-                                             user_name,
-                                             timestamp) %>%
-                               dplyr::group_by(user_name) %>%
-                               dplyr::arrange(timestamp) %>%
-                               dplyr::mutate(claim_count = dplyr::row_number()) %>%
-                               dplyr::ungroup() %>%
-                               dplyr::mutate(weight = log(claim_count) + 1) %>%
-                               dplyr::select(paper_id,
-                                             user_name,
-                                             weight),
-                             type = "Judgement",
-                             name = "ExperienceWAgg")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_supp_demographics %>%
-                               dplyr::select(RecipientEmail,
-                                             Q245_6) %>%
-                               dplyr::mutate(weight = dplyr::if_else(is.na(Q245_6),
-                                                                     1,
-                                                                     2)) %>%
-                               dplyr:: select(RecipientEmail,
-                                              weight) %>%
-                               dplyr::rename(user_name = RecipientEmail),
-                             type = "Participant",
-                             name = "ExperienceWAgg2")
-
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_supp_demographics %>%
-                               dplyr::select(RecipientEmail,
-                                             Q245_5) %>%
-                               dplyr::mutate(weight = dplyr::if_else(is.na(Q245_5),
-                                                                     1,
-                                                                     2)) %>%
-                               dplyr::select(RecipientEmail,
-                                             weight) %>%
-                               dplyr::rename(user_name = RecipientEmail),
-                             type = "Participant",
-                             name = "ExperienceWAgg3")
+#
+#
+# method_schema_linear_weights(LinearWAgg,
+#                              weights = data_ratings %>%
+#                                dplyr::filter(element == "three_point_best",
+#                                              round == "round_2") %>%
+#                                dplyr::select(paper_id,
+#                                              user_name,
+#                                              timestamp) %>%
+#                                dplyr::group_by(user_name) %>%
+#                                dplyr::arrange(timestamp) %>%
+#                                dplyr::mutate(claim_count = dplyr::row_number()) %>%
+#                                dplyr::ungroup() %>%
+#                                dplyr::mutate(weight = log(claim_count) + 1) %>%
+#                                dplyr::select(paper_id,
+#                                              user_name,
+#                                              weight),
+#                              type = "Judgement",
+#                              name = "ExperienceWAgg")
 
 method_schema_linear_weights(LinearWAgg,
                              weights = data_ratings %>%
@@ -390,70 +353,55 @@ method_schema_linear_weights(LinearWAgg,
                              type = "Judgement",
                              name = "EngWAgg")
 
-method_schema_linear_weights(LinearWAgg,
-                             weights = data_supp_users %>%
-                               dplyr::select(username,
-                                             userBadges) %>%
-                               dplyr::group_by(username) %>%
-                               dplyr::mutate(n_badges = dplyr::if_else(is.na(userBadges),
-                                                                       0,
-                                                                       stringr::str_count(userBadges,
-                                                                                          pattern = ",") + 1)) %>%
-                               dplyr::select(username,
-                                             n_badges) %>%
-                               dplyr::rename(user_name = username,
-                                             weight = n_badges),
-                             type = "Participant",
-                             name = "BadgeWAgg")
 
 # Reasoning ---------------------------------------------------------------
 
 
 method_schema_reasoning <- function(method_to_test, reasons, type, name, beta_transform){
-
+  
   tbl <- data_ratings %>%
     method_to_test(reasons, type = {{type}} , name = {{name}}, beta_transform = {{beta_transform}}, percent_toggle = TRUE)
-
+  
   test_that("column `method` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `paper_id` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("column `cs` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("column `n_experts` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `n_experts` should be between `0` and `25`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -462,10 +410,10 @@ method_schema_reasoning <- function(method_to_test, reasons, type, name, beta_tr
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `cs` should be between `0` and `1`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -474,96 +422,96 @@ method_schema_reasoning <- function(method_to_test, reasons, type, name, beta_tr
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `method` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("column `paper_id` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `n_experts` is of type: integer", {
-
+    
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `method` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `paper_id` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `cs` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `n_experts` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
 }
 
 
 
 method_schema_reasoning(ReasoningWAgg,
-                        reasons = data_supp_ReasonWAgg,
+                        reasons = data_supp_reasons,
                         type = "ReasonWAgg",
                         name = "ReasonWAgg",
                         beta_transform = FALSE)
 
 method_schema_reasoning(ReasoningWAgg,
-                        reasons = data_supp_ReasonWAgg,
+                        reasons = data_supp_reasons,
                         type = "ReasonWAgg2",
                         name = "ReasonWAgg2",
                         beta_transform = FALSE)
 
 method_schema_reasoning(ReasoningWAgg,
-                        reasons = data_supp_ReasonWAgg,
+                        reasons = data_supp_reasons,
                         type = "ReasonWAgg",
                         name = "BetaReasonWAgg",
                         beta_transform = TRUE)
 
 method_schema_reasoning(ReasoningWAgg,
-                        reasons = data_supp_ReasonWAgg,
+                        reasons = data_supp_reasons,
                         type = "ReasonWAgg2",
                         name = "BetaReasonWAgg2",
                         beta_transform = TRUE)
@@ -574,50 +522,50 @@ method_schema_reasoning(ReasoningWAgg,
 
 
 method_schema_bays <- function(method_to_test, priors, type, name){
-
+  
   tbl <- data_ratings %>%
     method_to_test(priors, type = {{type}} , name = {{name}}, percent_toggle = TRUE)
-
+  
   test_that("column `method` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `paper_id` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("column `cs` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("column `n_experts` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `n_experts` should be between `0` and `25`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -626,10 +574,10 @@ method_schema_bays <- function(method_to_test, priors, type, name){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `cs` should be between `0` and `1`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -638,127 +586,127 @@ method_schema_bays <- function(method_to_test, priors, type, name){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `method` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("column `paper_id` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `n_experts` is of type: integer", {
-
+    
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `method` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `paper_id` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `cs` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `n_experts` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
 }
 
 method_schema_bays(BayesianWAgg, priors = NULL, type = "BayTriVar", name = "BayTriVar")
 
-method_schema_bays(BayesianWAgg, priors = data_supp_BayPRIORsAgg, type = "BayPRIORsAgg", name = "BayTriVar")
+method_schema_bays(BayesianWAgg, priors = data_supp_priors, type = "BayPRIORsAgg", name = "BayTriVar")
 
 
 # Extreme Wag -------------------------------------------------------------
 
 method_schema_extreme <- function(method_to_test, type, name, cutoff_lower, cutoff_upper){
-
-
+  
+  
   tbl <- data_ratings %>%
     method_to_test(type = {{type}} , name = {{name}}, cutoff_lower = {{cutoff_lower}}, cutoff_upper = {{cutoff_upper}}, percent_toggle = TRUE)
-
+  
   test_that("column `method` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `paper_id` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("column `cs` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("column `n_experts` exists", {
-
+    
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `n_experts` should be between `0` and `25`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -767,10 +715,10 @@ method_schema_extreme <- function(method_to_test, type, name, cutoff_lower, cuto
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("values in `cs` should be between `0` and `1`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -779,73 +727,73 @@ method_schema_extreme <- function(method_to_test, type, name, cutoff_lower, cuto
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `method` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("column `paper_id` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `n_experts` is of type: integer", {
-
+    
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `method` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `paper_id` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `cs` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `n_experts` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
 }
 
 method_schema_extreme(ExtremisationWAgg,
@@ -859,7 +807,6 @@ method_schema_extreme(ExtremisationWAgg,
                       name = "BetaArMean2",
                       cutoff_lower = 0.4,
                       cutoff_upper = 0.6)
-
 
 
 

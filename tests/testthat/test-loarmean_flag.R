@@ -4,28 +4,28 @@ library(pointblank)
 
 
 method_test_loarmean <- function(df){
-
+  
   tbl <- df
-
+  
   test_that("column `paper_id` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-
+  
   test_that("column `method` is of type: character", {
-
+    
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-
-
+  
+  
   # test_that("column `method_applied` is of type: character", {
   #
   #   expect_col_is_character(
@@ -34,18 +34,18 @@ method_test_loarmean <- function(df){
   #     threshold = 1
   #   )
   # })
-#
-#   test_that("column `no_quiz_scores_for_claim` is of type: logical", {
-#
-#     expect_col_is_logical(
-#       tbl,
-#       columns = ends_with("_for_claim"),
-#       threshold = 1
-#     )
-#   })
-
+  #
+  #   test_that("column `no_quiz_scores_for_claim` is of type: logical", {
+  #
+  #     expect_col_is_logical(
+  #       tbl,
+  #       columns = ends_with("_for_claim"),
+  #       threshold = 1
+  #     )
+  #   })
+  
   test_that("values in `cs` should be between `0` and `1`", {
-
+    
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -54,36 +54,36 @@ method_test_loarmean <- function(df){
       threshold = 1
     )
   })
-
-
+  
+  
   test_that("column `cs` is of type: numeric", {
-
+    
     expect_col_is_numeric(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `cs` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-
+  
   test_that("all values in `n_experts` should not be NULL", {
-
+    
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-
-
+  
+  
 }
 
 # Test LOArMean Flag for Quiz, Engwagg and Reasoning methods
@@ -93,7 +93,7 @@ method_test_loarmean <- function(df){
 
 
 QuizWAgg <- LinearWAgg(data_ratings,
-                       weights = data_supp_QuizWAgg %>%
+                       weights = data_supp_quiz %>%
                          dplyr::rename(weight = quiz_score),
                        type = "Participant_LO",
                        name = "QuizWAgg",
@@ -101,47 +101,28 @@ QuizWAgg <- LinearWAgg(data_ratings,
                        flag_loarmean = TRUE,
                        percent_toggle = TRUE)
 
-QuizWAgg2 <- LinearWAgg(data_ratings,
-                        weights = data_supp_QuizWAgg %>%
-                          dplyr::rename(weight = quiz_score_even),
-                        type = "Participant_LO",
-                        name = "QuizWAgg2",
-                        placeholder = FALSE,
-                        flag_loarmean = TRUE,
-                        percent_toggle = TRUE)
-
-QuizWAgg3 <- LinearWAgg(data_ratings,
-                        weights = data_supp_QuizWAgg %>%
-                          dplyr::rename(weight = quiz_score_stats),
-                        type = "Participant_LO",
-                        name = "QuizWAgg3",
-                        placeholder = FALSE,
-                        flag_loarmean = TRUE,
-                        percent_toggle = TRUE)
 
 method_test_loarmean(QuizWAgg)
-method_test_loarmean(QuizWAgg2)
-method_test_loarmean(QuizWAgg3)
 
 # Reasons -----------------------------------------------------------------
 
 
 ReasonWAgg <- ReasoningWAgg(data_ratings,
-                            reasons = data_supp_ReasonWAgg,
+                            reasons = data_supp_reasons,
                             type = "ReasonWAgg",
                             percent_toggle = TRUE,
                             flag_loarmean = TRUE,
                             placeholder = FALSE)
 
 ReasonWAgg2 <- ReasoningWAgg(data_ratings,
-                             reasons = data_supp_ReasonWAgg,
+                             reasons = data_supp_reasons,
                              type = "ReasonWAgg2",
                              placeholder = FALSE,
                              flag_loarmean = TRUE,
                              percent_toggle = TRUE)
 
 BetaReasonWAgg <- ReasoningWAgg(data_ratings,
-                                reasons = data_supp_ReasonWAgg,
+                                reasons = data_supp_reasons,
                                 type = "ReasonWAgg",
                                 name = "BetaReasonWAgg",
                                 beta_transform = TRUE,
@@ -151,7 +132,7 @@ BetaReasonWAgg <- ReasoningWAgg(data_ratings,
                                 percent_toggle = TRUE)
 
 BetaReasonWAgg2 <- ReasoningWAgg(data_ratings,
-                                 reasons = data_supp_ReasonWAgg,
+                                 reasons = data_supp_reasons,
                                  type = "ReasonWAgg2",
                                  name = "BetaReasonWAgg2",
                                  beta_transform = TRUE,
@@ -167,4 +148,3 @@ method_test_loarmean(ReasonWAgg)
 method_test_loarmean(ReasonWAgg2)
 method_test_loarmean(BetaReasonWAgg)
 method_test_loarmean(BetaReasonWAgg2)
-

@@ -5,17 +5,17 @@
 \alias{data_justifications}
 \title{Free-text justifications for expert judgements}
 \format{
-A table with 5005 rows and 9 columns:
+A table with 5630 rows and 9 columns:
 \describe{
 \item{round}{character string identifying whether the round was 1 (pre-discussion) or 2 (post-discussion)}
 \item{paper_id}{character string of the paper ids (25 papers total)}
-\item{user_name}{factor for anonymized IDs for each participant (25 participants included in this dataset)}
+\item{user_name}{character string of anonymized IDs for each participant (25 participants included in this dataset)}
 \item{question}{character string for the question type, with five options: flushing_freetext, involved_binary, belief_binary, direct_replication, and comprehension}
 \item{justification}{character string with participant's free-text rationale for their responses}
 \item{justification_id}{character string with a unique ID for each row}
 \item{vote_count}{numeric of recorded votes (all 0 or 1)}
 \item{vote_sum}{numeric of summed vote counts(all 0 or 1)}
-\item{timestamp}{character string for the date and time that the judgement was submitted, in the format of YYYY.MM.DD.H.M.S}
+\item{group}{character string of group IDs that contained the participants}
 }
 }
 \usage{
