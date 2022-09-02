@@ -43,9 +43,9 @@ aggregation functions.
 
 ## The aggreCAT Package
 
-The `aggreCAT` package aims to fill this void, implementing **XYZ**
-unique state-of-the-art and readily deployable methods for
-mathematically aggregating expert judgements.
+The `aggreCAT` package aims to fill this void, implementing 22 unique
+state-of-the-art and readily deployable methods for mathematically
+aggregating expert judgements, described in Hanea et al. (2021).
 
 Aggregation methods comprise unweighted linear combinations of
 judgements, weighted linear combinations of judgements where weights are
@@ -79,14 +79,65 @@ devtools::install_github("metamelb-repliCATS/aggreCAT")
 
 -   the most recent official version of `aggreCAT` from CRAN:
 
-    -   TBC! *We will upload to CRAN once our manuscript has been
-        submitted.*
+    -   TBC! *We will upload to CRAN once our manuscript (Gould et al.
+        in prep.) has been submitted.*
 
 Then load the package:
 
 ``` r
 library(aggreCAT)
 ```
+
+# Getting Started with `aggreCAT`
+
+For a
+
+## Core Functionality and Design
+
+blah blah
+
+## A minimal working example with `AverageWAgg()`
+
+Below we demonstrate how to use the most simple commonly implemented
+aggregation method `ArMean`, which takes the arithmetic mean of
+participant Best Estimates. We first use a small subset of 5 users for a
+single claim, `108`, which is represented visually in (**fig-1?**)
+
+``` r
+library(dplyr)
+data(data_ratings)
+set.seed(1234)
+
+participant_subset <- data_ratings %>%
+  distinct(user_name) %>%
+  sample_n(5) %>%
+  mutate(participant_name = paste("participant", rep(1:n())))
+
+single_claim <- data_ratings %>% 
+  filter(paper_id == "108") %>% 
+  right_join(participant_subset, by = "user_name")
+
+AverageWAgg(expert_judgements = single_claim, 
+            type = "ArMean")
+#> 
+#> ── AverageWAgg: ArMean ─────────────────────────────────────────────────────────
+#> 
+#> ── Pre-Processing Options ──
+#> 
+#> ℹ Round Filter: TRUE
+#> ℹ Three Point Filter: TRUE
+#> ℹ Percent Toggle: FALSE
+#> # A tibble: 1 × 4
+#>   method paper_id    cs n_experts
+#>   <chr>  <chr>    <dbl>     <int>
+#> 1 ArMean 108         74         5
+```
+
+![Mathematically aggregating a small subset of expert judgements for the
+claim \`108\`, using the unweighted arithmetic mean. The \`aggreCAT\`
+wrapper function \`AverageWAgg()\` is used on this dataset, with the
+\`type\` argument set to the default
+\`ArMean\`.](./ms/images/paste-5A70A45F.png)
 
 # Attribution
 
@@ -100,7 +151,7 @@ citation("aggreCAT")
 #> To cite package 'aggreCAT' in publications use:
 #> 
 #>   Willcox A, Gray C, Gould E, Wilkinson D, Hanea A, Wintle B, E. O'Dea
-#>   R (????). _aggreCAT: Mathematically Aggregating Expert Judgments_. R
+#>   R (2022). _aggreCAT: Mathematically Aggregating Expert Judgments_. R
 #>   package version 0.0.0.9000,
 #>   <https://replicats.research.unimelb.edu.au/>.
 #> 
@@ -109,7 +160,34 @@ citation("aggreCAT")
 #>   @Manual{,
 #>     title = {aggreCAT: Mathematically Aggregating Expert Judgments},
 #>     author = {Aaron Willcox and Charles Gray and Elliot Gould and David Wilkinson and Anca Hanea and Bonnie Wintle and Rose {E. O'Dea}},
+#>     year = {2022},
 #>     note = {R package version 0.0.0.9000},
 #>     url = {https://replicats.research.unimelb.edu.au/},
 #>   }
 ```
+
+## References
+
+-   [ ] cite main repliCATS IDEA paper / preprint
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-Gould2022" class="csl-entry">
+
+Gould, Elliot, Charles T Gray, Aaron Willcox, Rose E O’Dea, Rebecca
+Groenewegen, and David P Wilkinson. in prep. “aggreCAT: An r Package for
+Mathematically Aggregating Expert Judgments.” MetaArXiv.
+<https://doi.org/10.31222/osf.io/74tfv>.
+
+</div>
+
+<div id="ref-Hanea2021" class="csl-entry">
+
+Hanea, Anca, David P Wilkinson, Marissa McBride, Aidan Lyon, Don van
+Ravenzwaaij, Felix Singleton Thorn, Charles T Gray, et al. 2021.
+“Mathematically Aggregating Experts’ Predictions of Possible Futures,”
+February. <https://doi.org/10.31222/osf.io/rxmh7>.
+
+</div>
+
+</div>

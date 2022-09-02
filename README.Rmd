@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: ./ms/bibliography.bib
 ---
 
 [![DOI](https://zenodo.org/badge/531484296.svg)](https://zenodo.org/badge/latestdoi/531484296) [![R-CMD-check](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml)
@@ -31,7 +32,7 @@ An archived version of `expert` is still available, however, the package provide
 
 ## The aggreCAT Package
 
-The `aggreCAT` package aims to fill this void, implementing `r aggreCAT::data_confidence_scores %>% count(method) %>% count() %>% pluck(1)` unique state-of-the-art and readily deployable methods for mathematically aggregating expert judgements.
+The `aggreCAT` package aims to fill this void, implementing `r aggreCAT::data_confidence_scores %>% count(method) %>% count() %>% pluck(1)` unique state-of-the-art and readily deployable methods for mathematically aggregating expert judgements, described in Hanea et al. [-@Hanea2021].
 
 Aggregation methods comprise unweighted linear combinations of judgements, weighted linear combinations of judgements where weights are proxies of forecasting performance constructed from characteristics of participants and/or their judgements, and, and Bayesian methods that use expert judgement to update uninformative and informative priors.
 
@@ -50,7 +51,7 @@ devtools::install_github("metamelb-repliCATS/aggreCAT")
 
 -   the most recent official version of `aggreCAT` from CRAN:
 
-    -   TBC! *We will upload to CRAN once our manuscript has been submitted.*
+    -   TBC! *We will upload to CRAN once our manuscript [@Gould2022] has been submitted.*
 
 Then load the package:
 
@@ -58,10 +59,46 @@ Then load the package:
 library(aggreCAT)
 ```
 
-# Attribution
+# Getting Started with `aggreCAT`
+
+For a
+
+## Core Functionality and Design
+
+blah blah
+
+## A minimal working example with `AverageWAgg()` 
+
+Below we demonstrate how to use the most simple commonly implemented aggregation method `ArMean`, which takes the arithmetic mean of participant Best Estimates. We first use a small subset of 5 users for a single claim, `108`, which is represented visually in @fig-1
+
+```{r}
+library(dplyr)
+data(data_ratings)
+set.seed(1234)
+
+participant_subset <- data_ratings %>%
+  distinct(user_name) %>%
+  sample_n(5) %>%
+  mutate(participant_name = paste("participant", rep(1:n())))
+
+single_claim <- data_ratings %>% 
+  filter(paper_id == "108") %>% 
+  right_join(participant_subset, by = "user_name")
+
+AverageWAgg(expert_judgements = single_claim, 
+            type = "ArMean")
+```
+
+![Mathematically aggregating a small subset of expert judgements for the claim \`108\`, using the unweighted arithmetic mean. The \`aggreCAT\` wrapper function \`AverageWAgg()\` is used on this dataset, with the \`type\` argument set to the default \`ArMean\`.](./ms/images/paste-5A70A45F.png)
+
+# Attribution {#fig-1}
 
 This package is the culmination of the hard work and persistence of a small team of researchers. Use of this package should be appropriately attributed and cited accordingly:
 
 ```{r citation, message = FALSE, warning=FALSE}
 citation("aggreCAT")
 ```
+
+## References
+
+-   [ ] cite main repliCATS IDEA paper / preprint
