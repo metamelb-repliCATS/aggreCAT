@@ -2,50 +2,50 @@ library(pointblank)
 
 
 method_schema_default <- function(method_to_test, type){
-  
+
   tbl <- data_ratings %>%
     method_to_test(type = {{type}}, percent_toggle = TRUE)
-  
+
   test_that("column `method` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `paper_id` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("column `cs` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("column `n_experts` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `n_experts` should be between `0` and `25`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -54,10 +54,10 @@ method_schema_default <- function(method_to_test, type){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `cs` should be between `0` and `1`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -66,72 +66,72 @@ method_schema_default <- function(method_to_test, type){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `method` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("column `paper_id` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `n_experts` is of type: integer", {
-    
+
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `method` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `paper_id` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `cs` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `n_experts` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
 }
 
 # Measures of unweighted aggregation
@@ -167,50 +167,50 @@ method_schema_default(ShiftingWAgg, type = "DistIntShiftWAgg")
 
 
 method_schema_linear_weights <- function(method_to_test, weights, type, name){
-  
+
   tbl <- data_ratings %>%
     method_to_test(weights, type = {{type}} , name = {{name}}, percent_toggle = TRUE)
-  
+
   test_that("column `method` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `paper_id` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("column `cs` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("column `n_experts` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `n_experts` should be between `0` and `25`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -219,10 +219,10 @@ method_schema_linear_weights <- function(method_to_test, weights, type, name){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `cs` should be between `0` and `1`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -231,72 +231,72 @@ method_schema_linear_weights <- function(method_to_test, weights, type, name){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `method` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("column `paper_id` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `n_experts` is of type: integer", {
-    
+
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `method` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `paper_id` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `cs` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `n_experts` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
 }
 
 
@@ -358,50 +358,50 @@ method_schema_linear_weights(LinearWAgg,
 
 
 method_schema_reasoning <- function(method_to_test, reasons, type, name, beta_transform){
-  
+
   tbl <- data_ratings %>%
     method_to_test(reasons, type = {{type}} , name = {{name}}, beta_transform = {{beta_transform}}, percent_toggle = TRUE)
-  
+
   test_that("column `method` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `paper_id` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("column `cs` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("column `n_experts` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `n_experts` should be between `0` and `25`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -410,10 +410,10 @@ method_schema_reasoning <- function(method_to_test, reasons, type, name, beta_tr
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `cs` should be between `0` and `1`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -422,72 +422,72 @@ method_schema_reasoning <- function(method_to_test, reasons, type, name, beta_tr
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `method` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("column `paper_id` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `n_experts` is of type: integer", {
-    
+
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `method` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `paper_id` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `cs` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `n_experts` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
 }
 
 
@@ -522,50 +522,50 @@ method_schema_reasoning(ReasoningWAgg,
 
 
 method_schema_bays <- function(method_to_test, priors, type, name){
-  
+
   tbl <- data_ratings %>%
     method_to_test(priors, type = {{type}} , name = {{name}}, percent_toggle = TRUE)
-  
+
   test_that("column `method` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `paper_id` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("column `cs` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("column `n_experts` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `n_experts` should be between `0` and `25`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -574,10 +574,10 @@ method_schema_bays <- function(method_to_test, priors, type, name){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `cs` should be between `0` and `1`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -586,72 +586,72 @@ method_schema_bays <- function(method_to_test, priors, type, name){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `method` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("column `paper_id` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `n_experts` is of type: integer", {
-    
+
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `method` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `paper_id` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `cs` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `n_experts` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
 }
 
 method_schema_bays(BayesianWAgg, priors = NULL, type = "BayTriVar", name = "BayTriVar")
@@ -662,51 +662,51 @@ method_schema_bays(BayesianWAgg, priors = data_supp_priors, type = "BayPRIORsAgg
 # Extreme Wag -------------------------------------------------------------
 
 method_schema_extreme <- function(method_to_test, type, name, cutoff_lower, cutoff_upper){
-  
-  
+
+
   tbl <- data_ratings %>%
     method_to_test(type = {{type}} , name = {{name}}, cutoff_lower = {{cutoff_lower}}, cutoff_upper = {{cutoff_upper}}, percent_toggle = TRUE)
-  
+
   test_that("column `method` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `paper_id` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("column `cs` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("column `n_experts` exists", {
-    
+
     expect_col_exists(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `n_experts` should be between `0` and `25`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(n_experts),
@@ -715,10 +715,10 @@ method_schema_extreme <- function(method_to_test, type, name, cutoff_lower, cuto
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("values in `cs` should be between `0` and `1`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -727,73 +727,73 @@ method_schema_extreme <- function(method_to_test, type, name, cutoff_lower, cuto
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `method` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("column `paper_id` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `n_experts` is of type: integer", {
-    
+
     expect_col_is_integer(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `method` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `paper_id` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `cs` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `n_experts` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
 }
 
 method_schema_extreme(ExtremisationWAgg,
@@ -807,6 +807,7 @@ method_schema_extreme(ExtremisationWAgg,
                       name = "BetaArMean2",
                       cutoff_lower = 0.4,
                       cutoff_upper = 0.6)
+
 
 
 

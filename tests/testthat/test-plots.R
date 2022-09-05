@@ -15,5 +15,5 @@ test_that("Plots Labelled Correctly'",{
   p <- confidence_score_heatmap(confidence_scores = data_confidence_scores,
                                 data_outcomes = data_outcomes)
   expect_true(ggplot2::is.ggplot(p))
-  
+
 })

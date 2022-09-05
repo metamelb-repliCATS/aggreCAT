@@ -4,11 +4,16 @@
 #' @description
 #' Bayesian aggregation methods with either uninformative or informative prior distributions.
 #'
+#' **JAGS Install**
+#'
+#' For instructions on installing JAGS onto your system visit \url{https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c}
+#'
 #' @details
 #'
 #' `type` may be one of the following:
 #'
 #' **BayTriVar**: The Bayesian Triple-Variability Method, fit with JAGS.
+#'
 #'
 #' \loadmathjax
 #' Three kinds of variability around best estimates are considered:
@@ -82,6 +87,9 @@ BayesianWAgg <- function(expert_judgements,
 
     stop('`type` must be one of "BayTriVar" or "BayPRIORsAgg"')
 
+  } else if(Sys.which("jags") == "") {
+    cli::cli_abort("JAGS is require for {.emph {type}}:
+                 {.url https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c}")
   }
 
   ## Check for n
@@ -331,28 +339,28 @@ BayesianWAgg <- function(expert_judgements,
 
 
            },
-           "BayPRIORsAgg" = {
+"BayPRIORsAgg" = {
 
-             ## adding prior values to the paper_ids
+  ## adding prior values to the paper_ids
 
-             prior_means <- paper_id %>%
-               dplyr::left_join(priors,
-                                by = "paper_id")
+  prior_means <- paper_id %>%
+    dplyr::left_join(priors,
+                     by = "paper_id")
 
-             ## Create list of JAGS inputs
+  ## Create list of JAGS inputs
 
-             JAGS_list <- list(Logit_Best = Logit_Generic_Best,
-                               Lower = Generic_Lower,
-                               Upper = Generic_Upper,
-                               Claim_SD = Generic_Claim_sd,
-                               Participant_SD = Generic_Participant_sd,
-                               Prior_means = prior_means$prior_means,
-                               n_claim = n_claim,
-                               n_assessments = p_count)
+  JAGS_list <- list(Logit_Best = Logit_Generic_Best,
+                    Lower = Generic_Lower,
+                    Upper = Generic_Upper,
+                    Claim_SD = Generic_Claim_sd,
+                    Participant_SD = Generic_Participant_sd,
+                    Prior_means = prior_means$prior_means,
+                    n_claim = n_claim,
+                    n_assessments = p_count)
 
-             ## Define Jags Model
+  ## Define Jags Model
 
-             BayesModel <- "model{
+  BayesModel <- "model{
   ## PRIORS
 
   ### Prior for claim location
@@ -389,7 +397,7 @@ BayesianWAgg <- function(expert_judgements,
   }
 }"
 
-           })
+})
 
     # Fit Model
 

@@ -4,12 +4,12 @@ weight_nans <- function(method_to_test) {
     preprocess_judgements() %>%
     method_to_test() %>%
     purrr::pluck("agg_weight")
-  
+
   expect_false(any(is.na(agg_weight)))
   expect_false(any(is.nan(agg_weight)))
   expect_false(any(is.infinite(agg_weight)))
   expect_type(agg_weight, "double")
-  
+
 }
 
 

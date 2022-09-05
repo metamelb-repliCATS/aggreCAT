@@ -4,28 +4,28 @@ library(pointblank)
 
 
 method_test_loarmean <- function(df){
-  
+
   tbl <- df
-  
+
   test_that("column `paper_id` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(paper_id),
       threshold = 1
     )
   })
-  
+
   test_that("column `method` is of type: character", {
-    
+
     expect_col_is_character(
       tbl,
       columns = vars(method),
       threshold = 1
     )
   })
-  
-  
+
+
   # test_that("column `method_applied` is of type: character", {
   #
   #   expect_col_is_character(
@@ -34,18 +34,18 @@ method_test_loarmean <- function(df){
   #     threshold = 1
   #   )
   # })
-  #
-  #   test_that("column `no_quiz_scores_for_claim` is of type: logical", {
-  #
-  #     expect_col_is_logical(
-  #       tbl,
-  #       columns = ends_with("_for_claim"),
-  #       threshold = 1
-  #     )
-  #   })
-  
+#
+#   test_that("column `no_quiz_scores_for_claim` is of type: logical", {
+#
+#     expect_col_is_logical(
+#       tbl,
+#       columns = ends_with("_for_claim"),
+#       threshold = 1
+#     )
+#   })
+
   test_that("values in `cs` should be between `0` and `1`", {
-    
+
     expect_col_vals_between(
       tbl,
       columns = vars(cs),
@@ -54,36 +54,36 @@ method_test_loarmean <- function(df){
       threshold = 1
     )
   })
-  
-  
+
+
   test_that("column `cs` is of type: numeric", {
-    
+
     expect_col_is_numeric(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `cs` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(cs),
       threshold = 1
     )
   })
-  
+
   test_that("all values in `n_experts` should not be NULL", {
-    
+
     expect_col_vals_not_null(
       tbl,
       columns = vars(n_experts),
       threshold = 1
     )
   })
-  
-  
+
+
 }
 
 # Test LOArMean Flag for Quiz, Engwagg and Reasoning methods
@@ -148,3 +148,4 @@ method_test_loarmean(ReasonWAgg)
 method_test_loarmean(ReasonWAgg2)
 method_test_loarmean(BetaReasonWAgg)
 method_test_loarmean(BetaReasonWAgg2)
+
