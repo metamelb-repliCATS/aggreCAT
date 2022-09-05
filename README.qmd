@@ -1,5 +1,7 @@
 ---
-output: github_document
+title: "README"
+format: gfm
+editor: visual
 bibliography: ./ms/bibliography.bib
 ---
 
@@ -7,7 +9,8 @@ bibliography: ./ms/bibliography.bib
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -44,7 +47,11 @@ You can install:
 
 -   the latest development version of `aggreCAT` package:
 
-```{r GH-install, eval = FALSE, message=FALSE,warning=FALSE}
+```{r}
+#| label: GH-install
+#| eval: false 
+#| message: false
+#| warning: false
 install.packages("devtools")
 devtools::install_github("metamelb-repliCATS/aggreCAT")
 ```
@@ -55,23 +62,64 @@ devtools::install_github("metamelb-repliCATS/aggreCAT")
 
 Then load the package:
 
-```{r lib, message=FALSE}
+```{r}
+#| label: lib
+#| message: false
 library(aggreCAT)
 ```
 
 # Getting Started with `aggreCAT`
 
-For a
+Below we provide a brief summary of the package, for a detailed overview, please consult the manuscript [@Gould2022].
 
 ## Core Functionality and Design
 
-blah blah
+**Aggregation Functions**
 
-## A minimal working example with `AverageWAgg()` 
+Aggregation methods are grouped based on their mathematical properties into eight 'wrapper' functions, denoted by the suffix `WAgg`, the abbreviation of "weighted aggregation": `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`, `IntervalWAgg()`, `ShiftingWAgg()`, `ReasoningWAgg()`, `DistributionWAgg()`, and `ExtremisationWAgg()`.
 
-Below we demonstrate how to use the most simple commonly implemented aggregation method `ArMean`, which takes the arithmetic mean of participant Best Estimates. We first use a small subset of 5 users for a single claim, `108`, which is represented visually in @fig-1
+All wrapper functions adhere to the following basic argument structure:
 
 ```{r}
+#| label: argument-structure
+args(AverageWAgg)
+```
+
+-   expert judgements are contained a dataframe parsed to `expert_judgements`,
+-   the `type` argument specifies the specific flavour of the wrapper aggregation function to be executed on the `expert_judgements` data, with the available aggregation methods detailed in each wrapper function's help page, e.g. `?AverageWAgg`,
+-   `name` allows a user-specified name with which to label the method in the results,
+-   toggling the `placeholder` argument to `TRUE` returns 'placeholder' values, set to $0.65$,
+-   toggling `percent_toggle` to `TRUE` facilitates aggregating quantities rather than probabilities.
+
+Each aggregation wrapper function returns a `dataframe` / `tibble` of results, with one row or observation per unique judgement task.
+
+**Elicitation Data**
+
+`aggreCAT` includes datasets with judgements about the likely replicability of research claims, collected by the [repliCATS project](https://replicats.research.unimelb.edu.au) team as a pilot study for the [DARPA SCORE program](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence.). Data were elicited using a modified version of the IDEA protocol [@hemming2017, @fig-IDEA], whereby participants *Investigate*, *Discuss, Estimate*, and finally *Aggregate* their judgements using methods from the `aggreCAT` package [@Fraser:2021]. Following the IDEA protocol, best estimates, and upper and lower bounds are elicited from each participant, over two rounds. The judgement data is contained in the object `data_ratings`, described at `?data_ratings`.
+
+```{r}
+#| label: fig-IDEA
+#| fig-cap: "the repliCATS IDEA protocol was used to elicit judgements about the likely replicability of research claims, a pilot version of this dataset is included in the `aggreCAT` package"
+#| fig-pos: hold
+#| echo: false
+knitr::include_graphics("./ms/images/img_IDEA_repliCATS.png")
+```
+
+## A minimal working example with `AverageWAgg()`
+
+```{r}
+#| label: fig-1
+#| echo: false
+#| fig-cap: "Mathematically aggregating a small subset of expert judgements for the claim `28`, using the unweighted arithmetic mean. The `aggreCAT` wrapper function `AverageWAgg()` is used on this dataset, with the `type` argument set to the default `ArMean`."
+knitr::include_graphics("./ms/images/paste-80B1C5CB.png")
+```
+
+\n
+
+Below we demonstrate how to use the most simple commonly implemented aggregation method `ArMean`, which takes the arithmetic mean of participant Best Estimates. We first use a small subset of 5 participants for a single claim, `28`, which is represented visually in [Figure 1](#fig-1).
+
+```{r}
+#| label: AverageWAgg-single-claim
 library(dplyr)
 data(data_ratings)
 set.seed(1234)
@@ -82,23 +130,41 @@ participant_subset <- data_ratings %>%
   mutate(participant_name = paste("participant", rep(1:n())))
 
 single_claim <- data_ratings %>% 
-  filter(paper_id == "108") %>% 
+  filter(paper_id == "28") %>% 
   right_join(participant_subset, by = "user_name")
 
 AverageWAgg(expert_judgements = single_claim, 
             type = "ArMean")
+
 ```
 
-![Mathematically aggregating a small subset of expert judgements for the claim \`108\`, using the unweighted arithmetic mean. The \`aggreCAT\` wrapper function \`AverageWAgg()\` is used on this dataset, with the \`type\` argument set to the default \`ArMean\`.](./ms/images/paste-5A70A45F.png)
+Often times during expert elicitation multiple quantities or measures are put to experts to provide judgements for, and so we might want to batch aggregation over more than a single judgement at a time (this time called without explicitly specifying arguments):
 
-# Attribution {#fig-1}
+```{r }
+#| label: batch-AverageWAGG
+data_ratings %>% AverageWAgg()
+```
 
-This package is the culmination of the hard work and persistence of a small team of researchers. Use of this package should be appropriately attributed and cited accordingly:
+And other times, we might want to trial different aggregation methods over those judgements, examining how their mathematical properties might change the results, for example:
 
-```{r citation, message = FALSE, warning=FALSE}
+```{r}
+#| eval: false
+#| label: batch-Agg
+purrr::map_dfr(.x = list(AverageWAgg, IntervalWAgg, ShiftingWAgg),
+                                .f = ~ .x(data_ratings))
+```
+
+# Attribution
+
+This research was conducted as a part of the [repliCATS project](https://replicats.research.unimelb.edu.au), funded by the [DARPA SCORE programme](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence.)
+
+The `aggreCAT` package is the culmination of the hard work and persistence of a small team of researchers. Use of this package shall be appropriately attributed and cited accordingly:
+
+```{r}
+#| label: citation
+#| message: false
+#| warning: false
 citation("aggreCAT")
 ```
 
 ## References
-
--   [ ] cite main repliCATS IDEA paper / preprint
