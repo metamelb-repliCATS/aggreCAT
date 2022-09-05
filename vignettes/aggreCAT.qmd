@@ -6,6 +6,10 @@ format:
         shortnames: true
         x11names: true
     jss-html: default
+vignette: >
+  %\VignetteIndexEntry{aggreCAT}
+  %\VignetteEngine{quarto::quarto_render}
+  %\VignetteEncoding{UTF-8}
 preamble: >
   \usepackage{underscore}
   \usepackage[T1]{fontenc} 
@@ -19,9 +23,10 @@ author:
     address: |
       | School of Forest and Ecosystem Sciences
       | University of Melbourne, Parkville, Victoria 3010
-  - name: "Charles Gray"
-    affiliations: 'TBD'
-  - name: Aaron Willcox
+  - name: "Charles T. Gray"
+    affiliations: 'School of Natural and Environmental Sciences, Newcastle University'
+    orcid: '00000-0002-9978-011X'
+  - name: "Aaron Willcox"
     affiliations:  'University of Melbourne'
     orcid: 'https://orcid.org/0000-0003-2536-2596'
   - name: "Rose O'Dea"

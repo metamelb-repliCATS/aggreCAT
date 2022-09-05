@@ -155,7 +155,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={aggreCAT: an R Package for Mathematically Aggregating Expert judgements},
-  pdfauthor={Elliot Gould; Charles Gray; Aaron Willcox; Rose O'Dea; Rebecca Groenewegen; David P. Wilkinson},
+  pdfauthor={Elliot Gould; Charles T. Gray; Aaron Willcox; Rose O'Dea; Rebecca Groenewegen; David P. Wilkinson},
   pdfkeywords={mathematical aggregation, expert judgement, DARPA
 SCORE, replicability, R},
   colorlinks=true,
@@ -171,7 +171,8 @@ SCORE, replicability, R},
 \author{Elliot
 Gould\footnote{School of Ecosystem and Forest Sciences, University of
   Melbourne}~\orcidlink{0000-0002-6585-538X}\\University of
-Melbourne \And Charles Gray\\TBD \AND Aaron
+Melbourne \And Charles T. Gray~\orcidlink{00000-0002-9978-011X}\\School
+of Natural and Environmental Sciences, Newcastle University \AND Aaron
 Willcox~\orcidlink{https://orcid.org/0000-0003-2536-2596}\\University of
 Melbourne \And Rose O'Dea~\orcidlink{0000-0001-8177-5075}\\University of
 New South Wales \AND Rebecca
@@ -179,7 +180,7 @@ Groenewegen~\orcidlink{https://orcid.org/0000-0001-9177-8536}\\University
 of Melbourne \And David P.
 Wilkinson~\orcidlink{0000-0002-9560-6499}\\University of Melbourne}
 \Plainauthor{Elliot Gould\footnote{School of Ecosystem and Forest
-  Sciences, University of Melbourne}Charles GrayAaron WillcoxRose
+  Sciences, University of Melbourne}Charles T. GrayAaron WillcoxRose
 O'DeaRebecca GroenewegenDavid P. Wilkinson} %% comma-separated
 
 \title{aggreCAT: an R Package for Mathematically Aggregating Expert
@@ -229,7 +230,7 @@ Elliot Gould\footnote{School of Ecosystem and Forest Sciences,
   University of Melbourne}\\
 E-mail: \email{elliot.gould (at) unimelb.edu.au}\\
 \\~
-Charles Gray\\
+Charles T. Gray\\
 \\~
 Aaron Willcox\\
 \\~
@@ -244,7 +245,7 @@ David P. Wilkinson\\
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, breakable, enhanced, sharp corners, frame hidden, boxrule=0pt, interior hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, breakable, enhanced, frame hidden, sharp corners, interior hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-introduction}{%
 \section{Introduction}\label{sec-introduction}}
@@ -932,7 +933,7 @@ format.}
 
 \end{figure}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, toprule=.15mm, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, breakable, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-color-frame, left=2mm, opacityback=0, bottomrule=.15mm, breakable, arc=.35mm, leftrule=.75mm, rightrule=.15mm, toprule=.15mm, colback=white]
 
 \begin{itemize}
 \item
@@ -977,66 +978,138 @@ AverageWAgg
 \end{verbatim}
 
 \begin{verbatim}
-function (expert_judgements, type = "ArMean", name = NULL, placeholder = FALSE, 
-    percent_toggle = FALSE) 
-{
-    if (!(type %in% c("ArMean", "GeoMean", "Median", "LOArMean", 
-        "LOGeoMean", "ProbitArMean"))) {
-        stop("`type` must be one of \"ArMean\", \"GeoMean\", \"Median\", \"LOArMean\", \"LOGeoMean\", or \"ProbitArMean\"")
-    }
-    name <- ifelse(is.null(name), type, name)
-    cli::cli_h1(sprintf("AverageWAgg: %s", name))
-    if (isTRUE(placeholder)) {
-        method_placeholder(expert_judgements, name)
-    }
-    else {
-        df <- expert_judgements %>% preprocess_judgements(percent_toggle = {
-            {
-                percent_toggle
-            }
-        }) %>% dplyr::filter(element == "three_point_best") %>% 
-            dplyr::group_by(paper_id)
-        switch(type, ArMean = {
-            df <- df %>% dplyr::summarise(aggregated_judgement = mean(value, 
-                na.rm = TRUE), n_experts = dplyr::n())
-        }, GeoMean = {
-            df <- df %>% dplyr::summarise(n_experts = dplyr::n(), 
-                aggregated_judgement = (prod(value, na.rm = TRUE))^(1/n_experts))
-        }, Median = {
-            df <- df %>% dplyr::summarise(aggregated_judgement = median(value, 
-                na.rm = TRUE), n_experts = dplyr::n())
-        }, LOArMean = {
-            if (any(df$value < 0) | any(df$value > 1)) {
-                stop("LOArMean requires probabilistic judgements. Check your data compatability or `percent_toggle` argument.")
-            }
-            df <- df %>% dplyr::mutate(value = dplyr::case_when(value == 
-                1 ~ value - .Machine$double.eps, value == 0 ~ 
-                value + .Machine$double.eps, TRUE ~ value), log_odds = log(abs(value/(1 - 
-                value)))) %>% dplyr::summarise(aggregated_judgement = mean(log_odds, 
-                na.rm = TRUE), n_experts = dplyr::n()) %>% dplyr::mutate(aggregated_judgement = exp(aggregated_judgement)/(1 + 
-                exp(aggregated_judgement)))
-        }, LOGeoMean = {
-            if (any(df$value < 0) | any(df$value > 1)) {
-                stop("LOGeoMean requires probabilistic judgements. Check your data compatability or `percent_toggle` argument.")
-            }
-            df <- df %>% dplyr::mutate(value = dplyr::case_when(value == 
-                1 ~ value - .Machine$double.eps, value == 0 ~ 
-                value + .Machine$double.eps, value == 0.5 ~ value + 
-                .Machine$double.eps, TRUE ~ value), log_odds = log(abs(value/(1 - 
-                value)))) %>% dplyr::summarise(n_experts = dplyr::n(), 
-                aggregated_judgement = (prod(log_odds, na.rm = TRUE))^(1/n_experts)) %>% 
-                dplyr::mutate(aggregated_judgement = exp(aggregated_judgement)/(1 + 
-                  exp(aggregated_judgement)))
-        }, ProbitArMean = {
-            df <- df %>% dplyr::mutate(probit = VGAM::probitlink(value, 
-                bvalue = .Machine$double.eps)) %>% dplyr::summarise(aggregated_judgement = mean(probit, 
-                na.rm = TRUE), n_experts = dplyr::n()) %>% dplyr::mutate(aggregated_judgement = VGAM::probitlink(aggregated_judgement, 
-                inverse = TRUE))
-        })
-        df %>% dplyr::mutate(method = name) %>% postprocess_judgements()
-    }
+function(expert_judgements,
+                        type = "ArMean",
+                        name = NULL,
+                        placeholder = FALSE,
+                        percent_toggle = FALSE) {
+
+  if(!(type %in% c("ArMean",
+                   "GeoMean",
+                   "Median",
+                   "LOArMean",
+                   "LOGeoMean",
+                   "ProbitArMean"))){
+
+    stop('`type` must be one of "ArMean", "GeoMean", "Median", "LOArMean", "LOGeoMean", or "ProbitArMean"')
+
+  }
+
+  ## Set name argument
+
+  name <- ifelse(is.null(name),
+                 type,
+                 name)
+
+  cli::cli_h1(sprintf("AverageWAgg: %s",
+                      name))
+
+  if(isTRUE(placeholder)){
+
+    method_placeholder(expert_judgements,
+                       name)
+
+  } else {
+
+    df <- expert_judgements %>%
+      preprocess_judgements(percent_toggle = {{percent_toggle}}) %>%
+      dplyr::filter(element == "three_point_best") %>%
+      dplyr::group_by(paper_id)
+
+    switch(type,
+           "ArMean" = {
+
+             df <- df %>%
+               dplyr::summarise(
+                 aggregated_judgement = mean(value,
+                                             na.rm = TRUE),
+                 n_experts = dplyr::n()
+               )
+
+           },
+           "GeoMean" = {
+
+             df <- df %>%
+               dplyr::summarise(n_experts = dplyr::n(),
+                                aggregated_judgement = (prod(value, na.rm = TRUE)) ^ (1/n_experts))
+
+           },
+           "Median" = {
+
+             df <- df %>%
+               dplyr::summarise(
+                 aggregated_judgement = median(value,
+                                               na.rm = TRUE),
+                 n_experts = dplyr::n()
+               )
+
+           },
+           "LOArMean" = {
+
+             if(any(df$value < 0) | any(df$value > 1)){
+
+               stop("LOArMean requires probabilistic judgements. Check your data compatability or `percent_toggle` argument.")
+
+             }
+
+             df <- df %>%
+               dplyr::mutate(value = dplyr::case_when(value == 1 ~ value - .Machine$double.eps,
+                                                      value == 0 ~ value + .Machine$double.eps,
+                                                      TRUE ~ value),
+                             log_odds = log(abs(value / (1 - value)))) %>%
+               dplyr::summarise(
+                 aggregated_judgement = mean(log_odds,
+                                             na.rm = TRUE),
+                 n_experts = dplyr::n()
+               )  %>%
+               dplyr::mutate(
+                 aggregated_judgement = exp(aggregated_judgement) / (1 + exp(aggregated_judgement))
+               )
+
+           },
+           "LOGeoMean" = {
+
+             if(any(df$value < 0) | any(df$value > 1)){
+
+               stop("LOGeoMean requires probabilistic judgements. Check your data compatability or `percent_toggle` argument.")
+
+             }
+
+             df <- df %>%
+               dplyr::mutate(value = dplyr::case_when(value == 1 ~ value - .Machine$double.eps,
+                                                      value == 0 ~ value + .Machine$double.eps,
+                                                      value == 0.5 ~ value + .Machine$double.eps,
+                                                      TRUE ~ value),
+                             log_odds = log(abs(value / (1 - value)))) %>%
+               # dplyr::summarise(n_experts = dplyr::n(),
+               #                  aggregated_judgement = (prod(log_odds, na.rm = TRUE))) %>%
+               dplyr::summarise(n_experts = dplyr::n(),
+                                aggregated_judgement = (prod(log_odds, na.rm = TRUE)) ^ (1/n_experts)) %>%
+               dplyr::mutate(
+                 aggregated_judgement = exp(aggregated_judgement) / (1 + exp(aggregated_judgement))
+               )
+
+           },
+           "ProbitArMean" = {
+
+             df <- df %>%
+               dplyr::mutate(probit = VGAM::probitlink(value,
+                                                       bvalue = .Machine$double.eps)) %>%
+               dplyr::summarise(aggregated_judgement = mean(probit,
+                                                            na.rm = TRUE),
+                                n_experts = dplyr::n()) %>%
+               dplyr::mutate(aggregated_judgement = VGAM::probitlink(aggregated_judgement,
+                                                                     inverse = TRUE))
+
+           })
+
+    df %>%
+      dplyr::mutate(method = name) %>%
+      postprocess_judgements()
+
+  }
 }
-<bytecode: 0x7f8bb0221a70>
+<bytecode: 0x7fc8b68df000>
 <environment: namespace:aggreCAT>
 \end{verbatim}
 
@@ -1864,7 +1937,7 @@ Figure~\ref{fig-ridgeplot}.
 
 \begin{figure}
 
-{\centering \includegraphics{ms_files/figure-pdf/fig-ridgeplot-1.pdf}
+{\centering \includegraphics{aggreCAT_files/figure-pdf/fig-ridgeplot-1.pdf}
 
 }
 
@@ -1906,7 +1979,7 @@ particularly badly for the claims X and Y.
 
 \begin{figure}
 
-{\centering \includegraphics{ms_files/figure-pdf/fig-heatmap-1.pdf}
+{\centering \includegraphics{aggreCAT_files/figure-pdf/fig-heatmap-1.pdf}
 
 }
 
@@ -2002,7 +2075,7 @@ p
 
 \begin{figure}[H]
 
-{\centering \includegraphics{ms_files/figure-pdf/fig-aggregation-1.pdf}
+{\centering \includegraphics{aggreCAT_files/figure-pdf/fig-aggregation-1.pdf}
 
 }
 
@@ -2297,7 +2370,7 @@ aggregation of human forecasts is required.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, toprule=.15mm, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, breakable, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-color-frame, left=2mm, opacityback=0, bottomrule=.15mm, breakable, arc=.35mm, leftrule=.75mm, rightrule=.15mm, toprule=.15mm, colback=white]
 TODO: Note that around the equation above there should be no spaces
 (avoided in the {\LaTeX} code by \texttt{\%} lines) so that ``normal''
 spacing is used and not a new paragraph started.
@@ -2330,7 +2403,7 @@ starting values) see \texttt{?glm}. For estimating a Poisson model
 \section*{More technical details}\label{sec-techdetails}}
 \addcontentsline{toc}{section}{More technical details}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, toprule=.15mm, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, breakable, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-color-frame, left=2mm, opacityback=0, bottomrule=.15mm, breakable, arc=.35mm, leftrule=.75mm, rightrule=.15mm, toprule=.15mm, colback=white]
 
 Appendices can be included after the bibliography (with a page break).
 Each section within the appendix should have a proper section title
@@ -2362,7 +2435,7 @@ which includes the following topics:
 \section*{Using BibTeX}\label{sec-bibtex}}
 \addcontentsline{toc}{section}{Using BibTeX}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, toprule=.15mm, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, breakable, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-color-frame, left=2mm, opacityback=0, bottomrule=.15mm, breakable, arc=.35mm, leftrule=.75mm, rightrule=.15mm, toprule=.15mm, colback=white]
 
 References need to be provided in a \textsc{Bib}{\TeX} file
 (\texttt{.bib}). All references should be made with \texttt{@cite}
@@ -2404,7 +2477,7 @@ following format.
 \section*{Computational details}\label{computational-details}}
 \addcontentsline{toc}{section}{Computational details}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, toprule=.15mm, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, breakable, leftrule=.75mm, left=2mm, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-color-frame, left=2mm, opacityback=0, bottomrule=.15mm, breakable, arc=.35mm, leftrule=.75mm, rightrule=.15mm, toprule=.15mm, colback=white]
 If necessary or useful, information about certain computational details
 such as version numbers, operating systems, or compilers could be
 included in an unnumbered section. Also, auxiliary packages (say, for
