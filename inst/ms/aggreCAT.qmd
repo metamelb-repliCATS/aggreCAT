@@ -19,9 +19,10 @@ author:
     address: |
       | School of Forest and Ecosystem Sciences
       | University of Melbourne, Parkville, Victoria 3010
-  - name: "Charles Gray"
-    affiliations: 'TBD'
-  - name: Aaron Willcox
+  - name: "Charles T. Gray"
+    affiliations: 'Newcastle University'
+    orcid: '00000-0002-9978-011X'
+  - name: "Aaron Willcox"
     affiliations:  'University of Melbourne'
     orcid: 'https://orcid.org/0000-0003-2536-2596'
   - name: "Rose O'Dea"
@@ -404,8 +405,7 @@ for a single claim to illustrate this structure of the core
 #| prompt: true
 library(tidyverse,quietly = TRUE)
 library(aggreCAT)
-data_ratings <- aggreCAT::data_ratings %>% 
-  mutate(timestamp = lubridate::as_datetime(timestamp))
+data(data_ratings)
 data_ratings %>% 
   print(n = 18)
 ```
@@ -419,15 +419,15 @@ given the option to comment on others' justifications (`data_comments`),
 to vote on others' comments (`data_comment_ratings`) and on others'
 justifications (`data_justification_ratings`). Finally, [aggreCAT]{.pkg}
 contains three 'supplementary' datasets containing data collected
-externally to the repliCATS IDEA protocol: `data_supp_QuizWAgg`,
-`data_supp_BayPRIORsAgg`, and `data_supp_ReasonWAgg`.
+externally to the repliCATS IDEA protocol: `data_supp_quiz`,
+`data_supp_priors`, and `data_supp_reasons`.
 
 #### Quiz Score Data {#sec-quiz-supplementary-data}
 
 Prior to the workshop, participants also completed an optional quiz on
 statistical concepts and meta-research that we expect participants to be
 aware of in order to reliably evaluate the replicability of research
-claims. Quiz responses are contained in `data_supp_QuizWAgg` and are
+claims. Quiz responses are contained in `data_supp_quiz` and are
 used to construct performance weights for the aggregation method
 `QuizWAgg` where each participant receives a `quiz_score` from 0 - **X
 (TODO)** if they completed the quiz, and `NA` if they did not attempt or
@@ -439,14 +439,14 @@ they completed, even if they didn't finish)
 
 `ReasonWAgg` uses the number of unique reasons given by participants to
 support a Best Estimate for a given claim $B_{i,c}$ to construct
-performance weights, and is contained within `data_supp_ReasonWAgg`.
+performance weights, and is contained within `data_supp_reasons`.
 Qualitative statements made by individuals during claim evaluation were
 recorded on the repliCATS platform [@Pearson2021] and coded as falling
 into one of 25 unique reasoning categories by the repliCATS Reasoning
 team [@Wintle:2021]. Reasoning categories include plausibility of the
 claim, effect size, sample size, presence of a power analysis,
 transparency of reporting, and journal reporting [@Hanea2021]. Within
-`data_supp_ReasonWAgg`, each of the 25 categories of reasoning are
+`data_supp_reasons`, each of the 25 categories of reasoning are
 distributed as columns in the dataset, and for each claim `paper_id`,
 each participant `user_id` is assigned a logical `1` or `0` if they
 included that reasoning category in support of their Best estimate for
@@ -459,7 +459,7 @@ aggregation method.
 a claim replicating estimated from a predictive model [@Gould2021a]
 using an aggregate of the best estimates for all participants assessing
 a given claim $c$ [@Hanea2021]. The prior data is contained in
-`data_supp_BayPRIORsAgg` with each claim in column `paper_id` being
+`data_supp_priors` with each claim in column `paper_id` being
 assigned a prior probability of the claim replicating (on the logit
 scale) in column `prior_means`. (**TODO** should explain further about
 the mean / median of the distribution, ie internal workings of
@@ -536,7 +536,7 @@ an exemplar aggregation method from each mathematical aggregator
 #| prompt: true
 set.seed(1234)
 focal_claims <- data_ratings %>% 
-  filter(paper_id %in% c("09xkh8", "65x6p7", "farimg", "czttvy"))
+  filter(paper_id %in% c("24", "138", "186", "108"))
 # select 5 users to highlight in focal claim demonstration
 focal_users <- focal_claims %>% 
   distinct(user_name) %>% 
@@ -559,9 +559,8 @@ focal_claims
 #| echo: false
 focal_claims %>% 
   filter(question == "direct_replication", 
-         paper_id == "czttvy", 
+         paper_id == "108", 
          round == "round_2") %>% 
-  select(-timestamp) %>% 
   pivot_wider(names_from = element, 
               values_from = value) %>% 
   arrange(user_name) %>% 
@@ -605,7 +604,7 @@ The function returns the Confidence Score for the claim in the form of a
 #| label: focal-claim-ArMean
 #| prompt: true
 focal_claims %>% 
-  filter(paper_id == "czttvy") %>%
+  filter(paper_id == "108") %>%
   AverageWAgg(type = "ArMean")
 ```
 
@@ -614,7 +613,7 @@ focal_claims %>%
 #| fig-cap: "`ArMean()` uses the Estimates (shown in colour) from each participant to compute the mean. We illustrate this using a single claim `zttvyg` for a subset of 5 out of 25 participants from the `data_ratings` dataset. Note that the data representations in this figure are for explanatory purposes only, the data in the actual aggregation is tidy, with long form structure and format."
 #| results: hold
 #| echo: false
-knitr::include_graphics(path = "images/paste-5A70A45F.png")
+knitr::include_graphics(path = "images/paste-80B1C5CB.png")
 ```
 
 ::: {#aggWorkflow .callout}
@@ -756,11 +755,11 @@ results of each application of [IntervalWAgg]{.fct} into a single
 #| label: focal-claim-IntWAgg
 #| prompt: true
 focal_claims %>% 
-purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"), 
-        .f = ~ aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
-                                        dplyr::filter(paper_id == "czttvy"),
-                                      type = .x)
-)
+  purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"), 
+                 .f = ~ aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
+                                                 dplyr::filter(paper_id == "108"),
+                                               type = .x)
+  )
 ```
 
 ### Aggregation Methods Requiring Supplementary Data
@@ -797,7 +796,7 @@ $$
 $$ {#eq-ReasonWAgg}
 
 `ReasonWAgg` is applied with the wrapper function [ReasoningWAgg]{.fct},
-which uses the the coded reasoning data `data_supp_ReasonWAgg`
+which uses the the coded reasoning data `data_supp_reasons`
 (@sec-reasonwagg-supplementary-data) to compute a vector of weights,
 $w\_reason_{i,c}$ , the number of unique reasons provided by individual
 $i$ in support of their estimate for claim $c$ ([Figure
@@ -816,22 +815,22 @@ knitr::include_graphics("images/img_ReasonWAgg.png")
 The focal claim selected for aggregation using ReasonWAgg is `09xkh8`,
 the round 2 three-point estimates from the five focal participants for
 this claim are shown in @tbl-reason-wagg-focal-claim. We first prepare
-the supplementary data for aggregation `data_supp_ReasonWAgg`,
+the supplementary data for aggregation `data_supp_reasons`,
 subsetting only the participants contained in our `focal_claims`
 dataset. We also illustrate a subset of the supplementary data for our 5
 focal participants for the focal claim `09xkh8` (see
-`?data_supp_ReasonWAgg` for a description of variables):
+`?data_supp_reasons` for a description of variables):
 
 ```{r}
 #| label: prepare-supp-data
 #| prompt: true
-data_supp_ReasonWAgg_focal <- aggreCAT::data_supp_ReasonWAgg %>%  
+data_supp_reasons_focal <- aggreCAT::data_supp_reasons %>%  
   dplyr::right_join(focal_users) %>% 
   dplyr::select(-user_name) %>% 
   dplyr::rename(user_name = participant_name)
 
-data_supp_ReasonWAgg_focal %>%
-  dplyr::filter( paper_id == "09xkh8") %>%
+data_supp_reasons_focal %>%
+  dplyr::filter( paper_id == 24) %>%
   tidyr::pivot_longer(cols = c(-paper_id, -user_name)) %>%
   dplyr::arrange(name) %>%
   tidyr::separate(name, into = c("reason_num", "reason"), sep = "\\s", extra = "merge") %>%
@@ -847,8 +846,7 @@ data_supp_ReasonWAgg_focal %>%
 #| results: asis
 #| echo: false
 focal_claims %>%  
-  dplyr::filter(paper_id == "09xkh8", round == "round_2") %>%   
-  dplyr::select(-timestamp) %>% 
+  dplyr::filter(paper_id == "24", round == "round_2") %>%   
   tidyr::pivot_wider(names_from = element, values_from = value) %>% 
   dplyr::arrange(user_name) %>%   
   dplyr::select(paper_id, user_name, three_point_lower, three_point_best, three_point_upper) %>% 
@@ -871,8 +869,8 @@ the [reasons]{.arg} argument:
 #| eval: false
 #| prompt: true
 focal_claims %>% 
-  dplyr::filter(paper_id == "09xkh8") %>% 
-  aggreCAT::ReasoningWAgg(reasons = data_supp_ReasonWAgg_focal,
+  dplyr::filter(paper_id == "24") %>% 
+  aggreCAT::ReasoningWAgg(reasons = data_supp_reasons_focal,
                           type = "ReasonWAgg")
 ```
 
@@ -925,7 +923,7 @@ the logical value `TRUE` is supplied to the argument
 focal_claims %>% 
   BayesianWAgg(type = "BayTriVar", 
                percent_toggle = TRUE) %>% 
-  dplyr::filter(paper_id == "czttvy")
+  dplyr::filter(paper_id == "108")
 ```
 
 The Confidence Score calculated for a given claim depends on data for
@@ -952,15 +950,15 @@ then we would observe a different result for focal claim `czttvy`:
 #| message: false
 #| prompt: true
 focal_claims %>% 
-  dplyr::filter(paper_id %in% c("czttvy", "65x6p7")) %>% 
+  dplyr::filter(paper_id %in% c("108", "138")) %>% 
   aggreCAT::BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% 
-  dplyr::filter(paper_id == "czttvy")
+  dplyr::filter(paper_id == "108")
 ```
 
 The Confidence Score shifts from
-`r focal_claims %>% BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% dplyr::filter(paper_id == "czttvy") %>% pluck("cs") %>% round(2)`
+`r focal_claims %>% BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% dplyr::filter(paper_id == 108) %>% pluck("cs") %>% round(2)`
 to
-`r focal_claims %>% dplyr::filter(paper_id %in% c("czttvy", "65x6p7")) %>% BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% dplyr::filter(paper_id == "czttvy") %>% pluck("cs") %>% round(2)`.
+`r focal_claims %>% dplyr::filter(paper_id %in% c(108, 138)) %>% BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% dplyr::filter(paper_id == 108) %>% pluck("cs") %>% round(2)`.
 Note that [BayesianWAgg]{.fct} cannot calculate confidence scores when
 judgements for only a single claim is provided to
 [expert\\_judgements]{.fct}, because by definition the underlying
@@ -973,7 +971,7 @@ participants:
 #| message: false
 #| prompt: true
 focal_claims %>% 
-  dplyr::filter(paper_id == "czttvy") %>% 
+  dplyr::filter(paper_id == "108") %>% 
   aggreCAT::BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE)
 ```
 
@@ -1110,7 +1108,7 @@ confidenceSCOREs <-
   ) %>% 
   dplyr::bind_rows(
     ReasoningWAgg(aggreCAT::data_ratings, 
-                  reasons = aggreCAT::data_supp_ReasonWAgg, 
+                  reasons = aggreCAT::data_supp_reasons, 
                   percent_toggle = TRUE)
   )
 
@@ -1192,7 +1190,7 @@ mathematical properties of the aggregation method @fig-ridgeplot.
 #| warning: false
 # not run, eval = FALSE
 suppressPackageStartupMessages(library(ggridges))
-confidence_scores_ridgeplot(confidence_scores = confidenceSCOREs)
+confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
 ```
 
 ```{r}
@@ -1250,7 +1248,7 @@ replicate, forecasts were inaccurate, with `IndIntWAgg`, `IntWAgg` and
 #| eval: true
 suppressPackageStartupMessages(library(ggforce))
 suppressPackageStartupMessages(library(ggpubr))
-confidencescore_heatmap(confidence_scores = confidenceSCOREs, 
+confidence_score_heatmap(confidence_scores = confidenceSCOREs, 
                         data_outcomes = aggreCAT::data_outcomes)
 ```
 

@@ -23,4 +23,4 @@ vignettes/test_table.Rmd
 ^ms$
 ^test_tble$
 ^test$
-
+^inst/ms$

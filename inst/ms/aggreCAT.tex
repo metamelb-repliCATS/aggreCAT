@@ -155,7 +155,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={aggreCAT: an R Package for Mathematically Aggregating Expert judgements},
-  pdfauthor={Elliot Gould; Charles Gray; Aaron Willcox; Rose O'Dea; Rebecca Groenewegen; David P. Wilkinson},
+  pdfauthor={Elliot Gould; Charles T. Gray; Aaron Willcox; Rose O'Dea; Rebecca Groenewegen; David P. Wilkinson},
   pdfkeywords={mathematical aggregation, expert judgement, DARPA
 SCORE, replicability, R},
   colorlinks=true,
@@ -171,7 +171,8 @@ SCORE, replicability, R},
 \author{Elliot
 Gould\footnote{School of Ecosystem and Forest Sciences, University of
   Melbourne}~\orcidlink{0000-0002-6585-538X}\\University of
-Melbourne \And Charles Gray\\TBD \AND Aaron
+Melbourne \And Charles T.
+Gray~\orcidlink{00000-0002-9978-011X}\\Newcastle University \AND Aaron
 Willcox~\orcidlink{https://orcid.org/0000-0003-2536-2596}\\University of
 Melbourne \And Rose O'Dea~\orcidlink{0000-0001-8177-5075}\\University of
 New South Wales \AND Rebecca
@@ -179,7 +180,7 @@ Groenewegen~\orcidlink{https://orcid.org/0000-0001-9177-8536}\\University
 of Melbourne \And David P.
 Wilkinson~\orcidlink{0000-0002-9560-6499}\\University of Melbourne}
 \Plainauthor{Elliot Gould\footnote{School of Ecosystem and Forest
-  Sciences, University of Melbourne}Charles GrayAaron WillcoxRose
+  Sciences, University of Melbourne}Charles T. GrayAaron WillcoxRose
 O'DeaRebecca GroenewegenDavid P. Wilkinson} %% comma-separated
 
 \title{aggreCAT: an R Package for Mathematically Aggregating Expert
@@ -229,7 +230,7 @@ Elliot Gould\footnote{School of Ecosystem and Forest Sciences,
   University of Melbourne}\\
 E-mail: \email{elliot.gould (at) unimelb.edu.au}\\
 \\~
-Charles Gray\\
+Charles T. Gray\\
 \\~
 Aaron Willcox\\
 \\~
@@ -244,7 +245,7 @@ David P. Wilkinson\\
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, sharp corners, breakable, frame hidden, borderline west={3pt}{0pt}{shadecolor}, enhanced, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, frame hidden, interior hidden, sharp corners, enhanced, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-introduction}{%
 \section{Introduction}\label{sec-introduction}}
@@ -300,7 +301,7 @@ effort.
 
 Replications are time-consuming and costly \citep{Isager2020}, and
 studies have shown that replication outcomes can be reliably elicited
-from from researchers \citep{Gordon2020}. Consequently, the DARPA SCORE
+from researchers \citep{Gordon2020}. Consequently, the DARPA SCORE
 program generates Confidence Scores using expert elicitation based on
 two very different strategies -- prediction markets \citep{Gordon2020}
 and the IDEA protocol \citep{hemming2017}, the latter of which is used
@@ -438,11 +439,11 @@ types:
   update both uninformative and informative priors.
 \end{itemize}
 
-However, from the perspective of the \pkg{aggreCAT} package user it is
-useful to categorise the aggregation methods according to aspects of
-their computational implementation and data requirements, because these
-inform the arguments and the type and form of the data that is parsed to
-the aggregation functions. These aspects include:
+However, the \pkg{aggreCAT} package user might wish to categorise the
+aggregation methods according to aspects of their computational
+implementation and data requirements, because these inform the arguments
+and the type and form of the data that is parsed to the aggregation
+functions. These aspects include:
 
 \begin{itemize}
 \tightlist
@@ -471,12 +472,11 @@ the aggregation functions. These aspects include:
 \end{itemize}
 
 The data and structured elicitation protocol requirements are described
-in the table below (Table 1). All aggregation methods requiring only a
-single round of estimates can therefore be applied to judgements derived
-from any structured elicitation protocol other than the IDEA protocol,
-given that such a protocol generates; best estimates from each
-individual, and upper / lower bounds as required by the target
-aggregation method, and does not enforce behavioural consensus.
+in the table below (Table 1). All aggregation methods requiring a single
+round of estimates can therefore be applied to expert judgments derived
+from any structured elicitation protocol that generates, lower, upper,
+and best estimates from each individual (i.e.~not just the IDEA
+protocol), and does not enforce behavioural consensus.
 
 \hypertarget{notation-and-problem-formulation}{%
 \subsubsection{Notation and Problem
@@ -630,36 +630,34 @@ illustrate this structure of the core \texttt{data\_ratings} dataset.
 \begin{verbatim}
 R> library(tidyverse,quietly = TRUE)
 R> library(aggreCAT)
-R> data_ratings <- aggreCAT::data_ratings %>% 
-+  mutate(timestamp = lubridate::as_datetime(timestamp))
+R> data(data_ratings)
 R> data_ratings %>% 
 +  print(n = 18)
 \end{verbatim}
 
 \begin{verbatim}
 # A tibble: 6,880 x 7
-   round   paper_id user_n~1 quest~2 element value timestamp          
-   <chr>   <chr>    <chr>    <chr>   <chr>   <dbl> <dttm>             
- 1 round_1 13g7cr   0kvxxz2c direct~ three_~    30 2019-07-05 09:16:05
- 2 round_1 13g7cr   0kvxxz2c involv~ binary~    -1 2019-07-05 09:16:05
- 3 round_1 13g7cr   0kvxxz2c belief~ binary~    -1 2019-07-05 09:16:05
- 4 round_1 13g7cr   0kvxxz2c direct~ three_~    40 2019-07-05 09:16:05
- 5 round_1 13g7cr   0kvxxz2c direct~ three_~    45 2019-07-05 09:16:05
- 6 round_1 13g7cr   0kvxxz2c compre~ likert~     5 2019-07-05 09:09:37
- 7 round_1 13g7cr   nzkkkfwi direct~ three_~    60 2019-07-05 09:14:01
- 8 round_1 13g7cr   nzkkkfwi direct~ three_~    90 2019-07-05 09:14:01
- 9 round_1 13g7cr   nzkkkfwi direct~ three_~    75 2019-07-05 09:14:01
-10 round_1 13g7cr   nzkkkfwi compre~ likert~     7 2019-07-05 09:14:01
-11 round_1 13g7cr   nzkkkfwi involv~ binary~    -1 2019-07-05 09:14:01
-12 round_1 13g7cr   nzkkkfwi belief~ binary~     1 2019-07-05 09:14:01
-13 round_1 13g7cr   g5ujpqc5 direct~ three_~    40 2019-07-05 08:38:18
-14 round_1 13g7cr   g5ujpqc5 compre~ likert~     5 2019-07-05 08:38:17
-15 round_1 13g7cr   g5ujpqc5 belief~ binary~     1 2019-07-05 08:38:18
-16 round_1 13g7cr   g5ujpqc5 direct~ three_~    80 2019-07-05 08:38:18
-17 round_1 13g7cr   g5ujpqc5 direct~ three_~    65 2019-07-05 08:38:18
-18 round_1 13g7cr   g5ujpqc5 involv~ binary~    -1 2019-07-05 08:38:18
-# ... with 6,862 more rows, and abbreviated variable names
-#   1: user_name, 2: question
+   round   paper_id user_name  question           element  value group
+   <chr>   <chr>    <chr>      <chr>              <chr>    <dbl> <chr>
+ 1 round_1 100      fx3d4tmdhh direct_replication three_p~    30 UOM1 
+ 2 round_1 100      fx3d4tmdhh involved_binary    binary_~    -1 UOM1 
+ 3 round_1 100      fx3d4tmdhh belief_binary      binary_~    -1 UOM1 
+ 4 round_1 100      fx3d4tmdhh direct_replication three_p~    40 UOM1 
+ 5 round_1 100      fx3d4tmdhh direct_replication three_p~    45 UOM1 
+ 6 round_1 100      fx3d4tmdhh comprehension      likert_~     5 UOM1 
+ 7 round_1 100      sv2yl8jszy direct_replication three_p~    60 UOM1 
+ 8 round_1 100      sv2yl8jszy direct_replication three_p~    90 UOM1 
+ 9 round_1 100      sv2yl8jszy direct_replication three_p~    75 UOM1 
+10 round_1 100      sv2yl8jszy comprehension      likert_~     7 UOM1 
+11 round_1 100      sv2yl8jszy involved_binary    binary_~    -1 UOM1 
+12 round_1 100      sv2yl8jszy belief_binary      binary_~     1 UOM1 
+13 round_1 100      v6n605nzv1 direct_replication three_p~    40 UOM1 
+14 round_1 100      v6n605nzv1 comprehension      likert_~     5 UOM1 
+15 round_1 100      v6n605nzv1 belief_binary      binary_~     1 UOM1 
+16 round_1 100      v6n605nzv1 direct_replication three_p~    80 UOM1 
+17 round_1 100      v6n605nzv1 direct_replication three_p~    65 UOM1 
+18 round_1 100      v6n605nzv1 involved_binary    binary_~    -1 UOM1 
+# ... with 6,862 more rows
 \end{verbatim}
 
 Not all data necessary for constructing weights on performance is
@@ -672,9 +670,8 @@ justifications (\texttt{data\_comments}), to vote on others' comments
 (\texttt{data\_comment\_ratings}) and on others' justifications
 (\texttt{data\_justification\_ratings}). Finally, \pkg{aggreCAT}
 contains three `supplementary' datasets containing data collected
-externally to the repliCATS IDEA protocol:
-\texttt{data\_supp\_QuizWAgg}, \texttt{data\_supp\_BayPRIORsAgg}, and
-\texttt{data\_supp\_ReasonWAgg}.
+externally to the repliCATS IDEA protocol: \texttt{data\_supp\_quiz},
+\texttt{data\_supp\_priors}, and \texttt{data\_supp\_reasons}.
 
 \hypertarget{sec-quiz-supplementary-data}{%
 \subsubsection{Quiz Score Data}\label{sec-quiz-supplementary-data}}
@@ -682,8 +679,8 @@ externally to the repliCATS IDEA protocol:
 Prior to the workshop, participants also completed an optional quiz on
 statistical concepts and meta-research that we expect participants to be
 aware of in order to reliably evaluate the replicability of research
-claims. Quiz responses are contained in \texttt{data\_supp\_QuizWAgg}
-and are used to construct performance weights for the aggregation method
+claims. Quiz responses are contained in \texttt{data\_supp\_quiz} and
+are used to construct performance weights for the aggregation method
 \texttt{QuizWAgg} where each participant receives a \texttt{quiz\_score}
 from 0 - \textbf{X (TODO)} if they completed the quiz, and \texttt{NA}
 if they did not attempt or fully complete the quiz \citep[see][ for
@@ -697,15 +694,15 @@ they didn't finish)
 \texttt{ReasonWAgg} uses the number of unique reasons given by
 participants to support a Best Estimate for a given claim \(B_{i,c}\) to
 construct performance weights, and is contained within
-\texttt{data\_supp\_ReasonWAgg}. Qualitative statements made by
-individuals during claim evaluation were recorded on the repliCATS
-platform \citep{Pearson2021} and coded as falling into one of 25 unique
-reasoning categories by the repliCATS Reasoning team
-\citep{Wintle:2021}. Reasoning categories include plausibility of the
-claim, effect size, sample size, presence of a power analysis,
-transparency of reporting, and journal reporting \citep{Hanea2021}.
-Within \texttt{data\_supp\_ReasonWAgg}, each of the 25 categories of
-reasoning are distributed as columns in the dataset, and for each claim
+\texttt{data\_supp\_reasons}. Qualitative statements made by individuals
+during claim evaluation were recorded on the repliCATS platform
+\citep{Pearson2021} and coded as falling into one of 25 unique reasoning
+categories by the repliCATS Reasoning team \citep{Wintle:2021}.
+Reasoning categories include plausibility of the claim, effect size,
+sample size, presence of a power analysis, transparency of reporting,
+and journal reporting \citep{Hanea2021}. Within
+\texttt{data\_supp\_reasons}, each of the 25 categories of reasoning are
+distributed as columns in the dataset, and for each claim
 \texttt{paper\_id}, each participant \texttt{user\_id} is assigned a
 logical \texttt{1} or \texttt{0} if they included that reasoning
 category in support of their Best estimate for that claim. See section
@@ -720,8 +717,8 @@ Data}\label{sec-bayesian-supplementary-data}}
 probability of a claim replicating estimated from a predictive model
 \citep{Gould2021a} using an aggregate of the best estimates for all
 participants assessing a given claim \(c\) \citep{Hanea2021}. The prior
-data is contained in \texttt{data\_supp\_BayPRIORsAgg} with each claim
-in column \texttt{paper\_id} being assigned a prior probability of the
+data is contained in \texttt{data\_supp\_priors} with each claim in
+column \texttt{paper\_id} being assigned a prior probability of the
 claim replicating (on the logit scale) in column \texttt{prior\_means}.
 (\textbf{TODO} should explain further about the mean / median of the
 distribution, ie internal workings of BayPRIORsAgg??).
@@ -804,7 +801,7 @@ apply an exemplar aggregation method from each mathematical aggregator
 \begin{verbatim}
 R> set.seed(1234)
 R> focal_claims <- data_ratings %>% 
-+  filter(paper_id %in% c("09xkh8", "65x6p7", "farimg", "czttvy"))
++  filter(paper_id %in% c("24", "138", "186", "108"))
 R> # select 5 users to highlight in focal claim demonstration
 R> focal_users <- focal_claims %>% 
 +  distinct(user_name) %>% 
@@ -820,32 +817,32 @@ R> focal_claims
 
 \begin{verbatim}
 # A tibble: 220 x 7
-   round   paper_id question element value timestamp           user_~1
-   <chr>   <chr>    <chr>    <chr>   <dbl> <dttm>              <chr>  
- 1 round_1 czttvy   compreh~ likert~     7 2019-07-05 12:09:19 partic~
- 2 round_1 czttvy   direct_~ three_~    90 2019-07-05 12:09:19 partic~
- 3 round_1 czttvy   direct_~ three_~    40 2019-07-05 12:09:19 partic~
- 4 round_1 czttvy   belief_~ binary~     1 2019-07-05 12:09:19 partic~
- 5 round_1 czttvy   involve~ binary~    -1 2019-07-05 12:09:19 partic~
- 6 round_1 czttvy   direct_~ three_~    65 2019-07-05 12:09:19 partic~
- 7 round_1 czttvy   direct_~ three_~    60 2019-07-05 10:40:47 partic~
- 8 round_1 czttvy   direct_~ three_~    40 2019-07-05 10:40:47 partic~
- 9 round_1 czttvy   direct_~ three_~    51 2019-07-05 10:40:47 partic~
-10 round_1 czttvy   compreh~ likert~     6 2019-07-05 10:40:47 partic~
+   round   paper_id question           element     value group user_~1
+   <chr>   <chr>    <chr>              <chr>       <dbl> <chr> <chr>  
+ 1 round_1 108      comprehension      likert_bin~     7 UOM1  partic~
+ 2 round_1 108      direct_replication three_poin~    90 UOM1  partic~
+ 3 round_1 108      direct_replication three_poin~    40 UOM1  partic~
+ 4 round_1 108      belief_binary      binary_que~     1 UOM1  partic~
+ 5 round_1 108      involved_binary    binary_que~    -1 UOM1  partic~
+ 6 round_1 108      direct_replication three_poin~    65 UOM1  partic~
+ 7 round_1 108      direct_replication three_poin~    60 UOM3  partic~
+ 8 round_1 108      direct_replication three_poin~    40 UOM3  partic~
+ 9 round_1 108      direct_replication three_poin~    51 UOM3  partic~
+10 round_1 108      comprehension      likert_bin~     6 UOM3  partic~
 # ... with 210 more rows, and abbreviated variable name 1: user_name
 \end{verbatim}
 
 \hypertarget{tbl-focal-claim}{}
-\begin{longtable}{llrrr}
+\begin{longtable}{rlrrr}
 
 \toprule
 Claim ID & User Name & Lower Bound & Best Estimate & Upper Bound \\ 
 \midrule
-czttvy & participant 1 & 70 & 85 & 90 \\ 
-czttvy & participant 2 & 70 & 80 & 90 \\ 
-czttvy & participant 3 & 40 & 65 & 90 \\ 
-czttvy & participant 4 & 60 & 80 & 90 \\ 
-czttvy & participant 5 & 50 & 60 & 70 \\ 
+108 & participant 1 & 70 & 85 & 90 \\ 
+108 & participant 2 & 70 & 80 & 90 \\ 
+108 & participant 3 & 40 & 65 & 90 \\ 
+108 & participant 4 & 60 & 80 & 90 \\ 
+108 & participant 5 & 50 & 60 & 70 \\ 
 \bottomrule
 \caption{\label{tbl-focal-claim}Focal Claim Data: expert judgements for claim czttvy derived from a
 subset of 5 claims and 5 participants from data\_ratings. Judgements are
@@ -880,7 +877,7 @@ the Confidence Score for the claim in the form of a \class{tibble}:
 
 \begin{verbatim}
 R> focal_claims %>% 
-+  filter(paper_id == "czttvy") %>%
++  filter(paper_id == "108") %>%
 +  AverageWAgg(type = "ArMean")
 \end{verbatim}
 
@@ -917,12 +914,12 @@ i Percent Toggle: FALSE
 # A tibble: 1 x 4
   method paper_id    cs n_experts
   <chr>  <chr>    <dbl>     <int>
-1 ArMean czttvy      74         5
+1 ArMean 108         74         5
 \end{verbatim}
 
 \begin{figure}
 
-{\centering \includegraphics[width=5.6in,height=\textheight]{images/paste-5A70A45F.png}
+{\centering \includegraphics[width=3.83in,height=\textheight]{images/paste-80B1C5CB.png}
 
 }
 
@@ -936,7 +933,7 @@ format.}
 
 \end{figure}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, breakable, bottomrule=.15mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
 
 \begin{itemize}
 \item
@@ -1112,7 +1109,7 @@ function(expert_judgements,
 
   }
 }
-<bytecode: 0x7f9c14bca9d0>
+<bytecode: 0x7fbccaa3f868>
 <environment: namespace:aggreCAT>
 \end{verbatim}
 
@@ -1170,18 +1167,18 @@ i Percent Toggle: FALSE
 
 \begin{verbatim}
 # A tibble: 75 x 5
-   round   paper_id user_name element           value
-   <chr>   <chr>    <chr>     <chr>             <dbl>
- 1 round_2 kak9zr   0kvxxz2c  three_point_best     50
- 2 round_2 kak9zr   0kvxxz2c  three_point_upper    60
- 3 round_2 kak9zr   0kvxxz2c  three_point_lower    40
- 4 round_2 kak9zr   nzkkkfwi  three_point_best     45
- 5 round_2 kak9zr   nzkkkfwi  three_point_upper    70
- 6 round_2 kak9zr   nzkkkfwi  three_point_lower    30
- 7 round_2 kak9zr   g5ujpqc5  three_point_best     50
- 8 round_2 kak9zr   g5ujpqc5  three_point_lower    40
- 9 round_2 kak9zr   g5ujpqc5  three_point_upper    60
-10 round_2 kak9zr   84g0fwmj  three_point_best     64
+   round   paper_id user_name  element           value
+   <chr>   <chr>    <chr>      <chr>             <dbl>
+ 1 round_2 118      fx3d4tmdhh three_point_best     50
+ 2 round_2 118      fx3d4tmdhh three_point_upper    60
+ 3 round_2 118      fx3d4tmdhh three_point_lower    40
+ 4 round_2 118      sv2yl8jszy three_point_best     45
+ 5 round_2 118      sv2yl8jszy three_point_upper    70
+ 6 round_2 118      sv2yl8jszy three_point_lower    30
+ 7 round_2 118      v6n605nzv1 three_point_best     50
+ 8 round_2 118      v6n605nzv1 three_point_lower    40
+ 9 round_2 118      v6n605nzv1 three_point_upper    60
+10 round_2 118      033t8xcqan three_point_best     64
 # ... with 65 more rows
 \end{verbatim}
 
@@ -1278,11 +1275,11 @@ resultant Confidence Scores:
 
 \begin{verbatim}
 R> focal_claims %>% 
-+purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"), 
-+        .f = ~ aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
-+                                        dplyr::filter(paper_id == "czttvy"),
-+                                      type = .x)
-+)
++  purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"), 
++                 .f = ~ aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
++                                                 dplyr::filter(paper_id == "108"),
++                                               type = .x)
++  )
 \end{verbatim}
 
 \begin{verbatim}
@@ -1347,8 +1344,8 @@ i Percent Toggle: FALSE
 # A tibble: 2 x 4
   method     paper_id    cs n_experts
   <chr>      <chr>    <dbl>     <int>
-1 IndIntWAgg czttvy    74           5
-2 IntWAgg    czttvy    74.8         5
+1 IndIntWAgg 108       74           5
+2 IntWAgg    108       74.8         5
 \end{verbatim}
 
 \hypertarget{aggregation-methods-requiring-supplementary-data}{%
@@ -1390,7 +1387,7 @@ reliable Confidence Scores.
 
 \texttt{ReasonWAgg} is applied with the wrapper function
 \fct{ReasoningWAgg}, which uses the the coded reasoning data
-\texttt{data\_supp\_ReasonWAgg}
+\texttt{data\_supp\_reasons}
 (Section~\ref{sec-reasonwagg-supplementary-data}) to compute a vector of
 weights, \(w\_reason_{i,c}\) , the number of unique reasons provided by
 individual \(i\) in support of their estimate for claim \(c\)
@@ -1422,14 +1419,14 @@ The focal claim selected for aggregation using ReasonWAgg is
 \texttt{09xkh8}, the round 2 three-point estimates from the five focal
 participants for this claim are shown in
 Table~\ref{tbl-reason-wagg-focal-claim}. We first prepare the
-supplementary data for aggregation \texttt{data\_supp\_ReasonWAgg},
+supplementary data for aggregation \texttt{data\_supp\_reasons},
 subsetting only the participants contained in our \texttt{focal\_claims}
 dataset. We also illustrate a subset of the supplementary data for our 5
 focal participants for the focal claim \texttt{09xkh8} (see
-\texttt{?data\_supp\_ReasonWAgg} for a description of variables):
+\texttt{?data\_supp\_reasons} for a description of variables):
 
 \begin{verbatim}
-R> data_supp_ReasonWAgg_focal <- aggreCAT::data_supp_ReasonWAgg %>%  
+R> data_supp_reasons_focal <- aggreCAT::data_supp_reasons %>%  
 +  dplyr::right_join(focal_users) %>% 
 +  dplyr::select(-user_name) %>% 
 +  dplyr::rename(user_name = participant_name)
@@ -1440,8 +1437,8 @@ Joining, by = "user_name"
 \end{verbatim}
 
 \begin{verbatim}
-R> data_supp_ReasonWAgg_focal %>%
-+  dplyr::filter( paper_id == "09xkh8") %>%
+R> data_supp_reasons_focal %>%
++  dplyr::filter( paper_id == 24) %>%
 +  tidyr::pivot_longer(cols = c(-paper_id, -user_name)) %>%
 +  dplyr::arrange(name) %>%
 +  tidyr::separate(name, into = c("reason_num", "reason"), sep = "\\s", extra = "merge") %>%
@@ -1456,26 +1453,26 @@ R> data_supp_ReasonWAgg_focal %>%
 # Groups:   paper_id, user_name [5]
   paper_id user_name    RW05  RW09  RW11  RW12  RW13  RW14  RW15  RW16
   <chr>    <chr>       <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-1 09xkh8   participan~     0     0     1     0     0     0     1     1
-2 09xkh8   participan~     0     0     1     0     0     0     2     1
-3 09xkh8   participan~     0     0     0     0     0     1     0     0
-4 09xkh8   participan~     0     0     0     0     0     0     0     1
-5 09xkh8   participan~     0     0     0     0     0     0     0     0
+1 24       participan~     0     0     1     0     0     0     1     1
+2 24       participan~     0     0     1     0     0     0     2     1
+3 24       participan~     0     0     0     0     0     1     0     0
+4 24       participan~     0     0     0     0     0     0     0     1
+5 24       participan~     0     0     0     0     0     0     0     0
 # ... with 5 more variables: RW18 <dbl>, RW19 <dbl>, RW22 <dbl>,
 #   RW23 <dbl>, RW24 <dbl>
 \end{verbatim}
 
 \hypertarget{tbl-reason-wagg-focal-claim}{}
-\begin{longtable}{llrrr}
+\begin{longtable}{rlrrr}
 
 \toprule
 Claim ID & User Name & Lower Bound & Best Estimate & Upper Bound \\ 
 \midrule
-09xkh8 & participant 1 & 5 & 20 & 40 \\ 
-09xkh8 & participant 2 & 5 & 11 & 17 \\ 
-09xkh8 & participant 3 & 20 & 35 & 50 \\ 
-09xkh8 & participant 4 & 10 & 15 & 20 \\ 
-09xkh8 & participant 5 & 10 & 30 & 50 \\ 
+24 & participant 1 & 5 & 20 & 40 \\ 
+24 & participant 2 & 5 & 11 & 17 \\ 
+24 & participant 3 & 20 & 35 & 50 \\ 
+24 & participant 4 & 10 & 15 & 20 \\ 
+24 & participant 5 & 10 & 30 & 50 \\ 
 \bottomrule
 \caption{\label{tbl-reason-wagg-focal-claim}Focal Claim 09xkh8 judgements comprising best estimates, upper and lower
 bounds elicited from 5 participants. Judgements are displayed as
@@ -1489,8 +1486,8 @@ providing the supplementary data to the {reasons} argument:
 
 \begin{verbatim}
 R> focal_claims %>% 
-+  dplyr::filter(paper_id == "09xkh8") %>% 
-+  aggreCAT::ReasoningWAgg(reasons = data_supp_ReasonWAgg_focal,
++  dplyr::filter(paper_id == "24") %>% 
++  aggreCAT::ReasoningWAgg(reasons = data_supp_reasons_focal,
 +                          type = "ReasonWAgg")
 \end{verbatim}
 
@@ -1542,7 +1539,7 @@ argument {percent\_toggle}:
 R> focal_claims %>% 
 +  BayesianWAgg(type = "BayTriVar", 
 +               percent_toggle = TRUE) %>% 
-+  dplyr::filter(paper_id == "czttvy")
++  dplyr::filter(paper_id == "108")
 \end{verbatim}
 
 \begin{verbatim}
@@ -1561,7 +1558,7 @@ Initializing model
 # A tibble: 1 x 4
   method    paper_id    cs n_experts
   <chr>     <chr>    <dbl>     <int>
-1 BayTriVar czttvy   0.699         5
+1 BayTriVar 108      0.699         5
 \end{verbatim}
 
 The Confidence Score calculated for a given claim depends on data for
@@ -1576,16 +1573,16 @@ Score for the target claim, what is included in the data supplied to the
 argument {expert\textbackslash\_judgements} in \fct{bayesianWAgg} will
 alter the Confidence Score. Above, we calculated the Confidence Score
 for claim \texttt{czttvy} but including information from 3 additional
-claims included in the \texttt{focal\_claims} dataframe: czttvy, 65x6p7,
-farimg, 09xkh8. However, if we were to supply assessments for only two
-claims to \fct{BayesianWAGG}, then we would observe a different result
-for focal claim \texttt{czttvy}:
+claims included in the \texttt{focal\_claims} dataframe: 108, 138, 186,
+24. However, if we were to supply assessments for only two claims to
+\fct{BayesianWAGG}, then we would observe a different result for focal
+claim \texttt{czttvy}:
 
 \begin{verbatim}
 R> focal_claims %>% 
-+  dplyr::filter(paper_id %in% c("czttvy", "65x6p7")) %>% 
++  dplyr::filter(paper_id %in% c("108", "138")) %>% 
 +  aggreCAT::BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% 
-+  dplyr::filter(paper_id == "czttvy")
++  dplyr::filter(paper_id == "108")
 \end{verbatim}
 
 \begin{verbatim}
@@ -1604,7 +1601,7 @@ Initializing model
 # A tibble: 1 x 4
   method    paper_id    cs n_experts
   <chr>     <chr>    <dbl>     <int>
-1 BayTriVar czttvy   0.739         5
+1 BayTriVar 108      0.739         5
 \end{verbatim}
 
 The Confidence Score shifts from 0.7 to 0.74. Note that
@@ -1615,24 +1612,13 @@ multiple claims and multiple participants:
 
 \begin{verbatim}
 R> focal_claims %>% 
-+  dplyr::filter(paper_id == "czttvy") %>% 
++  dplyr::filter(paper_id == "108") %>% 
 +  aggreCAT::BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE)
 \end{verbatim}
 
 \begin{verbatim}
-Compiling model graph
-   Resolving undeclared variables
-   Allocating nodes
-Graph information:
-   Observed stochastic nodes: 5
-   Unobserved stochastic nodes: 1
-   Total graph size: 50
-
-Initializing model
-\end{verbatim}
-
-\begin{verbatim}
-Error in `[.default`(x[[k]], , j, drop = drop): subscript out of bounds
+Error in `aggreCAT::BayesianWAgg()`:
+! Model requires n > 1 ids to successfully execute.
 \end{verbatim}
 
 Finally, all of the previous methods illustrated in this section have
@@ -1717,10 +1703,10 @@ i Percent Toggle: FALSE
 # A tibble: 4 x 4
   method paper_id    cs n_experts
   <chr>  <chr>    <dbl>     <int>
-1 ArMean 09xkh8    22.2         5
-2 ArMean 65x6p7    68.6         5
-3 ArMean czttvy    74           5
-4 ArMean farimg    57.6         5
+1 ArMean 108       74           5
+2 ArMean 138       68.6         5
+3 ArMean 186       57.6         5
+4 ArMean 24        22.2         5
 \end{verbatim}
 
 \hypertarget{comparing-and-evaluating-aggregation-methods}{%
@@ -1781,26 +1767,26 @@ Initializing model
 # A tibble: 20 x 4
    method     paper_id    cs n_experts
    <chr>      <chr>    <dbl>     <int>
- 1 ArMean     09xkh8   0.222         5
- 2 ArMean     65x6p7   0.686         5
- 3 ArMean     czttvy   0.74          5
- 4 ArMean     farimg   0.576         5
- 5 IndIntWAgg 09xkh8   0.19          5
- 6 IndIntWAgg 65x6p7   0.685         5
- 7 IndIntWAgg czttvy   0.740         5
- 8 IndIntWAgg farimg   0.561         5
- 9 IntWAgg    09xkh8   0.181         5
-10 IntWAgg    65x6p7   0.694         5
-11 IntWAgg    czttvy   0.748         5
-12 IntWAgg    farimg   0.581         5
-13 ShiftWAgg  09xkh8   0.209         5
-14 ShiftWAgg  65x6p7   0.706         5
-15 ShiftWAgg  czttvy   0.715         5
-16 ShiftWAgg  farimg   0.438         5
-17 BayTriVar  09xkh8   0.175         5
-18 BayTriVar  65x6p7   0.659         5
-19 BayTriVar  czttvy   0.699         5
-20 BayTriVar  farimg   0.528         5
+ 1 ArMean     108      0.74          5
+ 2 ArMean     138      0.686         5
+ 3 ArMean     186      0.576         5
+ 4 ArMean     24       0.222         5
+ 5 IndIntWAgg 108      0.740         5
+ 6 IndIntWAgg 138      0.685         5
+ 7 IndIntWAgg 186      0.561         5
+ 8 IndIntWAgg 24       0.19          5
+ 9 IntWAgg    108      0.748         5
+10 IntWAgg    138      0.694         5
+11 IntWAgg    186      0.581         5
+12 IntWAgg    24       0.181         5
+13 ShiftWAgg  108      0.715         5
+14 ShiftWAgg  138      0.706         5
+15 ShiftWAgg  186      0.438         5
+16 ShiftWAgg  24       0.209         5
+17 BayTriVar  108      0.699         5
+18 BayTriVar  138      0.659         5
+19 BayTriVar  186      0.528         5
+20 BayTriVar  24       0.175         5
 \end{verbatim}
 
 Given that aggregation methods \texttt{IntWAgg} and \texttt{IndIntWAgg}
@@ -1846,7 +1832,7 @@ R> confidenceSCOREs <-
 +  ) %>% 
 +  dplyr::bind_rows(
 +    ReasoningWAgg(aggreCAT::data_ratings, 
-+                  reasons = aggreCAT::data_supp_ReasonWAgg, 
++                  reasons = aggreCAT::data_supp_reasons, 
 +                  percent_toggle = TRUE)
 +  )
 \end{verbatim}
@@ -1871,16 +1857,16 @@ R> confidenceSCOREs
 # A tibble: 150 x 4
    method paper_id    cs n_experts
    <chr>  <chr>    <dbl>     <int>
- 1 ArMean 09xkh8   0.192        25
- 2 ArMean 13g7cr   0.706        25
- 3 ArMean 1nvqwg   0.697        25
- 4 ArMean 65x6p7   0.758        25
- 5 ArMean 6nlr8c   0.599        25
- 6 ArMean ajua14   0.648        25
- 7 ArMean br43mv   0.627        25
- 8 ArMean czttvy   0.718        25
- 9 ArMean farimg   0.528        25
-10 ArMean fpfwrg   0.365        25
+ 1 ArMean 100      0.706        25
+ 2 ArMean 102      0.308        25
+ 3 ArMean 103      0.625        25
+ 4 ArMean 104      0.471        25
+ 5 ArMean 106      0.365        25
+ 6 ArMean 108      0.718        25
+ 7 ArMean 109      0.725        25
+ 8 ArMean 116      0.626        25
+ 9 ArMean 118      0.548        25
+10 ArMean 133      0.599        25
 # ... with 140 more rows
 \end{verbatim}
 
@@ -1902,12 +1888,12 @@ R> aggreCAT::data_outcomes %>%
 # A tibble: 6 x 2
   paper_id outcome
   <chr>      <dbl>
-1 13g7cr         1
-2 gita9o         0
-3 h1l7ss         0
-4 ykbu69         1
-5 fpfwrg         0
-6 czttvy         1
+1 100            1
+2 102            0
+3 103            0
+4 104            1
+5 106            0
+6 108            1
 \end{verbatim}
 
 The function \fct{confidence\_score\_evaluation} evaluates a set of
@@ -1951,7 +1937,7 @@ Figure~\ref{fig-ridgeplot}.
 
 \begin{figure}
 
-{\centering \includegraphics{ms_files/figure-pdf/fig-ridgeplot-1.pdf}
+{\centering \includegraphics{aggreCAT_files/figure-pdf/fig-ridgeplot-1.pdf}
 
 }
 
@@ -1993,7 +1979,7 @@ particularly badly for the claims X and Y.
 
 \begin{figure}
 
-{\centering \includegraphics{ms_files/figure-pdf/fig-heatmap-1.pdf}
+{\centering \includegraphics{aggreCAT_files/figure-pdf/fig-heatmap-1.pdf}
 
 }
 
@@ -2089,7 +2075,7 @@ p
 
 \begin{figure}[H]
 
-{\centering \includegraphics{ms_files/figure-pdf/fig-aggregation-1.pdf}
+{\centering \includegraphics{aggreCAT_files/figure-pdf/fig-aggregation-1.pdf}
 
 }
 
@@ -2384,7 +2370,7 @@ aggregation of human forecasts is required.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, breakable, bottomrule=.15mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
 TODO: Note that around the equation above there should be no spaces
 (avoided in the {\LaTeX} code by \texttt{\%} lines) so that ``normal''
 spacing is used and not a new paragraph started.
@@ -2417,7 +2403,7 @@ starting values) see \texttt{?glm}. For estimating a Poisson model
 \section*{More technical details}\label{sec-techdetails}}
 \addcontentsline{toc}{section}{More technical details}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, breakable, bottomrule=.15mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
 
 Appendices can be included after the bibliography (with a page break).
 Each section within the appendix should have a proper section title
@@ -2449,7 +2435,7 @@ which includes the following topics:
 \section*{Using BibTeX}\label{sec-bibtex}}
 \addcontentsline{toc}{section}{Using BibTeX}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, breakable, bottomrule=.15mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
 
 References need to be provided in a \textsc{Bib}{\TeX} file
 (\texttt{.bib}). All references should be made with \texttt{@cite}
@@ -2491,7 +2477,7 @@ following format.
 \section*{Computational details}\label{computational-details}}
 \addcontentsline{toc}{section}{Computational details}
 
-\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame, arc=.35mm, rightrule=.15mm, breakable, bottomrule=.15mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
 If necessary or useful, information about certain computational details
 such as version numbers, operating systems, or compilers could be
 included in an unnumbered section. Also, auxiliary packages (say, for
@@ -2527,42 +2513,42 @@ attached base packages:
 
 other attached packages:
  [1] ggpubr_0.4.0        ggforce_0.3.3       ggridges_0.5.3     
- [4] aggreCAT_0.0.0.9000 forcats_0.5.1       stringr_1.4.1      
- [7] dplyr_1.0.9         purrr_0.3.4         readr_2.1.2        
+ [4] aggreCAT_0.0.0.9001 forcats_0.5.1       stringr_1.4.1      
+ [7] dplyr_1.0.10        purrr_0.3.4         readr_2.1.2        
 [10] tidyr_1.2.0         tibble_3.1.8        ggplot2_3.3.6      
 [13] tidyverse_1.3.1    
 
 loaded via a namespace (and not attached):
  [1] fs_1.5.2           lubridate_1.8.0    RColorBrewer_1.1-3
- [4] httr_1.4.3         tools_4.2.0        backports_1.4.1   
- [7] utf8_1.2.2         R6_2.5.1           R2WinBUGS_2.1-21  
-[10] DBI_1.1.3          colorspace_2.0-3   withr_2.5.0       
-[13] gridExtra_2.3      tidyselect_1.1.2   Exact_3.1         
-[16] compiler_4.2.0     cli_3.3.0          rvest_1.0.2       
-[19] gt_0.6.0.9000      expm_0.999-6       xml2_1.3.3        
-[22] labeling_0.4.2     scales_1.2.1       mvtnorm_1.1-3     
-[25] proxy_0.4-27       digest_0.6.29      rmarkdown_2.14.3  
-[28] pkgconfig_2.0.3    htmltools_0.5.3    dbplyr_2.2.0      
-[31] fastmap_1.1.0      rlang_1.0.4        readxl_1.4.0      
-[34] rstudioapi_0.13    generics_0.1.3     farver_2.1.1      
-[37] jsonlite_1.8.0     car_3.1-0          magrittr_2.0.3    
-[40] Matrix_1.4-1       Rcpp_1.0.8.3       DescTools_0.99.45 
-[43] munsell_0.5.0      fansi_1.0.3        abind_1.4-5       
-[46] lifecycle_1.0.1    stringi_1.7.8      yaml_2.3.5        
-[49] carData_3.0-5      MASS_7.3-56        rootSolve_1.8.2.3 
-[52] plyr_1.8.7         grid_4.2.0         parallel_4.2.0    
-[55] crayon_1.5.1       lmom_2.9           lattice_0.20-45   
-[58] cowplot_1.1.1      haven_2.5.0        hms_1.1.1         
-[61] knitr_1.39         pillar_1.8.1       boot_1.3-28       
-[64] gld_2.6.4          ggsignif_0.6.3     reprex_2.0.1      
-[67] rfUtilities_2.1-5  precrec_0.12.9     R2jags_0.7-1      
-[70] glue_1.6.2         evaluate_0.15      data.table_1.14.2 
-[73] modelr_0.1.8       png_0.1-7          vctrs_0.4.1       
-[76] tzdb_0.3.0         tweenr_1.0.2       cellranger_1.1.0  
-[79] gtable_0.3.0       polyclip_1.10-0    assertthat_0.2.1  
-[82] xfun_0.31          broom_0.8.0        e1071_1.7-11      
-[85] rstatix_0.7.0      coda_0.19-4        class_7.3-20      
-[88] rjags_4-13         ellipsis_0.3.2    
+ [4] insight_0.18.2     httr_1.4.4         tools_4.2.0       
+ [7] backports_1.4.1    utf8_1.2.2         R6_2.5.1          
+[10] R2WinBUGS_2.1-21   DBI_1.1.3          colorspace_2.0-3  
+[13] withr_2.5.0        gridExtra_2.3      tidyselect_1.1.2  
+[16] Exact_3.1          compiler_4.2.0     cli_3.3.0         
+[19] rvest_1.0.2        gt_0.6.0.9000      expm_0.999-6      
+[22] xml2_1.3.3         labeling_0.4.2     scales_1.2.1      
+[25] mvtnorm_1.1-3      proxy_0.4-27       digest_0.6.29     
+[28] rmarkdown_2.14.3   pkgconfig_2.0.3    htmltools_0.5.3   
+[31] dbplyr_2.2.0       fastmap_1.1.0      rlang_1.0.5       
+[34] readxl_1.4.0       rstudioapi_0.13    generics_0.1.3    
+[37] farver_2.1.1       jsonlite_1.8.0     car_3.1-0         
+[40] magrittr_2.0.3     Matrix_1.4-1       Rcpp_1.0.9        
+[43] DescTools_0.99.45  munsell_0.5.0      fansi_1.0.3       
+[46] abind_1.4-5        lifecycle_1.0.1    stringi_1.7.8     
+[49] yaml_2.3.5         carData_3.0-5      MASS_7.3-56       
+[52] rootSolve_1.8.2.3  plyr_1.8.7         grid_4.2.0        
+[55] parallel_4.2.0     crayon_1.5.1       lmom_2.9          
+[58] lattice_0.20-45    cowplot_1.1.1      haven_2.5.0       
+[61] hms_1.1.1          knitr_1.39         pillar_1.8.1      
+[64] boot_1.3-28        gld_2.6.4          ggsignif_0.6.3    
+[67] reprex_2.0.1       rfUtilities_2.1-5  precrec_0.12.9    
+[70] R2jags_0.7-1       glue_1.6.2         evaluate_0.15     
+[73] data.table_1.14.2  modelr_0.1.8       tweenr_1.0.2      
+[76] png_0.1-7          vctrs_0.4.1        tzdb_0.3.0        
+[79] cellranger_1.1.0   polyclip_1.10-0    gtable_0.3.1      
+[82] assertthat_0.2.1   xfun_0.31          broom_0.8.0       
+[85] e1071_1.7-11       rstatix_0.7.0      coda_0.19-4       
+[88] class_7.3-20       rjags_4-13         ellipsis_0.3.2    
 \end{verbatim}
 
 
