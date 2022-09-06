@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# aggreCAT 0.0.0.9002
+
+- update README with ArMean demo and attribution details
+- Added `JAGS` check.
+- house keeping
+- updates and fixes
+- PR conflict fix.
+
+
 # aggreCAT 0.0.0.9001
 
 - Tests updated and addresses some of isse #2 and #4.
