@@ -63,7 +63,8 @@ Suggests:
     usethis,
     nlme,
     gt, 
-    gtExtras
+    gtExtras,
+    R.rsp
 RoxygenNote: 7.2.1
 Depends:
     R (>= 2.10)
@@ -87,7 +88,7 @@ Imports:
     insight
 Remotes: 
     softloud/neet
-VignetteBuilder: knitr
+VignetteBuilder: R.rsp
 RdMacros: mathjaxr
 Config/testthat/parallel: true
 Config/testthat/edition: 3

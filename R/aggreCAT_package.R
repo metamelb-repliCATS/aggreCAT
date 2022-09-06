@@ -1,6 +1,6 @@
-#' aggreCAT: mathematically aggregating expert judgments
+#' aggreCAT: mathematically aggregating expert judgements
 #'
-#' To learn more about \pkg{aggreCAT}, start with the vignettes: \code{browseVignettes(package = "aggreCAT")}
+#' To learn more about \pkg{aggreCAT}, start with the vignettes: \code{vignette(package = "aggreCAT")}
 #'
 #' @docType package
 #' @name aggreCAT

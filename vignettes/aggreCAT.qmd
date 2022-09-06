@@ -6,10 +6,6 @@ format:
         shortnames: true
         x11names: true
     jss-html: default
-vignette: >
-  %\VignetteIndexEntry{aggreCAT}
-  %\VignetteEngine{quarto::quarto_render}
-  %\VignetteEncoding{UTF-8}
 preamble: >
   \usepackage{underscore}
   \usepackage[T1]{fontenc} 
@@ -24,7 +20,7 @@ author:
       | School of Forest and Ecosystem Sciences
       | University of Melbourne, Parkville, Victoria 3010
   - name: "Charles T. Gray"
-    affiliations: 'School of Natural and Environmental Sciences, Newcastle University'
+    affiliations: 'Newcastle University'
     orcid: '00000-0002-9978-011X'
   - name: "Aaron Willcox"
     affiliations:  'University of Melbourne'
