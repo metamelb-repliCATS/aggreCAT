@@ -4,9 +4,9 @@
 \name{aggreCAT}
 \alias{aggreCAT}
 \alias{aggreCAT-package}
-\title{aggreCAT: mathematically aggregating expert judgments}
+\title{aggreCAT: mathematically aggregating expert judgements}
 \description{
-To learn more about \pkg{aggreCAT}, start with the vignettes: \code{browseVignettes(package = "aggreCAT")}
+To learn more about \pkg{aggreCAT}, start with the vignettes: \code{vignette(package = "aggreCAT")}
 }
 \seealso{
 Useful links:
