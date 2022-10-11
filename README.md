@@ -6,7 +6,7 @@ README
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `agreCAT`: methods for mathematically aggregating expert judgements
+# `aggreCAT`: methods for mathematically aggregating expert judgements
 
 ## Problem Context
 

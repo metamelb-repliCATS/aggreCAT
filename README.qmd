@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(purrr))
 ```
 
-# `agreCAT`: methods for mathematically aggregating expert judgements
+# `aggreCAT`: methods for mathematically aggregating expert judgements
 
 ## Problem Context
 
