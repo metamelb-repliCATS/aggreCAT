@@ -6,7 +6,7 @@ README
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `aggreCAT`: methods for mathematically aggregating expert judgements
+# `agreCAT`: methods for mathematically aggregating expert judgements
 
 ## Problem Context
 
@@ -146,7 +146,7 @@ from each participant, over two rounds. The judgement data is contained
 in the object `data_ratings`, described at `?data_ratings`.
 
 <figure>
-<img src="./ms/images/img_IDEA_repliCATS.png" id="fig-IDEA"
+<img src="inst/ms/images/img_IDEA_repliCATS.png" id="fig-IDEA"
 data-fig-pos="hold" style="width:100.0%"
 alt="Figure 1: the repliCATS IDEA protocol was used to elicit judgements about the likely replicability of research claims, a pilot version of this dataset is included in the aggreCAT package" />
 <figcaption aria-hidden="true">Figure 1: the repliCATS IDEA protocol was
@@ -158,7 +158,7 @@ claims, a pilot version of this dataset is included in the
 ## A minimal working example with `AverageWAgg()`
 
 <figure>
-<img src="./ms/images/paste-80B1C5CB.png" id="fig-1"
+<img src="inst/ms/images/paste-80B1C5CB.png" id="fig-1"
 style="width:100.0%"
 alt="Figure 2: Mathematically aggregating a small subset of expert judgements for the claim 28, using the unweighted arithmetic mean. The aggreCAT wrapper function AverageWAgg() is used on this dataset, with the type argument set to the default ArMean." />
 <figcaption aria-hidden="true">Figure 2: Mathematically aggregating a
@@ -262,17 +262,16 @@ citation("aggreCAT")
 #> To cite package 'aggreCAT' in publications use:
 #> 
 #>   Willcox A, Gray C, Gould E, Wilkinson D, Hanea A, Wintle B, E. O'Dea
-#>   R (2022). _aggreCAT: Mathematically Aggregating Expert Judgments_. R
-#>   package version 0.0.0.9001,
+#>   R (????). _aggreCAT: Mathematically Aggregating Expert Judgments_. R
+#>   package version 0.0.0.9002,
 #>   <https://replicats.research.unimelb.edu.au/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
 #>     title = {aggreCAT: Mathematically Aggregating Expert Judgments},
-#>     author = {Aaron Willcox and Charles Gray and Elliot Gould and David Wilkinson and Anca Hanea and Bonnie Wintle and Rose {E. O'Dea}},
-#>     year = {2022},
-#>     note = {R package version 0.0.0.9001},
+#>     author = {Aaron Willcox and Charles T. Gray and Elliot Gould and David Wilkinson and Anca Hanea and Bonnie Wintle and Rose {E. O'Dea}},
+#>     note = {R package version 0.0.0.9002},
 #>     url = {https://replicats.research.unimelb.edu.au/},
 #>   }
 ```
@@ -304,8 +303,9 @@ Mathematically Aggregating Expert Judgments.” MetaArXiv.
 
 Hanea, Anca, David P Wilkinson, Marissa McBride, Aidan Lyon, Don van
 Ravenzwaaij, Felix Singleton Thorn, Charles T Gray, et al. 2021.
-“Mathematically Aggregating Experts’ Predictions of Possible Futures,”
-February. <https://doi.org/10.31222/osf.io/rxmh7>.
+“Mathematically Aggregating Experts’ Predictions of Possible Futures.”
+*PLoS ONE* 16 (9).
+https://doi.org/<https://doi.org/10.1371/journal.pone.0256919>.
 
 </div>
 
