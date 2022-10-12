@@ -1583,103 +1583,25 @@ human forecasts is required.
 
 ------------------------------------------------------------------------
 
-::: callout
-TODO: Note that around the equation above there should be no spaces
-(avoided in the {{< latex >}} code by `%` lines) so that "normal"
-spacing is used and not a new paragraph started.
-:::
-
-[R]{.proglang} provides a very flexible implementation of the general
-GLM framework in the function [glm]{.fct} @ChambersHastie1992 in the
-[stats]{.pkg} package. Its most important arguments are
-
-``` r
-glm(formula, data, subset, na.action, weights, offset,
-  family = gaussian, start = NULL, control = glm.control(…),
-  model = TRUE, y = TRUE, x = FALSE, …)
-```
-
-where `formula` plus `data` is the now standard way of specifying
-regression relationships in [R]{.proglang}/[S]{.proglang} introduced in
-@ChambersHastie1992. The remaining arguments in the first line
-(`subset`, `na.action`, `weights`, and `offset`) are also standard for
-setting up formula-based regression models in
-[R]{.proglang}/[S]{.proglang}. The arguments in the second line control
-aspects specific to GLMs while the arguments in the last line specify
-which components are returned in the fitted model object (of class
-[glm]{.class} which inherits from [lm]{.class}). For further arguments
-to [glm]{.fct} (including alternative specifications of starting values)
-see `?glm`. For estimating a Poisson model `family = poisson` has to be
-specified.
-
-## More technical details {#sec-techdetails .unnumbered}
-
-::: callout
-Appendices can be included after the bibliography (with a page break).
-Each section within the appendix should have a proper section title
-(rather than just *Appendix*).
-
-For more technical style details, please check out JSS's style FAQ at
-\[https://www.jstatsoft.org/pages/view/style#frequently-asked-questions\]
-which includes the following topics:
-
--   Title vs. sentence case.
--   Graphics formatting.
--   Naming conventions.
--   Turning JSS manuscripts into [R]{.proglang} package vignettes.
--   Trouble shooting.
--   Many other potentially helpful details...
-:::
-
-## Using BibTeX {#sec-bibtex .unnumbered}
-
-::: callout
-References need to be provided in a {{< bibtex >}} file (`.bib`). All
-references should be made with `@cite` syntax. This commands yield
-different formats of author-year citations and allow to include
-additional details (e.g.,pages, chapters, \dots) in brackets. In case
-you are not familiar with these commands see the JSS style FAQ for
-details.
-
-Cleaning up {{< bibtex >}} files is a somewhat tedious task --
-especially when acquiring the entries automatically from mixed online
-sources. However, it is important that informations are complete and
-presented in a consistent style to avoid confusions. JSS requires the
-following format.
-
--   item JSS-specific markup (`\proglang`, `\pkg`, `\code`) should be
-    used in the references.
--   item Titles should be in title case.
--   item Journal titles should not be abbreviated and in title case.
--   item DOIs should be included where available.
--   item Software should be properly cited as well. For [R]{.proglang}
-    packages `citation("pkgname")` typically provides a good starting
-    point.
-:::
-
-## Summary and discussion {#sec-summary}
-
 ## Computational details {.unnumbered}
 
-::: callout
-If necessary or useful, information about certain computational details
-such as version numbers, operating systems, or compilers could be
-included in an unnumbered section. Also, auxiliary packages (say, for
-visualizations, maps, tables, ...) that are not cited in the main text
-can be credited here.
-:::
-
-The results in this paper were obtained using [R]{.proglang}\~3.4.1 with
-the [MASS]{.pkg}\~7.3.47 package. [R]{.proglang} itself and all packages
-used are available from the Comprehensive [R]{.proglang} Archive Network
-(CRAN) at \[https://CRAN.R-project.org/\].
+The analyses and results in this paper were obtained using the following
+versions of `R` and `R` packages:
 
 ```{r}
 #| label: session-info
-sessionInfo()
+sessioninfo::session_info()
 ```
 
 ## Acknowledgments {.unnumbered}
 
+This project is sponsored by the Defense Advanced Research Projects
+Agency (DARPA) 540 under cooperative agreement No.HR001118S0047. The
+content of the information does 541 not necessarily reflect the position
+or the policy of the Government, and no official 542 endorsement should
+be inferred.
+
+
 ::: {#refs}
+
 :::
