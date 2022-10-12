@@ -630,38 +630,53 @@ knitr::include_graphics(path = "images/paste-80B1C5CB.png")
 ::: {#aggWorkflow .callout}
 #### Box 1: Aggregation Workflow Blueprint
 
--   wrapper functions and the 'type' argument
+**Argument Structure and Expected Form**
 
--   default arg structure for each wrapper fun
-
-    -   percent toggle
-
-    -   placeholder
-
-    -   name
-
-    -   What else?
-
--   COmputation:
-
-    -   Weighting Functions
-
-    -   Note that not all functions use a separately defined weighting
-        function -- for simpler weight computations, these are defined
-        in-function rather than being modularised [See Table
-        1](#table1).
-
-Each aggregation function follow a general workflow whereby the primary
-dataset `data_ratings`, parsed to the `expert_judgements` argument, is
-first pre-processed by `pre_process_judgements()`, subsequently the
-aggregation method is applied using `dplyr::summarise()`, and then
-finally the aggregated data is parsed to `postprocess_judgements()`.
-This general aggregation method workflow is seen best in `ArMean()`:
+Each aggregation *wrapper* function takes the following arguments:
+`expert_judgements`, `type`, `name`, `placeholder` and `percent_toggle`:
 
 ```{r}
-#| label: blah
-AverageWAgg
+args(AverageWAgg)
 ```
+
+The aggregation *method* to be applied by the aggregation *function*, is
+specified by the `type` argument, defaulting to `ArMean`. The resultant
+`tibble` of Confidence Scores includes the `name` of the aggregation
+method applied, defaulting to the `type` argument, but this can be
+overridden by the user if they supply a non-`NULL` value to `name`.
+
+Aggregation functions expect the judgements supplied in
+`expert_judgements` to be percentage chances. However, oftentimes
+analysts may wish to elicit probabilities, counts, or other numeric
+quantities. By setting `percent_toggle` to `TRUE`, the user can turn
+toggle the expectation of percentage values *off*, providing
+non-percentage numeric judgements..
+
+When working with regularly updated data and developing a reproducible
+pipeline [@Yenni2019] , it can be useful to put aggregation methods into
+'placeholder' mode, whereby a placeholder value is returned by he
+aggregation function instead of computing a Confidence Score using the
+aggregation method. By setting `placeholder` to `TRUE`, the user can
+supply a placeholder Confidence Score, which defaults to $65\%$, the
+average replicability of SBS research (citation? Fiona/David?). Should
+the user wish to set an alternative value, they can create a modified
+version of `method_placeholder()` for themselves and store this within
+the global environment. This function will then be called by the
+aggregation method when the `placeholder` argument is set to `TRUE`.
+
+Some functions expect additional arguments, especially those that rely
+on additional or supplementary data. See the *man* pages for details of
+additional arguments.
+
+**Mathematical Aggregation Computational Workflow Blueprint**
+
+Each aggregation function follows a general computational workflow
+'blueprint' whereby the primary dataset `data_ratings`, parsed to the
+`expert_judgements` argument, is first pre-processed by
+`pre_process_judgements()`, weights are computed if applicable,
+subsequently the aggregation method is applied using
+`dplyr::summarise()`, and then finally the aggregated data is parsed to
+`postprocess_judgements()`.
 
 The `preprocess_judgements()` function parses the primary dataset
 `data_ratings` through the argument `expert_judgements` to filter the
@@ -693,16 +708,29 @@ data_ratings %>%
   preprocess_judgements()
 ```
 
-After `preprocessing_judgements()` and the aggregation method is
-applied, the function `post_process_judgements()` then processes the
-variables into the final data frame that is returned by each aggregation
-function. The post processing function returns a [tibble]{.class}
-consisting of observations equal to the number of unique claims that
-were parsed to `post_process_judgements()`, the `method`, associated
-`method_id` , `paper_id` , the Confidence Score `cs`, as well as the
-number of participants `n_experts` whose assessments were used in the
-aggregation, and the date of the first and last assessments
-`first_expert_date` and `last_expert_date` respectively.
+The `preprocess_judgements()` function is exposed to the user to allow
+for data formatting in preparation for plotting, e.g. with
+[ggplot2]{.pkg} [@ggplot2016], or for developing bespoke aggregation
+functions / methods not supplied in \code{aggreCAT}.
+
+For some aggregation methods, weights are necessary, and thus are
+computed prior to aggregation. Some aggregation methods compute weights
+using separate weighting functions ([See Table 1](#table1)), however,
+for aggregation methods with simpler weight computations, these are
+defined in-function, rather than being modularised.
+
+After application of `preprocess_judgements()`, weights are constructed,
+and the aggregation method is applied, the function
+`post_process_judgements()` then processes the variables into the final
+data frame that is returned by each aggregation function. The post
+processing function returns a [tibble]{.class} consisting of
+observations equal to the number of unique claims that were parsed to
+`post_process_judgements()`, the `method`, associated `method_id` ,
+`paper_id` , the Confidence Score `cs`, as well as the number of
+participants `n_experts` whose assessments were used in the aggregation,
+and the date of the first and last assessments `first_expert_date` and
+`last_expert_date` respectively. (David/AAron to check - are we still
+doing `method_id`)??
 :::
 
 ### Weighted linear combinations of judgements {#sec-IntWAgg .section}
