@@ -245,7 +245,7 @@ David P. Wilkinson\\
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, frame hidden, interior hidden, sharp corners, enhanced, breakable, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, interior hidden, enhanced, breakable, sharp corners, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-introduction}{%
 \section{Introduction}\label{sec-introduction}}
@@ -267,16 +267,16 @@ consensus, or by using mathematical approaches \citep{Goossens2008}.
 Although there are a variety of methods for mathematically aggregating
 expert judgements into single point-predictions, there are few
 open-source software implementations available to analysts or
-researchers. The \proglang{R} \citet{R} package \pkg{expert}provides
+researchers. The \proglang{R} \citet{R} package \pkg{expert} provides
 three models of expert opinion to combine judgements elicited from
 groups of experts (CITE) , and \pkg{SHELF} implements only a single
 method (weighted linear pool) for aggregating expert judgements (CITE).
 Other \proglang{R} packages providing methods to mathematically
 aggregate expert judgements do so for non-point predictions, for
 example, \pkg{opera}, which generates time-series predictions (CITE). In
-this paper we present the \pkg{aggreCAT} package, which provides 28
-different methods for mathematically aggregating judgements within
-groups of experts into a single forecast.
+this paper we present the \pkg{aggreCAT} package, which provides
+\textbf{28} different methods for mathematically aggregating judgements
+within groups of experts into a single forecast.
 
 \hypertarget{sec-repliCATS}{%
 \subsection{DARPA SCORE program and the repliCATS
@@ -295,9 +295,8 @@ rapidly and reliably assign ``Confidence Scores'' to research claims
 from empirical studies in the Social and Behavioural Sciences (SBS).
 Confidence Scores are quantitative measures of the likely
 reproducibility or replicability of a research claim or result, and may
-be used by consumers of Social and Behavioural Sciences research as a
-proxy measure for their credibility in the absence of replication
-effort.
+be used by consumers of scientific research as a proxy measure for their
+credibility in the absence of replication effort.
 
 Replications are time-consuming and costly \citep{Isager2020}, and
 studies have shown that replication outcomes can be reliably elicited
@@ -307,9 +306,9 @@ two very different strategies -- prediction markets \citep{Gordon2020}
 and the IDEA protocol \citep{hemming2017}, the latter of which is used
 by the repliCATS project \citep{Fraser:2021}. \textbf{X} of these
 research claims were randomly selected for direct replication, against
-which the elicited Confidence Scores are `ground-truthed'. These
-findings will aid the development of artificial intelligence tools that
-can automatically assign Confidence Scores.
+which the elicited and aggregated Confidence Scores are
+`ground-truthed'. These findings will aid the development of artificial
+intelligence tools that can automatically assign Confidence Scores.
 
 \hypertarget{sec-IDEAprotocol}{%
 \subsubsection{The repliCATS IDEA protocol}\label{sec-IDEAprotocol}}
@@ -380,12 +379,13 @@ datasets collected using such elicitation methods.
 
 We begin by formulating the problem of mathematically aggregating expert
 judgements. Each method, and its data requirements is summarised in
-table X (cross-ref). We also briefly summarise package datasets, which
-were collected by the repliCATS project. By first describing the
-datasets before describing the aggregation methods in detail, we aim to
-provide a grounded understanding of the different outputs of expert
-elicitation using the repliCATS IDEA protocol, and the inputs available
-to the aggregation functions.
+\textbf{table X (cross-ref)}. Before outlining key aggregation methods,
+we briefly summarise package datasets, which were collected by the
+repliCATS project. By first describing the datasets before describing
+the aggregation methods in detail, we aim to provide a grounded
+understanding of the different outputs of expert elicitation using the
+repliCATS IDEA protocol, and the inputs available to the aggregation
+functions.
 
 Next, we describe and illustrate the main types of aggregators, which
 may be categorised according to their data requirements, mathematical
@@ -409,14 +409,14 @@ package provides a set of supporting functions for evaluating or
 ground-truthing aggregated forecasts or Confidence Scores against a set
 of known-outcomes, as well as functions for visualising comparisons of
 different aggregation methods and the outcomes of performance
-evaluation. We describe this functionality and demonstrate this in the
+evaluation. We describe and demonstrate this functionality in the
 presentation of the repliCATS workflow. The workflow is representative
 of the probable challenges faced by the researcher in the course of
 mathematically aggregating groups of forecasts, and should equip the
 reader to use \pkg{aggreCAT} for their own datasets; it exemplifies how
 to extend the \pkg{aggreCAT} package to any expert judgement dataset
 from any domain in which there are multiple judgements from multiple
-individuals that need to be combined into a single forecast.
+individuals that must be combined into a single forecast.
 
 \hypertarget{mathematically-aggregating-expert-judgements}{%
 \section{Mathematically Aggregating Expert
@@ -441,9 +441,9 @@ types:
 
 However, the \pkg{aggreCAT} package user might wish to categorise the
 aggregation methods according to aspects of their computational
-implementation and data requirements, because these inform the arguments
-and the type and form of the data that is parsed to the aggregation
-functions. These aspects include:
+implementation and data requirements, because these inform the function
+arguments as well as the type and form of the data that is parsed to the
+aggregation functions. These aspects include:
 
 \begin{itemize}
 \tightlist
@@ -472,10 +472,10 @@ functions. These aspects include:
 \end{itemize}
 
 The data and structured elicitation protocol requirements are described
-in the table below (Table 1). All aggregation methods requiring a single
-round of estimates can therefore be applied to expert judgments derived
-from any structured elicitation protocol that generates, lower, upper,
-and best estimates from each individual (i.e.~not just the IDEA
+in the \textbf{table below (Table 1)}. All aggregation methods requiring
+a single round of estimates can therefore be applied to expert judgments
+derived from any structured elicitation protocol that generates, lower,
+upper, and best estimates from each individual (i.e.~not just the IDEA
 protocol), and does not enforce behavioural consensus.
 
 \hypertarget{notation-and-problem-formulation}{%
@@ -552,25 +552,25 @@ By default, weights are calculated across all claims on a
 per-individual, per-claim basis, such that judgements for the same
 individual are weighted differently across all claims they have provided
 judgements for. There are some exceptions to this default:
-\texttt{GranWAgg()}, \texttt{QuizWAgg()}, \texttt{IndIntWAgg()}
-\texttt{IndIntAsymWAgg()}, \texttt{VarIndIntWAgg},
-\texttt{KitchSinkWAgg()}. Note that \texttt{IndIntWAgg(),} and methods
-that include its weighting function as a component, rescale weights by a
-fixed measure across all claims. Hence, for aggregation methods that use
-information from multiple claims other than the target claim for which
-the Confidence Score is being computed, each individual claim \(c\) is
-indexed by \(d = 1, ..., C\). Where the default weighting is used, this
-is coded into each function. However, where more complex and
-function-specific weighting methods are used, modularised functions have
-been created for ease of debugging. These function names are prefixed
-with \texttt{weight\_}.
+\texttt{GranWAgg}, \texttt{QuizWAgg}, \texttt{IndIntWAgg}
+\texttt{IndIntAsymWAgg}, \texttt{VarIndIntWAgg}, \texttt{KitchSinkWAgg}.
+Note that \texttt{IndIntWAgg,} and methods that include its weighting
+function \texttt{weight\_nIndivInterval()} as a component, re-scale
+weights by a fixed measure across all claims. Hence, for aggregation
+methods that use information from multiple claims other than the target
+claim for which the Confidence Score is being computed, each individual
+claim \(c\) is indexed by \(d = 1, ..., C\). Where the default weighting
+is used, this is coded into each function. However, where more complex
+and method-specific weighting methods are used, modularised functions
+have been created for ease of debugging. These function names are
+prefixed with \texttt{weight\_}.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \hypertarget{package-datasets}{%
 \subsection{Package datasets}\label{package-datasets}}
 
-The \pkg{aggreCAT} package ships with a core dataset
+The \pkg{aggreCAT} package includes the core dataset
 \texttt{data\_ratings} consisting of judgements elicited during a pilot
 experiment exploring the performance of IDEA groups in assessing
 replicability of a set of claims with ``known outcomes.''
@@ -585,7 +585,7 @@ repliCATS IDEA protocol at a two day workshop\footnote{See
   meeting of the Society for the Improvement of Psychological Science
   (SIPS),
   \href{https://osf.io/ndzpt/}{\textless https://osf.io/ndzpt/\textgreater{}}.}
-in the Netherlands, in July 2019, at which 25 participants assessed the
+in the Netherlands, on July 2019, at which 25 participants assessed the
 replicability of 25 unique SBS claims. In addition to the probabilistic
 estimates provided for each research claim assessed, participants were
 also asked to rate the claim's plausibility and comprehensibility,
@@ -632,11 +632,12 @@ R> library(tidyverse,quietly = TRUE)
 R> library(aggreCAT)
 R> data(data_ratings)
 R> data_ratings %>% 
-+  print(n = 18)
++  filter(paper_id == first(paper_id), user_name == first(user_name)) %>% 
++  print(., n = nrow(.))
 \end{verbatim}
 
 \begin{verbatim}
-# A tibble: 6,880 x 7
+# A tibble: 11 x 7
    round   paper_id user_name  question           element  value group
    <chr>   <chr>    <chr>      <chr>              <chr>    <dbl> <chr>
  1 round_1 100      fx3d4tmdhh direct_replication three_p~    30 UOM1 
@@ -645,32 +646,24 @@ R> data_ratings %>%
  4 round_1 100      fx3d4tmdhh direct_replication three_p~    40 UOM1 
  5 round_1 100      fx3d4tmdhh direct_replication three_p~    45 UOM1 
  6 round_1 100      fx3d4tmdhh comprehension      likert_~     5 UOM1 
- 7 round_1 100      sv2yl8jszy direct_replication three_p~    60 UOM1 
- 8 round_1 100      sv2yl8jszy direct_replication three_p~    90 UOM1 
- 9 round_1 100      sv2yl8jszy direct_replication three_p~    75 UOM1 
-10 round_1 100      sv2yl8jszy comprehension      likert_~     7 UOM1 
-11 round_1 100      sv2yl8jszy involved_binary    binary_~    -1 UOM1 
-12 round_1 100      sv2yl8jszy belief_binary      binary_~     1 UOM1 
-13 round_1 100      v6n605nzv1 direct_replication three_p~    40 UOM1 
-14 round_1 100      v6n605nzv1 comprehension      likert_~     5 UOM1 
-15 round_1 100      v6n605nzv1 belief_binary      binary_~     1 UOM1 
-16 round_1 100      v6n605nzv1 direct_replication three_p~    80 UOM1 
-17 round_1 100      v6n605nzv1 direct_replication three_p~    65 UOM1 
-18 round_1 100      v6n605nzv1 involved_binary    binary_~    -1 UOM1 
-# ... with 6,862 more rows
+ 7 round_2 100      fx3d4tmdhh comprehension      likert_~     4 UOM1 
+ 8 round_2 100      fx3d4tmdhh belief_binary      binary_~    -1 UOM1 
+ 9 round_2 100      fx3d4tmdhh direct_replication three_p~    30 UOM1 
+10 round_2 100      fx3d4tmdhh direct_replication three_p~    45 UOM1 
+11 round_2 100      fx3d4tmdhh direct_replication three_p~    39 UOM1 
 \end{verbatim}
 
 Not all data necessary for constructing weights on performance is
 contained in \texttt{data\_ratings}. Additional data collected as part
 of the repliCATS IDEA protocol are contained within separate datasets to
-\texttt{data\_ratings}. Justifications for giving particular judgements
-are contained in \texttt{data\_justifications}. on the repliCATS
-platform users were given the option to comment on others'
-justifications (\texttt{data\_comments}), to vote on others' comments
-(\texttt{data\_comment\_ratings}) and on others' justifications
-(\texttt{data\_justification\_ratings}). Finally, \pkg{aggreCAT}
-contains three `supplementary' datasets containing data collected
-externally to the repliCATS IDEA protocol: \texttt{data\_supp\_quiz},
+\texttt{data\_ratings}. On the repliCATS platform users were given the
+option to comment on others' justifications (\texttt{data\_comments}),
+to vote on others' comments (\texttt{data\_comment\_ratings}) and on
+others' justifications (\texttt{data\_justification\_ratings}).
+Justifications for giving particular judgements are contained in
+\texttt{data\_justifications}. Finally, \pkg{aggreCAT} contains three
+`supplementary' datasets containing data collected externally to the
+repliCATS IDEA protocol: \texttt{data\_supp\_quiz},
 \texttt{data\_supp\_priors}, and \texttt{data\_supp\_reasons}.
 
 \hypertarget{sec-quiz-supplementary-data}{%
@@ -706,22 +699,24 @@ distributed as columns in the dataset, and for each claim
 \texttt{paper\_id}, each participant \texttt{user\_id} is assigned a
 logical \texttt{1} or \texttt{0} if they included that reasoning
 category in support of their Best estimate for that claim. See section
-ref(ReasonWAgg) for details on the \texttt{ReasonWAgg} aggregation
-method.
+\textbf{ref(ReasonWAgg)} for details on the \texttt{ReasonWAgg}
+aggregation method.
 
 \hypertarget{sec-bayesian-supplementary-data}{%
 \subsubsection{Bayesian Prior
 Data}\label{sec-bayesian-supplementary-data}}
 
-\texttt{BayPRIORsAgg()} uses Bayesian updating to update a prior
-probability of a claim replicating estimated from a predictive model
-\citep{Gould2021a} using an aggregate of the best estimates for all
-participants assessing a given claim \(c\) \citep{Hanea2021}. The prior
-data is contained in \texttt{data\_supp\_priors} with each claim in
-column \texttt{paper\_id} being assigned a prior probability of the
-claim replicating (on the logit scale) in column \texttt{prior\_means}.
+The method \texttt{BayPRIORsAgg} uses Bayesian updating to update a
+prior probability of a claim replicating estimated from a predictive
+model \citep{Gould2021a} using an aggregate of the best estimates for
+all participants assessing a given claim \(c\) \citep{Hanea2021}. The
+prior data is contained in \texttt{data\_supp\_priors} with each claim
+in column \texttt{paper\_id} being assigned a prior probability (on the
+logit scale) of the claim replicating in column \texttt{prior\_means}.
 (\textbf{TODO} should explain further about the mean / median of the
-distribution, ie internal workings of BayPRIORsAgg??).
+distribution, ie internal workings of BayPRIORsAgg??) Also, I notice
+that in our description / preregistration of BayPRIORsAgg we have said
+we will use the \emph{median}, but we actually use the \emph{mean}
 
 \hypertarget{aggregation-wrapper-functions}{%
 \subsubsection{Aggregation Wrapper
@@ -734,49 +729,51 @@ functions, denoted by the suffix \texttt{WAgg}, the abbreviation of
 \texttt{AverageWAgg()}, \texttt{BayesianWAgg()},
 \texttt{IntervalWAgg()}, \texttt{ShiftingWAgg()},
 \texttt{ReasoningWAgg()}, \texttt{DistributionWAgg()}, and
-\texttt{ExtremisationWAgg()}. The specific aggregation method is applied
-according to the \texttt{type} argument, whose options are described in
-each aggregation wrapper functions' help page.
+\texttt{ExtremisationWAgg()}. The specific aggregation \emph{method} is
+applied according to the \texttt{type} argument, whose options are
+described in each aggregation wrapper functions' help page.
 
 \hypertarget{tidy-aggregation-and-prescribed-inputs}{%
 \subsection{`Tidy' Aggregation and Prescribed
 Inputs}\label{tidy-aggregation-and-prescribed-inputs}}
 
 The design philosophy of \pkg{aggreCAT} is principled on `tidy' data
-\citep{Wickham:2014vp}. Each aggregation method takes a \class{tibble}
-of judgements (\texttt{data\_ratings}) as its input, and returns a
-\class{tibble} consisting of the variables \texttt{method},
-\texttt{paper\_id}, \texttt{cs} and \texttt{n\_experts} (see section
-ref(ArMean) for illustration of outputs); where \texttt{method} is a
-character vector corresponding to the aggregation method name. Each
-aggregation is applied as a summary function \citep{Wickham2017R}, and
-therefore returns a single row or observation containing a single
-confidence score \texttt{cs} for each claim or \texttt{paper\_id}. The
-number of expert judgements aggregated in the confidence score is
-returned in the column \texttt{n\_experts}. Because of the tidy nature
-of the aggregation outputs, multiple aggregations can be applied to the
-same data with the results of all aggregation methods bound together in
-a single dataframe.
+\citep{Wickham:2014vp}. Each aggregation method expects a
+\texttt{dataframe} or \class{tibble} of judgements
+(\texttt{data\_ratings}) as its input, and returns a \class{tibble}
+consisting of the variables \texttt{method}, \texttt{paper\_id},
+\texttt{cs} and \texttt{n\_experts} (see section \textbf{ref(ArMean)}
+for illustration of outputs); where \texttt{method} is a character
+vector corresponding to the aggregation method name specified in the
+\texttt{type} argument. Each aggregation is applied as a summary
+function \citep{Wickham2017R}, and therefore returns a single row or
+observation with a single confidence score \texttt{cs} for each claim or
+\texttt{paper\_id}. The number of expert judgements summarised in the
+aggregated confidence score is returned in the column
+\texttt{n\_experts}. Because of the tidy nature of the aggregation
+outputs, multiple aggregations can be applied to the same data with the
+results of all aggregation methods row bound together in a single
+\texttt{tibble}.
 
 Each aggregation function requires values derived from three-point
-elicitation (best-estimate, upper and lower bound).
-
-For every aggregation function, the three-point elicitation values
-corresponding to the \texttt{"direct\_replication"} question are
-required inputs. Of the question and elements other than the three-point
-elicitation elements belonging to the direct replication question, only
-the \texttt{comprehension} question with the \texttt{likert\_binary}
-elements is required -- this is an input into
-\texttt{aggreCAT::CompWAgg}, which is used to weight participants
-judgements. Each value provided by a participant is timestamped, but
-this is not a required data field.
+elicitation (best-estimate, upper and lower bound). For every
+aggregation function, the three-point elicitation values corresponding
+to the \texttt{"direct\_replication"} question are required inputs. Of
+the \texttt{question} and \texttt{element}s other than the three-point
+elicitation \texttt{element}s belonging to the direct replication
+\texttt{question}, only the \texttt{comprehension} question with the
+\texttt{likert\_binary} elements is required -- this is an input into
+{CompWAgg}, which is used to weight participants judgements. Each value
+provided by a participant is \texttt{timestamp}ed by the repliCATS
+elicitation platform, but this is not a required data field for applying
+aggregation functions.
 
 \hypertarget{focal-claim-aggregation}{%
 \section{Focal Claim Aggregation}\label{focal-claim-aggregation}}
 
 We now demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
-problem, using the datasets packaged with \pkg{aggreCAT}. We demonstrate
+problem, using the datasets provided by \pkg{aggreCAT}. We illustrate
 the internal mechanics of the weighting methods and the different data
 requirements of each of the different types of aggregators -- namely;
 methods with non-weighted linear combinations of judgements, weighted
@@ -872,42 +869,14 @@ claim. We also illustrate this aggregation visually in
 \protect\hyperlink{fig-ArMean}{Figure 2}. \texttt{ArMean} is applied
 using the aggregation method \fct{AverageWAgg}, which is a wrapper
 function for several aggregation methods that calculate different types
-of averaged best-estimates (\texttt{?AverageWAgg}). The function returns
-the Confidence Score for the claim in the form of a \class{tibble}:
+of averaged best-estimates (see \texttt{?AverageWAgg}). The function
+returns the Confidence Score for the claim in the form of a
+\class{tibble}:
 
 \begin{verbatim}
 R> focal_claims %>% 
 +  filter(paper_id == "108") %>%
 +  AverageWAgg(type = "ArMean")
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- AverageWAgg: ArMean -----------------------------------------------
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- Pre-Processing Options --
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
-i Round Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Three Point Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Percent Toggle: FALSE
 \end{verbatim}
 
 \begin{verbatim}
@@ -933,185 +902,63 @@ format.}
 
 \end{figure}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
+\begin{tcolorbox}[enhanced jigsaw, breakable, opacityback=0, left=2mm, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, colframe=quarto-callout-color-frame, arc=.35mm, leftrule=.75mm, colback=white]
+\textbf{Argument Structure and Expected Form}
 
-\begin{itemize}
-\item
-  wrapper functions and the `type' argument
-\item
-  default arg structure for each wrapper fun
-
-  \begin{itemize}
-  \item
-    percent toggle
-  \item
-    placeholder
-  \item
-    name
-  \item
-    What else?
-  \end{itemize}
-\item
-  COmputation:
-
-  \begin{itemize}
-  \item
-    Weighting Functions
-  \item
-    Note that not all functions use a separately defined weighting
-    function -- for simpler weight computations, these are defined
-    in-function rather than being modularised
-    \protect\hyperlink{table1}{See Table 1}.
-  \end{itemize}
-\end{itemize}
-
-Each aggregation function follow a general workflow whereby the primary
-dataset \texttt{data\_ratings}, parsed to the
-\texttt{expert\_judgements} argument, is first pre-processed by
-\texttt{pre\_process\_judgements()}, subsequently the aggregation method
-is applied using \texttt{dplyr::summarise()}, and then finally the
-aggregated data is parsed to \texttt{postprocess\_judgements()}. This
-general aggregation method workflow is seen best in \texttt{ArMean()}:
+Each aggregation \emph{wrapper} function takes the following arguments:
+\texttt{expert\_judgements}, \texttt{type}, \texttt{name},
+\texttt{placeholder} and \texttt{percent\_toggle}:
 
 \begin{verbatim}
-AverageWAgg
+args(AverageWAgg)
 \end{verbatim}
 
 \begin{verbatim}
-function(expert_judgements,
-                        type = "ArMean",
-                        name = NULL,
-                        placeholder = FALSE,
-                        percent_toggle = FALSE) {
-
-  if(!(type %in% c("ArMean",
-                   "GeoMean",
-                   "Median",
-                   "LOArMean",
-                   "LOGeoMean",
-                   "ProbitArMean"))){
-
-    stop('`type` must be one of "ArMean", "GeoMean", "Median", "LOArMean", "LOGeoMean", or "ProbitArMean"')
-
-  }
-
-  ## Set name argument
-
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
-
-  cli::cli_h1(sprintf("AverageWAgg: %s",
-                      name))
-
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
-  } else {
-
-    df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}}) %>%
-      dplyr::filter(element == "three_point_best") %>%
-      dplyr::group_by(paper_id)
-
-    switch(type,
-           "ArMean" = {
-
-             df <- df %>%
-               dplyr::summarise(
-                 aggregated_judgement = mean(value,
-                                             na.rm = TRUE),
-                 n_experts = dplyr::n()
-               )
-
-           },
-           "GeoMean" = {
-
-             df <- df %>%
-               dplyr::summarise(n_experts = dplyr::n(),
-                                aggregated_judgement = (prod(value, na.rm = TRUE)) ^ (1/n_experts))
-
-           },
-           "Median" = {
-
-             df <- df %>%
-               dplyr::summarise(
-                 aggregated_judgement = median(value,
-                                               na.rm = TRUE),
-                 n_experts = dplyr::n()
-               )
-
-           },
-           "LOArMean" = {
-
-             if(any(df$value < 0) | any(df$value > 1)){
-
-               stop("LOArMean requires probabilistic judgements. Check your data compatability or `percent_toggle` argument.")
-
-             }
-
-             df <- df %>%
-               dplyr::mutate(value = dplyr::case_when(value == 1 ~ value - .Machine$double.eps,
-                                                      value == 0 ~ value + .Machine$double.eps,
-                                                      TRUE ~ value),
-                             log_odds = log(abs(value / (1 - value)))) %>%
-               dplyr::summarise(
-                 aggregated_judgement = mean(log_odds,
-                                             na.rm = TRUE),
-                 n_experts = dplyr::n()
-               )  %>%
-               dplyr::mutate(
-                 aggregated_judgement = exp(aggregated_judgement) / (1 + exp(aggregated_judgement))
-               )
-
-           },
-           "LOGeoMean" = {
-
-             if(any(df$value < 0) | any(df$value > 1)){
-
-               stop("LOGeoMean requires probabilistic judgements. Check your data compatability or `percent_toggle` argument.")
-
-             }
-
-             df <- df %>%
-               dplyr::mutate(value = dplyr::case_when(value == 1 ~ value - .Machine$double.eps,
-                                                      value == 0 ~ value + .Machine$double.eps,
-                                                      value == 0.5 ~ value + .Machine$double.eps,
-                                                      TRUE ~ value),
-                             log_odds = log(abs(value / (1 - value)))) %>%
-               # dplyr::summarise(n_experts = dplyr::n(),
-               #                  aggregated_judgement = (prod(log_odds, na.rm = TRUE))) %>%
-               dplyr::summarise(n_experts = dplyr::n(),
-                                aggregated_judgement = (prod(log_odds, na.rm = TRUE)) ^ (1/n_experts)) %>%
-               dplyr::mutate(
-                 aggregated_judgement = exp(aggregated_judgement) / (1 + exp(aggregated_judgement))
-               )
-
-           },
-           "ProbitArMean" = {
-
-             df <- df %>%
-               dplyr::mutate(probit = VGAM::probitlink(value,
-                                                       bvalue = .Machine$double.eps)) %>%
-               dplyr::summarise(aggregated_judgement = mean(probit,
-                                                            na.rm = TRUE),
-                                n_experts = dplyr::n()) %>%
-               dplyr::mutate(aggregated_judgement = VGAM::probitlink(aggregated_judgement,
-                                                                     inverse = TRUE))
-
-           })
-
-    df %>%
-      dplyr::mutate(method = name) %>%
-      postprocess_judgements()
-
-  }
-}
-<bytecode: 0x7fbccaa3f868>
-<environment: namespace:aggreCAT>
+function (expert_judgements, type = "ArMean", name = NULL, placeholder = FALSE, 
+    percent_toggle = FALSE) 
+NULL
 \end{verbatim}
+
+The aggregation \emph{method} to be applied by the aggregation
+\emph{function}, is specified by the \texttt{type} argument, defaulting
+to \texttt{ArMean}. The resultant \texttt{tibble} of Confidence Scores
+includes the \texttt{name} of the aggregation method applied, defaulting
+to the \texttt{type} argument, but this can be overridden by the user if
+they supply a non-\texttt{NULL} value to \texttt{name}.
+
+Aggregation functions expect the judgements supplied in
+\texttt{expert\_judgements} to be percentage chances. However,
+oftentimes analysts may wish to elicit probabilities, counts, or other
+numeric quantities. By setting \texttt{percent\_toggle} to
+\texttt{TRUE}, the user can turn toggle the expectation of percentage
+values \emph{off}, providing non-percentage numeric judgements..
+
+When working with regularly updated data and developing a reproducible
+pipeline \citep{Yenni2019} , it can be useful to put aggregation methods
+into `placeholder' mode, whereby a placeholder value is returned by he
+aggregation function instead of computing a Confidence Score using the
+aggregation method. By setting \texttt{placeholder} to \texttt{TRUE},
+the user can supply a placeholder Confidence Score, which defaults to
+\(65\%\), the average replicability of SBS research (citation?
+Fiona/David?). Should the user wish to set an alternative value, they
+can create a modified version of \texttt{method\_placeholder()} for
+themselves and store this within the global environment. This function
+will then be called by the aggregation method when the
+\texttt{placeholder} argument is set to \texttt{TRUE}.
+
+Some functions expect additional arguments, especially those that rely
+on additional or supplementary data. See the \emph{man} pages for
+details of additional arguments.
+
+\textbf{Mathematical Aggregation Computational Workflow Blueprint}
+
+Each aggregation function follows a general computational workflow
+`blueprint' whereby the primary dataset \texttt{data\_ratings}, parsed
+to the \texttt{expert\_judgements} argument, is first pre-processed by
+\texttt{pre\_process\_judgements()}, weights are computed if applicable,
+subsequently the aggregation method is applied using
+\texttt{dplyr::summarise()}, and then finally the aggregated data is
+parsed to \texttt{postprocess\_judgements()}.
 
 The \texttt{preprocess\_judgements()} function parses the primary
 dataset \texttt{data\_ratings} through the argument
@@ -1130,8 +977,8 @@ judgements, so the \texttt{round\_2\_filter} defaults to \texttt{TRUE}
 (\protect\hyperlink{table1}{See Table 1 for required inputs of all
 aggregation methods}). \texttt{preprocess\_judgements()} further
 pre-processes the data to remove missing data, and to return the data
-into an appropriate structure for applying the aggregation function with
-\texttt{dplyr::summarise()}.
+into an appropriate structure for calculating weights and applying the
+aggregation function with \texttt{dplyr::summarise()}.
 
 \begin{verbatim}
 R> data_ratings %>% 
@@ -1182,18 +1029,30 @@ i Percent Toggle: FALSE
 # ... with 65 more rows
 \end{verbatim}
 
-After \texttt{preprocessing\_judgements()} and the aggregation method is
-applied, the function \texttt{post\_process\_judgements()} then
-processes the variables into the final data frame that is returned by
-each aggregation function. The post processing function returns a
-\class{tibble} consisting of observations equal to the number of unique
-claims that were parsed to \texttt{post\_process\_judgements()}, the
-\texttt{method}, associated \texttt{method\_id} , \texttt{paper\_id} ,
-the Confidence Score \texttt{cs}, as well as the number of participants
-\texttt{n\_experts} whose assessments were used in the aggregation, and
-the date of the first and last assessments \texttt{first\_expert\_date}
-and \texttt{last\_expert\_date} respectively.
+The \texttt{preprocess\_judgements()} function is exposed to the user to
+allow for data formatting in preparation for plotting, e.g.~with
+\pkg{ggplot2} \citep{ggplot2016}, or for developing bespoke aggregation
+functions / methods not supplied in \code{aggreCAT}.
 
+For some aggregation methods, weights are necessary, and thus are
+computed prior to aggregation. Some aggregation methods compute weights
+using separate weighting functions (\protect\hyperlink{table1}{See Table
+1}), however, for aggregation methods with simpler weight computations,
+these are defined in-function, rather than being modularised.
+
+After application of \texttt{preprocess\_judgements()}, weights are
+constructed, and the aggregation method is applied, the function
+\texttt{post\_process\_judgements()} then processes the variables into
+the final data frame that is returned by each aggregation function. The
+post processing function returns a \class{tibble} consisting of
+observations equal to the number of unique claims that were parsed to
+\texttt{post\_process\_judgements()}, the \texttt{method}, associated
+\texttt{method\_id} , \texttt{paper\_id} , the Confidence Score
+\texttt{cs}, as well as the number of participants \texttt{n\_experts}
+whose assessments were used in the aggregation, and the date of the
+first and last assessments \texttt{first\_expert\_date} and
+\texttt{last\_expert\_date} respectively. (David/AAron to check - are we
+still doing \texttt{method\_id})??
 \end{tcolorbox}
 
 \hypertarget{sec-IntWAgg}{%
@@ -1283,64 +1142,6 @@ R> focal_claims %>%
 \end{verbatim}
 
 \begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- IntervalWAgg: IndIntWAgg ------------------------------------------
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- Pre-Processing Options --
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
-i Round Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Three Point Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Percent Toggle: FALSE
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- IntervalWAgg: IntWAgg ---------------------------------------------
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- Pre-Processing Options --
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
-i Round Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Three Point Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Percent Toggle: FALSE
-\end{verbatim}
-
-\begin{verbatim}
 # A tibble: 2 x 4
   method     paper_id    cs n_experts
   <chr>      <chr>    <dbl>     <int>
@@ -1415,8 +1216,8 @@ quantitative estimates for each participant, for the target claim.}
 
 \end{figure}
 
-The focal claim selected for aggregation using ReasonWAgg is
-\texttt{09xkh8}, the round 2 three-point estimates from the five focal
+The focal claim selected for aggregation using \texttt{ReasonWAgg} is
+\texttt{09xkh8}, the round two three-point estimates from the five focal
 participants for this claim are shown in
 Table~\ref{tbl-reason-wagg-focal-claim}. We first prepare the
 supplementary data for aggregation \texttt{data\_supp\_reasons},
@@ -1491,6 +1292,17 @@ R> focal_claims %>%
 +                          type = "ReasonWAgg")
 \end{verbatim}
 
+Note that if there are zero participants with a Reasoning Score \(>0\)
+or all participants are missing a Reasoning Score, the log-odds
+transformed best estimate is returned instead (See
+\texttt{?AverageWAgg}, \texttt{type="LoArMean"}). The user can choose to
+flag this behaviour explicitly by setting the argument
+\texttt{flag\_loarmean} to \texttt{TRUE}, which will generate new
+columns in the aggregation output dataframe named
+\texttt{method\_applied} (with values \texttt{LoArMean} or
+\texttt{ReasonWAgg}), and \texttt{no\_reason\_score}, a logical variable
+describing whether or not there were no reasoning scores for that claim.
+
 \hypertarget{bayesian-aggregation-methods}{%
 \subsection{Bayesian Aggregation
 Methods}\label{bayesian-aggregation-methods}}
@@ -1533,7 +1345,7 @@ We illustrate aggregation of participant judgements using the method
 the form of probabilities, so to convert elicited values in the form of
 percentages within the data parsed to {expert\textbackslash\_judgements}
 to probabilities, the logical value \texttt{TRUE} is supplied to the
-argument {percent\_toggle}:
+argument {percent\_toggle} \textbf{(cross-ref to blueprint box):}
 
 \begin{verbatim}
 R> focal_claims %>% 
@@ -1627,7 +1439,7 @@ however this elicitation method is not strictly necessary for the of
 these methods. Methods that \emph{do} require the full IDEA protocol for
 their correct mathematical implementation, such as \fct{ShiftingWAgg},
 which use two rounds of three-point judgements in which the second round
-jdugements are revised after discussion, are listed in
+judgements are revised after discussion, are listed in
 \protect\hyperlink{fig-method_summary_table}{Table 1}.
 
 \hypertarget{an-illustrative-workflow-for-use-in-real-study-contexts}{%
@@ -1668,35 +1480,6 @@ simultaneously:
 
 \begin{verbatim}
 AverageWAgg(focal_claims, type = "ArMean")
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- AverageWAgg: ArMean -----------------------------------------------
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
--- Pre-Processing Options --
-\end{verbatim}
-
-\begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
-i Round Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Three Point Filter: TRUE
-\end{verbatim}
-
-\begin{verbatim}
-i Percent Toggle: FALSE
 \end{verbatim}
 
 \begin{verbatim}
@@ -1924,7 +1707,7 @@ evaluated for repliCATS pilot study claims and known outcomes. }\tabularnewline
 \subsection{Visualising Judgements, Confidence Scores and Forecast
 Performance}\label{visualising-judgements-confidence-scores-and-forecast-performance}}
 
-We include two functions for visualising comparison and eavluation of
+We include two functions for visualising comparison and evaluation of
 Confidence Scores across multiple aggregation methods for a suite of
 forecasts from multiple participants,
 \fct{confidence\_scores\_ridgeplot} and \fct{confidencescore\_heatmap}.
@@ -1988,7 +1771,7 @@ scores is useful for visually comparing aggregation methods and
 evaluating them against a set of known outcomes. In this example,
 Confidence Scores generated by 6 aggregation methods for the repliCATS
 pilot study are visualised for 25 claims. Claims where known outcomes
-succesfully replicated (outcome == \texttt{TRUE}) are presented in
+succesfully replicated \texttt{outcome\ ==\ TRUE} are presented in
 heatmap blocks on the left, and claims that failed to replicate are
 presented in heatmap blocks on the right. Confidence Scores generated by
 different aggregation methods are positioned along the y-axis, with
@@ -2020,13 +1803,7 @@ plot_cs <-
   dplyr::rename(x_vals = cs,
          y_vals = method) %>% 
   dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
-\end{verbatim}
 
-\begin{verbatim}
-Joining, by = "paper_id"
-\end{verbatim}
-
-\begin{verbatim}
 plot_judgements <- 
   aggreCAT::preprocess_judgements(focal_claims,
                                   percent_toggle = TRUE) %>% 
@@ -2041,19 +1818,7 @@ plot_judgements <-
          tidyr::contains("three_point"),
          outcome) %>% 
   dplyr::mutate(data_type = "Elicited Probabilities")
-\end{verbatim}
 
-\begin{verbatim}
-
--- Pre-Processing Options --
-
-i Round Filter: TRUE
-i Three Point Filter: TRUE
-i Percent Toggle: TRUE
-Joining, by = "paper_id"
-\end{verbatim}
-
-\begin{verbatim}
 p <- plot_judgements %>%  
   dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
                           by = "paper_id")}) %>% 
@@ -2069,11 +1834,7 @@ p <- plot_judgements %>%
   scale_colour_brewer(palette = "Set1")
 \end{verbatim}
 
-\begin{verbatim}
-p
-\end{verbatim}
-
-\begin{figure}[H]
+\begin{figure}
 
 {\centering \includegraphics{aggreCAT_files/figure-pdf/fig-aggregation-1.pdf}
 
@@ -2094,7 +1855,7 @@ previous large-scale replication projects.}
 \subsection{Extending aggreCAT to other
 datasets}\label{extending-aggrecat-to-other-datasets}}
 
-The aggregation methods contained in the \pkg{aggreCAT} package can
+The aggregation methods supplied by the \pkg{aggreCAT} package can
 easily be applied to other forecasting problems. The only requirements
 are that the data inputs adhere to the required format (see
 \protect\hyperlink{aggWorkflow}{Box 1}), and that the expert judgements
@@ -2185,7 +1946,7 @@ implemented for aggregation of the {focal\_claims} dataset
 Confidence Scores shown in Table~\ref{tbl-BYO-data-aggregate}. Note that
 because the judgements are absolute values rather than probabilities, we
 set the {percent\textbackslash\_toggle} argument for each aggregation
-wrapper function to {FALSE}:
+wrapper function to {FALSE}: (DAVID/AAron to check.. )
 
 \begin{verbatim}
 R> turtle_CS <- 
@@ -2199,7 +1960,8 @@ R> turtle_CS <-
 +                            "IndIntWAgg",
 +                            "IntWAgg",
 +                            "ShiftWAgg"),
-+                  .f = ~ .x(green_turtles, type = .y,percent_toggle = FALSE)
++                  .f = ~ .x(green_turtles, type = .y,
++                            percent_toggle = FALSE)
 +  )
 \end{verbatim}
 
@@ -2215,65 +1977,12 @@ IntWAgg & 1 & $15.26$ & 5 \\
 ShiftWAgg & 1 & $328.85$ & 5 \\ 
 \bottomrule
 \caption{\label{tbl-BYO-data-aggregate}Example aggregation of non-percentage / non-probabilistic estimates with
-several aggregation methods using Green Turtle dataset
-{[}@Arlidge2020{]}. }\tabularnewline
+several aggregation methods using Green Turtle dataset (Arlidge et al.
+2020). }\tabularnewline
 \end{longtable}
 
-\hypertarget{tldr-building-reproducible-workflows-and-dealing-with-regularly-updated-data}{%
-\subsection{TL;DR -- Building reproducible workflows and dealing with
-regularly updated
-data}\label{tldr-building-reproducible-workflows-and-dealing-with-regularly-updated-data}}
-
-We have included several different types of functionality for when data
-collection is ongoing but where Confidence Scores need to be regularly
-aggregated for reporting; timestamp toggling, placeholder mode, and
-imputing
-
-The date of the first and last assessment for any given claim may be
-computed by toggling on the logical argument, \texttt{timestamp}, within
-each aggregation function and by providing a timestamp for each
-three-point estimate value within \texttt{data\_ratings}. The repliCATS
-elicitation platform automatically recorded the timestamp when a
-participant enters their assessment for a claim.
-
-For most users of the the \pkg{aggreCAT} package , however, we
-anticipate that forecasts will be elicited during a single workshop
-before being aggregated on one instance. Under this use-case, providing
-information about the date and time of assessments is probably
-irrelevant. Consequently all post-processing and aggregation functions
-default to no timestamp functionality, and timestamps are not required
-to be included in the user's data parsed to the argument
-\texttt{expert\_judgements} within the aggregation functions.
-
-Similarly, when building a reproducible pipeline for working with
-regularly updated data \citep[e.g.][]{Yenni2019}, it can be useful to
-put aggregation methods into `placeholder' mode, whereby a placeholder
-value is returned by the aggregation function instead of computing a
-Confidence Score using the aggregation method. This can be useful when
-developing unit-test code, or when modifying and testing a new workflow.
-For the repliCATS project, the placeholder was set and has been
-hard-coded in \texttt{method\_placeholder()} to 0.65. Should the user
-wish to set an alternative value, they can create a modified version of
-\texttt{method\_placeholder()} for themselves and store this within the
-global environment. This function will then be called by the aggregation
-method when the \texttt{placeholder} argument is set to \texttt{TRUE}.
-
-Some aggregation methods default to the arithmetic mean of the log-odds
-transformed best estimate, i.e.~\texttt{LoArMean()}, when the data
-requirements for that aggregation have not been met. For example,
-\texttt{reasonWAgg()} defaults to \texttt{LoArMean()} when no
-participants assessing a claim provided reasoning data. Instead of
-allowing this behaviour to occur silently, the user may wish to flag
-this behaviour explicitly by setting the argument
-\texttt{flag\_loarmean} to \texttt{TRUE}, generating a new column in the
-aggregation output dataframe named \texttt{method\_applied}. This column
-is a character vector consisting of either the name of the method called
-by the user where the conditions were satisfied, or \texttt{"LoArMean"}
-when the aggregator's conditions remain unsatisfied.
-
-\hypertarget{discussion-and-future-directions}{%
-\section{Discussion and Future
-Directions}\label{discussion-and-future-directions}}
+\hypertarget{sec-summary}{%
+\section{Summary and Discussion}\label{sec-summary}}
 
 The \pkg{aggreCAT} package provides a diverse suite of methods for
 mathematically aggregating judgements elicited from groups of experts
@@ -2370,189 +2079,151 @@ aggregation of human forecasts is required.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
-TODO: Note that around the equation above there should be no spaces
-(avoided in the {\LaTeX} code by \texttt{\%} lines) so that ``normal''
-spacing is used and not a new paragraph started.
-\end{tcolorbox}
-
-\proglang{R} provides a very flexible implementation of the general GLM
-framework in the function \fct{glm} \citet{ChambersHastie1992} in the
-\pkg{stats} package. Its most important arguments are
-
-\begin{verbatim}
-glm(formula, data, subset, na.action, weights, offset,
-  family = gaussian, start = NULL, control = glm.control(…),
-  model = TRUE, y = TRUE, x = FALSE, …)
-\end{verbatim}
-
-where \texttt{formula} plus \texttt{data} is the now standard way of
-specifying regression relationships in \proglang{R}/\proglang{S}
-introduced in \citet{ChambersHastie1992}. The remaining arguments in the
-first line (\texttt{subset}, \texttt{na.action}, \texttt{weights}, and
-\texttt{offset}) are also standard for setting up formula-based
-regression models in \proglang{R}/\proglang{S}. The arguments in the
-second line control aspects specific to GLMs while the arguments in the
-last line specify which components are returned in the fitted model
-object (of class \class{glm} which inherits from \class{lm}). For
-further arguments to \fct{glm} (including alternative specifications of
-starting values) see \texttt{?glm}. For estimating a Poisson model
-\texttt{family\ =\ poisson} has to be specified.
-
-\hypertarget{sec-techdetails}{%
-\section*{More technical details}\label{sec-techdetails}}
-\addcontentsline{toc}{section}{More technical details}
-
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
-
-Appendices can be included after the bibliography (with a page break).
-Each section within the appendix should have a proper section title
-(rather than just \emph{Appendix}).
-
-For more technical style details, please check out JSS's style FAQ at
-{[}https://www.jstatsoft.org/pages/view/style\#frequently-asked-questions{]}
-which includes the following topics:
-
-\begin{itemize}
-\tightlist
-\item
-  Title vs.~sentence case.
-\item
-  Graphics formatting.
-\item
-  Naming conventions.
-\item
-  Turning JSS manuscripts into \proglang{R} package vignettes.
-\item
-  Trouble shooting.
-\item
-  Many other potentially helpful details\ldots{}
-\end{itemize}
-
-\end{tcolorbox}
-
-\hypertarget{sec-bibtex}{%
-\section*{Using BibTeX}\label{sec-bibtex}}
-\addcontentsline{toc}{section}{Using BibTeX}
-
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
-
-References need to be provided in a \textsc{Bib}{\TeX} file
-(\texttt{.bib}). All references should be made with \texttt{@cite}
-syntax. This commands yield different formats of author-year citations
-and allow to include additional details (e.g.,pages, chapters, \dots) in
-brackets. In case you are not familiar with these commands see the JSS
-style FAQ for details.
-
-Cleaning up \textsc{Bib}{\TeX} files is a somewhat tedious task --
-especially when acquiring the entries automatically from mixed online
-sources. However, it is important that informations are complete and
-presented in a consistent style to avoid confusions. JSS requires the
-following format.
-
-\begin{itemize}
-\tightlist
-\item
-  item JSS-specific markup (\texttt{\textbackslash{}proglang},
-  \texttt{\textbackslash{}pkg}, \texttt{\textbackslash{}code}) should be
-  used in the references.
-\item
-  item Titles should be in title case.
-\item
-  item Journal titles should not be abbreviated and in title case.
-\item
-  item DOIs should be included where available.
-\item
-  item Software should be properly cited as well. For \proglang{R}
-  packages \texttt{citation("pkgname")} typically provides a good
-  starting point.
-\end{itemize}
-
-\end{tcolorbox}
-
-\hypertarget{sec-summary}{%
-\section{Summary and discussion}\label{sec-summary}}
-
 \hypertarget{computational-details}{%
 \section*{Computational details}\label{computational-details}}
 \addcontentsline{toc}{section}{Computational details}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, breakable, opacityback=0, colframe=quarto-callout-color-frame, rightrule=.15mm, colback=white, left=2mm, bottomrule=.15mm, leftrule=.75mm]
-If necessary or useful, information about certain computational details
-such as version numbers, operating systems, or compilers could be
-included in an unnumbered section. Also, auxiliary packages (say, for
-visualizations, maps, tables, \ldots) that are not cited in the main
-text can be credited here.
-\end{tcolorbox}
-
-The results in this paper were obtained using
-\proglang{R}\textasciitilde3.4.1 with the
-\pkg{MASS}\textasciitilde7.3.47 package. \proglang{R} itself and all
-packages used are available from the Comprehensive \proglang{R} Archive
-Network (CRAN) at {[}https://CRAN.R-project.org/{]}.
+The analyses and results in this paper were obtained using the following
+versions of \texttt{R} and \texttt{R} packages:
 
 \begin{verbatim}
-sessionInfo()
+sessioninfo::session_info()
 \end{verbatim}
 
 \begin{verbatim}
-R version 4.2.0 (2022-04-22)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Big Sur/Monterey 10.16
+- Session info -----------------------------------------------------
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Big Sur/Monterey 10.16
+ system   x86_64, darwin17.0
+ ui       X11
+ language (EN)
+ collate  en_AU.UTF-8
+ ctype    en_AU.UTF-8
+ tz       Australia/Melbourne
+ date     2022-10-12
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
 
-Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+- Packages ---------------------------------------------------------
+ package      * version    date (UTC) lib source
+ abind          1.4-5      2016-07-21 [1] CRAN (R 4.2.0)
+ aggreCAT     * 0.0.0.9002 2022-10-11 [1] local
+ assertthat     0.2.1      2019-03-21 [1] CRAN (R 4.2.0)
+ backports      1.4.1      2021-12-13 [1] CRAN (R 4.2.0)
+ boot           1.3-28     2021-05-03 [2] CRAN (R 4.2.0)
+ broom          1.0.1      2022-08-29 [1] CRAN (R 4.2.0)
+ car            3.1-0      2022-06-15 [1] CRAN (R 4.2.0)
+ carData        3.0-5      2022-01-06 [1] CRAN (R 4.2.0)
+ cellranger     1.1.0      2016-07-27 [1] CRAN (R 4.2.0)
+ class          7.3-20     2022-01-16 [2] CRAN (R 4.2.0)
+ cli            3.4.1      2022-09-23 [1] CRAN (R 4.2.0)
+ coda           0.19-4     2020-09-30 [1] CRAN (R 4.2.0)
+ colorspace     2.0-3      2022-02-21 [1] CRAN (R 4.2.0)
+ cowplot        1.1.1      2020-12-30 [1] CRAN (R 4.2.0)
+ crayon         1.5.1      2022-03-26 [1] CRAN (R 4.2.0)
+ data.table     1.14.2     2021-09-27 [1] CRAN (R 4.2.0)
+ DBI            1.1.3      2022-06-18 [1] CRAN (R 4.2.0)
+ dbplyr         2.2.0      2022-06-05 [1] CRAN (R 4.2.0)
+ DescTools      0.99.45    2022-05-09 [1] CRAN (R 4.2.0)
+ digest         0.6.29     2021-12-01 [1] CRAN (R 4.2.0)
+ dplyr        * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
+ e1071          1.7-11     2022-06-07 [1] CRAN (R 4.2.0)
+ ellipsis       0.3.2      2021-04-29 [1] CRAN (R 4.2.0)
+ evaluate       0.16       2022-08-09 [1] CRAN (R 4.2.0)
+ Exact          3.1        2021-11-26 [1] CRAN (R 4.2.0)
+ expm           0.999-6    2021-01-13 [1] CRAN (R 4.2.0)
+ fansi          1.0.3      2022-03-24 [1] CRAN (R 4.2.0)
+ farver         2.1.1      2022-07-06 [1] CRAN (R 4.2.0)
+ fastmap        1.1.0      2021-01-25 [1] CRAN (R 4.2.0)
+ forcats      * 0.5.1      2021-01-27 [1] CRAN (R 4.2.0)
+ fs             1.5.2      2021-12-08 [1] CRAN (R 4.2.0)
+ generics       0.1.3      2022-07-05 [1] CRAN (R 4.2.0)
+ ggforce      * 0.3.3      2021-03-05 [1] CRAN (R 4.2.0)
+ ggplot2      * 3.3.6      2022-05-03 [1] CRAN (R 4.2.0)
+ ggpubr       * 0.4.0      2020-06-27 [1] CRAN (R 4.2.0)
+ ggridges     * 0.5.3      2021-01-08 [1] CRAN (R 4.2.0)
+ ggsignif       0.6.3      2021-09-09 [1] CRAN (R 4.2.0)
+ gld            2.6.4      2021-12-16 [1] CRAN (R 4.2.0)
+ glue           1.6.2      2022-02-24 [1] CRAN (R 4.2.0)
+ gridExtra      2.3        2017-09-09 [1] CRAN (R 4.2.0)
+ gt             0.6.0.9000 2022-08-22 [1] Github (rstudio/gt@69194bd)
+ gtable         0.3.1      2022-09-01 [1] CRAN (R 4.2.0)
+ haven          2.5.0      2022-04-15 [1] CRAN (R 4.2.0)
+ hms            1.1.1      2021-09-26 [1] CRAN (R 4.2.0)
+ htmltools      0.5.3      2022-07-18 [1] CRAN (R 4.2.0)
+ httr           1.4.4      2022-08-17 [1] CRAN (R 4.2.0)
+ insight        0.18.2     2022-08-10 [1] CRAN (R 4.2.0)
+ jsonlite       1.8.0      2022-02-22 [1] CRAN (R 4.2.0)
+ knitr          1.40       2022-08-24 [1] CRAN (R 4.2.0)
+ labeling       0.4.2      2020-10-20 [1] CRAN (R 4.2.0)
+ lattice        0.20-45    2021-09-22 [2] CRAN (R 4.2.0)
+ lifecycle      1.0.2      2022-09-09 [1] CRAN (R 4.2.0)
+ lmom           2.9        2022-05-29 [1] CRAN (R 4.2.0)
+ lubridate      1.8.0      2021-10-07 [1] CRAN (R 4.2.0)
+ magrittr       2.0.3      2022-03-30 [1] CRAN (R 4.2.0)
+ MASS           7.3-56     2022-03-23 [2] CRAN (R 4.2.0)
+ Matrix         1.5-1      2022-09-13 [1] CRAN (R 4.2.0)
+ modelr         0.1.8      2020-05-19 [1] CRAN (R 4.2.0)
+ munsell        0.5.0      2018-06-12 [1] CRAN (R 4.2.0)
+ mvtnorm        1.1-3      2021-10-08 [1] CRAN (R 4.2.0)
+ pillar         1.8.1      2022-08-19 [1] CRAN (R 4.2.0)
+ pkgconfig      2.0.3      2019-09-22 [1] CRAN (R 4.2.0)
+ plyr           1.8.7      2022-03-24 [1] CRAN (R 4.2.0)
+ png            0.1-7      2013-12-03 [1] CRAN (R 4.2.0)
+ polyclip       1.10-0     2019-03-14 [1] CRAN (R 4.2.0)
+ precrec        0.12.9     2022-03-10 [1] CRAN (R 4.2.0)
+ proxy          0.4-27     2022-06-09 [1] CRAN (R 4.2.0)
+ purrr        * 0.3.4      2020-04-17 [1] CRAN (R 4.2.0)
+ R2jags         0.7-1      2021-08-05 [1] CRAN (R 4.2.0)
+ R2WinBUGS      2.1-21     2015-07-30 [1] CRAN (R 4.2.0)
+ R6             2.5.1      2021-08-19 [1] CRAN (R 4.2.0)
+ RColorBrewer   1.1-3      2022-04-03 [1] CRAN (R 4.2.0)
+ Rcpp           1.0.9      2022-07-08 [1] CRAN (R 4.2.0)
+ readr        * 2.1.2      2022-01-30 [1] CRAN (R 4.2.0)
+ readxl         1.4.0      2022-03-28 [1] CRAN (R 4.2.0)
+ reprex         2.0.1      2021-08-05 [1] CRAN (R 4.2.0)
+ rfUtilities    2.1-5      2019-10-03 [1] CRAN (R 4.2.0)
+ rjags          4-13       2022-04-19 [1] CRAN (R 4.2.0)
+ rlang          1.0.6      2022-09-24 [1] CRAN (R 4.2.0)
+ rmarkdown      2.14.3     2022-06-20 [1] Github (rstudio/rmarkdown@cb38982)
+ rootSolve      1.8.2.3    2021-09-29 [1] CRAN (R 4.2.0)
+ rstatix        0.7.0      2021-02-13 [1] CRAN (R 4.2.0)
+ rstudioapi     0.14       2022-08-22 [1] CRAN (R 4.2.0)
+ rvest          1.0.2      2021-10-16 [1] CRAN (R 4.2.0)
+ scales         1.2.1      2022-08-20 [1] CRAN (R 4.2.0)
+ sessioninfo    1.2.2      2021-12-06 [1] CRAN (R 4.2.0)
+ stringi        1.7.8      2022-07-11 [1] CRAN (R 4.2.0)
+ stringr      * 1.4.1      2022-08-20 [1] CRAN (R 4.2.0)
+ tibble       * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
+ tidyr        * 1.2.1      2022-09-08 [1] CRAN (R 4.2.0)
+ tidyselect     1.1.2      2022-02-21 [1] CRAN (R 4.2.0)
+ tidyverse    * 1.3.1      2021-04-15 [1] CRAN (R 4.2.0)
+ tweenr         1.0.2      2021-03-23 [1] CRAN (R 4.2.0)
+ tzdb           0.3.0      2022-03-28 [1] CRAN (R 4.2.0)
+ utf8           1.2.2      2021-07-24 [1] CRAN (R 4.2.0)
+ vctrs          0.4.2      2022-09-29 [1] CRAN (R 4.2.0)
+ withr          2.5.0      2022-03-03 [1] CRAN (R 4.2.0)
+ xfun           0.33       2022-09-12 [1] CRAN (R 4.2.0)
+ xml2           1.3.3      2021-11-30 [1] CRAN (R 4.2.0)
+ yaml           2.3.5      2022-02-21 [1] CRAN (R 4.2.0)
 
-locale:
-[1] en_AU.UTF-8/en_AU.UTF-8/en_AU.UTF-8/C/en_AU.UTF-8/en_AU.UTF-8
+ [1] /Users/egould/Library/R/x86_64/4.2/library
+ [2] /Library/Frameworks/R.framework/Versions/4.2/Resources/library
 
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods  
-[7] base     
-
-other attached packages:
- [1] ggpubr_0.4.0        ggforce_0.3.3       ggridges_0.5.3     
- [4] aggreCAT_0.0.0.9001 forcats_0.5.1       stringr_1.4.1      
- [7] dplyr_1.0.10        purrr_0.3.4         readr_2.1.2        
-[10] tidyr_1.2.0         tibble_3.1.8        ggplot2_3.3.6      
-[13] tidyverse_1.3.1    
-
-loaded via a namespace (and not attached):
- [1] fs_1.5.2           lubridate_1.8.0    RColorBrewer_1.1-3
- [4] insight_0.18.2     httr_1.4.4         tools_4.2.0       
- [7] backports_1.4.1    utf8_1.2.2         R6_2.5.1          
-[10] R2WinBUGS_2.1-21   DBI_1.1.3          colorspace_2.0-3  
-[13] withr_2.5.0        gridExtra_2.3      tidyselect_1.1.2  
-[16] Exact_3.1          compiler_4.2.0     cli_3.3.0         
-[19] rvest_1.0.2        gt_0.6.0.9000      expm_0.999-6      
-[22] xml2_1.3.3         labeling_0.4.2     scales_1.2.1      
-[25] mvtnorm_1.1-3      proxy_0.4-27       digest_0.6.29     
-[28] rmarkdown_2.14.3   pkgconfig_2.0.3    htmltools_0.5.3   
-[31] dbplyr_2.2.0       fastmap_1.1.0      rlang_1.0.5       
-[34] readxl_1.4.0       rstudioapi_0.13    generics_0.1.3    
-[37] farver_2.1.1       jsonlite_1.8.0     car_3.1-0         
-[40] magrittr_2.0.3     Matrix_1.4-1       Rcpp_1.0.9        
-[43] DescTools_0.99.45  munsell_0.5.0      fansi_1.0.3       
-[46] abind_1.4-5        lifecycle_1.0.1    stringi_1.7.8     
-[49] yaml_2.3.5         carData_3.0-5      MASS_7.3-56       
-[52] rootSolve_1.8.2.3  plyr_1.8.7         grid_4.2.0        
-[55] parallel_4.2.0     crayon_1.5.1       lmom_2.9          
-[58] lattice_0.20-45    cowplot_1.1.1      haven_2.5.0       
-[61] hms_1.1.1          knitr_1.39         pillar_1.8.1      
-[64] boot_1.3-28        gld_2.6.4          ggsignif_0.6.3    
-[67] reprex_2.0.1       rfUtilities_2.1-5  precrec_0.12.9    
-[70] R2jags_0.7-1       glue_1.6.2         evaluate_0.15     
-[73] data.table_1.14.2  modelr_0.1.8       tweenr_1.0.2      
-[76] png_0.1-7          vctrs_0.4.1        tzdb_0.3.0        
-[79] cellranger_1.1.0   polyclip_1.10-0    gtable_0.3.1      
-[82] assertthat_0.2.1   xfun_0.31          broom_0.8.0       
-[85] e1071_1.7-11       rstatix_0.7.0      coda_0.19-4       
-[88] class_7.3-20       rjags_4-13         ellipsis_0.3.2    
+--------------------------------------------------------------------
 \end{verbatim}
 
+\hypertarget{acknowledgments}{%
+\section*{Acknowledgments}\label{acknowledgments}}
+\addcontentsline{toc}{section}{Acknowledgments}
 
-\renewcommand\refname{Acknowledgments}
+This project is sponsored by the Defense Advanced Research Projects
+Agency (DARPA) 540 under cooperative agreement No.HR001118S0047. The
+content of the information does 541 not necessarily reflect the position
+or the policy of the Government, and no official 542 endorsement should
+be inferred.
+
+
   \bibliography{bibliography.bib}
 
 
