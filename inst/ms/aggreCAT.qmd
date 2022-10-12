@@ -602,13 +602,14 @@ Below we demonstrate the application of `ArMean` on a single claim
 illustrate this aggregation visually in [Figure 2](#fig-ArMean).
 `ArMean` is applied using the aggregation method [AverageWAgg]{.fct},
 which is a wrapper function for several aggregation methods that
-calculate different types of averaged best-estimates (`?AverageWAgg`).
-The function returns the Confidence Score for the claim in the form of a
-[tibble]{.class}:
+calculate different types of averaged best-estimates (see
+`?AverageWAgg`). The function returns the Confidence Score for the claim
+in the form of a [tibble]{.class}:
 
 ```{r}
 #| label: focal-claim-ArMean
 #| prompt: true
+#| message: false
 focal_claims %>% 
   filter(paper_id == "108") %>%
   AverageWAgg(type = "ArMean")
@@ -760,6 +761,7 @@ results of each application of [IntervalWAgg]{.fct} into a single
 ```{r}
 #| label: focal-claim-IntWAgg
 #| prompt: true
+#| message: false
 focal_claims %>% 
   purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"), 
                  .f = ~ aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
@@ -874,6 +876,7 @@ the [reasons]{.arg} argument:
 #| label: focal-claim-ReasonWAgg
 #| eval: false
 #| prompt: true
+#| message: false
 focal_claims %>% 
   dplyr::filter(paper_id == "24") %>% 
   aggreCAT::ReasoningWAgg(reasons = data_supp_reasons_focal,
@@ -1023,6 +1026,7 @@ to four focal claims simultaneously:
 
 ```{r}
 #| label: generating-multiple-forecasts
+#| message: false
 AverageWAgg(focal_claims, type = "ArMean")
 ```
 
@@ -1273,6 +1277,7 @@ transforming judgements in percentages to probabilities by setting
 ```{r}
 #| label: lst-confidencescores
 #| lst-cap: "Visualising Confidence Scores"
+#| message: false
 plot_cs <- 
   confidenceSCOREs %>% 
   dplyr::left_join(aggreCAT::data_outcomes) %>% 
@@ -1317,12 +1322,13 @@ p <- plot_judgements %>%
 #| message: false
 #| fig-align: center
 #| warning: false
+#| echo: false
 p
 ```
 
 ### Extending aggreCAT to other datasets
 
-The aggregation methods contained in the [aggreCAT]{.pkg} package can
+The aggregation methods supplied by the [aggreCAT]{.pkg} package can
 easily be applied to other forecasting problems. The only requirements
 are that the data inputs adhere to the required format (see [Box
 1](#aggWorkflow)), and that the expert judgements are elicited using the
