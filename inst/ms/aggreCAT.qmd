@@ -1439,55 +1439,7 @@ turtle_CS %>%
   gt::fmt_number(columns = cs)
 ```
 
-### TL;DR -- Building reproducible workflows and dealing with regularly updated data
-
-We have included several different types of functionality for when data
-collection is ongoing but where Confidence Scores need to be regularly
-aggregated for reporting; timestamp toggling, placeholder mode, and
-imputing
-
-The date of the first and last assessment for any given claim may be
-computed by toggling on the logical argument, `timestamp`, within each
-aggregation function and by providing a timestamp for each three-point
-estimate value within `data_ratings`. The repliCATS elicitation platform
-automatically recorded the timestamp when a participant enters their
-assessment for a claim.
-
-For most users of the the [aggreCAT]{.pkg} package , however, we
-anticipate that forecasts will be elicited during a single workshop
-before being aggregated on one instance. Under this use-case, providing
-information about the date and time of assessments is probably
-irrelevant. Consequently all post-processing and aggregation functions
-default to no timestamp functionality, and timestamps are not required
-to be included in the user's data parsed to the argument
-`expert_judgements` within the aggregation functions.
-
-Similarly, when building a reproducible pipeline for working with
-regularly updated data [e.g. @Yenni2019], it can be useful to put
-aggregation methods into 'placeholder' mode, whereby a placeholder value
-is returned by the aggregation function instead of computing a
-Confidence Score using the aggregation method. This can be useful when
-developing unit-test code, or when modifying and testing a new workflow.
-For the repliCATS project, the placeholder was set and has been
-hard-coded in `method_placeholder()` to 0.65. Should the user wish to
-set an alternative value, they can create a modified version of
-`method_placeholder()` for themselves and store this within the global
-environment. This function will then be called by the aggregation method
-when the `placeholder` argument is set to `TRUE`.
-
-Some aggregation methods default to the arithmetic mean of the log-odds
-transformed best estimate, i.e. `LoArMean()`, when the data requirements
-for that aggregation have not been met. For example, `reasonWAgg()`
-defaults to `LoArMean()` when no participants assessing a claim provided
-reasoning data. Instead of allowing this behaviour to occur silently,
-the user may wish to flag this behaviour explicitly by setting the
-argument `flag_loarmean` to `TRUE`, generating a new column in the
-aggregation output dataframe named `method_applied`. This column is a
-character vector consisting of either the name of the method called by
-the user where the conditions were satisfied, or `"LoArMean"` when the
-aggregator's conditions remain unsatisfied.
-
-## Discussion and Future Directions
+## Summary and Discussion {#sec-summary}
 
 The [aggreCAT]{.pkg} package provides a diverse suite of methods for
 mathematically aggregating judgements elicited from groups of experts
