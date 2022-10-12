@@ -915,6 +915,16 @@ focal_claims %>%
                           type = "ReasonWAgg")
 ```
 
+Note that if there are zero participants with a Reasoning Score $>0$ or
+all participants are missing a Reasoning Score, the log-odds transformed
+best estimate is returned instead (See `?AverageWAgg`,
+`type="LoArMean"`). The user can choose to flag this behaviour
+explicitly by setting the argument `flag_loarmean` to `TRUE`, which will
+generate new columns in the aggregation output dataframe named
+`method_applied` (with values `LoArMean` or `ReasonWAgg`), and
+`no_reason_score`, a logical variable describing whether or not there
+were no reasoning scores for that claim.
+
 ### Bayesian Aggregation Methods
 
 Both Bayesian methods `BayTriVar` and `BayPRIORsAgg` use the full
