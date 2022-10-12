@@ -1032,7 +1032,7 @@ however this elicitation method is not strictly necessary for the of
 these methods. Methods that *do* require the full IDEA protocol for
 their correct mathematical implementation, such as [ShiftingWAgg]{.fct},
 which use two rounds of three-point judgements in which the second round
-jdugements are revised after discussion, are listed in [Table
+judgements are revised after discussion, are listed in [Table
 1](#fig-method_summary_table).
 
 ## An illustrative workflow for use in real study contexts
@@ -1221,7 +1221,7 @@ aggreCAT::confidence_score_evaluation(
 
 ### Visualising Judgements, Confidence Scores and Forecast Performance
 
-We include two functions for visualising comparison and eavluation of
+We include two functions for visualising comparison and evaluation of
 Confidence Scores across multiple aggregation methods for a suite of
 forecasts from multiple participants,
 [confidence\\_scores\\_ridgeplot]{.fct} and
