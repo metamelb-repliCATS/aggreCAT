@@ -406,14 +406,15 @@ for a single claim to illustrate this structure of the core
 `data_ratings` dataset.
 
 ```{r}
-#| label: data_ratings
+#| label: data_ratings-sample
 #| message: false
 #| prompt: true
 library(tidyverse,quietly = TRUE)
 library(aggreCAT)
 data(data_ratings)
 data_ratings %>% 
-  print(n = 18)
+  filter(paper_id == first(paper_id), user_name == first(user_name)) %>% 
+  print(., n = nrow(.))
 ```
 
 Not all data necessary for constructing weights on performance is
