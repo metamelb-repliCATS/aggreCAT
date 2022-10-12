@@ -1456,8 +1456,9 @@ We can then apply multiple aggregation methods, using the same approach
 implemented for aggregation of the [focal_claims]{.data} dataset
 (@lst-multi-method-workflow-non-supp), with aggregated Confidence Scores
 shown in @tbl-BYO-data-aggregate. Note that because the judgements are
-absolute values rather than probabilities, we set the [percent\\_toggle]{.arg} argument for each
-aggregation wrapper function to [FALSE]{.val}:
+absolute values rather than probabilities, we set the
+[percent\\_toggle]{.arg} argument for each aggregation wrapper function
+to [FALSE]{.val}: (DAVID/AAron to check.. )
 
 ```{r}
 #| label: lst-BYO-data-aggregate
