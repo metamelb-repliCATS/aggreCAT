@@ -84,6 +84,11 @@ to the weight assigned to that participant.
 
 \mjdeqn{\hat{p}_c(ReasonWAgg2) = \sum_{i=1}^N \tilde{w}\_varReason_{i,c}B_{i,c}}{ascii}
 }
+\note{
+When \code{flag_loarmean} is set to \code{TRUE}, two additional columns will be returned; \code{method_applied} (a character variable describing the method actually applied with values of either \code{LoArMean} or \code{ReasonWAgg}) and \code{no_reason_score} (a logical variable describing whether no reasoning scores were supplied for any user for the given claim, where \code{TRUE} indicates no reasoning scores supplied and \code{FALSE} indicates that at least one participant for that claim had a reasoning score greater than 0).
+
+named method_applied (with values LoArMean or ReasonWAgg), and no_reason_score, a logical variable describing whether or not there were no reasoning scores for that claim.
+}
 \examples{
 \dontrun{ReasoningWAgg(data_ratings)}
 
