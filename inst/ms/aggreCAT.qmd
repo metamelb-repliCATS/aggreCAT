@@ -1421,13 +1421,14 @@ turtle_CS <-
                             "IndIntWAgg",
                             "IntWAgg",
                             "ShiftWAgg"),
-                  .f = ~ .x(green_turtles, type = .y,percent_toggle = FALSE)
+                  .f = ~ .x(green_turtles, type = .y,
+                            percent_toggle = FALSE)
   )
 ```
 
 ```{r}
 #| label: tbl-BYO-data-aggregate
-#| tbl-cap: "Example aggregation of non-percentage / non-probabilistic estimates with several aggregation methods using Green Turtle dataset [@Arlidge2020]."
+#| tbl-cap: "Example aggregation of non-percentage / non-probabilistic estimates with several aggregation methods using Green Turtle dataset (Arlidge *et al*. 2020)."
 #| eval: true
 #| echo: false
 turtle_CS %>% 
