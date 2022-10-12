@@ -420,13 +420,13 @@ data_ratings %>%
 Not all data necessary for constructing weights on performance is
 contained in `data_ratings`. Additional data collected as part of the
 repliCATS IDEA protocol are contained within separate datasets to
-`data_ratings`. Justifications for giving particular judgements are
-contained in `data_justifications`. on the repliCATS platform users were
-given the option to comment on others' justifications (`data_comments`),
-to vote on others' comments (`data_comment_ratings`) and on others'
-justifications (`data_justification_ratings`). Finally, [aggreCAT]{.pkg}
-contains three 'supplementary' datasets containing data collected
-externally to the repliCATS IDEA protocol: `data_supp_quiz`,
+`data_ratings`. On the repliCATS platform users were given the option to
+comment on others' justifications (`data_comments`), to vote on others'
+comments (`data_comment_ratings`) and on others' justifications
+(`data_justification_ratings`). Justifications for giving particular
+judgements are contained in `data_justifications`. Finally,
+[aggreCAT]{.pkg} contains three 'supplementary' datasets containing data
+collected externally to the repliCATS IDEA protocol: `data_supp_quiz`,
 `data_supp_priors`, and `data_supp_reasons`.
 
 #### Quiz Score Data {#sec-quiz-supplementary-data}
@@ -434,12 +434,12 @@ externally to the repliCATS IDEA protocol: `data_supp_quiz`,
 Prior to the workshop, participants also completed an optional quiz on
 statistical concepts and meta-research that we expect participants to be
 aware of in order to reliably evaluate the replicability of research
-claims. Quiz responses are contained in `data_supp_quiz` and are
-used to construct performance weights for the aggregation method
-`QuizWAgg` where each participant receives a `quiz_score` from 0 - **X
-(TODO)** if they completed the quiz, and `NA` if they did not attempt or
-fully complete the quiz [see @Hanea2021 for further details]. (Question
-for Bonnie, possibly Rose?: Pretty sure they get points for any question
+claims. Quiz responses are contained in `data_supp_quiz` and are used to
+construct performance weights for the aggregation method `QuizWAgg`
+where each participant receives a `quiz_score` from 0 - **X (TODO)** if
+they completed the quiz, and `NA` if they did not attempt or fully
+complete the quiz [see @Hanea2021 for further details]. (Question for
+Bonnie, possibly Rose?: Pretty sure they get points for any question
 they completed, even if they didn't finish)
 
 #### Reasoning Data {#sec-reasonwagg-supplementary-data}
@@ -457,20 +457,22 @@ transparency of reporting, and journal reporting [@Hanea2021]. Within
 distributed as columns in the dataset, and for each claim `paper_id`,
 each participant `user_id` is assigned a logical `1` or `0` if they
 included that reasoning category in support of their Best estimate for
-that claim. See section ref(ReasonWAgg) for details on the `ReasonWAgg`
-aggregation method.
+that claim. See section **ref(ReasonWAgg)** for details on the
+`ReasonWAgg` aggregation method.
 
 #### Bayesian Prior Data {#sec-bayesian-supplementary-data}
 
-`BayPRIORsAgg()` uses Bayesian updating to update a prior probability of
-a claim replicating estimated from a predictive model [@Gould2021a]
-using an aggregate of the best estimates for all participants assessing
-a given claim $c$ [@Hanea2021]. The prior data is contained in
-`data_supp_priors` with each claim in column `paper_id` being
-assigned a prior probability of the claim replicating (on the logit
-scale) in column `prior_means`. (**TODO** should explain further about
-the mean / median of the distribution, ie internal workings of
-BayPRIORsAgg??).
+The method `BayPRIORsAgg` uses Bayesian updating to update a prior
+probability of a claim replicating estimated from a predictive model
+[@Gould2021a] using an aggregate of the best estimates for all
+participants assessing a given claim $c$ [@Hanea2021]. The prior data is
+contained in `data_supp_priors` with each claim in column `paper_id`
+being assigned a prior probability (on the logit scale) of the claim
+replicating in column `prior_means`. (**TODO** should explain further
+about the mean / median of the distribution, ie internal workings of
+BayPRIORsAgg??) Also, I notice that in our description / preregistration
+of BayPRIORsAgg we have said we will use the *median*, but we actually
+use the *mean*
 
 #### Aggregation Wrapper Functions
 
@@ -480,54 +482,55 @@ functions, denoted by the suffix `WAgg`, the abbreviation of *weighted
 aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
 `IntervalWAgg()`, `ShiftingWAgg()`, `ReasoningWAgg()`,
 `DistributionWAgg()`, and `ExtremisationWAgg()`. The specific
-aggregation method is applied according to the `type` argument, whose
+aggregation *method* is applied according to the `type` argument, whose
 options are described in each aggregation wrapper functions' help page.
 
 ### 'Tidy' Aggregation and Prescribed Inputs
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
-[@Wickham:2014vp]. Each aggregation method takes a [tibble]{.class} of
-judgements (`data_ratings`) as its input, and returns a [tibble]{.class}
-consisting of the variables `method`, `paper_id`, `cs` and `n_experts`
-(see section ref(ArMean) for illustration of outputs); where `method` is
-a character vector corresponding to the aggregation method name. Each
-aggregation is applied as a summary function [@Wickham2017R], and
-therefore returns a single row or observation containing a single
-confidence score `cs` for each claim or `paper_id`. The number of expert
-judgements aggregated in the confidence score is returned in the column
-`n_experts`. Because of the tidy nature of the aggregation outputs,
-multiple aggregations can be applied to the same data with the results
-of all aggregation methods bound together in a single dataframe.
+[@Wickham:2014vp]. Each aggregation method expects a `dataframe` or
+[tibble]{.class} of judgements (`data_ratings`) as its input, and
+returns a [tibble]{.class} consisting of the variables `method`,
+`paper_id`, `cs` and `n_experts` (see section **ref(ArMean)** for
+illustration of outputs); where `method` is a character vector
+corresponding to the aggregation method name specified in the `type`
+argument. Each aggregation is applied as a summary function
+[@Wickham2017R], and therefore returns a single row or observation with
+a single confidence score `cs` for each claim or `paper_id`. The number
+of expert judgements summarised in the aggregated confidence score is
+returned in the column `n_experts`. Because of the tidy nature of the
+aggregation outputs, multiple aggregations can be applied to the same
+data with the results of all aggregation methods row bound together in a
+single `tibble`.
 
 Each aggregation function requires values derived from three-point
-elicitation (best-estimate, upper and lower bound).
-
-For every aggregation function, the three-point elicitation values
-corresponding to the `"direct_replication"` question are required
-inputs. Of the question and elements other than the three-point
-elicitation elements belonging to the direct replication question, only
-the `comprehension` question with the `likert_binary` elements is
-required -- this is an input into `aggreCAT::CompWAgg`, which is used to
-weight participants judgements. Each value provided by a participant is
-timestamped, but this is not a required data field.
+elicitation (best-estimate, upper and lower bound). For every
+aggregation function, the three-point elicitation values corresponding
+to the `"direct_replication"` question are required inputs. Of the
+`question` and `element`s other than the three-point elicitation
+`element`s belonging to the direct replication `question`, only the
+`comprehension` question with the `likert_binary` elements is required
+-- this is an input into [CompWAgg]{.fun}, which is used to weight
+participants judgements. Each value provided by a participant is
+`timestamp`ed by the repliCATS elicitation platform, but this is not a
+required data field for applying aggregation functions.
 
 ## Focal Claim Aggregation
 
 We now demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
-problem, using the datasets packaged with [aggreCAT]{.pkg}. We
-demonstrate the internal mechanics of the weighting methods and the
-different data requirements of each of the different types of
-aggregators -- namely; methods with non-weighted linear combinations of
-judgements, weighted linear combinations of judgements, re-scaled
-weighted linear combinations of judgements, methods that require
-supplementary data, and methods that require data elicited from the full
-IDEA protocol. Each group of methods differs in the type of judgements
-elicited (single point- or three-point estimates), the number of
-elicitation rounds (one or two rounds), whether multiple forecasts /
-elicited judgements are used during confidence score computation for a
-target forecast / claim, and finally whether supplementary data is
-required for aggregation.
+problem, using the datasets provided by [aggreCAT]{.pkg}. We illustrate
+the internal mechanics of the weighting methods and the different data
+requirements of each of the different types of aggregators -- namely;
+methods with non-weighted linear combinations of judgements, weighted
+linear combinations of judgements, re-scaled weighted linear
+combinations of judgements, methods that require supplementary data, and
+methods that require data elicited from the full IDEA protocol. Each
+group of methods differs in the type of judgements elicited (single
+point- or three-point estimates), the number of elicitation rounds (one
+or two rounds), whether multiple forecasts / elicited judgements are
+used during confidence score computation for a target forecast / claim,
+and finally whether supplementary data is required for aggregation.
 
 Here we demonstrate the application of aggregation methods for each
 group of methods using set of 'focal claims' selected from the pilot
