@@ -65,6 +65,7 @@ Suggests:
     gt, 
     gtExtras,
     R.rsp
+    BiocStyle
 RoxygenNote: 7.2.1
 Depends:
     R (>= 2.10)
@@ -88,7 +89,9 @@ Imports:
     insight
 Remotes: 
     softloud/neet
-VignetteBuilder: R.rsp
+VignetteBuilder: 
+  knitr,
+  R.rsp
 RdMacros: mathjaxr
 Config/testthat/parallel: true
 Config/testthat/edition: 3
