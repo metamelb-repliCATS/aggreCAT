@@ -64,7 +64,7 @@ Suggests:
     nlme,
     gt, 
     gtExtras,
-    R.rsp
+    R.rsp,
     BiocStyle
 RoxygenNote: 7.2.1
 Depends:
