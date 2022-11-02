@@ -3,12 +3,31 @@ title: "aggreCAT: an R Package for Mathematically Aggregating Expert judgements"
 format:
     jss-pdf:
         keep-tex: true
+        header-includes:
+          - \usepackage[utf8]{inputenc}
+          - \usepackage{amsmath}
+          - \usepackage{amsfonts}
+          - \usepackage{caption}
+          - \usepackage{booktabs}
+          - \usepackage{longtable}
+          - \usepackage{array}
+          - \usepackage{multirow}
+          - \usepackage{wrapfig}
+          - \usepackage{float}
+          #- \usepackage{colortbl}
+          - \usepackage{pdflscape}
+          - \usepackage{tabu}
+          - \usepackage{threeparttable}
+          - \usepackage{threeparttablex}
+          - \usepackage[normalem]{ulem}
+          - \usepackage{makecell}
+          - \usepackage{xcolor}
+          - \newcommand{\blandscape}{\begin{landscape}}
+          - \newcommand{\elandscape}{\end{landscape}}
+          - \usepackage{underscore}
         shortnames: true
         x11names: true
     jss-html: default
-preamble: >
-  \usepackage{underscore}
-  \usepackage[T1]{fontenc} 
 author:
     # use this syntax to add text on several lines
     # To add another line, use \AND at the end of the previous one as above
@@ -47,6 +66,13 @@ editor:
 ```{r, setup, include=FALSE, message=FALSE}
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE, comment = "#>")
 options(tinytex.verbose = TRUE)
+
+suppressPackageStartupMessages(library(tidyverse))
+library(aggreCAT)
+library(tinytex)
+library(knitr)
+options(kableExtra.latex.load_packages = FALSE)
+library(kableExtra)
 ```
 
 ## Introduction {#sec-introduction}
@@ -337,19 +363,49 @@ method-specific weighting methods are used, modularised functions have
 been created for ease of debugging. These function names are prefixed
 with `weight_`.
 
+\newpage
+\blandscape
+
 ```{r}
-#| label: fig-method_summary_table
-#| eval: true
-#| message: false
 #| results: asis
-#| echo: false 
-#| prompt: true
-suppressPackageStartupMessages(library(tidyverse))
-#PLACEHOLDER TABLE
-#Awaiting @psychtek's 
+#| echo: false
+aggreCAT:::method_summary_table %>% 
+  ungroup %>% 
+  mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
+  tidyr::unite(agg_name_description, 
+               aggregator_function, 
+               aggregator_fun_desc, sep = " ") %>% 
+  select(-agg_name_description) %>% 
+  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>% 
+  kableExtra::kbl(col.names = c(
+                             "Method", 
+                             "Description", 
+                             "Data Requirements", 
+                             "Weighting Function", 
+                             "Elicitation Rounds", 
+                             "Elicitation Method",
+                             "Data Sources"), 
+                  escape = FALSE, 
+                  booktabs = TRUE, 
+                  longtable = TRUE,
+                  caption = "A CAPTION") %>% 
+  kableExtra::column_spec(column = c(1,4,6,7), width = "10em") %>% 
+  kableExtra::column_spec(column = c(5), width = "5em") %>% 
+  kableExtra::column_spec(column = c(2), width = "20em") %>% 
+  kable_styling(latex_options = c("hold_position", "repeat_header"), font_size = 6) %>% 
+  kableExtra::pack_rows("AverageWAgg(): Averaged best estimates", 1,5) %>% 
+  kableExtra::pack_rows("LinearWAgg() Linearly-weighted best estimates  ", 6,10) %>% 
+  kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths  ", 11,16) %>% 
+  kableExtra::pack_rows("ShiftingWAgg() Weighted by judgemetns that shift most after discussion", 17, 22) %>% 
+  kableExtra::pack_rows("ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data", 23,24) %>% 
+  kableExtra::pack_rows("ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution",25,26) %>% 
+  kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements. The aggregate is the median of the average distribution fitted to individual estimates", 27,28) %>% 
+  kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29) %>% 
+  kableExtra::pack_rows("???", 30,31) 
 ```
 
-------------------------------------------------------------------------
+\elandscape
+\newpage
 
 ### Package datasets
 
@@ -786,7 +842,7 @@ knitr::include_graphics("images/paste-A6B7C49F.png")
 
 As for [AverageWAgg]{.fct}, we supply the aggregation method names as a
 character vector to the [type]{.arg}, but in this instance we do so via
-the [purrr]{.pkg} function [map\\_dfr]{.fct}, which row-binds the
+the [purrr]{.pkg} function [map\\\_dfr]{.fct}, which row-binds the
 results of each application of [IntervalWAgg]{.fct} into a single
 [tibble]{.class} with the resultant Confidence Scores:
 
@@ -979,14 +1035,14 @@ focal_claims %>%
 
 The Confidence Score calculated for a given claim depends on data for
 other claims and participants included in the
-[expert\\_judgements]{.arg} argument other than the target claim,
+[expert\\\_judgements]{.arg} argument other than the target claim,
 because, by definition, [bayesianWAgg]{.fct} calculates the Confidence
 Score for a target claim using data from participants' assessments of
 other claims, and from all other claims in the dataframe parsed to the
-[expert\\_judgements]{.arg} argument. Because information about other
+[expert\\\_judgements]{.arg} argument. Because information about other
 claims than the target claim is used to calculate the Confidence Score
 for the target claim, what is included in the data supplied to the
-argument [expert\\_judgements]{.arg} in [bayesianWAgg]{.fct} will alter
+argument [expert\\\_judgements]{.arg} in [bayesianWAgg]{.fct} will alter
 the Confidence Score. Above, we calculated the Confidence Score for
 claim `czttvy` but including information from
 `r length(unique(focal_claims$paper_id)) - 1` additional claims included
@@ -1012,7 +1068,7 @@ to
 `r focal_claims %>% dplyr::filter(paper_id %in% c(108, 138)) %>% BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) %>% dplyr::filter(paper_id == 108) %>% pluck("cs") %>% round(2)`.
 Note that [BayesianWAgg]{.fct} cannot calculate confidence scores when
 judgements for only a single claim is provided to
-[expert\\_judgements]{.fct}, because by definition the underlying
+[expert\\\_judgements]{.fct}, because by definition the underlying
 Bayesian model calculates variance across multiple claims and multiple
 participants:
 
@@ -1088,7 +1144,7 @@ different methods and therefore to different assumptions?
 From a computational perspective, multiple aggregation methods must
 first be applied to the forecast prior to comparison and evaluation.
 This can be implemented very succinctly using [purrr]{.pkg}'s
-[map\\_dfr]{.fct} function [@purrr2020] , which takes a list of
+[map\\\_dfr]{.fct} function [@purrr2020] , which takes a list of
 aggregation methods, repeatedly applies each method to the dataframe
 `focal_claims`, and row-binds the resultant list of dataframes into a
 single dataframe, for example:
@@ -1120,8 +1176,8 @@ applied using the aggregation wrapper function [IntervalWAgg]{.fct}, but
 by supplying their method names as a character string to the
 [type]{.arg} argument, we must supply a second list of character strings
 (the same length as our list of wrapper functions) to the mapping
-function. We therefore use [map2\\_dfr]{.fct} instead of
-[map\\_dfr]{.fct} because there are now multiple inputs that must be
+function. We therefore use [map2\\\_dfr]{.fct} instead of
+[map\\\_dfr]{.fct} because there are now multiple inputs that must be
 iterated along in parallel (the list of functions and the corresponding
 aggregation [type]{.arg}) [@wickham2017b].
 
@@ -1182,7 +1238,7 @@ aggreCAT::data_outcomes %>%
   head
 ```
 
-The function [confidence\\_score\\_evaluation]{.fct} evaluates a set
+The function [confidence\\\_score\\\_evaluation]{.fct} evaluates a set
 of aggregated forecasts or Confidence Scores against a set of known or
 observed outcomes, returning the Area Under the ROC Curve (AUC), the
 Brier score, and classification accuracy of each method (results
@@ -1224,9 +1280,9 @@ aggreCAT::confidence_score_evaluation(
 We include two functions for visualising comparison and evaluation of
 Confidence Scores across multiple aggregation methods for a suite of
 forecasts from multiple participants,
-[confidence\\_scores\\_ridgeplot]{.fct} and
-[confidencescore\\_heatmap]{.fct}.
-[confidence\\_scores\\_ridgeplot]{.fct} generates ridgeline plots
+[confidence\\\_scores\\\_ridgeplot]{.fct} and
+[confidencescore\\\_heatmap]{.fct}.
+[confidence\\\_scores\\\_ridgeplot]{.fct} generates ridgeline plots
 using [ggridges]{.pkg} @ggridges2021 , and displays the distribution of
 predicted outcomes across a suite of forecasts for each aggregation
 method, grouped into separate 'mountain ranges' according to the
@@ -1258,17 +1314,17 @@ worst_forecasts <- inner_join(confidenceSCOREs, data_outcomes) %>%
   slice_max(difference, n = 3)
 ```
 
-While [confidencescore\\_heatmap]{.fct} is useful for comparison of
-aggregation methods, [confidencescore\\_heatmap]{.fct} is useful for
+While [confidencescore\\\_heatmap]{.fct} is useful for comparison of
+aggregation methods, [confidencescore\\\_heatmap]{.fct} is useful for
 visual comparative *evaluation* of aggregation methods.
-[confidencescore\\_heatmap]{.fct} generates heatmaps of forecasted
+[confidencescore\\\_heatmap]{.fct} generates heatmaps of forecasted
 Confidence Scores for each aggregation method included in the dataset
-provided to the argument [confidence\\_scores]{.arg} organised with
+provided to the argument [confidence\\\_scores]{.arg} organised with
 unique aggregation methods on the y-axis, and separate forecasts or
 `paper_id`s along the y-axis @fig-heatmap. The heatmap is blocked
 vertically according to the mathematical characteristics of each
 aggregation method, and horizontally into two groups, according to the
-binary outcomes in [data\\_outcomes]{.data}.
+binary outcomes in [data\\\_outcomes]{.data}.
 
 Horizontal grouping facilitates quick and simple evaluation of the
 aggregation methods. Perfectly accurate aggregation methods show dark
@@ -1310,9 +1366,9 @@ manipulate the raw judgements, aggregated Confidence Scores and outcome
 data to plot them with [ggplot2]{.pkg} [@ggplot2016] or other
 visualisation package. Below we plot the aggregated Confidence Scores
 along with the three-point judgements (subset using
-[preprocess\\_judgements]{.fct} on [focal\\_claims]{.data},
+[preprocess\\\_judgements]{.fct} on [focal\\\_claims]{.data},
 transforming judgements in percentages to probabilities by setting
-[percent\\_toggle]{.arg} to `TRUE`), @fig-aggregation :
+[percent\\\_toggle]{.arg} to `TRUE`), @fig-aggregation :
 
 #lst- identifier along with a lst-cap
 
@@ -1409,7 +1465,7 @@ IDEA protocol has been used to elicit judgements.
 
 Should the analyst wish to create their own aggregation functions, pre-
 and post-processing functions may be leveraged inside the functions
-([preprocess\\_judgements]{.fct} and [postprocess\\_judgements]{.fct},
+([preprocess\\\_judgements]{.fct} and [postprocess\\\_judgements]{.fct},
 respectively), as we have illustrated in data preparation for
 @fig-aggregation, @lst-confidencescores. These processing functions
 modularise key components of the aggregation's computational
@@ -1457,7 +1513,7 @@ implemented for aggregation of the [focal_claims]{.data} dataset
 (@lst-multi-method-workflow-non-supp), with aggregated Confidence Scores
 shown in @tbl-BYO-data-aggregate. Note that because the judgements are
 absolute values rather than probabilities, we set the
-[percent\\_toggle]{.arg} argument for each aggregation wrapper function
+[percent\\\_toggle]{.arg} argument for each aggregation wrapper function
 to [FALSE]{.val}: (DAVID/AAron to check.. )
 
 ```{r}
@@ -1549,7 +1605,7 @@ The [aggreCAT]{.pkg} package is easily extensible and production-ready.
 Each aggregation function follows a consistent modular blueprint,
 wherein data-wrangling of the inputs and outputs of aggregation is
 largely handled by pre- and post-processing functions
-([preprocess\\_judgements]{.fct} and [postprocess\\_judgements]{.fct},
+([preprocess\\\_judgements]{.fct} and [postprocess\\\_judgements]{.fct},
 respectively). This design expedites debugging by making it easier to
 pinpoint the exact source of errors, while also permitting the user to
 easily create their own custom aggregation methods.
@@ -1609,7 +1665,5 @@ content of the information does 541 not necessarily reflect the position
 or the policy of the Government, and no official 542 endorsement should
 be inferred.
 
-
 ::: {#refs}
-
 :::
