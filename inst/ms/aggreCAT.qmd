@@ -63,6 +63,7 @@ editor:
     wrap: 72
 callout-appearance: simple
 callout-icon: false
+appendix-style: none
 ---
 
 ```{r, setup, include=FALSE, message=FALSE}
@@ -197,7 +198,7 @@ datasets collected using such elicitation methods.
 
 We begin by formulating the problem of mathematically aggregating expert
 judgements. Each method, and its data requirements is summarised in
-**table X (cross-ref)**. Before outlining key aggregation methods, we
+Table \ref{tbl-method-summary-table}. Before outlining key aggregation methods, we
 briefly summarise package datasets, which were collected by the
 repliCATS project. By first describing the datasets before describing
 the aggregation methods in detail, we aim to provide a grounded
@@ -207,7 +208,7 @@ functions.
 
 Next, we describe and illustrate the main types of aggregators, which
 may be categorised according to their data requirements, mathematical
-properties and computational implementation (SECTION X). By selecting
+properties and computational implementation (@sec-focal-claims). By selecting
 representative functions of each key aggregator type and applying them
 to a subset of focal claims, we demonstrate the internal mechanics of
 how these methods differently operationalise the data to generate
@@ -280,7 +281,7 @@ aggregation functions. These aspects include:
     coding.
 
 The data and structured elicitation protocol requirements are described
-in table \ref{tbl-method-summary-table}. All aggregation methods requiring a
+in Table \ref{tbl-method-summary-table}. All aggregation methods requiring a
 single round of estimates can therefore be applied to expert judgments
 derived from any structured elicitation protocol that generates, lower,
 upper, and best estimates from each individual (i.e. not just the IDEA
@@ -340,8 +341,7 @@ of estimates, and by prior statistical knowledge as measured in a quiz.
 
 Below, we define standardised notation for describing weighted linear
 combinations of individual judgements where un-normalised weights are
-denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$ (
-@eq-eqn1 ). All weights must sum to one (be normalised), and that
+denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$ (@eq-eqn1). All weights must sum to one (be normalised), and that
 process is the same for all aggregation methods, thus the equations for
 the aggregation measures are presented for un-normalised weights.
 
@@ -474,7 +474,7 @@ transparency of reporting, and journal reporting [@Hanea2021]. Within
 distributed as columns in the dataset, and for each claim `paper_id`,
 each participant `user_id` is assigned a logical `1` or `0` if they
 included that reasoning category in support of their Best estimate for
-that claim. See section **ref(ReasonWAgg)** for details on the
+that claim. See @sec-ReasoningWAgg for details on the
 `ReasonWAgg` aggregation method.
 
 #### Bayesian Prior Data {#sec-bayesian-supplementary-data}
@@ -508,7 +508,7 @@ The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
 [@Wickham:2014vp]. Each aggregation method expects a `dataframe` or
 [tibble]{.class} of judgements (`data_ratings`) as its input, and
 returns a [tibble]{.class} consisting of the variables `method`,
-`paper_id`, `cs` and `n_experts` (see section **ref(ArMean)** for
+`paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for
 illustration of outputs); where `method` is a character vector
 corresponding to the aggregation method name specified in the `type`
 argument. Each aggregation is applied as a summary function
@@ -532,7 +532,7 @@ participants judgements. Each value provided by a participant is
 `timestamp`ed by the repliCATS elicitation platform, but this is not a
 required data field for applying aggregation functions.
 
-## Focal Claim Aggregation
+## Focal Claim Aggregation{#sec-focal-claims}
 
 We now demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
@@ -644,7 +644,7 @@ knitr::include_graphics(path = "images/paste-80B1C5CB.png")
 ```
 
 ::: {.callout}
-:::{#aggWorkflow }
+:::{#aggWorkflow}
 ### Box 1: Aggregation Workflow Blueprint{.unnumbered}
 
 #### Argument Structure and Expected Form
@@ -709,9 +709,7 @@ and the plausibility ratings under `binary_question` in column
 `element`. `three_point_filter` defaults to `TRUE` to provide only
 direct replication questions and associated values. Nearly all
 aggregation functions use only the round 2 judgements, so the
-`round_2_filter` defaults to `TRUE` ([See Table 1 for required inputs of
-all aggregation methods](#table1)). `preprocess_judgements()` further
-pre-processes the data to remove missing data, and to return the data
+`round_2_filter` defaults to `TRUE` (See Table \ref{tbl-method-summary-table} for required inputs of all aggregation methods). `preprocess_judgements()` further pre-processes the data to remove missing data, and to return the data
 into an appropriate structure for calculating weights and applying the
 aggregation function with `dplyr::summarise()`.
 
@@ -734,7 +732,7 @@ functions / methods not supplied in \code{aggreCAT}.
 
 For some aggregation methods, weights are necessary, and thus are
 computed prior to aggregation. Some aggregation methods compute weights
-using separate weighting functions ([See Table 1](#table1)), however,
+using separate weighting functions (See Table \ref{tbl-method-summary-table}), however,
 for aggregation methods with simpler weight computations, these are
 defined in-function, rather than being modularised.
 
@@ -787,7 +785,7 @@ Other aggregation methods that re-scale weights by using data from
 multiple claims other than the target claim under aggregation are
 `VarIndIntWAgg`, `IndIntAsymWAgg`, `KitchSinkWAgg` (applied with the
 wrapper function [IntervalWAgg]{.fct}) and `GranWAgg` (applied with the
-wrapper function [LinearWAgg]{.fct}), see [Table 1](#table1).
+wrapper function [LinearWAgg]{.fct}), see Table \ref{tbl-method-summary-table}.
 
 $$
 w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}
@@ -822,7 +820,7 @@ focal_claims %>%
   )
 ```
 
-### Aggregation Methods Requiring Supplementary Data
+### Aggregation Methods Requiring Supplementary Data{#sec-ReasoningWAgg}
 
 In addition to the three-point elicitation dataset `data_ratings`, Some
 aggregation methods require supplementary data inputs collected
@@ -835,8 +833,7 @@ argument. Aggregation methods requiring supplementary data, include
 `QuizWAgg` applied with **TODO: what wrapper function??** and
 `BayPRIORsAgg` (applied with [BayesianWAgg]{.fct}). Finally, `EngWAgg`
 requires data summarised forms of data collected by the repliCATS IDEA
-protocol, but not contained in `data_ratings`, see [Table 1](#table1)
-for details.
+protocol, but not contained in `data_ratings`, see Table \ref{tbl-method-summary-table} for details.
 
 We illustrate the usage and internal mechanics of this type of
 aggregation with the method `ReasonWAgg`, which weights participants'
@@ -919,8 +916,7 @@ focal_claims %>%
                  three_point_upper = "Upper Bound")
 ```
 
-Confidence Scores estimating the replicability for claim `09xkh8` (Table
-@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
+Confidence Scores estimating the replicability for claim `09xkh8` (@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
 using [ReasoningWAgg]{.fct} and by providing the supplementary data to
 the [reasons]{.arg} argument:
 
@@ -951,7 +947,7 @@ Both Bayesian methods `BayTriVar` and `BayPRIORsAgg` use the full
 three-point elicitation data, i.e., they use information contained in
 the uncertainty bound provided by individuals (upper ${U}_{i,c}$ and
 lower bounds ${L}_{i,c}$), in addition to Best Estimates, $B_{i,c}$.
-Like `IndIntWAgg` and other methods ([Table 1](#table1)), the Bayesian
+Like `IndIntWAgg` and other methods (Table \ref{tbl-method-summary-table}), the Bayesian
 aggregation methods also construct weights from information encoded in
 participant assessments of claims other than the target claim under
 aggregation. In fact, the Bayesian methods require more than a single
@@ -974,8 +970,7 @@ using default priors, priors are generated from a predictive model that
 estimates the probability of a claim replicating based on
 characteristics of the claim and publication [@Gould2021a]. Priors are
 parsed as supplementary data to the wrapper function
-[BayesianWAgg]{.fct} using the argument [priors]{.arg} (section
-@sec-bayesian-supplementary-data ) with each claim having its own unique
+[BayesianWAgg]{.fct} using the argument [priors]{.arg} (@sec-bayesian-supplementary-data ) with each claim having its own unique
 prior.
 
 We illustrate aggregation of participant judgements using the method
@@ -984,7 +979,7 @@ that [BayesianWAgg]{.fct} expects best estimates in the form of
 probabilities, so to convert elicited values in the form of percentages
 within the data parsed to [expert\_judgements]{.arg} to probabilities,
 the logical value `TRUE` is supplied to the argument
-[percent_toggle]{.arg} **(cross-ref to blueprint box):**
+[percent_toggle]{.arg} ([Box 1](#aggWorkflow)):
 
 ```{r}
 #| label: focal-claim-BayTriVar
@@ -1000,19 +995,19 @@ focal_claims %>%
 The Confidence Score calculated for a given claim depends on data for
 other claims and participants included in the
 [expert\_judgements]{.arg} argument other than the target claim,
-because, by definition, [bayesianWAgg]{.fct} calculates the Confidence
+because, by definition, [BayesianWAgg]{.fct} calculates the Confidence
 Score for a target claim using data from participants' assessments of
 other claims, and from all other claims in the dataframe parsed to the
 [expert\_judgements]{.arg} argument. Because information about other
 claims than the target claim is used to calculate the Confidence Score
 for the target claim, what is included in the data supplied to the
-argument [expert\_judgements]{.arg} in [bayesianWAgg]{.fct} will alter
+argument [expert\_judgements]{.arg} in [BayesianWAgg]{.fct} will alter
 the Confidence Score. Above, we calculated the Confidence Score for
 claim `czttvy` but including information from
 `r length(unique(focal_claims$paper_id)) - 1` additional claims included
 in the `focal_claims` dataframe:
 `r focal_claims %>% distinct(paper_id) %>% flatten_chr`. However, if we
-were to supply assessments for only two claims to [BayesianWAGG]{.fct},
+were to supply assessments for only two claims to [BayesianWAgg]{.fct},
 then we would observe a different result for focal claim `czttvy`:
 
 ```{r}
@@ -1052,10 +1047,9 @@ however this elicitation method is not strictly necessary for the of
 these methods. Methods that *do* require the full IDEA protocol for
 their correct mathematical implementation, such as [ShiftingWAgg]{.fct},
 which use two rounds of three-point judgements in which the second round
-judgements are revised after discussion, are listed in [Table
-1](#tbl-method_summary_table).
+judgements are revised after discussion, are listed in Table  \ref{tbl-method-summary-table}.
 
-## An illustrative workflow for use in real study contexts
+## An illustrative workflow for use in real study contexts{#sec-workflow}
 
 During phase one of the DARPA SCORE program, 509 participants assessed
 3000 unique claims using the repliCATS IDEA protocol. This required us
@@ -1140,8 +1134,8 @@ applied using the aggregation wrapper function [IntervalWAgg]{.fct}, but
 by supplying their method names as a character string to the
 [type]{.arg} argument, we must supply a second list of character strings
 (the same length as our list of wrapper functions) to the mapping
-function. We therefore use [map2\_dfr]{.fct} instead of
-[map\_dfr]{.fct} because there are now multiple inputs that must be
+function. We therefore use [purr::map2\_dfr]{.fct} instead of
+[purr::map\_dfr]{.fct} because there are now multiple inputs that must be
 iterated along in parallel (the list of functions and the corresponding
 aggregation [type]{.arg}) [@wickham2017b].
 
@@ -1152,10 +1146,10 @@ supplementary data have an additional argument for the supplementary
 data that must be parsed to the wrapper function call. We can chain the
 aggregation of the methods that do not require supplementary data, and
 the methods that do require supplementary data together very neatly
-using [dplyr]{.pkg}'s `bind_rows` function [@dplyr2021] and the
+using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the
 [magrittr]{.fct} pipe `%\>%` [@magrittr2020]. Below we implement this
 approach while applying the aggregation methods `ArMean`, `IntWAgg`,
-`IndIntWAgg`, `ShiftingWAgg` and `BayTriVar` to the repliCATS pilot
+`IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot
 program dataset `data_ratings`:
 
 ```{r}
@@ -1205,8 +1199,7 @@ aggreCAT::data_outcomes %>%
 The function [confidence\_score\_evaluation]{.fct} evaluates a set
 of aggregated forecasts or Confidence Scores against a set of known or
 observed outcomes, returning the Area Under the ROC Curve (AUC), the
-Brier score, and classification accuracy of each method (results
-displayed in @tbl-multi-method-workflow-eval ):
+Brier score, and classification accuracy of each method (@tbl-multi-method-workflow-eval):
 
 ```{r}
 #| label: multi-method-workflow-eval
@@ -1236,7 +1229,8 @@ aggreCAT::confidence_score_evaluation(
         Brier_Score = "Brier Score",
         Classification_Accuracy = "Classification Accuracy") %>% 
   gt::fmt_number(columns = -c(method, Classification_Accuracy)) %>% 
-  gt::fmt_percent(Classification_Accuracy,scale_values = FALSE,decimals = 0)
+  gt::fmt_percent(Classification_Accuracy,scale_values = FALSE, 
+                  decimals = 0)
 ```
 
 ### Visualising Judgements, Confidence Scores and Forecast Performance
@@ -1250,13 +1244,13 @@ forecasts from multiple participants,
 using [ggridges]{.pkg} @ggridges2021 , and displays the distribution of
 predicted outcomes across a suite of forecasts for each aggregation
 method, grouped into separate 'mountain ranges' according to the
-mathematical properties of the aggregation method @fig-ridgeplot.
+mathematical properties of the aggregation method (@fig-ridgeplot).
 
 ```{r}
 #| label: fig-ridgeplot
 #| fig-height: 8
 #| fig-width: 10
-#| fig-cap: "Ridge plots blah blah blah."
+#| fig-cap: "Ridgeline plots illustrating the distribution of aggregated Confidence Scores for the tibble `confidenceSCOREs`, grouped according to mathematical properties of each method."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1285,7 +1279,7 @@ visual comparative *evaluation* of aggregation methods.
 Confidence Scores for each aggregation method included in the dataset
 provided to the argument [confidence\_scores]{.arg} organised with
 unique aggregation methods on the y-axis, and separate forecasts or
-`paper_id`s along the y-axis @fig-heatmap. The heatmap is blocked
+`paper_id`s along the y-axis (@fig-heatmap). The heatmap is blocked
 vertically according to the mathematical characteristics of each
 aggregation method, and horizontally into two groups, according to the
 binary outcomes in [data\_outcomes]{.data}.
@@ -1298,7 +1292,7 @@ actual outcomes were `0` or `FALSE`. Deviation from this expectation
 indicates which aggregation methods for which claim/forecast, for which
 outcome type were inaccurate, and to what degree.
 
-For example, in figure @fig-heatmap, for the example dataset
+For example, in @fig-heatmap, for the example dataset
 [confidenceSCOREs]{.data} the successful replication of most claims was
 accurately forecasted by most methods, except for several claims. Some
 methods performed better than others for some claims (e.g. `BayTriVar`
@@ -1334,14 +1328,9 @@ visualisation package. Below we plot the aggregated Confidence Scores
 along with the three-point judgements (subset using
 [preprocess\_judgements]{.fct} on [focal\_claims]{.data},
 transforming judgements in percentages to probabilities by setting
-[percent\_toggle]{.arg} to `TRUE`), @fig-aggregation :
+[percent\_toggle]{.arg} to `TRUE`, @fig-aggregation, @lst-confidencescores):
 
-#lst- identifier along with a lst-cap
-
-```{r}
-#| label: lst-confidencescores
-#| lst-cap: "Visualising Confidence Scores"
-#| message: false
+```{#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
 plot_cs <- 
   confidenceSCOREs %>% 
   dplyr::left_join(aggreCAT::data_outcomes) %>% 
@@ -1387,6 +1376,42 @@ p <- plot_judgements %>%
 #| fig-align: center
 #| warning: false
 #| echo: false
+plot_cs <- 
+  confidenceSCOREs %>% 
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::mutate(data_type = "Confidence Scores") %>% 
+  dplyr::rename(x_vals = cs,
+         y_vals = method) %>% 
+  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
+
+plot_judgements <- 
+  aggreCAT::preprocess_judgements(focal_claims,
+                                  percent_toggle = TRUE) %>% 
+  tidyr::pivot_wider(names_from = element, 
+                     values_from = value) %>%
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::rename(x_vals = three_point_best,
+         y_vals = user_name) %>% 
+  dplyr::select(paper_id, 
+         y_vals, 
+         x_vals, 
+         tidyr::contains("three_point"),
+         outcome) %>% 
+  dplyr::mutate(data_type = "Elicited Probabilities")
+
+p <- plot_judgements %>%  
+  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
+                          by = "paper_id")}) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
+  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
+                      xmax = three_point_upper)) +
+  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
+  ggplot2::theme_classic() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
+  ggplot2::xlab("Probability of Replication") +
+  ggplot2::ylab(ggplot2::element_blank()) +
+  ggplot2::scale_colour_brewer(palette = "Set1")
 p
 ```
 
@@ -1396,8 +1421,7 @@ The aggregation methods supplied by the [aggreCAT]{.pkg} package can
 easily be applied to other forecasting problems. The only requirements
 are that the data inputs adhere to the required format (see [Box
 1](#aggWorkflow)), and that the expert judgements are elicited using the
-appropriate method, as required by each aggregation method (see [Table
-1](#table1)).
+appropriate method, as required by each aggregation method (see Table \ref{tbl-method-summary-table}).
 
 Judgement data provided to the `expert_judgements`,
 `data_justifications` or any supplementary data inputs argument must
@@ -1476,17 +1500,13 @@ green_turtles <-
 
 We can then apply multiple aggregation methods, using the same approach
 implemented for aggregation of the [focal_claims]{.data} dataset
-(@lst-multi-method-workflow-non-supp), with aggregated Confidence Scores
+(@lst-BYO-data-aggregate), with aggregated Confidence Scores
 shown in @tbl-BYO-data-aggregate. Note that because the judgements are
 absolute values rather than probabilities, we set the
 [percent\_toggle]{.arg} argument for each aggregation wrapper function
 to [FALSE]{.val}: (DAVID/AAron to check.. )
 
-```{r}
-#| label: lst-BYO-data-aggregate
-#| prompt: true
-#| results: false
-#| message: false
+```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
 turtle_CS <- 
   list(
   AverageWAgg,
@@ -1508,6 +1528,22 @@ turtle_CS <-
 #| tbl-cap: "Example aggregation of non-percentage / non-probabilistic estimates with several aggregation methods using Green Turtle dataset (Arlidge *et al*. 2020)."
 #| eval: true
 #| echo: false
+#| message: false
+#| warning: false
+turtle_CS <- 
+  list(
+  AverageWAgg,
+  IntervalWAgg,
+  IntervalWAgg,
+  ShiftingWAgg
+) %>%
+  purrr::map2_dfr(.y = list("ArMean",
+                            "IndIntWAgg",
+                            "IntWAgg",
+                            "ShiftWAgg"),
+                  .f = ~ .x(green_turtles, type = .y,
+                            percent_toggle = FALSE)
+  )
 turtle_CS %>% 
   gt::gt() %>% 
   gt::cols_label(method = "Method",
@@ -1550,7 +1586,7 @@ needed, which is a common use-case for the use of expert derived
 forecasts. Secondly, the [aggreCAT]{.pkg} package is easily paired with
 other tidyverse tools, such as [purrr]{.pkg}, [dplyr]{.pkg}, and
 [ggplot2]{.pkg}, as exemplified through the repliCATS workflow described
-in section X.
+in @sec-workflow.
 
 Thirdly, application of the [aggreCAT]{.pkg} package aggregation methods
 and performance evaluation tools is scalable, which is evidenced by the
@@ -1611,13 +1647,8 @@ rapidly and easily analysing the results of IDEA protocol and other
 structured elicitation procedures where mathematical aggregation of
 human forecasts is required.
 
-------------------------------------------------------------------------
-
-## Appendices{.unnumbered}
-
 \newpage
 \blandscape
-
 ```{r}
 #| results: asis
 #| echo: false
@@ -1661,6 +1692,7 @@ aggreCAT:::method_summary_table %>%
 \elandscape
 \newpage
 
+
 ## Computational details {.unnumbered}
 
 The analyses and results in this paper were obtained using the following
@@ -1668,14 +1700,14 @@ versions of `R` and `R` packages:
 
 ```{r}
 #| label: session-info
-sessioninfo::session_info()
+#| prompt: true
+devtools::session_info()
 ```
 
 ## Acknowledgments {.unnumbered}
 
 This project is sponsored by the Defense Advanced Research Projects
-Agency (DARPA) 540 under cooperative agreement No.HR001118S0047. The
-content of the information does 541 not necessarily reflect the position
-or the policy of the Government, and no official 542 endorsement should
+Agency (DARPA) under cooperative agreement No.HR001118S0047. The
+content of the information does not necessarily reflect the position
+or the policy of the Government, and no official endorsement should
 be inferred.
-
