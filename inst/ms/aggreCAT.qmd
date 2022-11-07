@@ -2,31 +2,33 @@
 title: "aggreCAT: an R Package for Mathematically Aggregating Expert judgements"
 format:
     jss-pdf:
-        keep-tex: true
-        header-includes:
-          - \usepackage[utf8]{inputenc}
-          - \usepackage{amsmath}
-          - \usepackage{amsfonts}
-          - \usepackage{caption}
-          - \usepackage{booktabs}
-          - \usepackage{longtable}
-          - \usepackage{array}
-          - \usepackage{multirow}
-          - \usepackage{wrapfig}
-          - \usepackage{float}
-          #- \usepackage{colortbl}
-          - \usepackage{pdflscape}
-          - \usepackage{tabu}
-          - \usepackage{threeparttable}
-          - \usepackage{threeparttablex}
-          - \usepackage[normalem]{ulem}
-          - \usepackage{makecell}
-          - \usepackage{xcolor}
-          - \newcommand{\blandscape}{\begin{landscape}}
-          - \newcommand{\elandscape}{\end{landscape}}
-          - \usepackage{underscore}
-        shortnames: true
-        x11names: true
+      classoption: shortnames
+      keep-tex: true
+      header-includes:
+        - \usepackage[utf8]{inputenc}
+        - \usepackage{amsmath}
+        - \usepackage{amsfonts}
+        - \usepackage{caption}
+        - \usepackage{booktabs}
+        - \usepackage{longtable}
+        - \usepackage{array}
+        - \usepackage{multirow}
+        - \usepackage{wrapfig}
+        - \usepackage{float}
+        #- \usepackage{colortbl}
+        - \usepackage{pdflscape}
+        - \usepackage{tabu}
+        - \usepackage{threeparttable}
+        - \usepackage{threeparttablex}
+        - \usepackage[normalem]{ulem}
+        - \usepackage{makecell}
+        - \usepackage{xcolor}
+        - \newcommand{\blandscape}{\begin{landscape}}
+        - \newcommand{\elandscape}{\end{landscape}}
+        - \usepackage{underscore}
+        # - \usepackage[authoryear,round]{natbib}
+      shortnames: true
+      x11names: true
     jss-html: default
 author:
     # use this syntax to add text on several lines
@@ -64,6 +66,7 @@ editor:
 callout-appearance: simple
 callout-icon: false
 appendix-style: none
+# pdf-engine: citeproc #until quarto repsects classoption:shortnames
 ---
 
 ```{r, setup, include=FALSE, message=FALSE}
@@ -133,7 +136,7 @@ researchers [@Gordon2020]. Consequently, the DARPA SCORE program
 generates Confidence Scores using expert elicitation based on two very
 different strategies -- prediction markets [@Gordon2020] and the IDEA
 protocol [@hemming2017], the latter of which is used by the repliCATS
-project [@Fraser:2021]. **X** of these research claims were randomly
+project @Fraser:2021. **X** of these research claims were randomly
 selected for direct replication, against which the elicited and
 aggregated Confidence Scores are 'ground-truthed'. These findings will
 aid the development of artificial intelligence tools that can
@@ -578,7 +581,7 @@ focal_claims
 
 ```{r}
 #| label: tbl-focal-claim
-#| tbl-cap: "Focal Claim Data: expert judgements for claim derived from a subset of 5 claims and 5 participants from `data\_ratings`. Judgements are displayed as percentages."
+#| tbl-cap: "Focal Claim Data: Round 2 expert judgements for claim 108 derived from a subset of 5 claims and 5 participants from `data\_ratings`. Judgements are displayed as percentages."
 #| eval: true
 #| echo: false
 #| results: asis
@@ -637,10 +640,10 @@ focal_claims %>%
 
 ```{r}
 #| label: fig-ArMean
-#| fig-cap: "`ArMean()` uses the Estimates (shown in colour) from each participant to compute the mean. We illustrate this using a single claim `zttvyg` for a subset of 5 out of 25 participants from the `data_ratings` dataset. Note that the data representations in this figure are for explanatory purposes only, the data in the actual aggregation is tidy, with long form structure and format."
+#| fig-cap: "ArMean with `AverageWAgg()` uses the Estimates (shown in colour) from each participant to compute the mean. We illustrate this using a single claim `zttvyg` for a subset of 5 out of 25 participants from the `data_ratings` dataset. Note that the data representations in this figure are for explanatory purposes only, the data in the actual aggregation is tidy, with long form structure and format."
 #| results: hold
 #| echo: false
-knitr::include_graphics(path = "images/paste-80B1C5CB.png")
+knitr::include_graphics(path = "images/ArMean.png")
 ```
 
 ::: {.callout}
@@ -795,12 +798,20 @@ $$
 \hat{p}_c\left( IntWAgg \right) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 $$ {#eq-IntWAgg}
 
+
+\newpage
+\blandscape
+
 ```{r}
 #| label: fig-IntWAgg-IndIntWAgg
-#| fig-cap: "Example applications of mathematical aggregation methods a\\) `IntWAgg` and b\\) `IndIntWAgg` using the wrapper function a1\\) `IntWAgg` uses participants' upper and lower bounds to construct performance weights. b2\\) This weighting computation is modified in `IndIntWAgg` whereby the weights for each individual are re-scaled by the largest interval width across all claims for a given individual. We exemplify this rescaling process by illustrating the calculation of participant 1's maximum interval width across all claims they assessed in the demonstration dataset `focal_claims`. This is repeated for every individual who has assessed the target claim under aggregation."
+#| fig-cap: "Example applications of mathematical aggregation methods a\\) `IntWAgg` and b\\) `IndIntWAgg` using the wrapper function a1\\) `IntWAgg` uses participants' upper and lower bounds to construct performance weights. b2\\) This weighting computation is modified in `IndIntWAgg` whereby the weights for each individual are re-scaled by the largest interval width across all claims for a given individual. We exemplify this rescaling process by illustrating the calculation of participant 1's maximum interval width across all claims they assessed in the demonstration dataset `focal_claims`. This is repeated for every individual who has assessed the target claim under aggregation. "
 #| echo: false
-knitr::include_graphics("images/paste-A6B7C49F.png")
+#| results: hold
+knitr::include_graphics("images/IntervalWAgg.png")
 ```
+
+\newpage
+\elandscape
 
 As for [AverageWAgg]{.fct}, we supply the aggregation method names as a
 character vector to the [type]{.arg}, but in this instance we do so via
@@ -866,7 +877,8 @@ best estimates are then summed to generate the Confidence Score
 #| label: fig-ReasonWAgg
 #| echo: false
 #| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `09xkh8`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of Confidence Scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
-knitr::include_graphics("images/img_ReasonWAgg.png")
+#| results: asis
+knitr::include_graphics("images/ReasonWAgg.png")
 ```
 
 The focal claim selected for aggregation using `ReasonWAgg` is `09xkh8`,
@@ -1048,6 +1060,15 @@ these methods. Methods that *do* require the full IDEA protocol for
 their correct mathematical implementation, such as [ShiftingWAgg]{.fct},
 which use two rounds of three-point judgements in which the second round
 judgements are revised after discussion, are listed in Table  \ref{tbl-method-summary-table}.
+
+```{r}
+#| label: fig-BayesianWAgg
+#| fig-cap: "Illustration of BayTriVar applied with `BayesianWAgg()`for a single claim, `paper_id = 108` from the `focal_claims` data object."
+#| results: hold
+#| echo: false
+knitr::include_graphics("images/BayesianWAgg.png")
+```
+
 
 ## An illustrative workflow for use in real study contexts{#sec-workflow}
 
@@ -1695,8 +1716,7 @@ aggreCAT:::method_summary_table %>%
 
 ## Computational details {.unnumbered}
 
-The analyses and results in this paper were obtained using the following
-versions of `R` and `R` packages:
+The analyses and results in this paper were obtained using the following computing environment, versions of `R` and `R` packages:
 
 ```{r}
 #| label: session-info
