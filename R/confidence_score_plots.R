@@ -197,7 +197,7 @@ confidence_score_heatmap <- function(confidence_scores = NULL,
                  y = factor(method, levels = rev(levels(factor(method)))),
                  fill = cs,
                  colour = cs) +
-    ggplot2::geom_tile(size = 1, linejoin = "mitre") +
+    ggplot2::geom_tile(linetype = 1, linejoin = "mitre") +
     ggplot2::scale_fill_distiller(palette = "RdBu", direction = 1) +
     ggplot2::scale_color_distiller(palette = "RdBu", direction = 1) +
     ggplot2::labs(x = "",
@@ -234,7 +234,7 @@ confidence_score_heatmap <- function(confidence_scores = NULL,
     ggplot2::aes(x = paper_id, y = factor(method, levels = rev(levels(factor(method)))),
                  fill = cs,
                  colour = cs) +
-    ggplot2::geom_tile(size = 1, linejoin = "mitre") +
+    ggplot2::geom_tile(linetype = 1, linejoin = "mitre") +
     ggplot2::scale_fill_distiller(palette = "RdBu", direction = 1) +
     ggplot2::scale_color_distiller(palette = "RdBu", direction = 1) +
     ggplot2::labs(x = "",
