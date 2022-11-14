@@ -46,6 +46,12 @@
 #' \mathbf{CR_i}(c,r)}{C})}{ascii}
 #'
 #' \mjdeqn{\hat{p}_c(ReasonWAgg2) = \sum_{i=1}^N \tilde{w}\_varReason_{i,c}B_{i,c}}{ascii}
+#' 
+#' @note 
+#' 
+#' When `flag_loarmean` is set to `TRUE`, two additional columns will be returned; `method_applied` (a character variable describing the method actually applied with values of either `LoArMean` or `ReasonWAgg`) and `no_reason_score` (a logical variable describing whether no reasoning scores were supplied for any user for the given claim, where `TRUE` indicates no reasoning scores supplied and `FALSE` indicates that at least one participant for that claim had a reasoning score greater than 0).
+#' 
+#' named method_applied (with values LoArMean or ReasonWAgg), and no_reason_score, a logical variable describing whether or not there were no reasoning scores for that claim.
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
 #' @param reasons A dataframe in the form of [data_supp_reasons]
