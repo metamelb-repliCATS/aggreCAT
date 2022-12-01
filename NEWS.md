@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# aggreCAT 0.0.0.9004
+
+- Plot funs updated
+- update Roxygen version in description
+- removed unneeded tests
+
+
 # aggreCAT 0.0.0.9003
 
 - added a `validator` fun in preprocess.

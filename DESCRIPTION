@@ -1,6 +1,6 @@
 Package: aggreCAT
 Title: Mathematically Aggregating Expert Judgments
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: c(person(given = "Aaron", 
                     family = "Willcox", 
                     role = "aut",
