@@ -1250,7 +1250,7 @@ forecasts from multiple participants,
 [confidence\_scores\_ridgeplot]{.fct} and
 [confidencescore\_heatmap]{.fct}.
 [confidence\_scores\_ridgeplot]{.fct} generates ridgeline plots
-using [ggridges]{.pkg} @ggridges2021 , and displays the distribution of
+using [ggridges]{.pkg} [@ggridges2021], and displays the distribution of
 predicted outcomes across a suite of forecasts for each aggregation
 method, grouped into separate 'mountain ranges' according to the
 mathematical properties of the aggregation method (@fig-ridgeplot).
