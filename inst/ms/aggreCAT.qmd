@@ -671,8 +671,8 @@ pipeline [@Yenni2019] , it can be useful to put aggregation methods into
 aggregation function instead of computing a Confidence Score using the
 aggregation method. By setting `placeholder` to `TRUE`, the user can
 supply a placeholder Confidence Score, which defaults to $65\%$, the
-average replicability of SBS research (citation? Fiona/David?). Should
-the user wish to set an alternative value, they can create a modified
+approximate average replication rate of SBS research claims [@Camerer2018].
+Should the user wish to set an alternative value, they can create a modified
 version of `method_placeholder()` for themselves and store this within
 the global environment. This function will then be called by the
 aggregation method when the `placeholder` argument is set to `TRUE`.
