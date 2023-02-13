@@ -717,7 +717,7 @@ data_ratings %>%
   dplyr::ungroup() %>% 
   dplyr::slice_sample(n = 1) %>% 
   tidyr::unnest(cols = c(data)) %>% 
-  preprocess_judgements()
+  preprocess_judgements() 
 ```
 
 The `preprocess_judgements()` function is exposed to the user to allow
@@ -733,16 +733,24 @@ defined in-function, rather than being modularised.
 
 After application of `preprocess_judgements()`, weights are constructed,
 and the aggregation method is applied, the function
-`post_process_judgements()` then processes the variables into the final
+`postprocess_judgements()` then processes the variables into the final
 data frame that is returned by each aggregation function. The post
 processing function returns a [tibble]{.class} consisting of
 observations equal to the number of unique claims that were parsed to
-`post_process_judgements()`, the `method`, associated `method_id` ,
-`paper_id` , the Confidence Score `cs`, as well as the number of
-participants `n_experts` whose assessments were used in the aggregation,
+`postprocess_judgements()`, the `method`, `paper_id` , the Confidence Score `cs`, 
+as well as the number of participants `n_experts` whose assessments were used in the aggregation,
+
+
 and the date of the first and last assessments `first_expert_date` and
 `last_expert_date` respectively. (David/AAron to check - are we still
 doing `method_id`)??
+
+
+
+
+A tibble of confidence scores `cs` for each `paper_id`, corresponding
+#' with an aggregation `method` (character).
+
 :::
 :::
 
