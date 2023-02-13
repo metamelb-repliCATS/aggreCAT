@@ -1051,7 +1051,7 @@ judgements are revised after discussion, are listed in Table  \ref{tbl-method-su
 
 ```{r}
 #| label: fig-BayesianWAgg
-#| fig-cap: "Illustration of BayTriVar applied with `BayesianWAgg()`for a single claim, `paper_id = 108` from the `focal_claims` data object."
+#| fig-cap: "Illustration of BayTriVar applied with `BayesianWAgg()`for a single claim, `paper_id = 108` from the `focal_claims` data object. Note that the claims 138, 186 and 24 contained in `focal_claims` are used in the calculation of pariticipant-level SD and claim-level SD, thus the Confidence Score returned by BayTriVar is sensitive to the other claims provided to argument `expert_judgements`."
 #| results: hold
 #| echo: false
 knitr::include_graphics("images/BayesianWAgg.png")
