@@ -182,7 +182,7 @@ mathematically aggregating judgements elicited from groups of experts
 into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
 package to implement these aggregation methods and deliver Confidence
 Score for over 3000 SBS research claims for phase one and **X** SBS
-claims for phase two of the the DARPA SCORE project.
+claims for phase two of the DARPA SCORE project.
 
 ![The IDEA protocol as deployed by the repliCATS project (reproduced
 with permission from Wintle et al.
@@ -852,7 +852,7 @@ $$
 $$ {#eq-ReasonWAgg}
 
 `ReasonWAgg` is applied with the wrapper function [ReasoningWAgg]{.fct},
-which uses the the coded reasoning data `data_supp_reasons`
+which uses the coded reasoning data `data_supp_reasons`
 (@sec-reasonwagg-supplementary-data) to compute a vector of weights,
 $w\_reason_{i,c}$ , the number of unique reasons provided by individual
 $i$ in support of their estimate for claim $c$ ([Figure
