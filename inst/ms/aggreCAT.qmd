@@ -667,7 +667,7 @@ Percentage values, counts, or other non probabilistic quantities are the default
 
 When working with regularly updated data and developing a reproducible
 pipeline [@Yenni2019] , it can be useful to put aggregation methods into
-'placeholder' mode, whereby a placeholder value is returned by he
+'placeholder' mode, whereby a placeholder value is returned by the
 aggregation function instead of computing a Confidence Score using the
 aggregation method. By setting `placeholder` to `TRUE`, the user can
 supply a placeholder Confidence Score, which defaults to $65\%$, the
