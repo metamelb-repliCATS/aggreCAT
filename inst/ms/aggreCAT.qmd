@@ -569,13 +569,10 @@ focal_claims <- data_ratings %>%
 # select 5 users to highlight in focal claim demonstration
 focal_users <- focal_claims %>% 
   dplyr::distinct(user_name) %>% 
-  dplyr::slice_sample(n=5) %>% 
-  dplyr::mutate(participant_name = paste("participant", rep(1:n())))
+  dplyr::slice_sample(n=5)
 # filter out non-focal users from focal claims
 focal_claims <- focal_claims %>%  
-  dplyr::right_join(focal_users, by = "user_name") %>% 
-  dplyr::select(-user_name) %>% 
-  dplyr::rename(user_name = participant_name)
+  dplyr::right_join(focal_users, by = "user_name") 
 focal_claims
 ```
 
@@ -894,9 +891,7 @@ a description of variables):
 #| label: prepare-supp-data
 #| prompt: true
 data_supp_reasons_focal <- aggreCAT::data_supp_reasons %>%  
-  dplyr::right_join(focal_users) %>% 
-  dplyr::select(-user_name) %>% 
-  dplyr::rename(user_name = participant_name)
+  dplyr::right_join(focal_users)
 
 data_supp_reasons_focal %>%
   dplyr::filter( paper_id == 24) %>%
