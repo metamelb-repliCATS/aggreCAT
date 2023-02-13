@@ -1039,6 +1039,8 @@ focal_claims %>%
   aggreCAT::BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE)
 ```
 
+Although we have set $n=2$ as the minimum number of claims for which variance is computed, it is up to the user to determine their own justifiable minimum for reliable variance calculations.
+
 Finally, all of the previous methods illustrated in this section have
 been used with data generated using the IDEA elicitation protocol,
 however this elicitation method is not strictly necessary for the of
