@@ -737,20 +737,8 @@ and the aggregation method is applied, the function
 data frame that is returned by each aggregation function. The post
 processing function returns a [tibble]{.class} consisting of
 observations equal to the number of unique claims that were parsed to
-`postprocess_judgements()`, the `method`, `paper_id` , the Confidence Score `cs`, 
-as well as the number of participants `n_experts` whose assessments were used in the aggregation,
-
-
-and the date of the first and last assessments `first_expert_date` and
-`last_expert_date` respectively. (David/AAron to check - are we still
-doing `method_id`)??
-
-
-
-
-A tibble of confidence scores `cs` for each `paper_id`, corresponding
-#' with an aggregation `method` (character).
-
+`postprocess_judgements()`, the `method`, `paper_id` , the Confidence Score `value`, 
+as well as the total number of participants `n_experts` whose assessments were used in the aggregation.
 :::
 :::
 
