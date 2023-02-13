@@ -864,18 +864,18 @@ best estimates are then summed to generate the Confidence Score
 ```{r}
 #| label: fig-ReasonWAgg
 #| echo: false
-#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `09xkh8`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of Confidence Scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
+#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `24`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of Confidence Scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
 #| results: asis
 knitr::include_graphics("images/ReasonWAgg.png")
 ```
 
-The focal claim selected for aggregation using `ReasonWAgg` is `09xkh8`,
+The focal claim selected for aggregation using `ReasonWAgg` is `24`,
 the round two three-point estimates from the five focal participants for
 this claim are shown in @tbl-reason-wagg-focal-claim. We first prepare
 the supplementary data for aggregation `data_supp_reasons`, subsetting
 only the participants contained in our `focal_claims` dataset. We also
 illustrate a subset of the supplementary data for our five focal
-participants for the focal claim `09xkh8` (see `?data_supp_reasons` for
+participants for the focal claim `24` (see `?data_supp_reasons` for
 a description of variables):
 
 ```{r}
@@ -897,7 +897,7 @@ data_supp_reasons_focal %>%
 
 ```{r}
 #| label: tbl-reason-wagg-focal-claim
-#| tbl-cap: "Focal Claim `09xkh8` judgements comprising best estimates, upper and lower bounds elicited from five participants. Judgements are displayed as percentages."
+#| tbl-cap: "Focal Claim `24` judgements comprising best estimates, upper and lower bounds elicited from five participants. Judgements are displayed as percentages."
 #| results: asis
 #| echo: false
 focal_claims %>%  
@@ -914,7 +914,7 @@ focal_claims %>%
                  three_point_upper = "Upper Bound")
 ```
 
-Confidence Scores estimating the replicability for claim `09xkh8` (@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
+Confidence Scores estimating the replicability for claim `24` (@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
 using [ReasoningWAgg]{.fct} and by providing the supplementary data to
 the [reasons]{.arg} argument:
 
