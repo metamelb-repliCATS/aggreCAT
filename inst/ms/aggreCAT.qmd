@@ -554,7 +554,7 @@ and finally whether supplementary data is required for aggregation.
 Here we demonstrate the application of aggregation methods for each
 group of methods using a set of 'focal claims' selected from the pilot
 study dataset supplied with the [aggreCAT]{.pkg} package. Below we
-subset the dataset `data_ratings` to include a sample of five claims
+subset the dataset `data_ratings` to include a sample of four claims
 with judgements from five randomly-sampled participants. From these
 focal claims, we select a target claim `czttvy` for which we will apply
 an exemplar aggregation method from each mathematical aggregator
@@ -886,7 +886,7 @@ the round two three-point estimates from the five focal participants for
 this claim are shown in @tbl-reason-wagg-focal-claim. We first prepare
 the supplementary data for aggregation `data_supp_reasons`, subsetting
 only the participants contained in our `focal_claims` dataset. We also
-illustrate a subset of the supplementary data for our 5 focal
+illustrate a subset of the supplementary data for our five focal
 participants for the focal claim `09xkh8` (see `?data_supp_reasons` for
 a description of variables):
 
@@ -911,7 +911,7 @@ data_supp_reasons_focal %>%
 
 ```{r}
 #| label: tbl-reason-wagg-focal-claim
-#| tbl-cap: "Focal Claim `09xkh8` judgements comprising best estimates, upper and lower bounds elicited from 5 participants. Judgements are displayed as percentages."
+#| tbl-cap: "Focal Claim `09xkh8` judgements comprising best estimates, upper and lower bounds elicited from five participants. Judgements are displayed as percentages."
 #| results: asis
 #| echo: false
 focal_claims %>%  
