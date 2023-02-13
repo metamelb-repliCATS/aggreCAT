@@ -1513,7 +1513,7 @@ implemented for aggregation of the [focal_claims]{.data} dataset
 shown in @tbl-BYO-data-aggregate. Note that because the judgements are
 absolute values rather than probabilities, we set the
 [percent\_toggle]{.arg} argument for each aggregation wrapper function
-to [FALSE]{.val}: (DAVID/AAron to check.. )
+to [FALSE]{.val}:
 
 ```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
 turtle_CS <- 
