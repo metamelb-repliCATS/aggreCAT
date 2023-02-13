@@ -1513,7 +1513,7 @@ green_turtles <-
           "L05", 2,	6.67,	7.74,	6.67) %>% 
   dplyr::group_by(user_name) %>% # pivot longer
   tidyr::pivot_longer(cols = tidyr::contains("three_point"), 
-               names_to = "element", "value") %>% 
+               names_to = "element", values_to = "value") %>% 
   dplyr::mutate(paper_id = 1, 
          round = ifelse(round ==1, "round_1", "round_2"),
          question = "direct_replication")
