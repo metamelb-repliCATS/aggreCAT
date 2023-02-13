@@ -663,12 +663,7 @@ specified by the `type` argument, defaulting to `ArMean` in the above example. T
 method applied, defaulting to the `type` argument, but this can be
 overridden by the user if they supply a non-`NULL` value to `name`.
 
-Aggregation functions expect the judgements supplied in
-`expert_judgements` to be percentage chances. However, oftentimes
-analysts may wish to elicit probabilities, counts, or other numeric
-quantities. By setting `percent_toggle` to `TRUE`, the user can turn
-toggle the expectation of percentage values *off*, providing
-non-percentage numeric judgements..
+Percentage values, counts, or other non probabilistic quantities are the default expected value type for ratings supplied to the `expert_judgements` argument of aggregation functions. By overriding the default value for the argument `percent_toggle` with `TRUE`, percentages values are converted to probabilities by the aggregation functions.
 
 When working with regularly updated data and developing a reproducible
 pipeline [@Yenni2019] , it can be useful to put aggregation methods into
