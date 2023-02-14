@@ -127,7 +127,7 @@ Social and Behavioural Sciences (SBS). Confidence Scores are
 quantitative measures of the likely reproducibility or replicability of
 a research claim or result, and may be used by consumers of scientific
 research as a proxy measure for their credibility in the absence of
-replication effort.
+replication effort [@alipourfard2021].
 
 Replications are time-consuming and costly [@Isager2020], and studies
 have shown that replication outcomes can be reliably elicited from
