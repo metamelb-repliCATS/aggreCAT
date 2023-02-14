@@ -41,8 +41,8 @@ author:
       | School of Forest and Ecosystem Sciences
       | University of Melbourne, Parkville, Victoria 3010
   - name: "Charles T. Gray"
-    affiliations: 'Newcastle University'
     orcid: '00000-0002-9978-011X'
+    affiliations: 'Newcastle University'
   - name: "Aaron Willcox"
     affiliations:  'University of Melbourne'
     orcid: '0000-0003-2536-2596'
