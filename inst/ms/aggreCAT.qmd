@@ -495,7 +495,7 @@ use the *mean*
 
 #### Aggregation Wrapper Functions
 
-Although there are **n** aggregation methods in total, we grouped
+Although there are 28 aggregation methods in total, we grouped
 methods based on their mathematical properties into eight 'wrapper'
 functions, denoted by the suffix `WAgg`, the abbreviation of *weighted
 aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
@@ -818,7 +818,7 @@ dplyr::bind_rows(
 
 ### Aggregation Methods Requiring Supplementary Data{#sec-ReasoningWAgg}
 
-In addition to the three-point elicitation dataset `data_ratings`, Some
+In addition to the three-point elicitation dataset `data_ratings`, some
 aggregation methods require supplementary data inputs collected
 externally to the repliCATS IDEA protocol. Each aggregation wrapper
 function that requires supplementary data expects this data to be
