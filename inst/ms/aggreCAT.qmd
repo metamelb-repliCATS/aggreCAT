@@ -176,7 +176,7 @@ judgements are elicited from each expert (*pre-* and *post-*group
 discussion).
 
 During the fourth step, *Aggregate*, judgements are mathematically
-aggregated into a single *Confidence Score* or forecast of
+aggregated into a single Confidence Score or forecast of
 replicability. The repliCATS project developed 28 different methods for
 mathematically aggregating judgements elicited from groups of experts
 into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
