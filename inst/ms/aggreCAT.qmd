@@ -45,13 +45,13 @@ author:
     orcid: '00000-0002-9978-011X'
   - name: "Aaron Willcox"
     affiliations:  'University of Melbourne'
-    orcid: 'https://orcid.org/0000-0003-2536-2596'
+    orcid: '0000-0003-2536-2596'
   - name: "Rose O'Dea"
     affiliations: 'University of New South Wales'
     orcid: '0000-0001-8177-5075'
   - name: "Rebecca Groenewegen"
     affiliations:  'University of Melbourne'
-    orcid: 'https://orcid.org/0000-0001-9177-8536'
+    orcid: '0000-0001-9177-8536'
   - name: 'David P. Wilkinson'
     orcid: '0000-0002-9560-6499'
     affiliations: 'University of Melbourne'
