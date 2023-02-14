@@ -133,10 +133,10 @@ replication effort.
 Replications are time-consuming and costly [@Isager2020], and studies
 have shown that replication outcomes can be reliably elicited from
 researchers [@Gordon2020]. Consequently, the DARPA SCORE program
-generated Confidence Scores for **TOTAL program CLAIMS** SBS claims using expert elicitation based on two very
+generated Confidence Scores for $> 4000$ SBS claims using expert elicitation based on two very
 different strategies -- prediction markets [@Gordon2020] and the IDEA
 protocol [@hemming2017], the latter of which is used by the repliCATS
-project @Fraser:2021. **X** of these research claims were randomly
+project @Fraser:2021. A proportion of these research claims were randomly
 selected for direct replication, against which the elicited and
 aggregated Confidence Scores are 'ground-truthed'. These aim of the DARPA SCORE project is to
 aid the development of artificial intelligence tools that can
