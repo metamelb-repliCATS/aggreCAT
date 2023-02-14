@@ -133,12 +133,12 @@ replication effort.
 Replications are time-consuming and costly [@Isager2020], and studies
 have shown that replication outcomes can be reliably elicited from
 researchers [@Gordon2020]. Consequently, the DARPA SCORE program
-generates Confidence Scores using expert elicitation based on two very
+generated Confidence Scores for **TOTAL program CLAIMS** SBS claims using expert elicitation based on two very
 different strategies -- prediction markets [@Gordon2020] and the IDEA
 protocol [@hemming2017], the latter of which is used by the repliCATS
 project @Fraser:2021. **X** of these research claims were randomly
 selected for direct replication, against which the elicited and
-aggregated Confidence Scores are 'ground-truthed'. These findings will
+aggregated Confidence Scores are 'ground-truthed'. These aim of the DARPA SCORE project is to
 aid the development of artificial intelligence tools that can
 automatically assign Confidence Scores.
 
@@ -704,7 +704,7 @@ and the plausibility ratings under `binary_question` in column
 `element`. `three_point_filter` defaults to `TRUE` to provide only
 direct replication questions and associated values. Nearly all
 aggregation functions use only the round 2 judgements, so the
-`round_2_filter` defaults to `TRUE` (See Table \ref{tbl-method-summary-table} for required inputs of all aggregation methods). `preprocess_judgements()` further pre-processes the data to remove missing data, and to return the data
+`round_2_filter` defaults to `TRUE` (See Table \ref{tbl-method-summary-table} for required inputs of all aggregation methods). `preprocess_judgements()` further pre-processes the data to remove missing data, and returnq the data
 into an appropriate structure for calculating weights and applying the
 aggregation function with `dplyr::summarise()`.
 
@@ -801,21 +801,19 @@ knitr::include_graphics("images/IntervalWAgg.png")
 \newpage
 \elandscape
 
-As for [AverageWAgg]{.fct}, we supply the aggregation method names as a
-character vector to the [type]{.arg}, but in this instance we do so via
-the [purrr]{.pkg} function [map\_dfr]{.fct}, which row-binds the
-results of each application of [IntervalWAgg]{.fct} into a single
-[tibble]{.class} with the resultant Confidence Scores:
+As for [AverageWAgg]{.fct}, when using the wrapper function [IntervalWAgg]{.fct} we supply the aggregation method names as a character vector to the `type` argument and the focal claim data frame to the argument `expert_judgements`, using [dplyr::bind_rows]{.fct} to bind the resultant Confidence Scores together:
 
 ```{r}
 #| label: focal-claim-IntWAgg
 #| prompt: true
 #| message: false
-focal_claims %>% 
-  purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"), 
-                 .f = ~ aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
-                                                 dplyr::filter(paper_id == "108"),
-                                               type = .x)
+dplyr::bind_rows(
+  aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
+                           dplyr::filter(paper_id == "108"),
+                         type = "IndIntWAgg"),
+  aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
+                           dplyr::filter(paper_id == "108"),
+                         type = "IntWAgg")
   )
 ```
 
@@ -829,9 +827,9 @@ provided as a [data.frame]{.class} or [tibble]{.class} in addition to
 the main judgements that are provided to the [expert_judements]{.arg}
 argument. Aggregation methods requiring supplementary data, include
 `ReasonWAgg` and `ReasonWAgg2` (applied with [ReasoningWAgg]{.fct}),
-`QuizWAgg` applied with **TODO: what wrapper function??** and
+`QuizWAgg` applied with [LinearWAgg]{.fct} and
 `BayPRIORsAgg` (applied with [BayesianWAgg]{.fct}). Finally, `EngWAgg`
-requires data summarised forms of data collected by the repliCATS IDEA
+requires summarised forms of data collected by the repliCATS IDEA
 protocol, but not contained in `data_ratings`, see Table \ref{tbl-method-summary-table} for details.
 
 We illustrate the usage and internal mechanics of this type of
@@ -901,7 +899,7 @@ data_supp_reasons_focal %>%
 #| results: asis
 #| echo: false
 focal_claims %>%  
-  dplyr::filter(paper_id == "24", round == "round_2") %>%   
+  dplyr::filter(paper_id == "24") %>%   
   tidyr::pivot_wider(names_from = element, values_from = value) %>% 
   dplyr::arrange(user_name) %>%   
   dplyr::select(paper_id, user_name, three_point_lower, three_point_best, three_point_upper) %>% 
@@ -1111,13 +1109,13 @@ different methods and therefore to different assumptions?
 From a computational perspective, multiple aggregation methods must
 first be applied to the forecast prior to comparison and evaluation.
 This can be implemented very succinctly using [purrr]{.pkg}'s
-[map\_dfr]{.fct} function [@purrr2020] , which takes a list of
+[map\_dfr]{.fct} function [@purrr2020, however see @lst-multi-method-workflow-non-supp for a row-binding approach], which takes a list of
 aggregation methods, repeatedly applies each method to the dataframe
-`focal_claims`, and row-binds the resultant list of dataframes into a
-single dataframe, for example:
+`focal_claims`, and row-binds the resultant list of `tibble`s into a
+single `tibble`, for example:
 
 ```{r}
-#| label: lst-multi-method-workflow-non-supp
+#| label: multi-method-workflow-non-supp
 #| message: false
 #| prompt: true
 list(
@@ -1136,6 +1134,34 @@ list(
                             type = .y, 
                             percent_toggle = TRUE)
   )
+
+dplyr::bind_rows(
+  AverageWAgg(focal_claims,
+              "ArMean", percent_toggle = TRUE),
+  IntervalWAgg(focal_claims,
+               "IndIntWAgg", percent_toggle = TRUE),
+  IntervalWAgg(focal_claims,
+               "IntWAgg", percent_toggle = TRUE),
+  ShiftingWAgg(focal_claims,
+               "ShiftWAgg", percent_toggle = TRUE),
+  BayesianWAgg(focal_claims,
+               "BayTriVar", percent_toggle = TRUE),
+)
+```
+
+```{#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
+dplyr::bind_rows(
+  AverageWAgg(focal_claims,
+              "ArMean", percent_toggle = TRUE),
+  IntervalWAgg(focal_claims,
+               "IndIntWAgg", percent_toggle = TRUE),
+  IntervalWAgg(focal_claims,
+               "IntWAgg", percent_toggle = TRUE),
+  ShiftingWAgg(focal_claims,
+               "ShiftWAgg", percent_toggle = TRUE),
+  BayesianWAgg(focal_claims,
+               "BayTriVar", percent_toggle = TRUE),
+)
 ```
 
 Given that aggregation methods `IntWAgg` and `IndIntWAgg` are both
@@ -1448,7 +1474,7 @@ requiring supplementary data to the elicitation data, the analyst should
 also adhere to the requirements stipulated for the relevant
 supplementary dataset described in the documentation.
 
-Although several aggregation functions *require* judgements judgements
+Although several aggregation functions *require* judgements that
 are elicited using the IDEA protocol, most aggregation methods require
 only a single round of elicitation that generates a set of three points;
 a best estimate, and upper and lower bounds about those estimates.
