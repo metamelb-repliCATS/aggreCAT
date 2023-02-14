@@ -1,5 +1,5 @@
 ---
-title: "aggreCAT: an R Package for Mathematically Aggregating Expert judgements"
+title: "aggreCAT: an R Package for Mathematically Aggregating Expert Judgements"
 format:
     jss-pdf:
       classoption: shortnames
