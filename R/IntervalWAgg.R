@@ -85,6 +85,10 @@
 #' @param name Name for aggregation method. Defaults to `type` unless specified.
 #' @param placeholder Toggle the output of the aggregation method to impute placeholder data.
 #' @param percent_toggle Change the values to probabilities. Default is `FALSE`.
+#' @param round_2_filter Note that the IDEA protocol results in both a Round 1
+#' and Round 2 set of probabilities for each claim. Unless otherwise specified,
+#' we will assume that the final Round 2 responses (after discussion) are being
+#' referred to.
 #'
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
@@ -98,7 +102,8 @@ IntervalWAgg <- function(expert_judgements,
                          type = "IntWAgg",
                          name = NULL,
                          placeholder = FALSE,
-                         percent_toggle = FALSE) {
+                         percent_toggle = FALSE,
+                         round_2_filter = TRUE) {
 
   if(!(type %in% c("IntWAgg",
                    "IndIntWAgg",
@@ -128,7 +133,8 @@ IntervalWAgg <- function(expert_judgements,
   } else {
 
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}}) %>%
+      preprocess_judgements(percent_toggle = {{percent_toggle}},
+                            round_2_filter = {{round_2_filter}}) %>%
       dplyr::group_by(paper_id)
 
     switch(type,
