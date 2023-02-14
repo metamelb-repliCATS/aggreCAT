@@ -56,7 +56,7 @@ author:
     orcid: '0000-0002-9560-6499'
     affiliations: 'University of Melbourne'
 abstract: |
-  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 28 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for 3000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
+  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 28 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for over 4000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
 keywords: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, R]
 keywords-formatted: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, "[R]{.proglang}"]
 bibliography: bibliography.bib  
@@ -181,8 +181,7 @@ replicability. The repliCATS project developed 28 different methods for
 mathematically aggregating judgements elicited from groups of experts
 into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
 package to implement these aggregation methods and deliver Confidence
-Score for over 3000 SBS research claims for phase one and **X** SBS
-claims for phase two of the DARPA SCORE project.
+Scores for over 4000 SBS research claims as a part of the DARPA SCORE project.
 
 ![The IDEA protocol as deployed by the repliCATS project (reproduced
 with permission from Wintle et al.
@@ -225,7 +224,7 @@ each method as well as a discussion of their relative merits, see
 
 Finally, we provide a detailed workflow for aggregating expert judgments
 for multiple forecasts, using multiple aggregation functions, as
-implemented by the repliCATS project in the course of delivering 3000
+implemented by the repliCATS project in the course of delivering $>$  4000
 Confidence Scores for the DARPA SCORE program. The [aggreCAT]{.pkg}
 package provides a set of supporting functions for evaluating or
 ground-truthing aggregated forecasts or Confidence Scores against a set
@@ -1058,8 +1057,8 @@ knitr::include_graphics("images/BayesianWAgg.png")
 
 ## An illustrative workflow for use in real study contexts{#sec-workflow}
 
-During phase one of the DARPA SCORE program, 509 participants assessed
-3000 unique claims using the repliCATS IDEA protocol. This required us
+During the SCORE program, **X** participants assessed more than
+4000 unique claims using the repliCATS IDEA protocol. This required us
 to batch aggregation over multiple claims, and to generate Confidence
 Scores for multiple claims. We also applied multiple aggregation methods
 to the same claim so that we could compare and evaluate the different
@@ -1625,8 +1624,8 @@ in @sec-workflow.
 Thirdly, application of the [aggreCAT]{.pkg} package aggregation methods
 and performance evaluation tools is scalable, which is evidenced by the
 application of the [aggreCAT]{.pkg} package to forecast the
-replicability of over 3000 research claims by the repliCATS project
-during phase 1 of the SCORE program. The scalability, timestamp and
+replicability of over 4000 research claims by the repliCATS project. 
+The scalability, timestamp and
 placeholder functionality allow the [aggreCAT]{.pkg} package to be built
 into production-ready pipelines for more complicated analyses where
 there are multiple forecasts being elicited and aggregated, where there
