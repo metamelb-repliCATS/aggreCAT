@@ -62,6 +62,10 @@
 #' @param placeholder Toggle the output of the aggregation method to impute placeholder data.
 #' @param percent_toggle Change the values to probabilities. Default is `FALSE`.
 #' @param flag_loarmean A toggle to impute LOArMean instead of ArMean when no participants have a reasoning weight for a specific claim (defaults `FALSE`).
+#' @param round_2_filter Note that the IDEA protocol results in both a Round 1
+#' and Round 2 set of probabilities for each claim. Unless otherwise specified,
+#' we will assume that the final Round 2 responses (after discussion) are being
+#' referred to.
 #'
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
@@ -79,7 +83,8 @@ ReasoningWAgg <- function(expert_judgements,
                           beta_param = c(6, 6),
                           placeholder = FALSE,
                           percent_toggle = FALSE,
-                          flag_loarmean = FALSE) {
+                          flag_loarmean = FALSE,
+                          round_2_filter = TRUE) {
 
   if(!(type %in% c("ReasonWAgg",
                    "ReasonWAgg2"))){
@@ -105,7 +110,8 @@ ReasoningWAgg <- function(expert_judgements,
   } else {
 
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}}) %>%
+      preprocess_judgements(percent_toggle = {{percent_toggle}},
+                            round_2_filter = {{round_2_filter}}) %>%
       dplyr::filter(element == "three_point_best") %>%
       dplyr::group_by(paper_id)
 
