@@ -99,7 +99,7 @@ or by using mathematical approaches [@Goossens2008].
 Although there are a variety of methods for mathematically aggregating
 expert judgements into single point-predictions, there are few
 open-source software implementations available to analysts or
-researchers. The [R]{.proglang} @R package [expert]{.pkg} provides three
+researchers. The [R]{.proglang} [@R] package [expert]{.pkg} provides three
 models of expert opinion to combine judgements elicited from groups of
 experts (CITE) , and [SHELF]{.pkg} implements only a single method
 (weighted linear pool) for aggregating expert judgements (CITE). Other
