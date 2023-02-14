@@ -1657,11 +1657,7 @@ to data from domains beyond forecasting the replicability of research
 claims through our minimal example using forecasts generated using the
 IDEA protocol for a fisheries and conservation problem.
 
-The package will be actively maintained into the future, and we expect
-additional aggregation methods to be added to the package during phase 2
-of the DARPA SCORE program. Bug reports and feature-requests can easily
-be lodged on the [aggreCAT]{.pkg} GitHub repository using reproducible
-examples created with [reprex]{.pkg} [@reprexpkg2020] on the repliCATS
+The package will be actively maintained into the future, beyond the life of the DARPA SCORE program. Bug reports and feature-requests can easily be lodged on the [aggreCAT]{.pkg} GitHub repository using reproducible examples created with [reprex]{.pkg} [@reprexpkg2020] on the repliCATS
 pilot study datasets shipped with the [aggreCAT]{.pkg} package.
 
 We have described the computational implementation of the aggregation
