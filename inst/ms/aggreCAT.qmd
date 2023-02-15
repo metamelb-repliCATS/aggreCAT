@@ -421,6 +421,7 @@ for a single claim to illustrate this structure of the core
 #| prompt: true
 #| results: hold
 
+options(width = 80)
 library(tidyverse,quietly = TRUE)
 library(aggreCAT)
 aggreCAT::data_ratings %>% 
@@ -878,7 +879,9 @@ data_supp_reasons_focal %>%
   dplyr::filter( paper_id == 24) %>%
   tidyr::pivot_longer(cols = c(-paper_id, -user_name)) %>%
   dplyr::arrange(name) %>%
-  tidyr::separate(name, into = c("reason_num", "reason"), sep = "\\s", extra = "merge") %>%
+  tidyr::separate(name, 
+                  into = c("reason_num", "reason"), 
+                  sep = "\\s", extra = "merge") %>%
   dplyr::select(-reason) %>%
   dplyr::group_by(paper_id, user_name) %>%
   tidyr::pivot_wider(names_from = reason_num) %>%
