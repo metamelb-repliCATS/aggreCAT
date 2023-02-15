@@ -300,7 +300,7 @@ each individual aggregation function, please consult [@Hanea2021] or the
 The total number of research claims, $claim$, or unique forecasts being
 assessed, $C$ , is indexed by $c = 1, ..., C$. The total number of
 individuals / experts / participants is denoted by $N$, and is indexed
-by $i = 1, ..., N$. Each claim *outcome* (i.e. the outcome of a replication study) assumes binary values, where the value is 0 if the claim is false, and 1 if the claim is true. '`TRUE`' claims are claims where the replication study found a significant result in the same direction as the original research claim, and '`FALSE`' claims are those where the replication study *did not* find a significant result in the same direction as the original study. For each claim $c$, an individual $i$ assesses the claim as being true or false through
+by $i = 1, ..., N$. Each claim *outcome* (i.e. the outcome of a replication study) assumes binary values, where the value is 0 if the claim is false, and 1 if the claim is true. '`TRUE`' claims are claims where the replication study found a significant result in the same direction as the original research claim, and '`FALSE`' claims are those where the replication study *did not* find a significant result in the same direction as the original study. For each claim $c$, an individual $i$ assesses the probability of a claim replicating by
 providing three probabilities: a lower bound ${L}_{i,c}$, an upper bound
 ${U}_{i,c}$, and a best estimate $B_{i,c}$, satisfying the inequalities:
 $0 \le Li,c \le Bi,c \le Ui,c \le 1$.
