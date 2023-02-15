@@ -280,8 +280,8 @@ aggregation functions. These aspects include:
     variance cannot be calculated on a single data point. While 2 is the mathematical minimum, the user should give consideration to what minimum number of claims should be used to reliably calculate measures of variance.
 -   Supplementary data requirements: several aggregation methods require
     supplementary data collected either in addition to or as part of the
-    repliCATS IDEA protocol, but which need additional qualitative
-    coding.
+    repliCATS IDEA protocol, some of which will need additional qualitative
+    coding before being parsed to the aggregation function.
 
 The data and structured elicitation protocol requirements are described
 in Table \ref{tbl-method-summary-table}. All aggregation methods requiring a
