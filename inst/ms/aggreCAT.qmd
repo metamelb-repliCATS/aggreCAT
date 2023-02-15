@@ -411,16 +411,15 @@ ranging from (0,100). The `binary_question`s corresponding to
 comprehensibility and involvement consist of binary values (`1` for the
 affirmative, and `-1` for the negative). Finally, values corresponding
 to participants' comprehension ratings are on a `likert_binary` scale
-from `1` through `7`. Below we show some example data for a single user
+from `1` through `7`. Note that additional columns with participant attributes can be included in the ratings dataset if required by the user, we include the `group` column in `data-ratings`, which describes the group number the participant was a part of. Below we show some example data for a single user
 for a single claim to illustrate this structure of the core
-`data_ratings` dataset.
+`data_ratings` dataset. 
 
 ```{r}
 #| label: data_ratings-sample
 #| message: false
 #| prompt: true
 #| results: hold
-
 options(width = 80)
 library(tidyverse,quietly = TRUE)
 library(aggreCAT)
