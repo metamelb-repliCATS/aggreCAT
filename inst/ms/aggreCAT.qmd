@@ -405,7 +405,7 @@ of a claim; `three_point_best`, `three_point_lower` and
 respectively. `binary_question` describes the `element` for both the
 plausibility rating (`belief_binary`) and involvement
 (`involved_binary`) questions, whereas `likert_binary` is the `element`
-describing a participant's `comprehension` rating. judgements are
+describing a participant's `comprehension` rating. Judgements are
 recorded in column `value` in the form of percentage probabilities
 ranging from (0,100). The `binary_question`s corresponding to
 comprehensibility and involvement consist of binary values (`1` for the
