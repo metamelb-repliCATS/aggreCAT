@@ -423,8 +423,7 @@ for a single claim to illustrate this structure of the core
 
 library(tidyverse,quietly = TRUE)
 library(aggreCAT)
-data(data_ratings)
-data_ratings %>% 
+aggreCAT::data_ratings %>% 
   dplyr::filter(paper_id == dplyr::first(paper_id), 
                 user_name == dplyr::first(user_name)) %>% 
   print(., n = nrow(.))
