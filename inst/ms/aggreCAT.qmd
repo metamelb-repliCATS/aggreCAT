@@ -327,7 +327,7 @@ breadth and variability of qualitative reasons used by experts to
 justify their judgements, can be used to form weights in the absence of
 measures of experts' prior performance [@Hanea2021].
 
-The aggregation methods other than the mean, median and Bayesian
+The aggregation methods other than the [AverageWAgg]{.fct} and Bayesian
 approaches in [aggreCAT]{.pkg} each employ weighting schemes that are
 informed by proxies for good forecasting performance whereby experts'
 estimates are weighted differently by measures of reasoning, engagement,
@@ -338,9 +338,8 @@ of estimates, and by prior statistical knowledge as measured in a quiz.
 
 Below, we define standardised notation for describing weighted linear
 combinations of individual judgements where un-normalised weights are
-denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$ (@eq-eqn1). All weights must sum to one (be normalised), and that
-process is the same for all aggregation methods, thus the equations for
-the aggregation measures are presented for un-normalised weights.
+denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$ (@eq-eqn1). Given that for all aggregation methods weights are normalised, and that the normalisation process is the same for each aggregation method, the equations for the aggregation methods are presented for un-normalised weights.
+
 
 $$
 \hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}
