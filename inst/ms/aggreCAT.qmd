@@ -260,14 +260,14 @@ implementation and data requirements, because these inform the function
 arguments as well as the type and form of the data that is parsed to the
 aggregation functions. These aspects include:
 
--   Elicitation Method, number of elicitation rounds: the majority of
+-   Elicitation requirement, number of elicitation rounds: the majority of
     aggregation methods require data from only a single round of
     judgements, i.e. the final post-discussion estimates. However, some
     aggregation methods require data from both rounds of judgements,
     which may be elicited using the IDEA protocol or other similar
     structured elicitation protocol in which there are two rounds of
     judgements.
--   Elicitation method, single point or three point elicitation: several
+-   Elicitation requirement, single point or three point elicitation: several
     aggregation methods use only a single data point elicited from
     individuals (their best estimate), however, most aggregation methods
     require a best estimate, and estimates of uncertainty in the form of
