@@ -276,6 +276,8 @@ aggregation functions. These aspects include:
     weighted aggregation methods consist of weights that are calculated
     from properties of participant judgements across multiple
     forecasting questions, not just the target claim being aggregation.
+    Secondly, for aggregation methods that calculate variance in estimates,
+    variance cannot be calculated on a single data point. While 2 is the mathematical minimum, the user should give consideration to what minimum number of claims should be used to reliably calculate measures of variance.
 -   Supplementary data requirements: several aggregation methods require
     supplementary data collected either in addition to or as part of the
     repliCATS IDEA protocol, but which need additional qualitative
