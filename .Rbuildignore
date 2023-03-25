@@ -24,3 +24,6 @@ vignettes/test_table.Rmd
 ^test_tble$
 ^test$
 ^inst/ms$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
