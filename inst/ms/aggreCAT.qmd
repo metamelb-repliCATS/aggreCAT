@@ -463,10 +463,11 @@ into one of 25 unique reasoning categories by the repliCATS Reasoning
 team [@Wintle:2021]. Reasoning categories include plausibility of the
 claim, effect size, sample size, presence of a power analysis,
 transparency of reporting, and journal reporting [@Hanea2021]. Within
-`data_supp_reasons`, each of the 25 categories of reasoning are
-distributed as columns in the dataset, and for each claim `paper_id`,
-each participant `user_id` is assigned a logical `1` or `0` if they
-included that reasoning category in support of their Best estimate for
+`data_supp_reasons`, each of the reasoning categories that passed
+our inter-coder reliability threshold are
+distributed as columns in the dataset whose names are prefixed with `RW`, 
+and for each claim `paper_id`, each participant `user_id` is assigned a logical 
+`1` or `0` if they included that reasoning category in support of their Best estimate for
 that claim. See @sec-ReasoningWAgg for details on the
 `ReasonWAgg` aggregation method.
 
