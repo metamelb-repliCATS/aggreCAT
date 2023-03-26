@@ -448,11 +448,9 @@ statistical concepts and meta-research that we expect participants to be
 aware of in order to reliably evaluate the replicability of research
 claims. Quiz responses are contained in `data_supp_quiz` and are used to
 construct performance weights for the aggregation method `QuizWAgg`
-where each participant receives a `quiz_score` from 0 - **X (TODO)** if
-they completed the quiz, and `NA` if they did not attempt or fully
-complete the quiz [see @Hanea2021 for further details]. (Question for
-Bonnie, possibly Rose?: Pretty sure they get points for any question
-they completed, even if they didn't finish)
+where each participant receives a `quiz_score` if
+they completed the quiz, and `NA` if they did not attempt the quiz [see @Hanea2021 for further details]. 
+
 
 #### Reasoning Data {#sec-reasonwagg-supplementary-data}
 
