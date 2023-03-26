@@ -495,7 +495,7 @@ options are described in each aggregation wrapper functions' help page.
 ### 'Tidy' Aggregation and Prescribed Inputs
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
-[@Wickham:2014vp]. Each aggregation method expects a `dataframe` or
+[@Wickham:2014vp]. Each aggregation method expects a [data.frame]{.class} or
 [tibble]{.class} of judgements (`data_ratings`) as its input, and
 returns a [tibble]{.class} consisting of the variables `method`,
 `paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for
