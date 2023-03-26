@@ -191,11 +191,11 @@ with permission from Wintle et al.
 In this paper we aim to provide a detailed overview of the
 [aggreCAT]{.pkg} package so that researchers may apply the aggregation
 functions described in [@Hanea2021] to their own expert elicitation
-datasets where mathematical aggregation is required. Note that
-judgements elicited using Delphi and other similar elicitation methods
-that use behavioural or consensus aggregation may not be mathematically
-aggregated, and thus the [aggreCAT]{.pkg} package is not applicable to
-datasets collected using such elicitation methods.
+datasets where mathematical aggregation is required. Note that judgements
+that have already been subjected to behavioural or consensus aggregation 
+may not be subsequently mathematically aggregated, however individual elicited
+judgements may be aggregated mathematically as an alternative or complement
+to behavioural or consensus-based aggregation.
 
 We begin by formulating the problem of mathematically aggregating expert
 judgements. Each method, and its data requirements is summarised in
