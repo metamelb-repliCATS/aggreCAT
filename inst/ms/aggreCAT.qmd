@@ -432,12 +432,12 @@ aggreCAT::data_ratings %>%
 Not all data necessary for constructing weights on performance is
 contained in `data_ratings`. Additional data collected as part of the
 repliCATS IDEA protocol are contained within separate datasets to
-`data_ratings`. On the repliCATS platform users were given the option to
-comment on others' justifications (`data_comments`), to vote on others'
-comments (`data_comment_ratings`) and on others' justifications
-(`data_justification_ratings`). Justifications for giving particular
-judgements are contained in `data_justifications`. Finally,
-[aggreCAT]{.pkg} contains three 'supplementary' datasets containing data
+`data_ratings`. Participants provided justifications for giving particular
+judgemetns, and these are contained in `data_justifications`. On the repliCATS 
+platform users were given the option to comment on others' justifications 
+(`data_comments`), to vote on others' comments (`data_comment_ratings`) and on 
+others' justifications (`data_justification_ratings`). Finally, [aggreCAT]{.pkg} 
+contains three 'supplementary' datasets containing data
 collected externally to the repliCATS IDEA protocol: `data_supp_quiz`,
 `data_supp_priors`, and `data_supp_reasons`.
 
