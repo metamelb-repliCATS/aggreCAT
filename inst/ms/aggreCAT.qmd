@@ -511,9 +511,10 @@ data with the results of all aggregation methods row bound together in a
 single `tibble`.
 
 Each aggregation function requires values derived from three-point
-elicitation (best-estimate, upper and lower bound). For every
+elicitation (best-estimate, upper and lower bound), however, some methods
+require only the best-estimates for mathematical aggregation. For every
 aggregation function, the three-point elicitation values corresponding
-to the `"direct_replication"` question are required inputs. Of the
+to the `direct_replication` question are required inputs. Of the
 `question` and `element`s other than the three-point elicitation
 `element`s belonging to the direct replication `question`, only the
 `comprehension` question with the `likert_binary` elements is required
@@ -533,8 +534,7 @@ methods with non-weighted linear combinations of judgements, weighted
 linear combinations of judgements, re-scaled weighted linear
 combinations of judgements, methods that require supplementary data, and
 methods that require data elicited from the full IDEA protocol. Each
-group of methods differs in the type of judgements elicited (single- or three-point estimates), the number of elicitation rounds (one
-or two rounds), whether multiple forecasts / elicited judgements are
+group of methods differs in the type of judgements elicited (single- or three-point estimates), the number of elicitation rounds (one or two rounds), whether multiple forecasts / elicited judgements are
 used during confidence score computation for a target forecast / claim,
 and finally whether supplementary data is required for aggregation.
 
