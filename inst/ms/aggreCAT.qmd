@@ -55,7 +55,7 @@ author:
     orcid: '0000-0002-9560-6499'
     affiliations: 'University of Melbourne'
 abstract: |
-  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 28 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for over 4000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
+  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 27 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for over 4000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
 keywords: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, R]
 keywords-formatted: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, "[R]{.proglang}"]
 bibliography: bibliography.bib  
@@ -106,7 +106,7 @@ experts (CITE) , and [SHELF]{.pkg} implements only a single method
 [R]{.proglang} packages providing methods to mathematically aggregate
 expert judgements do so for non-point predictions, for example,
 [opera]{.pkg}, which generates time-series predictions (CITE). In this
-paper we present the [aggreCAT]{.pkg} package, which provides **28**
+paper we present the [aggreCAT]{.pkg} package, which provides 27 
 different methods for mathematically aggregating judgements within
 groups of experts into a single forecast.
 
@@ -176,7 +176,7 @@ discussion).
 
 During the fourth step, *Aggregate*, judgements are mathematically
 aggregated into a single Confidence Score or forecast of
-replicability. The repliCATS project developed 28 different methods for
+replicability. The repliCATS project developed 27 different methods for
 mathematically aggregating judgements elicited from groups of experts
 into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
 package to implement these aggregation methods and deliver Confidence
@@ -306,7 +306,7 @@ ${U}_{i,c}$, and a best estimate $B_{i,c}$, satisfying the inequalities:
 $0 \le Li,c \le Bi,c \le Ui,c \le 1$.
 
 Every claim is assessed by multiple individuals, and their probabilities
-are aggregated using one of the 28 aggregation methods to obtain a group
+are aggregated using one of the aggregation methods to obtain a group
 or aggregate probability, denoted by $\hat{p}_c$. The aggregated
 probability calculated using a specific method, is given by
 $\hat{p}_{c}\left(Method \space ID \right)$. Each aggregation is
@@ -488,7 +488,7 @@ use the *mean*
 
 #### Aggregation Wrapper Functions
 
-Although there are 28 aggregation methods in total, we grouped
+Although there are 27 aggregation methods in total, we grouped
 methods based on their mathematical properties into eight 'wrapper'
 functions, denoted by the suffix `WAgg`, the abbreviation of *weighted
 aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
@@ -1587,7 +1587,7 @@ The [aggreCAT]{.pkg} package provides a diverse suite of methods for
 mathematically aggregating judgements elicited from groups of experts
 using structured elicitation procedures, such as the IDEA protocol. The
 [aggreCAT]{.pkg} package was developed by the repliCATS project as a
-part of the DARPA SCORE program to implement the 28 aggregation methods
+part of the DARPA SCORE program to implement the 27 aggregation methods
 described in Hanea et al. [-@Hanea2021].
 
 There are very few open-source tools available to the researcher wishing
