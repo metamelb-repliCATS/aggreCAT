@@ -479,11 +479,7 @@ probability of a claim replicating estimated from a predictive model
 participants assessing a given claim $c$ [@Hanea2021]. The prior data is
 contained in `data_supp_priors` with each claim in column `paper_id`
 being assigned a prior probability (on the logit scale) of the claim
-replicating in column `prior_means`. (**TODO** should explain further
-about the mean / median of the distribution, ie internal workings of
-BayPRIORsAgg??) Also, I notice that in our description / preregistration
-of BayPRIORsAgg we have said we will use the *median*, but we actually
-use the *mean*
+replicating in column `prior_means`. 
 
 #### Aggregation Wrapper Functions
 
