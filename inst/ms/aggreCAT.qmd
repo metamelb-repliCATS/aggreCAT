@@ -986,7 +986,7 @@ for the target claim, what is included in the data supplied to the
 argument `expert_judgements` in [BayesianWAgg]{.fct} will alter
 the Confidence Score. Above, we calculated the Confidence Score for
 claim `108` but including information from
-`r length(unique(focal_claims$paper_id)) - 1` additional claims included
+`r xfun::numbers_to_words(length(unique(focal_claims$paper_id)) - 1)` additional claims included
 in the `focal_claims` [data.frame]{.class}:
 `r focal_claims %>% distinct(paper_id) %>% flatten_chr`. However, if we
 were to supply assessments for only two claims to [BayesianWAgg]{.fct},
