@@ -942,7 +942,7 @@ uncertainty in best estimates: variability in best estimates across all
 claims, variability in estimates across all individuals, and
 claim-participant variability (which is derived from an individuals'
 upper and lower bounds). This Bayesian model, implemented using
-[R2JAGS]{.pkg}[@R2JAGS], takes the log odds transformed individual best
+[R2JAGS]{.pkg} [@R2JAGS], takes the log odds transformed individual best
 estimates, and uses a normal likelihood function to derive a posterior
 distribution for the probability of replication. The estimated
 confidence score is the mean of this posterior distribution.
