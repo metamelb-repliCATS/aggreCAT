@@ -1321,14 +1321,14 @@ confidence_score_heatmap(confidence_scores = confidenceSCOREs,
 ```
 
 Finally, creating bespoke user-defined plots is relatively easy --
-because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s, we can easily
+because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or [tibble]{.class}s, we can easily
 manipulate the raw judgements, aggregated Confidence Scores and outcome
 data to plot them with [ggplot2]{.pkg} [@ggplot2016] or other
 visualisation package. Below we plot the aggregated Confidence Scores
 along with the three-point judgements (subset using
-[preprocess\_judgements]{.fct} on [focal\_claims]{.data},
+[preprocess\_judgements]{.fct} on `focal_claims`,
 transforming judgements in percentages to probabilities by setting
-[percent\_toggle]{.arg} to `TRUE`, @fig-aggregation, @lst-confidencescores):
+`percent_toggle` to `TRUE`, @fig-aggregation, @lst-confidencescores):
 
 ```{#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
 plot_cs <- 
