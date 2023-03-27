@@ -812,12 +812,7 @@ externally to the repliCATS IDEA protocol. Each aggregation wrapper
 function that requires supplementary data expects this data to be
 provided as a [data.frame]{.class} or [tibble]{.class} in addition to
 the main judgements that are provided to the [expert_judements]{.arg}
-argument. Aggregation methods requiring supplementary data, include
-`ReasonWAgg` and `ReasonWAgg2` (applied with [ReasoningWAgg]{.fct}),
-`QuizWAgg` applied with [LinearWAgg]{.fct} and
-`BayPRIORsAgg` (applied with [BayesianWAgg]{.fct}). Finally, `EngWAgg`
-requires summarised forms of data collected by the repliCATS IDEA
-protocol, but not contained in `data_ratings`, see Table \ref{tbl-method-summary-table} for details.
+argument \ref{tbl-method-summary-table}.
 
 We illustrate the usage and internal mechanics of this type of
 aggregation with the method `ReasonWAgg`, which weights participants'
