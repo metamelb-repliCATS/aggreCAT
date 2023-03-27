@@ -813,7 +813,7 @@ aggregation methods require supplementary data inputs collected
 externally to the repliCATS IDEA protocol. Each aggregation wrapper
 function that requires supplementary data expects this data to be
 provided as a [data.frame]{.class} or [tibble]{.class} in addition to
-the main judgements that are provided to the [expert_judements]{.arg}
+the main judgements that are provided to the `expert_judements`
 argument \ref{tbl-method-summary-table}.
 
 We illustrate the usage and internal mechanics of this type of
@@ -900,7 +900,7 @@ focal_claims %>%
 
 Confidence Scores estimating the replicability for claim `24` (@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
 using [ReasoningWAgg]{.fct} and by providing the supplementary data to
-the [reasons]{.arg} argument:
+the `reasons` argument:
 
 ```{r}
 #| label: focal-claim-ReasonWAgg
@@ -952,7 +952,7 @@ using default priors, priors are generated from a predictive model that
 estimates the probability of a claim replicating based on
 characteristics of the claim and publication [@Gould2021a]. Priors are
 parsed as supplementary data to the wrapper function
-[BayesianWAgg]{.fct} using the argument [priors]{.arg} (@sec-bayesian-supplementary-data) with each claim having its own unique
+[BayesianWAgg]{.fct} using the argument `priors` (@sec-bayesian-supplementary-data) with each claim having its own unique
 prior.
 
 We illustrate aggregation of participant judgements using the method
@@ -961,7 +961,7 @@ that [BayesianWAgg]{.fct} expects best estimates in the form of
 probabilities, so to convert elicited values in the form of percentages
 within the data parsed to `expert_judgements` to probabilities,
 the logical value `TRUE` is supplied to the argument
-[percent_toggle]{.arg} ([Box 1](#aggWorkflow)):
+`percent_toggle` ([Box 1](#aggWorkflow)):
 
 ```{r}
 #| label: focal-claim-BayTriVar
@@ -1277,12 +1277,12 @@ aggregation methods, [confidencescore\_heatmap]{.fct} is useful for
 visual comparative *evaluation* of aggregation methods.
 [confidencescore\_heatmap]{.fct} generates heatmaps of forecasted
 Confidence Scores for each aggregation method included in the dataset
-provided to the argument [confidence\_scores]{.arg} organised with
+provided to the argument `confidence_scores` organised with
 unique aggregation methods on the y-axis, and separate forecasts or
 `paper_id`s along the y-axis (@fig-heatmap). The heatmap is blocked
 vertically according to the mathematical characteristics of each
 aggregation method, and horizontally into two groups, according to the
-binary outcomes in [data\_outcomes]{.data}.
+binary outcomes in `data_outcomes`.
 
 Horizontal grouping facilitates quick and simple evaluation of the
 aggregation methods. Perfectly accurate aggregation methods show dark
@@ -1293,7 +1293,7 @@ indicates which aggregation methods for which claim/forecast, for which
 outcome type were inaccurate, and to what degree.
 
 For example, in @fig-heatmap, for the example dataset
-[confidenceSCOREs]{.data} the successful replication of most claims was
+`confidenceSCOREs` the successful replication of most claims was
 accurately forecasted by most methods, except for several claims. Some
 methods performed better than others for some claims (e.g. `BayTriVar`
 and `IndIntWAgg` for the first claim on the left (TODO insert), and for
@@ -1498,11 +1498,11 @@ green_turtles <-
 ```
 
 We can then apply multiple aggregation methods, using the same approach
-implemented for aggregation of the [focal_claims]{.data} dataset
+implemented for aggregation of the `focal_claims` dataset
 (@lst-BYO-data-aggregate), with aggregated Confidence Scores
 shown in @tbl-BYO-data-aggregate. Note that because the judgements are
 absolute values rather than probabilities, we set the
-[percent\_toggle]{.arg} argument for each aggregation wrapper function
+`percent_toggle` argument for each aggregation wrapper function
 to [FALSE]{.val}:
 
 ```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
