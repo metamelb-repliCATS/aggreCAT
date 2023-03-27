@@ -9,6 +9,11 @@
 #' @param outcomes A dataframe with two columns: `paper_id` (corresponding to the id's from the
 #' confidence_scores), and `outcome` containing the known outcome of replication studies
 #'
+#' @importFrom DescTools BrierScore
+#' @importFrom rfUtilities accuracy
+#' @importFrom precrec auc
+#' @importFrom precrec evalmod
+#' 
 #' @return
 #' Evaluated dataframe with four columns: `method` (character variable describing the aggregation method),
 #' `AUC` (Area Under the Curve (AUC) scores of ROC curves - see `?precrec::auc`), `Brier_Score` (see
