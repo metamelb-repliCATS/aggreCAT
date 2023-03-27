@@ -649,7 +649,7 @@ specified by the `type` argument, defaulting to `ArMean` in the above example. T
 `tibble` of Confidence Scores includes the `name` of the aggregation
 method applied, defaulting to the `type` argument, but this can be
 overridden by the user if they supply a non-`NULL` value to `name`.
-
+\<br\>
 Percentage values, counts, or other non probabilistic quantities are the default expected value type for ratings supplied to the `expert_judgements` argument of aggregation functions. By overriding the default value for the argument `percent_toggle` with `TRUE`, percentage values are converted to probabilities by dividing judgements over 100
 within the aggregation functions.
 
@@ -747,7 +747,7 @@ weights are then normalised across the claim (by dividing each weight by
 the sum of all weights per claim). Normalised weights are then
 multiplied by the corresponding individual's best estimates $B_{i,c}$
 andsummed together into a single Confidence Score
-(@fig-IntWAgg-IndIntWAgg ).
+(@fig-IntWAgg-IndIntWAgg).
 
 ### Re-scaled weighted linear combinations of judgements
 
