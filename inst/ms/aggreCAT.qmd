@@ -386,7 +386,7 @@ form measures of reasoning breadth and engagement [@Fraser:2021].
     meeting of the Society for the Improvement of Psychological Science
     (SIPS), [\<https://osf.io/ndzpt/\>](https://osf.io/ndzpt/){.uri}.
 
-`data_ratings` is a *tidy* dataframe wherein each *observation* (or row)
+`data_ratings` is a *tidy* [data.frame]{.class} wherein each *observation* (or row)
 corresponds to a single value in the set of `value`s constituting a
 participant's complete assessment of a research claim. Each research
 claim is assigned a unique `paper_id`, and each participant has a unique
@@ -918,7 +918,7 @@ all participants are missing a Reasoning Score, the log-odds transformed
 best estimate is returned instead (See `?AverageWAgg`,
 `type="LOArMean"`). The user can choose to flag this behaviour
 explicitly by setting the argument `flag_loarmean` to `TRUE`, which will
-generate new columns in the aggregation output dataframe named
+generate new columns in the aggregation output [data.frame]{.class} named
 `method_applied` (with values `LOArMean` or `ReasonWAgg`), and
 `no_reason_score`, a logical variable describing whether or not there
 were no reasoning scores for that claim.
@@ -979,7 +979,7 @@ other claims and participants included in the
 `expert_judgements` argument other than the target claim,
 because, by definition, [BayesianWAgg]{.fct} calculates the Confidence
 Score for a target claim using data from participants' assessments of
-other claims, and from all other claims in the dataframe parsed to the
+other claims, and from all other claims in the [data.frame]{.class} parsed to the
 `expert_judgements` argument. Because information about other
 claims than the target claim is used to calculate the Confidence Score
 for the target claim, what is included in the data supplied to the
@@ -987,7 +987,7 @@ argument `expert_judgements` in [BayesianWAgg]{.fct} will alter
 the Confidence Score. Above, we calculated the Confidence Score for
 claim `108` but including information from
 `r length(unique(focal_claims$paper_id)) - 1` additional claims included
-in the `focal_claims` dataframe:
+in the `focal_claims` [data.frame]{.class}:
 `r focal_claims %>% distinct(paper_id) %>% flatten_chr`. However, if we
 were to supply assessments for only two claims to [BayesianWAgg]{.fct},
 then we would observe a different result for focal claim `108`:
@@ -1062,7 +1062,7 @@ During expert-elicitation the analyst or researcher may be tasked with
 generating multiple forecasts for different problems or questions, and
 therefore it is useful to batch the aggregation. Since the
 [aggreCAT]{.pkg} package is designed using the principles of *tidy* data
-analysis [@tidyverse2019], each aggregation function accepts a dataframe
+analysis [@tidyverse2019], each aggregation function accepts a [data.frame]{.class}
 of raw three-point forecasts for one or more claims, $C$, parsed to the
 argument `expert_judgements`. The data pre-processing and aggregation
 methods are applied using a combination of calls to [tidyverse]{.pkg}
@@ -1321,7 +1321,7 @@ confidence_score_heatmap(confidence_scores = confidenceSCOREs,
 ```
 
 Finally, creating bespoke user-defined plots is relatively easy --
-because [aggreCAT]{.pkg} functions return tidy dataframes, we can easily
+because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s, we can easily
 manipulate the raw judgements, aggregated Confidence Scores and outcome
 data to plot them with [ggplot2]{.pkg} [@ggplot2016] or other
 visualisation package. Below we plot the aggregated Confidence Scores
@@ -1433,7 +1433,7 @@ different forecasting problem `paper_id`, a unique `user_name` for each
 individual, and the `element` of the three point elicitation that the
 recorded response or `value` in that row corresponds to. The data is
 stored in long or tidy format such that each row or observation in the
-dataframe references only a single `element` of a participants' set of
+[data.frame]{.class} references only a single `element` of a participants' set of
 three point elicitation values. When applying aggregation methods
 requiring supplementary data to the elicitation data, the analyst should
 also adhere to the requirements stipulated for the relevant
@@ -1574,8 +1574,8 @@ elicited during either a single workshop, or for production scenarios
 where continuous analysis is used and data collection is ongoing. Unlike
 other aggregation packages, the [aggreCAT]{.pkg} package is designed to
 work within the *tidyverse*. The package is premised on the principles
-of *tidy* data analysis whereby the user supplies dataframes of elicited
-judgements, and the aggregation methods return dataframes of aggregated
+of *tidy* data analysis whereby the user supplies [data.frame]{.class}s of elicited
+judgements, and the aggregation methods return [data.frame]{.class}s of aggregated
 forecasts. The benefits of this approach are three-fold. Firstly, the
 work of data-wrangling and application of the aggregation methods is
 handled internally by the aggregation methods, so that the researcher
