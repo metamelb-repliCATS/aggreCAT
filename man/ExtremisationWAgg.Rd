@@ -13,7 +13,8 @@ ExtremisationWAgg(
   cutoff_lower = NULL,
   cutoff_upper = NULL,
   placeholder = FALSE,
-  percent_toggle = FALSE
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,11 @@ ExtremisationWAgg(
 \item{placeholder}{Toggle the output of the aggregation method to impute placeholder data.}
 
 \item{percent_toggle}{Change the values to probabilities. Default is \code{FALSE}.}
+
+\item{round_2_filter}{Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.}
 }
 \value{
 A tibble of confidence scores \code{cs} for each \code{paper_id}.
