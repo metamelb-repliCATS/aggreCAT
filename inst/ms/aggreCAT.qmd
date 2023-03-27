@@ -881,7 +881,7 @@ data_supp_reasons_focal %>%
 
 ```{r}
 #| label: tbl-reason-wagg-focal-claim
-#| tbl-cap: "Focal Claim `24` judgements comprising best estimates, upper and lower bounds elicited from five participants. Judgements are displayed as percentages."
+#| tbl-cap: "Focal Claim $24$ judgements comprising best estimates, upper and lower bounds elicited from five participants. Judgements are displayed as percentages."
 #| results: asis
 #| echo: false
 focal_claims %>%  
@@ -952,7 +952,7 @@ using default priors, priors are generated from a predictive model that
 estimates the probability of a claim replicating based on
 characteristics of the claim and publication [@Gould2021a]. Priors are
 parsed as supplementary data to the wrapper function
-[BayesianWAgg]{.fct} using the argument [priors]{.arg} (@sec-bayesian-supplementary-data ) with each claim having its own unique
+[BayesianWAgg]{.fct} using the argument [priors]{.arg} (@sec-bayesian-supplementary-data) with each claim having its own unique
 prior.
 
 We illustrate aggregation of participant judgements using the method
