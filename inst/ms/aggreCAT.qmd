@@ -1018,7 +1018,8 @@ participants:
 #| prompt: true
 focal_claims %>% 
   dplyr::filter(paper_id == "108") %>% 
-  aggreCAT::BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE)
+  aggreCAT::BayesianWAgg(type = "BayTriVar", 
+                         percent_toggle = TRUE)
 ```
 
 Although we have set $n=2$ as the minimum number of claims for which variance is computed, it is up to the user to determine their own justifiable minimum for reliable variance calculations.
@@ -1104,15 +1105,20 @@ However, more elegant and succinct solutions can be implemented using
 confidenceSCOREs <- 
   dplyr::bind_rows(
     AverageWAgg(focal_claims,
-                "ArMean", percent_toggle = TRUE),
+                "ArMean", 
+                percent_toggle = TRUE),
     IntervalWAgg(focal_claims,
-                 "IndIntWAgg", percent_toggle = TRUE),
+                 "IndIntWAgg", 
+                 percent_toggle = TRUE),
     IntervalWAgg(focal_claims,
-                 "IntWAgg", percent_toggle = TRUE),
+                 "IntWAgg", 
+                 percent_toggle = TRUE),
     ShiftingWAgg(focal_claims,
-                 "ShiftWAgg", percent_toggle = TRUE),
+                 "ShiftWAgg", 
+                 percent_toggle = TRUE),
     BayesianWAgg(focal_claims,
-                 "BayTriVar", percent_toggle = TRUE),
+                 "BayTriVar", 
+                 percent_toggle = TRUE),
     ReasoningWAgg(aggreCAT::data_ratings, 
                   reasons = aggreCAT::data_supp_reasons, 
                   percent_toggle = TRUE)
