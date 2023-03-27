@@ -1086,95 +1086,70 @@ evaluated and compared. Since different methods offer different
 mathematical properties, and therefore might be more or less appropriate
 depending on the purpose of the aggregation and forecasting, a
 researcher or analyst might want to check how the different assumptions
-embedded in different aggregation methods might influence the final
+embedded in different aggregation methods influence the final
 Confidence Scores for a forecast -- i.e. how robust are the results to
 different methods and therefore to different assumptions?
 
 From a computational perspective, multiple aggregation methods must
 first be applied to the forecast prior to comparison and evaluation.
-This can be implemented very succinctly using [purrr]{.pkg}'s
-[map\_dfr]{.fct} function [@purrr2020, however see @lst-multi-method-workflow-non-supp for a row-binding approach], which takes a list of
-aggregation methods, repeatedly applies each method to the dataframe
-`focal_claims`, and row-binds the resultant list of `tibble`s into a
-single `tibble`, for example:
+This can be achieved by applying each different aggregation method to `focal_claims`,
+and binding the results together with [dplyr]{.pkg}'s [row\_bind]{.fct}.
+However, more elegant and succinct solutions can be implemented using 
+[purrr]{.pkg}'s [map\_dfr]{.fct} function [@purrr2020, however see @lst-multi-method-workflow-non-supp for a row-binding approach].
 
 ```{r}
 #| label: multi-method-workflow-non-supp
 #| message: false
 #| prompt: true
-list(
-  AverageWAgg,
-  IntervalWAgg,
-  IntervalWAgg,
-  ShiftingWAgg,
-  BayesianWAgg
-) %>%
-  purrr::map2_dfr(.y = list("ArMean", 
-                            "IndIntWAgg", 
-                            "IntWAgg", 
-                            "ShiftWAgg", 
-                            "BayTriVar"),
-                  .f = ~ .x(focal_claims, 
-                            type = .y, 
-                            percent_toggle = TRUE)
+confidenceSCOREs <- 
+  dplyr::bind_rows(
+    AverageWAgg(focal_claims,
+                "ArMean", percent_toggle = TRUE),
+    IntervalWAgg(focal_claims,
+                 "IndIntWAgg", percent_toggle = TRUE),
+    IntervalWAgg(focal_claims,
+                 "IntWAgg", percent_toggle = TRUE),
+    ShiftingWAgg(focal_claims,
+                 "ShiftWAgg", percent_toggle = TRUE),
+    BayesianWAgg(focal_claims,
+                 "BayTriVar", percent_toggle = TRUE),
+    ReasoningWAgg(aggreCAT::data_ratings, 
+                  reasons = aggreCAT::data_supp_reasons, 
+                  percent_toggle = TRUE)
   )
 
-dplyr::bind_rows(
-  AverageWAgg(focal_claims,
-              "ArMean", percent_toggle = TRUE),
-  IntervalWAgg(focal_claims,
-               "IndIntWAgg", percent_toggle = TRUE),
-  IntervalWAgg(focal_claims,
-               "IntWAgg", percent_toggle = TRUE),
-  ShiftingWAgg(focal_claims,
-               "ShiftWAgg", percent_toggle = TRUE),
-  BayesianWAgg(focal_claims,
-               "BayTriVar", percent_toggle = TRUE),
-)
+confidenceSCOREs
 ```
 
 ```{#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
-dplyr::bind_rows(
-  AverageWAgg(focal_claims,
-              "ArMean", percent_toggle = TRUE),
-  IntervalWAgg(focal_claims,
-               "IndIntWAgg", percent_toggle = TRUE),
-  IntervalWAgg(focal_claims,
-               "IntWAgg", percent_toggle = TRUE),
-  ShiftingWAgg(focal_claims,
-               "ShiftWAgg", percent_toggle = TRUE),
-  BayesianWAgg(focal_claims,
-               "BayTriVar", percent_toggle = TRUE),
+purrr::map2_dfr(.x = list(AverageWAgg,
+                          IntervalWAgg,
+                          IntervalWAgg,
+                          ShiftingWAgg,
+                          BayesianWAgg),
+                .y = list("ArMean", 
+                          "IndIntWAgg", 
+                          "IntWAgg", 
+                          "ShiftWAgg", 
+                          "BayTriVar"),
+                .f = ~ .x(focal_claims, 
+                          type = .y, 
+                          percent_toggle = TRUE)
 )
-```
 
-Given that aggregation methods `IntWAgg` and `IndIntWAgg` are both
-applied using the aggregation wrapper function [IntervalWAgg]{.fct}, but
-by supplying their method names as a character string to the
-[type]{.arg} argument, we must supply a second list of character strings
-(the same length as our list of wrapper functions) to the mapping
-function. We therefore use [purr::map2\_dfr]{.fct} instead of
-[purr::map\_dfr]{.fct} because there are now multiple inputs that must be
-iterated along in parallel (the list of functions and the corresponding
-aggregation [type]{.arg}) [@wickham2017b].
+# Note that if we wish to batch aggregate claims using a combination of
+#aggregation methods that do and do not require supplementary data, we
+#must aggregate them separately, since the methods that require
+#supplementary data have an additional argument for the supplementary
+#data that must be parsed to the wrapper function call. We can chain the
+#aggregation of the methods that do not require supplementary data, and
+#the methods that do require supplementary data together very neatly
+#using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the
+#[magrittr]{.fct} pipe `%\>%` [@magrittr2020]. Below we implement this
+#approach while applying the aggregation methods `ArMean`, `IntWAgg`,
+#`IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot
+#program dataset `data_ratings`:
 
-Note that if we wish to batch aggregate claims using a combination of
-aggregation methods that do and do not require supplementary data, we
-must aggregate them separately, since the methods that require
-supplementary data have an additional argument for the supplementary
-data that must be parsed to the wrapper function call. We can chain the
-aggregation of the methods that do not require supplementary data, and
-the methods that do require supplementary data together very neatly
-using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the
-[magrittr]{.fct} pipe `%\>%` [@magrittr2020]. Below we implement this
-approach while applying the aggregation methods `ArMean`, `IntWAgg`,
-`IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot
-program dataset `data_ratings`:
-
-```{r}
-#| label: multi-method-workflow-combo-supp
-#| message: false
-#| prompt: true
 confidenceSCOREs <-
   list(
     AverageWAgg,
@@ -1196,8 +1171,6 @@ confidenceSCOREs <-
                   reasons = aggreCAT::data_supp_reasons, 
                   percent_toggle = TRUE)
   )
-
-confidenceSCOREs
 ```
 
 After generating Confidence Scores using various aggregation methods, we
