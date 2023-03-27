@@ -11,7 +11,8 @@ LinearWAgg(
   name = NULL,
   placeholder = FALSE,
   percent_toggle = FALSE,
-  flag_loarmean = FALSE
+  flag_loarmean = FALSE,
+  round_2_filter = TRUE
 )
 }
 \arguments{
@@ -29,6 +30,11 @@ or a three two column dataframe (\verb{paper_id', 'user_name} and \code{weight})
 \item{percent_toggle}{Change the values to probabilities. Default is \code{FALSE}.}
 
 \item{flag_loarmean}{A toggle to impute log mean (defaults \code{FALSE}).}
+
+\item{round_2_filter}{Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.}
 }
 \value{
 A tibble of confidence scores \code{cs} for each \code{paper_id}.
