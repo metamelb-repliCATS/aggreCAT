@@ -841,7 +841,7 @@ $i$ in support of their estimate for claim $c$ ([Figure
 4](#fig-ReasonWAgg)). Weights are then normalised across individuals,
 multiplied by the Best Estimates for that claim $B_{i,c}$ and weighted
 best estimates are then summed to generate the Confidence Score
-(@eq-ReasonWAgg ).
+(@eq-ReasonWAgg).
 
 ```{r}
 #| label: fig-ReasonWAgg
