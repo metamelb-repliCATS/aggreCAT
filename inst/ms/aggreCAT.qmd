@@ -988,7 +988,7 @@ the Confidence Score. Above, we calculated the Confidence Score for
 claim `108` but including information from
 `r xfun::numbers_to_words(length(unique(focal_claims$paper_id)) - 1)` additional claims included
 in the `focal_claims` [data.frame]{.class}:
-`r focal_claims %>% distinct(paper_id) %>% flatten_chr`. However, if we
+`r focal_claims %>% distinct(paper_id) %>% flatten_chr %>% glue::backtick()`. However, if we
 were to supply assessments for only two claims to [BayesianWAgg]{.fct},
 then we would observe a different result for focal claim `108`:
 
