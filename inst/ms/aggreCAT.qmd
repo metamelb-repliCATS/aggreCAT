@@ -1098,7 +1098,7 @@ first be applied to the forecast prior to comparison and evaluation.
 This can be achieved by applying each different aggregation method to `focal_claims`,
 and binding the results together with [dplyr]{.pkg}'s [row\_bind]{.fct}.
 However, more elegant and succinct solutions can be implemented using 
-[purrr]{.pkg}'s [map\_dfr]{.fct} function [@purrr2020, however see @lst-multi-method-workflow-non-supp for a row-binding approach].
+[purrr]{.pkg}'s [map\_dfr]{.fct} function [@purrr2020, see @lst-multi-method-workflow-non-supp].
 
 ```{r}
 #| label: multi-method-workflow-non-supp
@@ -1184,7 +1184,7 @@ confidenceSCOREs <-
 After generating Confidence Scores using various aggregation methods, we
 then evaluate the forecasts. We evaluated the repliCATS pilot study
 forecasts against the outcomes of previous, high-powered replication
-studies [@Hanea2021], which are contained in the [data_outcomes]{.data}
+studies [@Hanea2021], which are contained in the `data\_outcomes`
 dataset published with [aggreCAT]{.pkg}. In this dataset, each claim
 `paper_id` is assigned an `outcome` of `0` if the claim did not
 replicate and `1` if the claim was successfully replicated:
