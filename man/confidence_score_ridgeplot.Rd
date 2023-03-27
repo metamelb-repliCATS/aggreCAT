@@ -4,25 +4,20 @@
 \alias{confidence_score_ridgeplot}
 \title{Confidence Score Ridge Plot}
 \usage{
-confidence_score_ridgeplot(confidence_scores = NULL, size = 12, font = "serif")
+confidence_score_ridgeplot(confidence_scores = NULL)
 }
 \arguments{
 \item{confidence_scores}{A data frame of confidence scores in long format in the form of \link{data_confidence_scores}}
-
-\item{size}{Font size}
-
-\item{font}{Set font family. Defaults to serif}
 }
 \value{
 A density ridge plot of aggregation methods
 }
 \description{
-Display a ridge plot of confidence scores for each aggregation method.
+Display a ridge plot of confidence scores for each aggregation method faceted by its linear, non-linear
+and Bayesian characteristic.
 }
 \examples{
-\dontrun{confidence_scores_ridgeplot(data_confidence_scores, size = 12,
-font = "sans",
-soft_colour = "grey30")}
+\dontrun{confidence_scores_ridgeplot(data_confidence_scores)}
 
 
 }

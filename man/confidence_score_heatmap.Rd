@@ -7,8 +7,7 @@
 confidence_score_heatmap(
   confidence_scores = NULL,
   data_outcomes = NULL,
-  x_label = NULL,
-  font = "serif"
+  x_label = NULL
 )
 }
 \arguments{
@@ -18,9 +17,7 @@ Defaults to \link{data_confidence_scores} if no argument supplied.}
 \item{data_outcomes}{A data frame of unique claims and the associated binary outcome in the form of \link{data_outcomes}. If no argument supplied
 then defaults to \link{data_outcomes} supplied within package.}
 
-\item{x_label}{Bottom x axis label name. Default is blank.}
-
-\item{font}{Font family for plots aesthetics. Defaults to serif}
+\item{x_label}{Bottom x axis label name or ID. Default is blank.}
 }
 \value{
 Plot in viewer
@@ -29,7 +26,8 @@ Plot in viewer
 Confidence scores displayed on a colour spectrum across generated methods and assessed claims,
 split into predicted replication outcomes (TRUE/FALSE). White indicative of around \code{.5} with higher predicted
 confidence scores more blue (\verb{>.5}) and lower more red (\verb{<.5}). Each predicted replication outcome is then
-split into the group type of the underlying statistical characteristic for each aggregation method.
+split into the group type of the underlying statistical characteristic for each aggregation method (non-weighted linear,
+weighted linear & Bayesian).
 }
 \examples{
 \dontrun{confidencescore_heatmap(data_confidence_scores, data_outcomes)}
