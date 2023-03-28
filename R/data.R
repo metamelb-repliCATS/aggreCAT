@@ -75,19 +75,17 @@
 #' \describe{
 #'   \item{paper_id}{character string for the paper ID}
 #'   \item{user_name}{character string for participant ID}
-#'   \item{RW05 power analysis reporting}{numeric (0:1); references to statistical power calculations within the article, or other discussion within the article of sample size planning.}
-#'   \item{RW09 blinding (single or double)}{numeric (0:1); references to blinding of participants to which condition they were in (single blinding) or blinding of both the participants and the experimenters to the conditions (double blinding).}
-#'   \item{RW11 Effect size}{numeric (0:4); any references to the effect size that indicate that the participant considered the size of the effect when assessing the claim. Don’t use if the term "effect size" is used in unrelated ways, but err on the side of considering statements as relevant to the participant’s assessment.}
-#'   \item{RW12 Interaction effect}{numeric (0:3); references to when the effect was an interaction effect (rather than a direct effect).}
-#'   \item{RW13 Interval or range measure for statistical uncertainty (CI, SD, etc )}{numeric (0:2); references to the inclusion, absence, or size of the uncertainty measure for a given effect.}
-#'   \item{RW14 Population or subject characteristics (sampling practices)}{numeric (0:3); references to the characteristics of the sample population or subjects used in a study that affect the participant’s assessment of the claim, including references to low response rate and any other questions or appreciation of the sampling practices.}
-#'   \item{RW15  power adequacy and or sample size}{numeric (0:4); combines 2 nodes for references to the adequacy (or not) of the statistical power of the study &/or sample size.}
-#'   \item{RW16 Significance, statistical (p-value etc )}{numeric (0:2); references to a test of statistical significance for the claim as it impacts on the participant’s assessment. This explicitly includes p-values, t-values, critical alpha and p-rep.}
-#'   \item{RW18 QRPs specified}{numeric (0:2); references to QRPs, 'questionable research practices', any explicit variation of these terms, or for any specific type of QRP mentioned by name (e.g. cherry-picking, HARKing, and p-hacking). Also include any QRP mentioned by name that is not specified above.}
-#'   \item{RW19 Date of publication}{numeric (0:2); references to the date of publication, for example in relation to something being published prior to the 'replication crisis' within the relevant discipline, or a study being difficult to re-run now because of changes in social expectations. }
-#'   \item{RW22 author or institutional reputation}{numeric (0:2); combines 2 nodes for references to the reputation of the authors and/or institutions involved in the original study.}
-#'   \item{RW23 discipline and 'area of research' reputation}{numeric (0:2); references to specific discipline or sub-discipline reputation, e.g., “in light of failed priming effect studies” and/or comparisons between disciplines.}
-#'   \item{RW24 journal reputation}{numeric (0:1); references to the reputation of the journal.}
+#'   \item{RW04 Date of publication}{numeric; references to the date of publication, for example in relation to something being published prior to the 'replication crisis' within the relevant discipline, or a study being difficult to re-run now because of changes in social expectations. }
+#'   \item{RW15 Effect size}{numeric; any references to the effect size that indicate that the participant considered the size of the effect when assessing the claim. Don’t use if the term "effect size" is used in unrelated ways, but err on the side of considering statements as relevant to the participant’s assessment.}
+#'   \item{RW16 Interaction effect}{numeric; references to when the effect was an interaction effect (rather than a direct effect).}
+#'   \item{RW17 Interval or range measure for statistical uncertainty (CI, SD, etc )}{numeric; references to the inclusion, absence, or size of the uncertainty measure for a given effect.}
+#'   \item{RW18 Outside participants areas of expertise}{numeric; references to the claim under assessment being outside the participant's areas of expertise.}
+#'   \item{RW20 Plausibility}{numeric; references to the plausibility of the claim.}
+#'   \item{RW21 Population or subject characteristics (sampling practices)}{numeric; references to the characteristics of the sample population or subjects used in a study that affect the participant’s assessment of the claim, including references to low response rate and any other questions or appreciation of the sampling practices.}
+#'   \item{RW22 Power adequacy and or sample size}{numeric; combines 2 nodes for references to the adequacy (or not) of the statistical power of the study &/or sample size.}
+#'   \item{RW32 Reputation}{numeric; references to the reputation of the journal/institute/author.}
+#'   \item{RW37 Revision statements}{numeric; .}
+#'   \item{RW42 Significance, statistical (p-value etc )}{numeric; references to a test of statistical significance for the claim as it impacts on the participant’s assessment. This explicitly includes p-values, t-values, critical alpha and p-rep.}
 #' }
 "data_supp_reasons"
 
@@ -105,7 +103,6 @@
 #' @format a tibble with 550 rows and 5 columns
 #' \describe{
 #'   \item{method}{character string of method name}
-#'   \item{method_id}{integer of method IDs}
 #'   \item{paper_id}{character string of paper IDs}
 #'   \item{cs}{numeric of generated confidence scores}
 #'   \item{n_experts}{numeric of the number of expert judgements aggregated in confidence score}
