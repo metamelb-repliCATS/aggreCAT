@@ -20,7 +20,8 @@ data_supp_reasons <- pins::pin_get("anon_SIPS_reasons",
                                    board = "github")
 
 data_outcomes <- pins::pin_get("anon_SIPS_outcomes",
-                               board = "github")
+                               board = "github") %>%
+  mutate(paper_id = as.character(paper_id))
 
 data_supp_quiz <- pins::pin_get("anon_quiz_scores",
                                 board = "github")
