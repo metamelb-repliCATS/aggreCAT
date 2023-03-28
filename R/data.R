@@ -11,7 +11,6 @@
 #'   \item{question}{character string for the question type, with four options: direct_replication, involved_binary, belief_binary, or comprehension}
 #'   \item{element}{character string for the type of response coded in the row, with five options: three_point_lower, three_point_best, three_point_upper, binary_question, or likert_binary}
 #'   \item{value}{numeric value for the participant's response}
-#'   \item{timestamp}{character string of response recorded time}
 #'   \item{group}{character string of group IDs that contained the participants}
 #' }
 "data_ratings"
@@ -28,7 +27,6 @@
 #'   \item{justification_id}{character string with a unique ID for each row}
 #'   \item{vote_count}{numeric of recorded votes (all 0 or 1)}
 #'   \item{vote_sum}{numeric of summed vote counts(all 0 or 1)}
-#'   \item{timestamp}{character string of response recorded time}
 #'   \item{group}{character string of group IDs that contained the participants}
 #' }
 "data_justifications"
@@ -46,7 +44,6 @@
 #'   \item{comment}{character string with free-text response for the user}
 #'   \item{vote_count}{numeric, both 0}
 #'   \item{vote_sum}{numeric, both 0}
-#'   \item{timestamp}{character string of response recorded time}
 #'   \item{group}{character string of group IDs that contained the participants}
 #' }
 #'
@@ -106,11 +103,8 @@
 #' @format a tibble with 550 rows and 5 columns
 #' \describe{
 #'   \item{method}{character string of method name}
-#'   \item{method_id}{integer of method IDs}
 #'   \item{paper_id}{character string of paper IDs}
 #'   \item{cs}{numeric of generated confidence scores}
 #'   \item{n_experts}{numeric of the number of expert judgements aggregated in confidence score}
-#'   \item{first_expert_date}{character string of first expert assessment timestamp}
-#'   \item{last_expert_date}{character string of last expert assessment timestamp}
 #' }
 "data_confidence_scores"
