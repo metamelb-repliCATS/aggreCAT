@@ -22,16 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: setup-quarto
-        - uses: quarto-dev/quarto-actions/setup@v3
-          - run: |
-                quarto --version 
+        uses: quarto-dev/quarto-actions/setup@v3
       - name: Render Quarto Project
-        - uses: quarto-dev/quarto-actions/render@v2
-          - with:
-            - to: md # If set, it will be equivalent to `quarto render --to html`
-            - path: README.qmd # By default, the current working dir is used i.e `quarto render .`
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: md # If set, it will be equivalent to `quarto render --to html`
+          path: README.qmd # By default, the current working dir is used i.e `quarto render .`
       - name: commit-results
-        - run: |
-            git add README.md man/figures/README-*
-            git commit -m 'Re-build README.qmd' || echo "No changes to commit"
-            git push origin || echo "No changes to commit"
+        run: |
+          git add README.md man/figures/README-*
+          git commit -m 'Re-build README.qmd' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
