@@ -1,0 +1,37 @@
+# The action runs when
+# - a new release is published
+# - The README.qmd or README.md files are modified
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [master]
+    paths:
+      - README.qmd
+      - README.md
+  workflow_dispatch:
+  
+name: Render-README-with-quarto
+
+jobs:
+  quarto-linux:
+    runs-on: ubuntu-latest
+    env: 
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup-quarto
+        - uses: quarto-dev/quarto-actions/setup@v3
+          - run: |
+                quarto --version 
+      - name: Render Quarto Project
+        - uses: quarto-dev/quarto-actions/render@v2
+          - with:
+            - to: md # If set, it will be equivalent to `quarto render --to html`
+            - path: README.qmd # By default, the current working dir is used i.e `quarto render .`
+      - name: commit-results
+        - run: |
+            git add README.md man/figures/README-*
+            git commit -m 'Re-build README.qmd' || echo "No changes to commit"
+            git push origin || echo "No changes to commit"
