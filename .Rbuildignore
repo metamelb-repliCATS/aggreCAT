@@ -24,3 +24,4 @@ vignettes/test_table.Rmd
 ^test_tble$
 ^test$
 ^inst/ms$
+^CITATION\.cff$
