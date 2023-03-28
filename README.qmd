@@ -111,7 +111,7 @@ knitr::include_graphics(here::here("./inst/ms/images/img_IDEA_repliCATS.png"))
 #| label: fig-1
 #| echo: false
 #| fig-cap: "Mathematically aggregating a small subset of expert judgements for the claim `28`, using the unweighted arithmetic mean. The `aggreCAT` wrapper function `AverageWAgg()` is used on this dataset, with the `type` argument set to the default `ArMean`."
-knitr::include_graphics(here::here("./inst/ms/images/paste-80B1C5CB.png"))
+knitr::include_graphics(here::here("inst/ms/images/ArMean.png"))
 ```
 
 \n

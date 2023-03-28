@@ -72,17 +72,17 @@ point-estimates, but generates more robust and reliable estimates.
 
 You can install:
 
--   the latest development version of `aggreCAT` package:
+- the latest development version of `aggreCAT` package:
 
 ``` r
 install.packages("devtools")
 devtools::install_github("metamelb-repliCATS/aggreCAT")
 ```
 
--   the most recent official version of `aggreCAT` from CRAN:
+- the most recent official version of `aggreCAT` from CRAN:
 
-    -   TBC! *We will upload to CRAN once our manuscript (Gould et al.
-        in prep.) has been submitted.*
+  - TBC! *We will upload to CRAN once our manuscript (Gould et al. in
+    prep.) has been submitted.*
 
 Then load the package:
 
@@ -110,22 +110,22 @@ All wrapper functions adhere to the following basic argument structure:
 ``` r
 args(AverageWAgg)
 #> function (expert_judgements, type = "ArMean", name = NULL, placeholder = FALSE, 
-#>     percent_toggle = FALSE) 
+#>     percent_toggle = FALSE, round_2_filter = TRUE) 
 #> NULL
 ```
 
--   expert judgements are contained a dataframe parsed to
-    `expert_judgements`,
--   the `type` argument specifies the specific flavour of the wrapper
-    aggregation function to be executed on the `expert_judgements` data,
-    with the available aggregation methods detailed in each wrapper
-    function’s help page, e.g. `?AverageWAgg`,
--   `name` allows a user-specified name with which to label the method
-    in the results,
--   toggling the `placeholder` argument to `TRUE` returns ‘placeholder’
-    values, set to $0.65$,
--   toggling `percent_toggle` to `TRUE` facilitates aggregating
-    quantities rather than probabilities.
+- expert judgements are contained a dataframe parsed to
+  `expert_judgements`,
+- the `type` argument specifies the specific flavour of the wrapper
+  aggregation function to be executed on the `expert_judgements` data,
+  with the available aggregation methods detailed in each wrapper
+  function’s help page, e.g. `?AverageWAgg`,
+- `name` allows a user-specified name with which to label the method in
+  the results,
+- toggling the `placeholder` argument to `TRUE` returns ‘placeholder’
+  values, set to $0.65$,
+- toggling `percent_toggle` to `TRUE` facilitates aggregating quantities
+  rather than probabilities.
 
 Each aggregation wrapper function returns a `dataframe` / `tibble` of
 results, with one row or observation per unique judgement task.
@@ -147,9 +147,9 @@ in the object `data_ratings`, described at `?data_ratings`.
 
 <figure>
 <img src="inst/ms/images/img_IDEA_repliCATS.png" id="fig-IDEA"
-data-fig-pos="hold" style="width:100.0%"
-alt="Figure 1: the repliCATS IDEA protocol was used to elicit judgements about the likely replicability of research claims, a pilot version of this dataset is included in the aggreCAT package" />
-<figcaption aria-hidden="true">Figure 1: the repliCATS IDEA protocol was
+style="width:100.0%" data-fig-pos="hold"
+alt="Figure 1: the repliCATS IDEA protocol was used to elicit judgements about the likely replicability of research claims, a pilot version of this dataset is included in the aggreCAT package" />
+<figcaption aria-hidden="true">Figure 1: the repliCATS IDEA protocol was
 used to elicit judgements about the likely replicability of research
 claims, a pilot version of this dataset is included in the
 <code>aggreCAT</code> package</figcaption>
@@ -158,10 +158,9 @@ claims, a pilot version of this dataset is included in the
 ## A minimal working example with `AverageWAgg()`
 
 <figure>
-<img src="inst/ms/images/paste-80B1C5CB.png" id="fig-1"
-style="width:100.0%"
-alt="Figure 2: Mathematically aggregating a small subset of expert judgements for the claim 28, using the unweighted arithmetic mean. The aggreCAT wrapper function AverageWAgg() is used on this dataset, with the type argument set to the default ArMean." />
-<figcaption aria-hidden="true">Figure 2: Mathematically aggregating a
+<img src="inst/ms/images/ArMean.png" id="fig-1" style="width:100.0%"
+alt="Figure 2: Mathematically aggregating a small subset of expert judgements for the claim 28, using the unweighted arithmetic mean. The aggreCAT wrapper function AverageWAgg() is used on this dataset, with the type argument set to the default ArMean." />
+<figcaption aria-hidden="true">Figure 2: Mathematically aggregating a
 small subset of expert judgements for the claim <code>28</code>, using
 the unweighted arithmetic mean. The <code>aggreCAT</code> wrapper
 function <code>AverageWAgg()</code> is used on this dataset, with the
