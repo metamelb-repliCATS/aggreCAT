@@ -1,0 +1,12 @@
+citHeader("To cite aggreCAT in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "aggreCAT: An R Package for Mathematically Aggregating Expert Judgments",
+  author   = "Gould, Elliot and Gray, Charles T. and Willcox, Aaron and O'Dea, Rose and Groenewgen, Rebecca and Wilkinson, David P.",
+  journal  = "MetArXiv",
+  year     = "2023",
+  url      = "",
+  textVersion = paste("Gould et al. aggreCAT: An R Package for Mathematically Aggregating Expert Judgments (2023). MetArXiv"
+  )
+)
