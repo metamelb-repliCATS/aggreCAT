@@ -519,9 +519,7 @@ to the `direct_replication` question are required inputs. Of the
 `element`s belonging to the direct replication `question`, only the
 `comprehension` question with the `likert_binary` elements is required
 -- this is an input into [CompWAgg]{.fun}, which is used to weight
-participants judgements. Each value provided by a participant is
-`timestamp`ed by the repliCATS elicitation platform, but this is not a
-required data field for applying aggregation functions.
+participants judgements.
 
 ## Focal Claim Aggregation{#sec-focal-claims}
 
@@ -1503,7 +1501,7 @@ implemented for aggregation of the `focal_claims` dataset
 shown in @tbl-BYO-data-aggregate. Note that because the judgements are
 absolute values rather than probabilities, we set the
 `percent_toggle` argument for each aggregation wrapper function
-to [FALSE]{.val}:
+to [FALSE]{.val} (@lst-BYO-data-aggregate).
 
 ```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
 turtle_CS <- 
@@ -1591,9 +1589,7 @@ Thirdly, application of the [aggreCAT]{.pkg} package aggregation methods
 and performance evaluation tools is scalable, which is evidenced by the
 application of the [aggreCAT]{.pkg} package to forecast the
 replicability of over 4000 research claims by the repliCATS project. 
-The scalability, timestamp and
-placeholder functionality allow the [aggreCAT]{.pkg} package to be built
-into production-ready pipelines for more complicated analyses where
+The scalability and placeholder functionality allow the [aggreCAT]{.pkg} package to be built into production-ready pipelines for more complicated analyses where
 there are multiple forecasts being elicited and aggregated, where there
 are numerous participants, and where multiple aggregation methods are
 applied.
