@@ -1568,7 +1568,7 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("ShiftingWAgg() Weighted by judgemetns that shift most after discussion", 17, 22) %>% 
   kableExtra::pack_rows("ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data", 23,24) %>% 
   kableExtra::pack_rows("ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution",25,26) %>% 
-  kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements. The aggregate is the median of the average distribution fitted to individual estimates", 27,28) %>% 
+  kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements.", 27,28) %>% 
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 ```
 
