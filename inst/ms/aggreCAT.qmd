@@ -1535,7 +1535,7 @@ human forecasts is required.
 #| label: method-summary-table
 aggreCAT:::method_summary_table %>% 
   ungroup %>% 
-  filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
+  # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
   mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
   tidyr::unite(agg_name_description, 
                aggregator_function, 
@@ -1555,7 +1555,7 @@ aggreCAT:::method_summary_table %>%
                   longtable = TRUE,
                   caption = "\\label{tbl-method-summary-table} Summary of aggregation methods and functions, including data requirements and sources.",
                   format = "latex") %>% 
-  kableExtra::column_spec(column = c(1,4,6,7), width = "10em") %>% 
+  kableExtra::column_spec(column = c(1,3,4,6,7), width = "10em") %>% 
   kableExtra::column_spec(column = c(5), width = "5em") %>% 
   kableExtra::column_spec(column = c(2), width = "20em") %>% 
   kableExtra::kable_styling(latex_options = 
