@@ -2,7 +2,6 @@
 title: "aggreCAT: an R Package for Mathematically Aggregating Expert Judgements"
 format:
     jss-pdf:
-      classoption: shortnames
       keep-tex: true
       header-includes:
         - \usepackage[utf8]{inputenc}
@@ -27,8 +26,10 @@ format:
         - \newcommand{\elandscape}{\end{landscape}}
         - \usepackage{underscore}
         # - \usepackage[authoryear,round]{natbib}
-      shortnames: true
       x11names: true
+      journal:
+        cite-shortnames: true
+        type: article
     jss-html: default
 author:
     # use this syntax to add text on several lines
@@ -1557,7 +1558,10 @@ aggreCAT:::method_summary_table %>%
   kableExtra::column_spec(column = c(1,4,6,7), width = "10em") %>% 
   kableExtra::column_spec(column = c(5), width = "5em") %>% 
   kableExtra::column_spec(column = c(2), width = "20em") %>% 
-  kableExtra::kable_styling(latex_options = c("hold_position", "repeat_header"), font_size = 6) %>% 
+  kableExtra::kable_styling(latex_options = 
+                              c("HOLD_position", "repeat_header"), 
+                            font_size = 6,
+                            position = "left") %>% 
   kableExtra::pack_rows("AverageWAgg(): Averaged best estimates", 1,5) %>% 
   kableExtra::pack_rows("LinearWAgg() Linearly-weighted best estimates  ", 6,10) %>% 
   kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths  ", 11,16) %>% 
@@ -1570,6 +1574,34 @@ aggreCAT:::method_summary_table %>%
 
 \elandscape
 \newpage
+
+## Computational details {.unnumbered}
+
+:::{.callout}
+The analyses and results in this paper were obtained using the following computing environment, versions of `R` and `R` packages:
+
+```{R}
+#| label: session-info
+#| prompt: true
+devtools::session_info()
+```
+
+:::
+
+## Acknowledgments {.unnumbered}
+
+:::{.callout}
+This project is sponsored by the Defense Advanced Research Projects
+Agency (DARPA) under cooperative agreement No.HR001118S0047. The
+content of the information does not necessarily reflect the position
+or the policy of the Government, and no official endorsement should
+be inferred.
+:::
+
+\newpage
+{{< pagebreak >}}
+
+## Listings {.unnumbered}
 
 ```{#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
 purrr::map2_dfr(.x = list(AverageWAgg,
@@ -1613,7 +1645,7 @@ confidenceSCOREs <-
   )
 ```
 
-```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
+```{#lst-BYO-data-aggregate .r lst-cap="Bring your own data: non-probablistic values"}
 turtle_CS <- 
   list(
   AverageWAgg,
@@ -1670,20 +1702,15 @@ p <- plot_judgements %>%
 ```
 
 
-## Computational details {.unnumbered}
 
-The analyses and results in this paper were obtained using the following computing environment, versions of `R` and `R` packages:
+\newpage
+{{< pagebreak >}}
 
-```{r}
-#| label: session-info
-#| prompt: true
-devtools::session_info()
-```
+:::{#refs}
 
-## Acknowledgments {.unnumbered}
+:::
 
-This project is sponsored by the Defense Advanced Research Projects
-Agency (DARPA) under cooperative agreement No.HR001118S0047. The
-content of the information does not necessarily reflect the position
-or the policy of the Government, and no official endorsement should
-be inferred.
+
+
+
+
