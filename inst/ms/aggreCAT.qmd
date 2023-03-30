@@ -1034,7 +1034,7 @@ judgements are revised after discussion, are listed in Table  \ref{tbl-method-su
 
 ```{r}
 #| label: fig-BayesianWAgg
-#| fig-cap: "Illustration of BayTriVar applied with `BayesianWAgg()`for a single claim, `paper_id = 108` from the `focal_claims` data object. Note that the claims 138, 186 and 24 contained in `focal_claims` are used in the calculation of pariticipant-level SD and claim-level SD, thus the Confidence Score returned by BayTriVar is sensitive to the other claims provided to argument `expert_judgements`."
+#| fig-cap: "Illustration of BayTriVar applied with `BayesianWAgg()`for a single claim, `paper_id = 108` from the `focal_claims` data object. Note that the claims `138`, `186` and `24` contained in `focal_claims` are used in the calculation of pariticipant-level SD and claim-level SD, thus the Confidence Score returned by BayTriVar is sensitive to the other claims provided to argument `expert_judgements`."
 #| results: hold
 #| echo: false
 knitr::include_graphics("images/BayesianWAgg.png")
@@ -1092,7 +1092,7 @@ first be applied to the forecast prior to comparison and evaluation.
 This can be achieved by applying each different aggregation method to `focal_claims`,
 and binding the results together with [dplyr]{.pkg}'s [row\_bind]{.fct}.
 However, more elegant and succinct solutions can be implemented using 
-[purrr]{.pkg}'s [map\_dfr]{.fct} function [@purrr2020, see @lst-multi-method-workflow-non-supp].
+[purrr]{.pkg}'s [map\_dfr]{.fct} function [@purrr2020, see @lst-multi-method-workflow-non-supp and @lst-multi-method-workflow-both].
 
 ```{r}
 #| label: multi-method-workflow-non-supp
@@ -1121,58 +1121,6 @@ confidenceSCOREs <-
   )
 
 confidenceSCOREs
-```
-
-```{#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
-purrr::map2_dfr(.x = list(AverageWAgg,
-                          IntervalWAgg,
-                          IntervalWAgg,
-                          ShiftingWAgg,
-                          BayesianWAgg),
-                .y = list("ArMean", 
-                          "IndIntWAgg", 
-                          "IntWAgg", 
-                          "ShiftWAgg", 
-                          "BayTriVar"),
-                .f = ~ .x(focal_claims, 
-                          type = .y, 
-                          percent_toggle = TRUE)
-)
-
-# Note that if we wish to batch aggregate claims using a combination of
-#aggregation methods that do and do not require supplementary data, we
-#must aggregate them separately, since the methods that require
-#supplementary data have an additional argument for the supplementary
-#data that must be parsed to the wrapper function call. We can chain the
-#aggregation of the methods that do not require supplementary data, and
-#the methods that do require supplementary data together very neatly
-#using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the
-#[magrittr]{.fct} pipe `%\>%` [@magrittr2020]. Below we implement this
-#approach while applying the aggregation methods `ArMean`, `IntWAgg`,
-#`IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot
-#program dataset `data_ratings`:
-
-confidenceSCOREs <-
-  list(
-    AverageWAgg,
-    IntervalWAgg,
-    IntervalWAgg,
-    ShiftingWAgg,
-    BayesianWAgg
-  ) %>%
-  purrr::map2_dfr(
-    .y = list("ArMean", 
-              "IndIntWAgg", 
-              "IntWAgg", 
-              "ShiftWAgg", 
-              "BayTriVar"),
-    .f = ~ .x(aggreCAT::data_ratings, type = .y, percent_toggle = TRUE)
-  ) %>% 
-  dplyr::bind_rows(
-    ReasoningWAgg(aggreCAT::data_ratings, 
-                  reasons = aggreCAT::data_supp_reasons, 
-                  percent_toggle = TRUE)
-  )
 ```
 
 After generating Confidence Scores using various aggregation methods, we
@@ -1242,15 +1190,85 @@ mathematical properties of the aggregation method (@fig-ridgeplot).
 
 ```{r}
 #| label: fig-ridgeplot
-#| fig-height: 8
-#| fig-width: 10
+#| fig-height: 6
+#| fig-width: 12
 #| fig-cap: "Ridgeline plots illustrating the distribution of aggregated Confidence Scores for the tibble `confidenceSCOREs`, grouped according to mathematical properties of each method."
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-pos: H
 # not run, eval = FALSE
 suppressPackageStartupMessages(library(ggridges))
 confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
+```
+
+```{r}
+#| label: fig-aggregation
+#| fig-cap: "Confidence Scores for the aggregation methods `ArMean`, `BayTriVar`, `IntWAgg`, `IndIntWAgg`, `ReasonWAgg` and `ShiftWAgg` for four claims. Participants' three-point best estimates are displayed as black points, and their upper and lowr bounds displayed as black error bars. Confidence Scores are displayed as points within the upper row of plots. Lines are displayed vertically at the 0.5 probability mark, and their colour denotes the observed outcome under previous large-scale replication projects."
+#| message: false
+#| fig-align: center
+#| warning: false
+#| echo: false
+#| fig-width: 10
+#| fig-pos: H
+plot_cs <- 
+  confidenceSCOREs %>% 
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::mutate(data_type = "Confidence Scores") %>% 
+  dplyr::rename(x_vals = cs,
+         y_vals = method) %>% 
+  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
+
+plot_judgements <- 
+  aggreCAT::preprocess_judgements(focal_claims,
+                                  percent_toggle = TRUE) %>% 
+  tidyr::pivot_wider(names_from = element, 
+                     values_from = value) %>%
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::rename(x_vals = three_point_best,
+         y_vals = user_name) %>% 
+  dplyr::select(paper_id, 
+         y_vals, 
+         x_vals, 
+         tidyr::contains("three_point"),
+         outcome) %>% 
+  dplyr::mutate(data_type = "Elicited Probabilities")
+
+p <- plot_judgements %>%  
+  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
+                          by = "paper_id")}) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
+  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
+                      xmax = three_point_upper)) +
+  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
+  ggplot2::theme_classic() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
+  ggplot2::xlab("Probability of Replication") +
+  ggplot2::ylab(ggplot2::element_blank()) +
+  ggplot2::scale_colour_brewer(palette = "Set1")
+p
+```
+
+
+```{r}
+#| label: fig-heatmap
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+#| dpi: 300
+#| fig-align: center
+#| message: false
+#| warning: false
+#| eval: true
+#| fig-pos: H
+#| fig-cap: "Blocked heatmap visualisation of confidence scores is useful for visually comparing aggregation methods and evaluating them against a set of known outcomes. In this example, Confidence Scores generated by six aggregation methods for the repliCATS pilot study are visualised for 25 claims. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate are presented in heatmap blocks on the right. Confidence Scores generated by different aggregation methods are positioned along the y-axis, with vertical groupings according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the Confidence Scores from the known outcomes."
+
+
+suppressPackageStartupMessages(library(ggforce))
+suppressPackageStartupMessages(library(ggpubr))
+confidence_score_heatmap(confidence_scores = confidenceSCOREs, 
+                        data_outcomes = aggreCAT::data_outcomes)
 ```
 
 ```{r}
@@ -1295,25 +1313,6 @@ the claim on the right). In contrast, for most claims that did not
 replicate, forecasts were inaccurate, with `IndIntWAgg`, `IntWAgg` and
 `BayTriVar` performing particularly badly for the claims X and Y.
 
-```{r}
-#| label: fig-heatmap
-#| echo: false
-#| fig-width: 10
-#| fig-height: 8
-#| dpi: 300
-#| fig-align: center
-#| message: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Blocked heatmap visualisation of confidence scores is useful for visually comparing aggregation methods and evaluating them against a set of known outcomes. In this example, Confidence Scores generated by 6 aggregation methods for the repliCATS pilot study are visualised for 25 claims. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate are presented in heatmap blocks on the right. Confidence Scores generated by different aggregation methods are positioned along the y-axis, with vertical groupings according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the Confidence Scores from the known outcomes."
-
-
-suppressPackageStartupMessages(library(ggforce))
-suppressPackageStartupMessages(library(ggpubr))
-confidence_score_heatmap(confidence_scores = confidenceSCOREs, 
-                        data_outcomes = aggreCAT::data_outcomes)
-```
-
 Finally, creating bespoke user-defined plots is relatively easy --
 because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or [tibble]{.class}s, we can easily
 manipulate the raw judgements, aggregated Confidence Scores and outcome
@@ -1322,99 +1321,13 @@ visualisation package. Below we plot the aggregated Confidence Scores
 along with the three-point judgements (subset using
 [preprocess\_judgements]{.fct} on `focal_claims`,
 transforming judgements in percentages to probabilities by setting
-`percent_toggle` to `TRUE`, @fig-aggregation, @lst-confidencescores):
-
-```{#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
-plot_cs <- 
-  confidenceSCOREs %>% 
-  dplyr::left_join(aggreCAT::data_outcomes) %>% 
-  dplyr::mutate(data_type = "Confidence Scores") %>% 
-  dplyr::rename(x_vals = cs,
-         y_vals = method) %>% 
-  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
-
-plot_judgements <- 
-  aggreCAT::preprocess_judgements(focal_claims,
-                                  percent_toggle = TRUE) %>% 
-  tidyr::pivot_wider(names_from = element, 
-                     values_from = value) %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>% 
-  dplyr::rename(x_vals = three_point_best,
-         y_vals = user_name) %>% 
-  dplyr::select(paper_id, 
-         y_vals, 
-         x_vals, 
-         tidyr::contains("three_point"),
-         outcome) %>% 
-  dplyr::mutate(data_type = "Elicited Probabilities")
-
-p <- plot_judgements %>%  
-  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
-                          by = "paper_id")}) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
-  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
-                      xmax = three_point_upper)) +
-  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
-  ggplot2::theme_classic() +
-  ggplot2::theme(legend.position = "none") +
-  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
-  ggplot2::xlab("Probability of Replication") +
-  ggplot2::ylab(ggplot2::element_blank()) +
-  ggplot2::scale_colour_brewer(palette = "Set1")
-```
-
-```{r}
-#| label: fig-aggregation
-#| fig-cap: "Confidence Scores for the aggregation methods 'ArMean', 'BayTriVar', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'ShiftWAgg' for four claims. Participants' three-point best estimates are displayed as black points, and their upper and lowr bounds displayed as black error bars. Confidence Scores are displayed as points within the upper row of plots. Lines are displayed vertically at the 0.5 probability mark, and their colour denotes the observed outcome under previous large-scale replication projects."
-#| message: false
-#| fig-align: center
-#| warning: false
-#| echo: false
-plot_cs <- 
-  confidenceSCOREs %>% 
-  dplyr::left_join(aggreCAT::data_outcomes) %>% 
-  dplyr::mutate(data_type = "Confidence Scores") %>% 
-  dplyr::rename(x_vals = cs,
-         y_vals = method) %>% 
-  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
-
-plot_judgements <- 
-  aggreCAT::preprocess_judgements(focal_claims,
-                                  percent_toggle = TRUE) %>% 
-  tidyr::pivot_wider(names_from = element, 
-                     values_from = value) %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>% 
-  dplyr::rename(x_vals = three_point_best,
-         y_vals = user_name) %>% 
-  dplyr::select(paper_id, 
-         y_vals, 
-         x_vals, 
-         tidyr::contains("three_point"),
-         outcome) %>% 
-  dplyr::mutate(data_type = "Elicited Probabilities")
-
-p <- plot_judgements %>%  
-  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
-                          by = "paper_id")}) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
-  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
-                      xmax = three_point_upper)) +
-  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
-  ggplot2::theme_classic() +
-  ggplot2::theme(legend.position = "none") +
-  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
-  ggplot2::xlab("Probability of Replication") +
-  ggplot2::ylab(ggplot2::element_blank()) +
-  ggplot2::scale_colour_brewer(palette = "Set1")
-p
-```
+`percent_toggle` to `TRUE`, @fig-aggregation, @lst-confidencescores).
 
 ### Extending aggreCAT to other datasets
 
 The aggregation methods supplied by the [aggreCAT]{.pkg} package can
 easily be applied to other forecasting problems. The only requirements
-are that the data inputs adhere to the required format (see [Box
-1](#aggWorkflow)), and that the expert judgements are elicited using the
+are that the data inputs adhere to the required format (Box [1](#aggWorkflow)), and that the expert judgements are elicited using the
 appropriate method, as required by each aggregation method (see Table \ref{tbl-method-summary-table}).
 
 Judgement data provided to the `expert_judgements`,
@@ -1439,20 +1352,16 @@ only a single round of elicitation that generates a set of three points;
 a best estimate, and upper and lower bounds about those estimates, even if the IDEA protocol was used
 to elicit judgements.
 Hence, the aggregation functions contained in the [aggreCAT]{.pkg}
-package are unsuitable for use with judgements derived using Delphi or
-other similar elicitation methods that aggregate behaviourally (e.g.
-using consensus) and therefore result in a single forecast value. Where
-the analyst elicits judgements for only a single round, the analyst
-should record the round in the judgements data as the character string
-`round_1`, and set the `round_2_filter` argument to `FALSE` in the aggregation wrapper function call.
+package are unsuitable for use with judgements elicited with methods
+that aggregate behaviourally (e.g. using consensus) and therefore result in a single forecast value. Where the analyst elicits judgements for only a single round, the analyst should record the round in the judgements data as the character string `"round_1"`, and set the `round_2_filter` argument to `FALSE` in the aggregation wrapper function call.
 
 Should the analyst wish to create their own aggregation functions, pre-
 and post-processing functions may be leveraged inside the functions
 ([preprocess\_judgements]{.fct} and [postprocess\_judgements]{.fct},
 respectively), as we have illustrated in data preparation for
-@fig-aggregation, @lst-confidencescores. These processing functions
+@fig-aggregation (@lst-confidencescores). These processing functions
 modularise key components of the aggregation's computational
-implementation - namely the data wrangling that occurs before and after
+implementation -- namely the data wrangling that occurs before and after
 the actual mathematical aggregation.
 
 #### Preparing your own Elicitation Data
@@ -1499,22 +1408,6 @@ absolute values rather than probabilities, we set the
 `percent_toggle` argument for each aggregation wrapper function
 to [FALSE]{.val} (@lst-BYO-data-aggregate).
 
-```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
-turtle_CS <- 
-  list(
-  AverageWAgg,
-  IntervalWAgg,
-  IntervalWAgg,
-  ShiftingWAgg
-) %>%
-  purrr::map2_dfr(.y = list("ArMean",
-                            "IndIntWAgg",
-                            "IntWAgg",
-                            "ShiftWAgg"),
-                  .f = ~ .x(green_turtles, type = .y,
-                            percent_toggle = FALSE)
-  )
-```
 
 ```{r}
 #| label: tbl-BYO-data-aggregate
@@ -1564,8 +1457,7 @@ so many aggregation methods, and methods that use proxies of forecasting
 accuracy using weights.
 
 The [aggreCAT]{.pkg} package is production-ready for application to data
-elicited during either a single workshop, or for production scenarios
-where continuous analysis is used and data collection is ongoing. Unlike
+elicited during either a single workshop, or for contexts where data collection may be ongoing and continuous analysis is used for automating aggregation. Unlike
 other aggregation packages, the [aggreCAT]{.pkg} package is designed to
 work within the *tidyverse*. The package is premised on the principles
 of *tidy* data analysis whereby the user supplies [data.frame]{.class}s of elicited
@@ -1678,6 +1570,104 @@ aggreCAT:::method_summary_table %>%
 
 \elandscape
 \newpage
+
+```{#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
+purrr::map2_dfr(.x = list(AverageWAgg,
+                          IntervalWAgg,
+                          IntervalWAgg,
+                          ShiftingWAgg,
+                          BayesianWAgg),
+                .y = list("ArMean", 
+                          "IndIntWAgg", 
+                          "IntWAgg", 
+                          "ShiftWAgg", 
+                          "BayTriVar"),
+                .f = ~ .x(focal_claims, 
+                          type = .y, 
+                          percent_toggle = TRUE)
+)
+```
+
+```{#lst-multi-method-workflow-both .r lst-cap="Note that if we wish to batch aggregate claims using a combination of aggregation methods that do and do not require supplementary data, we must aggregate them separately, since the methods that require supplementary data have an additional argument for the supplementary data that must be parsed to the wrapper function call. We can chain the aggregation of the methods that do not require supplementary data, and the methods that do require supplementary data together very neatly using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the [magrittr]{.fct} pipe `\%\>\%` [@magrittr2020]. Below we implement this approach while applying the aggregation methods `ArMean`, `IntWAgg`, `IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot program dataset `data\_ratings`."}
+
+confidenceSCOREs <-
+  list(
+    AverageWAgg,
+    IntervalWAgg,
+    IntervalWAgg,
+    ShiftingWAgg,
+    BayesianWAgg
+  ) %>%
+  purrr::map2_dfr(
+    .y = list("ArMean", 
+              "IndIntWAgg", 
+              "IntWAgg", 
+              "ShiftWAgg", 
+              "BayTriVar"),
+    .f = ~ .x(aggreCAT::data_ratings, type = .y, percent_toggle = TRUE)
+  ) %>% 
+  dplyr::bind_rows(
+    ReasoningWAgg(aggreCAT::data_ratings, 
+                  reasons = aggreCAT::data_supp_reasons, 
+                  percent_toggle = TRUE)
+  )
+```
+
+```{#lst-BYO-data-aggregate .r lst-cap='Bring your own data: non-probablistic values'}
+turtle_CS <- 
+  list(
+  AverageWAgg,
+  IntervalWAgg,
+  IntervalWAgg,
+  ShiftingWAgg
+) %>%
+  purrr::map2_dfr(.y = list("ArMean",
+                            "IndIntWAgg",
+                            "IntWAgg",
+                            "ShiftWAgg"),
+                  .f = ~ .x(green_turtles, type = .y,
+                            percent_toggle = FALSE)
+  )
+```
+
+```{#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
+plot_cs <- 
+  confidenceSCOREs %>% 
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::mutate(data_type = "Confidence Scores") %>% 
+  dplyr::rename(x_vals = cs,
+         y_vals = method) %>% 
+  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
+
+plot_judgements <- 
+  aggreCAT::preprocess_judgements(focal_claims,
+                                  percent_toggle = TRUE) %>% 
+  tidyr::pivot_wider(names_from = element, 
+                     values_from = value) %>%
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::rename(x_vals = three_point_best,
+         y_vals = user_name) %>% 
+  dplyr::select(paper_id, 
+         y_vals, 
+         x_vals, 
+         tidyr::contains("three_point"),
+         outcome) %>% 
+  dplyr::mutate(data_type = "Elicited Probabilities")
+
+p <- plot_judgements %>%  
+  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
+                          by = "paper_id")}) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
+  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
+                      xmax = three_point_upper)) +
+  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
+  ggplot2::theme_classic() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
+  ggplot2::xlab("Probability of Replication") +
+  ggplot2::ylab(ggplot2::element_blank()) +
+  ggplot2::scale_colour_brewer(palette = "Set1")
+```
 
 
 ## Computational details {.unnumbered}
