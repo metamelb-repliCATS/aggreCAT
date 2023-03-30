@@ -1642,7 +1642,7 @@ human forecasts is required.
 #| label: method-summary-table
 aggreCAT:::method_summary_table %>% 
   ungroup %>% 
-  filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) #drop Eng/CompWAgg
+  filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
   mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
   tidyr::unite(agg_name_description, 
                aggregator_function, 
