@@ -1568,35 +1568,6 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 ```
 
-\elandscape
-\newpage
-
-## Computational details {.unnumbered}
-
-:::{.callout}
-The analyses and results in this paper were obtained using the following computing environment, versions of `R` and `R` packages:
-
-```{R}
-#| label: session-info
-#| prompt: true
-devtools::session_info()
-```
-
-:::
-
-## Acknowledgments {.unnumbered}
-
-:::{.callout}
-This project is sponsored by the Defense Advanced Research Projects
-Agency (DARPA) under cooperative agreement No.HR001118S0047. The
-content of the information does not necessarily reflect the position
-or the policy of the Government, and no official endorsement should
-be inferred.
-:::
-
-\newpage
-{{< pagebreak >}}
-
 ## Listings {.unnumbered}
 
 ```{#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
@@ -1616,8 +1587,7 @@ purrr::map2_dfr(.x = list(AverageWAgg,
 )
 ```
 
-```{#lst-multi-method-workflow-both .r lst-cap="Note that if we wish to batch aggregate claims using a combination of aggregation methods that do and do not require supplementary data, we must aggregate them separately, since the methods that require supplementary data have an additional argument for the supplementary data that must be parsed to the wrapper function call. We can chain the aggregation of the methods that do not require supplementary data, and the methods that do require supplementary data together very neatly using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the [magrittr]{.fct} pipe `\%\>\%` [@magrittr2020]. Below we implement this approach while applying the aggregation methods `ArMean`, `IntWAgg`, `IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot program dataset `data\_ratings`."}
-
+```{#lst-multi-method-workflow-both .r lst-cap="If we wish to batch aggregate claims using a combination of aggregation methods that do and do not require supplementary data, we must aggregate them separately, since the methods that require supplementary data have an additional argument for the supplementary data that must be parsed to the wrapper function call. We can chain the aggregation of the methods that do not require supplementary data, and the methods that do require supplementary data together very neatly using [dplyr]{.pkg}'s [bind\_rows]{.fct} function [@dplyr2021] and the [magrittr]{.fct} pipe `\%\>\%` [@magrittr2020]. Below we implement this approach while applying the aggregation methods `ArMean`, `IntWAgg`, `IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot program dataset `data\_ratings`."}
 confidenceSCOREs <-
   list(
     AverageWAgg,
@@ -1697,16 +1667,28 @@ p <- plot_judgements %>%
   ggplot2::scale_colour_brewer(palette = "Set1")
 ```
 
-
-
+\elandscape
 \newpage
-{{< pagebreak >}}
 
-:::{#refs}
+## Computational details {.unnumbered}
+
+The analyses and results in this paper were obtained using the following computing environment, versions of `R` and `R` packages:
+
+:::{.callout}
+```{R}
+#| label: session-info
+#| prompt: true
+devtools::session_info()
+```
 
 :::
 
+## Acknowledgments {.unnumbered}
 
-
-
-
+:::{.callout}
+This project is sponsored by the Defense Advanced Research Projects
+Agency (DARPA) under cooperative agreement No.HR001118S0047. The
+content of the information does not necessarily reflect the position
+or the policy of the Government, and no official endorsement should
+be inferred.
+:::
