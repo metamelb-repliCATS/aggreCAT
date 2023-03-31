@@ -774,21 +774,6 @@ $$
 \hat{p}_c\left( IntWAgg \right) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 $$ {#eq-IntWAgg}
 
-
-\newpage
-\blandscape
-
-```{r}
-#| label: fig-IntWAgg-IndIntWAgg
-#| fig-cap: "Example applications of mathematical aggregation methods a\\) `IntWAgg` and b\\) `IndIntWAgg` using the wrapper function a1\\) `IntWAgg` uses participants' upper and lower bounds to construct performance weights. b2\\) This weighting computation is modified in `IndIntWAgg` whereby the weights for each individual are re-scaled by the largest interval width across all claims for a given individual. We exemplify this rescaling process by illustrating the calculation of participant 1's maximum interval width across all claims they assessed in the demonstration dataset `focal_claims`. This is repeated for every individual who has assessed the target claim under aggregation. "
-#| echo: false
-#| results: hold
-knitr::include_graphics("images/IntervalWAgg.png")
-```
-
-\newpage
-\elandscape
-
 As for [AverageWAgg]{.fct}, when using the wrapper function [IntervalWAgg]{.fct} we supply the aggregation method names as a character vector to the `type` argument and the focal claim data frame to the argument `expert_judgements`, using [dplyr::bind_rows]{.fct} to bind the resultant Confidence Scores together:
 
 ```{r}
@@ -804,6 +789,20 @@ dplyr::bind_rows(
                          type = "IntWAgg")
   )
 ```
+
+\newpage
+\blandscape
+
+```{r}
+#| label: fig-IntWAgg-IndIntWAgg
+#| fig-cap: "Example applications of mathematical aggregation methods a\\) `IntWAgg` and b\\) `IndIntWAgg` using the wrapper function a1\\) `IntWAgg` uses participants' upper and lower bounds to construct performance weights. b2\\) This weighting computation is modified in `IndIntWAgg` whereby the weights for each individual are re-scaled by the largest interval width across all claims for a given individual. We exemplify this rescaling process by illustrating the calculation of participant 1's maximum interval width across all claims they assessed in the demonstration dataset `focal_claims`. This is repeated for every individual who has assessed the target claim under aggregation. "
+#| echo: false
+#| results: hold
+knitr::include_graphics("images/IntervalWAgg.png")
+```
+
+\newpage
+\elandscape
 
 ### Aggregation Methods Requiring Supplementary Data{#sec-ReasoningWAgg}
 
