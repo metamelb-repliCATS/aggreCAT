@@ -264,7 +264,7 @@ David P. Wilkinson\\
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, interior hidden, frame hidden, enhanced, breakable, sharp corners, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, sharp corners, boxrule=0pt, frame hidden, breakable, enhanced, interior hidden]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-introduction}{%
 \section{Introduction}\label{sec-introduction}}
@@ -658,7 +658,6 @@ data for a single user for a single claim to illustrate this structure
 of the core \texttt{data\_ratings} dataset.
 
 \begin{verbatim}
-R> options(width = 80)
 R> library(tidyverse,quietly = TRUE)
 R> library(aggreCAT)
 R> aggreCAT::data_ratings %>% 
@@ -671,17 +670,17 @@ R> aggreCAT::data_ratings %>%
 # A tibble: 11 x 7
    round   paper_id user_name  question           element           value group
    <chr>   <chr>    <chr>      <chr>              <chr>             <dbl> <chr>
- 1 round_1 100      fx3d4tmdhh direct_replication three_point_lower    30 UOM1 
- 2 round_1 100      fx3d4tmdhh involved_binary    binary_question      -1 UOM1 
- 3 round_1 100      fx3d4tmdhh belief_binary      binary_question      -1 UOM1 
- 4 round_1 100      fx3d4tmdhh direct_replication three_point_best     40 UOM1 
- 5 round_1 100      fx3d4tmdhh direct_replication three_point_upper    45 UOM1 
- 6 round_1 100      fx3d4tmdhh comprehension      likert_binary         5 UOM1 
- 7 round_2 100      fx3d4tmdhh comprehension      likert_binary         4 UOM1 
- 8 round_2 100      fx3d4tmdhh belief_binary      binary_question      -1 UOM1 
- 9 round_2 100      fx3d4tmdhh direct_replication three_point_lower    30 UOM1 
-10 round_2 100      fx3d4tmdhh direct_replication three_point_upper    45 UOM1 
-11 round_2 100      fx3d4tmdhh direct_replication three_point_best     39 UOM1 
+ 1 round_1 100      7l8m7dmjdb direct_replication three_point_lower    30 UOM1 
+ 2 round_1 100      7l8m7dmjdb involved_binary    binary_question      -1 UOM1 
+ 3 round_1 100      7l8m7dmjdb belief_binary      binary_question      -1 UOM1 
+ 4 round_1 100      7l8m7dmjdb direct_replication three_point_best     40 UOM1 
+ 5 round_1 100      7l8m7dmjdb direct_replication three_point_upper    45 UOM1 
+ 6 round_1 100      7l8m7dmjdb comprehension      likert_binary         5 UOM1 
+ 7 round_2 100      7l8m7dmjdb comprehension      likert_binary         4 UOM1 
+ 8 round_2 100      7l8m7dmjdb belief_binary      binary_question      -1 UOM1 
+ 9 round_2 100      7l8m7dmjdb direct_replication three_point_lower    30 UOM1 
+10 round_2 100      7l8m7dmjdb direct_replication three_point_upper    45 UOM1 
+11 round_2 100      7l8m7dmjdb direct_replication three_point_best     39 UOM1 
 \end{verbatim}
 
 Not all data necessary for constructing weights on performance is
@@ -837,16 +836,16 @@ R> focal_claims
 # A tibble: 220 x 7
    round   paper_id user_name  question           element           value group
    <chr>   <chr>    <chr>      <chr>              <chr>             <dbl> <chr>
- 1 round_1 108      15k6nbf8iz comprehension      likert_binary         7 UOM1 
- 2 round_1 108      15k6nbf8iz direct_replication three_point_upper    90 UOM1 
- 3 round_1 108      15k6nbf8iz direct_replication three_point_lower    40 UOM1 
- 4 round_1 108      15k6nbf8iz belief_binary      binary_question       1 UOM1 
- 5 round_1 108      15k6nbf8iz involved_binary    binary_question      -1 UOM1 
- 6 round_1 108      15k6nbf8iz direct_replication three_point_best     65 UOM1 
- 7 round_1 108      4680r67jsd direct_replication three_point_upper    60 UOM3 
- 8 round_1 108      4680r67jsd direct_replication three_point_lower    40 UOM3 
- 9 round_1 108      4680r67jsd direct_replication three_point_best     51 UOM3 
-10 round_1 108      4680r67jsd comprehension      likert_binary         6 UOM3 
+ 1 round_1 108      lvr6dwbqag comprehension      likert_binary         7 UOM1 
+ 2 round_1 108      lvr6dwbqag direct_replication three_point_upper    90 UOM1 
+ 3 round_1 108      lvr6dwbqag direct_replication three_point_lower    40 UOM1 
+ 4 round_1 108      lvr6dwbqag belief_binary      binary_question       1 UOM1 
+ 5 round_1 108      lvr6dwbqag involved_binary    binary_question      -1 UOM1 
+ 6 round_1 108      lvr6dwbqag direct_replication three_point_best     65 UOM1 
+ 7 round_1 108      f35wd3nhdz direct_replication three_point_upper    60 UOM3 
+ 8 round_1 108      f35wd3nhdz direct_replication three_point_lower    40 UOM3 
+ 9 round_1 108      f35wd3nhdz direct_replication three_point_best     51 UOM3 
+10 round_1 108      f35wd3nhdz comprehension      likert_binary         6 UOM3 
 # ... with 210 more rows
 \end{verbatim}
 
@@ -856,11 +855,11 @@ R> focal_claims
 \toprule
 Claim ID & User Name & Lower Bound & Best Estimate & Upper Bound \\ 
 \midrule
-108 & 05puszkipi & 50 & 60 & 70 \\ 
-108 & 15k6nbf8iz & 40 & 65 & 90 \\ 
-108 & 4680r67jsd & 60 & 80 & 90 \\ 
-108 & mk1z46sqhr & 70 & 85 & 90 \\ 
-108 & pjrkctyakp & 70 & 80 & 90 \\ 
+108 & 5nuvx01cj5 & 70 & 80 & 90 \\ 
+108 & f35wd3nhdz & 60 & 80 & 90 \\ 
+108 & g31jx5dffs & 70 & 85 & 90 \\ 
+108 & kf7fxabzu0 & 50 & 60 & 70 \\ 
+108 & lvr6dwbqag & 40 & 65 & 90 \\ 
 \bottomrule
 \caption{\label{tbl-focal-claim}Focal Claim Data: Round 2 expert judgements for claim 108 derived from a
 subset of 5 claims and 5 participants from data~ratings. Judgements are
@@ -909,7 +908,7 @@ R> focal_claims %>%
 
 \begin{figure}
 
-{\centering \includegraphics[width=3.26in,height=\textheight]{images/ArMean.png}
+{\centering \includegraphics[width=6.25in,height=\textheight]{images/ArMean.png}
 
 }
 
@@ -923,7 +922,7 @@ form structure and format.}
 
 \end{figure}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, opacityback=0, arc=.35mm, breakable, colframe=quarto-callout-color-frame, bottomrule=.15mm, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, arc=.35mm, rightrule=.15mm, colframe=quarto-callout-color-frame, bottomrule=.15mm, breakable, toprule=.15mm, colback=white]
 
 \hypertarget{aggWorkflow}{}
 \hypertarget{box-1-aggregation-workflow-blueprint}{%
@@ -1049,16 +1048,16 @@ i Percent Toggle: FALSE
 # A tibble: 75 x 5
    round   paper_id user_name  element           value
    <chr>   <chr>    <chr>      <chr>             <dbl>
- 1 round_2 118      fx3d4tmdhh three_point_best     50
- 2 round_2 118      fx3d4tmdhh three_point_upper    60
- 3 round_2 118      fx3d4tmdhh three_point_lower    40
- 4 round_2 118      sv2yl8jszy three_point_best     45
- 5 round_2 118      sv2yl8jszy three_point_upper    70
- 6 round_2 118      sv2yl8jszy three_point_lower    30
- 7 round_2 118      v6n605nzv1 three_point_best     50
- 8 round_2 118      v6n605nzv1 three_point_lower    40
- 9 round_2 118      v6n605nzv1 three_point_upper    60
-10 round_2 118      033t8xcqan three_point_best     64
+ 1 round_2 118      7l8m7dmjdb three_point_best     50
+ 2 round_2 118      7l8m7dmjdb three_point_upper    60
+ 3 round_2 118      7l8m7dmjdb three_point_lower    40
+ 4 round_2 118      bvpgcjm09w three_point_best     45
+ 5 round_2 118      bvpgcjm09w three_point_upper    70
+ 6 round_2 118      bvpgcjm09w three_point_lower    30
+ 7 round_2 118      mnlww4qlq3 three_point_best     50
+ 8 round_2 118      mnlww4qlq3 three_point_lower    40
+ 9 round_2 118      mnlww4qlq3 three_point_upper    60
+10 round_2 118      r7kn2x3mnj three_point_best     64
 # ... with 65 more rows
 \end{verbatim}
 
@@ -1137,6 +1136,31 @@ w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}
 \hat{p}_c\left( IntWAgg \right) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 }\label{eq-IntWAgg}\end{equation}
 
+As for \fct{AverageWAgg}, when using the wrapper function
+\fct{IntervalWAgg} we supply the aggregation method names as a character
+vector to the \texttt{type} argument and the focal claim data frame to
+the argument \texttt{expert\_judgements}, using \fct{dplyr::bind_rows}
+to bind the resultant Confidence Scores together:
+
+\begin{verbatim}
+R> dplyr::bind_rows(
++  aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
++                           dplyr::filter(paper_id == "108"),
++                         type = "IndIntWAgg"),
++  aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
++                           dplyr::filter(paper_id == "108"),
++                         type = "IntWAgg")
++  )
+\end{verbatim}
+
+\begin{verbatim}
+# A tibble: 2 x 4
+  method     paper_id    cs n_experts
+  <chr>      <chr>    <dbl>     <int>
+1 IndIntWAgg 108       74           5
+2 IntWAgg    108       74.8         5
+\end{verbatim}
+
 \newpage
 \blandscape
 
@@ -1162,31 +1186,6 @@ individual who has assessed the target claim under aggregation.}
 
 \newpage
 \elandscape
-
-As for \fct{AverageWAgg}, when using the wrapper function
-\fct{IntervalWAgg} we supply the aggregation method names as a character
-vector to the \texttt{type} argument and the focal claim data frame to
-the argument \texttt{expert\_judgements}, using \fct{dplyr::bind_rows}
-to bind the resultant Confidence Scores together:
-
-\begin{verbatim}
-R> dplyr::bind_rows(
-+  aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
-+                           dplyr::filter(paper_id == "108"),
-+                         type = "IndIntWAgg"),
-+  aggreCAT::IntervalWAgg(expert_judgements = focal_claims %>% 
-+                           dplyr::filter(paper_id == "108"),
-+                         type = "IntWAgg")
-+  )
-\end{verbatim}
-
-\begin{verbatim}
-# A tibble: 2 x 4
-  method     paper_id    cs n_experts
-  <chr>      <chr>    <dbl>     <int>
-1 IndIntWAgg 108       74           5
-2 IntWAgg    108       74.8         5
-\end{verbatim}
 
 \hypertarget{sec-ReasoningWAgg}{%
 \subsection{Aggregation Methods Requiring Supplementary
@@ -1281,34 +1280,34 @@ R> data_supp_reasons_focal %>%
 \end{verbatim}
 
 \begin{verbatim}
-# A tibble: 5 x 15
+# A tibble: 5 x 13
 # Groups:   paper_id, user_name [5]
-  paper_id user_name  RW05  RW09  RW11  RW12  RW13  RW14  RW15  RW16  RW18  RW19
+  paper_id user_name  RW04  RW15  RW16  RW17  RW18  RW20  RW21  RW22  RW32  RW37
   <chr>    <chr>     <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-1 24       05puszki~     0     0     0     0     0     0     0     0     0     0
-2 24       15k6nbf8~     0     0     0     0     0     1     0     0     0     0
-3 24       4680r67j~     0     0     0     0     0     0     0     1     1     0
-4 24       mk1z46sq~     0     0     1     0     0     0     1     1     1     0
-5 24       pjrkctya~     0     0     1     0     0     0     2     1     0     0
-# ... with 3 more variables: RW22 <dbl>, RW23 <dbl>, RW24 <dbl>
+1 24       5nuvx01c~     0     1     0     0     0     1     0     2     0     0
+2 24       f35wd3nh~     0     0     0     0     0     1     0     0     1     0
+3 24       g31jx5df~     0     1     0     0     0     1     0     1     1     1
+4 24       kf7fxabz~     0     0     0     0     0     0     0     0     0     0
+5 24       lvr6dwbq~     0     0     0     0     0     0     1     0     0     0
+# ... with 1 more variable: RW42 <dbl>
 \end{verbatim}
 
 \hypertarget{tbl-reason-wagg-focal-claim}{}
-\begin{longtable}{rlrrr}
+\begin{longtable}{rlrrrr}
 
 \toprule
-Claim ID & User Name & Lower Bound & Best Estimate & Upper Bound \\ 
+Claim ID & User Name & round & Lower Bound & Best Estimate & Upper Bound \\ 
 \midrule
-24 & 05puszkipi & 35 & 40 & 55 \\ 
-24 & 05puszkipi & 10 & 30 & 50 \\ 
-24 & 15k6nbf8iz & 20 & 35 & 60 \\ 
-24 & 15k6nbf8iz & 20 & 35 & 50 \\ 
-24 & 4680r67jsd & 20 & 30 & 40 \\ 
-24 & 4680r67jsd & 10 & 15 & 20 \\ 
-24 & mk1z46sqhr & 12 & 40 & 78 \\ 
-24 & mk1z46sqhr & 5 & 20 & 40 \\ 
-24 & pjrkctyakp & 5 & 15 & 25 \\ 
-24 & pjrkctyakp & 5 & 11 & 17 \\ 
+24 & 5nuvx01cj5 & $1$ & 5 & 15 & 25 \\ 
+24 & 5nuvx01cj5 & $2$ & 5 & 11 & 17 \\ 
+24 & f35wd3nhdz & $1$ & 20 & 30 & 40 \\ 
+24 & f35wd3nhdz & $2$ & 10 & 15 & 20 \\ 
+24 & g31jx5dffs & $1$ & 12 & 40 & 78 \\ 
+24 & g31jx5dffs & $2$ & 5 & 20 & 40 \\ 
+24 & kf7fxabzu0 & $1$ & 35 & 40 & 55 \\ 
+24 & kf7fxabzu0 & $2$ & 10 & 30 & 50 \\ 
+24 & lvr6dwbqag & $1$ & 20 & 35 & 60 \\ 
+24 & lvr6dwbqag & $2$ & 20 & 35 & 50 \\ 
 \bottomrule
 \caption{\label{tbl-reason-wagg-focal-claim}Focal Claim 24 judgements comprising best estimates, upper and lower
 bounds elicited from five participants. Judgements are displayed as
@@ -1483,9 +1482,12 @@ which use two rounds of three-point judgements in which the second round
 judgements are revised after discussion, are listed in Table
 \ref{tbl-method-summary-table}.
 
+\newpage
+\blandscape
+
 \begin{figure}
 
-{\centering \includegraphics[width=5.67in,height=\textheight]{images/BayesianWAgg.png}
+{\centering \includegraphics[width=9.375in,height=\textheight]{images/BayesianWAgg.png}
 
 }
 
@@ -1499,6 +1501,9 @@ is sensitive to the other claims provided to argument
 \texttt{expert\_judgements}.}
 
 \end{figure}
+
+\newpage
+\elandscape
 
 \hypertarget{sec-workflow}{%
 \section{An illustrative workflow for use in real study
@@ -1592,7 +1597,7 @@ R> confidenceSCOREs <-
 +    BayesianWAgg(focal_claims,
 +                 "BayTriVar", 
 +                 percent_toggle = TRUE),
-+    ReasoningWAgg(aggreCAT::data_ratings, 
++    ReasoningWAgg(focal_claims, 
 +                  reasons = aggreCAT::data_supp_reasons, 
 +                  percent_toggle = TRUE)
 +  )
@@ -1615,7 +1620,7 @@ R> confidenceSCOREs
 \end{verbatim}
 
 \begin{verbatim}
-# A tibble: 45 x 4
+# A tibble: 24 x 4
    method     paper_id    cs n_experts
    <chr>      <chr>    <dbl>     <int>
  1 ArMean     108      0.74          5
@@ -1628,7 +1633,7 @@ R> confidenceSCOREs
  8 IndIntWAgg 24       0.19          5
  9 IntWAgg    108      0.748         5
 10 IntWAgg    138      0.694         5
-# ... with 35 more rows
+# ... with 14 more rows
 \end{verbatim}
 
 After generating Confidence Scores using various aggregation methods, we
@@ -1673,12 +1678,13 @@ ArMean & $1.00$ & $0.10$ & $100\%$ \\
 BayTriVar & $1.00$ & $0.12$ & $100\%$ \\ 
 IndIntWAgg & $1.00$ & $0.10$ & $100\%$ \\ 
 IntWAgg & $1.00$ & $0.09$ & $100\%$ \\ 
-ReasonWAgg & $0.90$ & $0.15$ & $84\%$ \\ 
+ReasonWAgg & $1.00$ & $0.09$ & $100\%$ \\ 
 ShiftWAgg & $1.00$ & $0.13$ & $75\%$ \\ 
 \bottomrule
-\caption{\label{tbl-multi-method-workflow-eval}AUC and Classification Accuracy for the aggregation methods `ShiftWAgg',
-`ArMean', `IntWAgg', `IndIntWAgg', `ReasonWAgg' and `BayTriVar'
-evaluated for repliCATS pilot study claims and known outcomes. }\tabularnewline
+\caption{\label{tbl-multi-method-workflow-eval}AUC and Classification Accuracy for forecasts from the aggregation
+methods `ShiftWAgg', `ArMean', `IntWAgg', `IndIntWAgg', `ReasonWAgg' and
+`BayTriVar' for a subset of the repliCATS pilot study claims
+(focal\_claims) and known outcomes. }\tabularnewline
 \end{longtable}
 
 \hypertarget{visualising-judgements-confidence-scores-and-forecast-performance}{%
@@ -1769,15 +1775,11 @@ Deviation from this expectation indicates which aggregation methods for
 which claim/forecast, for which outcome type were inaccurate, and to
 what degree.
 
-For example, in Figure~\ref{fig-heatmap}, for the example dataset
+For example, in Figure~\ref{fig-heatmap}, for the dataset
 \texttt{confidenceSCOREs} the successful replication of most claims was
 accurately forecasted by most methods, except for several claims. Some
 methods performed better than others for some claims
-(e.g.~\texttt{BayTriVar} and \texttt{IndIntWAgg} for the first claim on
-the left (TODO insert), and for the claim on the right). In contrast,
-for most claims that did not replicate, forecasts were inaccurate, with
-\texttt{IndIntWAgg}, \texttt{IntWAgg} and \texttt{BayTriVar} performing
-particularly badly for the claims X and Y.
+(e.g.~\texttt{ReasonWAgg} for claims \texttt{109} and \texttt{138}.
 
 Finally, creating bespoke user-defined plots is relatively easy --
 because \pkg{aggreCAT} functions return tidy \class{data.frame}s or
@@ -2028,8 +2030,8 @@ Method & Description & Data Requirements & Weighting Function & Elicitation Roun
 \multicolumn{7}{l}{\textbf{LinearWAgg() Linearly-weighted best estimates  }}\\
 \hspace{1em}DistLimitWAgg & Weighted by the distance of the best estimate from the closest certainty limit. Best-estimates closest to certainty limits are more strongly weighted &  & Calculated internally & 1 & Single-point & ${B}_{i,c}$\\
 \hspace{1em}GranWAgg & Weighted by the granularity of best estimates &  & Calculated internally & 1 & Single-point & ${B}_{i,c}$\\
-\hspace{1em}Judgement & Weighted by user-supplied weights at the judgement level & `data.frame/tibble` with three columns (`paper_id`, `user_name`, `weight`) & Calculated internally & 1 & Single-point & ${B}_{i,c}$, $w{\_}{reason}_{i,c}$\\
-\hspace{1em}Participant & Weighted by user-supplied weights at the participant level & `data.frame`/`tibble` with two columns (`user_name`, `weight`) & Calculated internally & 1 & Single-point & ${B}_{i,c}$, $w{\_}{reason}_{i}$\\
+\hspace{1em}Judgement & Weighted by user-supplied weights at the judgement level & `data.frame/tibble` with three columns (`paper_id`, `user_name`, `weight`) & Calculated internally & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}Participant & Weighted by user-supplied weights at the participant level & `data.frame`/`tibble` with two columns (`user_name`, `weight`) & Calculated internally & 1 & Single-point & ${B}_{i,c}$\\
 \hspace{1em}OutWAgg & Outliers are down-weighted. &  & `weight_outlier()` & 1 & Single-point & ${B}_{i,c}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths  }}\\
@@ -2065,6 +2067,152 @@ Method & Description & Data Requirements & Weighting Function & Elicitation Roun
 \end{longtable}
 \endgroup{}
 
+\hypertarget{listings}{%
+\section*{Listings}\label{listings}}
+\addcontentsline{toc}{section}{Listings}
+
+\begin{codelisting}
+
+\caption{Multiple aggregation methods can be applied by binding rows
+rather than using the purrr package, if preferred.}
+
+\hypertarget{lst-multi-method-workflow-non-supp}{%
+\label{lst-multi-method-workflow-non-supp}}%
+\begin{verbatim}
+purrr::map2_dfr(.x = list(AverageWAgg,
+                          IntervalWAgg,
+                          IntervalWAgg,
+                          ShiftingWAgg,
+                          BayesianWAgg),
+                .y = list("ArMean", 
+                          "IndIntWAgg", 
+                          "IntWAgg", 
+                          "ShiftWAgg", 
+                          "BayTriVar"),
+                .f = ~ .x(focal_claims, 
+                          type = .y, 
+                          percent_toggle = TRUE)
+)
+\end{verbatim}
+
+\end{codelisting}
+
+\begin{codelisting}
+
+\caption{If we wish to batch aggregate claims using a combination of
+aggregation methods that do and do not require supplementary data, we
+must aggregate them separately, since the methods that require
+supplementary data have an additional argument for the supplementary
+data that must be parsed to the wrapper function call. We can chain the
+aggregation of the methods that do not require supplementary data, and
+the methods that do require supplementary data together very neatly
+using {dplyr}'s {bind\_rows} function \citep{dplyr2021} and the
+{magrittr} pipe \texttt{\%\textgreater{}\%} \citep{magrittr2020}. Below
+we implement this approach while applying the aggregation methods
+\texttt{ArMean}, \texttt{IntWAgg}, \texttt{IndIntWAgg},
+\texttt{ShiftWAgg} and \texttt{BayTriVar} to the repliCATS pilot program
+dataset \texttt{data\_ratings}.}
+
+\hypertarget{lst-multi-method-workflow-both}{%
+\label{lst-multi-method-workflow-both}}%
+\begin{verbatim}
+confidenceSCOREs <-
+  list(
+    AverageWAgg,
+    IntervalWAgg,
+    IntervalWAgg,
+    ShiftingWAgg,
+    BayesianWAgg
+  ) %>%
+  purrr::map2_dfr(
+    .y = list("ArMean", 
+              "IndIntWAgg", 
+              "IntWAgg", 
+              "ShiftWAgg", 
+              "BayTriVar"),
+    .f = ~ .x(aggreCAT::data_ratings, type = .y, percent_toggle = TRUE)
+  ) %>% 
+  dplyr::bind_rows(
+    ReasoningWAgg(aggreCAT::data_ratings, 
+                  reasons = aggreCAT::data_supp_reasons, 
+                  percent_toggle = TRUE)
+  )
+\end{verbatim}
+
+\end{codelisting}
+
+\begin{codelisting}
+
+\caption{Bring your own data: non-probablistic values}
+
+\hypertarget{lst-BYO-data-aggregate}{%
+\label{lst-BYO-data-aggregate}}%
+\begin{verbatim}
+turtle_CS <- 
+  list(
+  AverageWAgg,
+  IntervalWAgg,
+  IntervalWAgg,
+  ShiftingWAgg
+) %>%
+  purrr::map2_dfr(.y = list("ArMean",
+                            "IndIntWAgg",
+                            "IntWAgg",
+                            "ShiftWAgg"),
+                  .f = ~ .x(green_turtles, type = .y,
+                            percent_toggle = FALSE)
+  )
+\end{verbatim}
+
+\end{codelisting}
+
+\begin{codelisting}
+
+\caption{Visualising Confidence Scores}
+
+\hypertarget{lst-confidencescores}{%
+\label{lst-confidencescores}}%
+\begin{verbatim}
+plot_cs <- 
+  confidenceSCOREs %>% 
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::mutate(data_type = "Confidence Scores") %>% 
+  dplyr::rename(x_vals = cs,
+         y_vals = method) %>% 
+  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
+
+plot_judgements <- 
+  aggreCAT::preprocess_judgements(focal_claims,
+                                  percent_toggle = TRUE) %>% 
+  tidyr::pivot_wider(names_from = element, 
+                     values_from = value) %>%
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::rename(x_vals = three_point_best,
+         y_vals = user_name) %>% 
+  dplyr::select(paper_id, 
+         y_vals, 
+         x_vals, 
+         tidyr::contains("three_point"),
+         outcome) %>% 
+  dplyr::mutate(data_type = "Elicited Probabilities")
+
+p <- plot_judgements %>%  
+  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
+                          by = "paper_id")}) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
+  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
+                      xmax = three_point_upper)) +
+  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
+  ggplot2::theme_classic() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
+  ggplot2::xlab("Probability of Replication") +
+  ggplot2::ylab(ggplot2::element_blank()) +
+  ggplot2::scale_colour_brewer(palette = "Set1")
+\end{verbatim}
+
+\end{codelisting}
+
 \elandscape
 \newpage
 
@@ -2072,10 +2220,10 @@ Method & Description & Data Requirements & Weighting Function & Elicitation Roun
 \section*{Computational details}\label{computational-details}}
 \addcontentsline{toc}{section}{Computational details}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, opacityback=0, arc=.35mm, breakable, colframe=quarto-callout-color-frame, bottomrule=.15mm, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
-
 The analyses and results in this paper were obtained using the following
 computing environment, versions of \texttt{R} and \texttt{R} packages:
+
+\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, arc=.35mm, rightrule=.15mm, colframe=quarto-callout-color-frame, bottomrule=.15mm, breakable, toprule=.15mm, colback=white]
 
 \begin{verbatim}
 R> devtools::session_info()
@@ -2098,7 +2246,7 @@ R> devtools::session_info()
 - Packages -------------------------------------------------------------------
  package       * version    date (UTC) lib source
  abind           1.4-5      2016-07-21 [1] CRAN (R 4.2.0)
- aggreCAT      * 0.0.0.9002 2023-03-30 [1] local
+ aggreCAT      * 0.0.0.9004 2023-03-31 [1] local
  assertthat      0.2.1      2019-03-21 [1] CRAN (R 4.2.0)
  backports       1.4.1      2021-12-13 [1] CRAN (R 4.2.0)
  boot            1.3-28     2021-05-03 [1] CRAN (R 4.2.2)
@@ -2239,7 +2387,7 @@ R> devtools::session_info()
 \section*{Acknowledgments}\label{acknowledgments}}
 \addcontentsline{toc}{section}{Acknowledgments}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, opacityback=0, arc=.35mm, breakable, colframe=quarto-callout-color-frame, bottomrule=.15mm, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, left=2mm, opacityback=0, leftrule=.75mm, arc=.35mm, rightrule=.15mm, colframe=quarto-callout-color-frame, bottomrule=.15mm, breakable, toprule=.15mm, colback=white]
 
 This project is sponsored by the Defense Advanced Research Projects
 Agency (DARPA) under cooperative agreement No.HR001118S0047. The content
@@ -2248,161 +2396,6 @@ policy of the Government, and no official endorsement should be
 inferred.
 
 \end{tcolorbox}
-
-\newpage
-
-\newpage{}
-
-\hypertarget{listings}{%
-\section*{Listings}\label{listings}}
-\addcontentsline{toc}{section}{Listings}
-
-\begin{codelisting}
-
-\caption{Multiple aggregation methods can be applied by binding rows
-rather than using the purrr package, if preferred.}
-
-\hypertarget{lst-multi-method-workflow-non-supp}{%
-\label{lst-multi-method-workflow-non-supp}}%
-\begin{verbatim}
-purrr::map2_dfr(.x = list(AverageWAgg,
-                          IntervalWAgg,
-                          IntervalWAgg,
-                          ShiftingWAgg,
-                          BayesianWAgg),
-                .y = list("ArMean", 
-                          "IndIntWAgg", 
-                          "IntWAgg", 
-                          "ShiftWAgg", 
-                          "BayTriVar"),
-                .f = ~ .x(focal_claims, 
-                          type = .y, 
-                          percent_toggle = TRUE)
-)
-\end{verbatim}
-
-\end{codelisting}
-
-\begin{codelisting}
-
-\caption{Note that if we wish to batch aggregate claims using a
-combination of aggregation methods that do and do not require
-supplementary data, we must aggregate them separately, since the methods
-that require supplementary data have an additional argument for the
-supplementary data that must be parsed to the wrapper function call. We
-can chain the aggregation of the methods that do not require
-supplementary data, and the methods that do require supplementary data
-together very neatly using {dplyr}'s {bind\_rows} function
-\citep{dplyr2021} and the {magrittr} pipe \texttt{\%\textgreater{}\%}
-\citep{magrittr2020}. Below we implement this approach while applying
-the aggregation methods \texttt{ArMean}, \texttt{IntWAgg},
-\texttt{IndIntWAgg}, \texttt{ShiftWAgg} and \texttt{BayTriVar} to the
-repliCATS pilot program dataset \texttt{data\_ratings}.}
-
-\hypertarget{lst-multi-method-workflow-both}{%
-\label{lst-multi-method-workflow-both}}%
-\begin{verbatim}
-
-confidenceSCOREs <-
-  list(
-    AverageWAgg,
-    IntervalWAgg,
-    IntervalWAgg,
-    ShiftingWAgg,
-    BayesianWAgg
-  ) %>%
-  purrr::map2_dfr(
-    .y = list("ArMean", 
-              "IndIntWAgg", 
-              "IntWAgg", 
-              "ShiftWAgg", 
-              "BayTriVar"),
-    .f = ~ .x(aggreCAT::data_ratings, type = .y, percent_toggle = TRUE)
-  ) %>% 
-  dplyr::bind_rows(
-    ReasoningWAgg(aggreCAT::data_ratings, 
-                  reasons = aggreCAT::data_supp_reasons, 
-                  percent_toggle = TRUE)
-  )
-\end{verbatim}
-
-\end{codelisting}
-
-\begin{codelisting}
-
-\caption{Bring your own data: non-probablistic values}
-
-\hypertarget{lst-BYO-data-aggregate}{%
-\label{lst-BYO-data-aggregate}}%
-\begin{verbatim}
-turtle_CS <- 
-  list(
-  AverageWAgg,
-  IntervalWAgg,
-  IntervalWAgg,
-  ShiftingWAgg
-) %>%
-  purrr::map2_dfr(.y = list("ArMean",
-                            "IndIntWAgg",
-                            "IntWAgg",
-                            "ShiftWAgg"),
-                  .f = ~ .x(green_turtles, type = .y,
-                            percent_toggle = FALSE)
-  )
-\end{verbatim}
-
-\end{codelisting}
-
-\begin{codelisting}
-
-\caption{Visualising Confidence Scores}
-
-\hypertarget{lst-confidencescores}{%
-\label{lst-confidencescores}}%
-\begin{verbatim}
-plot_cs <- 
-  confidenceSCOREs %>% 
-  dplyr::left_join(aggreCAT::data_outcomes) %>% 
-  dplyr::mutate(data_type = "Confidence Scores") %>% 
-  dplyr::rename(x_vals = cs,
-         y_vals = method) %>% 
-  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
-
-plot_judgements <- 
-  aggreCAT::preprocess_judgements(focal_claims,
-                                  percent_toggle = TRUE) %>% 
-  tidyr::pivot_wider(names_from = element, 
-                     values_from = value) %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>% 
-  dplyr::rename(x_vals = three_point_best,
-         y_vals = user_name) %>% 
-  dplyr::select(paper_id, 
-         y_vals, 
-         x_vals, 
-         tidyr::contains("three_point"),
-         outcome) %>% 
-  dplyr::mutate(data_type = "Elicited Probabilities")
-
-p <- plot_judgements %>%  
-  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
-                          by = "paper_id")}) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
-  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
-                      xmax = three_point_upper)) +
-  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
-  ggplot2::theme_classic() +
-  ggplot2::theme(legend.position = "none") +
-  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
-  ggplot2::xlab("Probability of Replication") +
-  ggplot2::ylab(ggplot2::element_blank()) +
-  ggplot2::scale_colour_brewer(palette = "Set1")
-\end{verbatim}
-
-\end{codelisting}
-
-\newpage
-
-\newpage{}
 
 
   \bibliography{bibliography.bib}
