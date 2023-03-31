@@ -951,8 +951,7 @@ using default priors, priors are generated from a predictive model that
 estimates the probability of a claim replicating based on
 characteristics of the claim and publication [@Gould2021a]. Priors are
 parsed as supplementary data to the wrapper function
-[BayesianWAgg]{.fct} using the argument `priors` (@sec-bayesian-supplementary-data) with each claim having its own unique
-prior.
+[BayesianWAgg]{.fct} using the argument `priors` (@sec-bayesian-supplementary-data) with each claim having its own unique prior.
 
 We illustrate aggregation of participant judgements using the method
 `BayTriVar` to generate a Confidence Score for the claim `108`. Note
