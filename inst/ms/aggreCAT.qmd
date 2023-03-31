@@ -1304,14 +1304,11 @@ actual outcomes were `0` or `FALSE`. Deviation from this expectation
 indicates which aggregation methods for which claim/forecast, for which
 outcome type were inaccurate, and to what degree.
 
-For example, in @fig-heatmap, for the example dataset
+For example, in @fig-heatmap, for the dataset
 `confidenceSCOREs` the successful replication of most claims was
 accurately forecasted by most methods, except for several claims. Some
-methods performed better than others for some claims (e.g. `BayTriVar`
-and `IndIntWAgg` for the first claim on the left (TODO insert), and for
-the claim on the right). In contrast, for most claims that did not
-replicate, forecasts were inaccurate, with `IndIntWAgg`, `IntWAgg` and
-`BayTriVar` performing particularly badly for the claims X and Y.
+methods performed better than others for some claims (e.g. `ReasonWAgg`
+for claims `109` and `138`.
 
 Finally, creating bespoke user-defined plots is relatively easy --
 because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or [tibble]{.class}s, we can easily
