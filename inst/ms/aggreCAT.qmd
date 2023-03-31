@@ -1156,7 +1156,7 @@ aggreCAT::confidence_score_evaluation(
 
 ```{r}
 #| label: tbl-multi-method-workflow-eval
-#| tbl-cap: "AUC and Classification Accuracy for the aggregation methods 'ShiftWAgg', 'ArMean', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'BayTriVar' evaluated for repliCATS pilot study claims and known outcomes."
+#| tbl-cap: "AUC and Classification Accuracy for forecasts from the aggregation methods 'ShiftWAgg', 'ArMean', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'BayTriVar' for a subset of the repliCATS pilot study claims (`focal_claims`) and known outcomes."
 #| message: false
 #| results: asis
 #| echo: false
