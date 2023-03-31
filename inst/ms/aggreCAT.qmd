@@ -886,14 +886,16 @@ focal_claims %>%
   dplyr::filter(paper_id == "24") %>%   
   tidyr::pivot_wider(names_from = element, values_from = value) %>% 
   dplyr::arrange(user_name) %>%   
-  dplyr::select(paper_id, user_name, three_point_lower, three_point_best, three_point_upper) %>% 
-   tidyr::drop_na() %>% 
+  dplyr::select(paper_id, user_name, round, three_point_lower, three_point_best, three_point_upper) %>% 
+  tidyr::drop_na() %>% 
+  dplyr::mutate(round = str_remove(round, "round_") %>% as.integer) %>% 
   gt::gt() %>% 
-    gt::cols_label(paper_id = "Claim ID",
+  gt::cols_label(paper_id = "Claim ID",
                  user_name = "User Name",
                  three_point_lower = "Lower Bound",
                  three_point_best = "Best Estimate",
-                 three_point_upper = "Upper Bound")
+                 three_point_upper = "Upper Bound") %>% 
+  gt::fmt_integer(columns = round)
 ```
 
 Confidence Scores estimating the replicability for claim `24` (@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
