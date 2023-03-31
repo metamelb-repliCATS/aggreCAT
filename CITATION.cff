@@ -8,31 +8,49 @@ message: 'To cite package "aggreCAT" in publications use:'
 type: software
 license: MIT
 title: 'aggreCAT: Mathematically Aggregating Expert Judgments'
-version: 0.0.0.9002
-abstract: Aggregator methods for confidence scores.
+version: 0.0.0.9004
+abstract: Aggregation methods for confidence scores.
 authors:
+- family-names: Wilkinson
+  given-names: David
+  email: david.wilkinson.research@gmail.com
+  orcid: https://orcid.org/0000-0002-9560-6499
+- family-names: Gould
+  given-names: Elliot
+  orcid: https://orcid.org/0000-0002-6585-538X
 - family-names: Willcox
   given-names: Aaron
   email: aaron@willcox.io
   orcid: https://orcid.org/0000-0003-2536-2596
 - family-names: Gray
   given-names: Charles T.
-- family-names: Gould
-  given-names: Elliot
-  orcid: https://orcid.org/0000-0002-6585-538X
-- family-names: Wilkinson
-  given-names: David
-  email: david.wilkinson.research@gmail.com
-  orcid: https://orcid.org/0000-0002-9560-6499
-- family-names: Hanea
-  given-names: Anca
-  orcid: https://orcid.org/0000-0003-3870-5949
-- family-names: Wintle
-  given-names: Bonnie
-  orcid: https://orcid.org/0000-0003-0236-6906
+  orcid: https://orcid.org/00000-0002-9978-011X
 - family-names: E. O'Dea
   given-names: Rose
   orcid: https://orcid.org/0000-0001-8177-5075
+- family-names: Groenewegen
+  given-names: Rebecca
+  orcid: https://orcid.org/0000-0001-9177-8536
+preferred-citation:
+  type: article
+  title: 'aggreCAT: An R Package for Mathematically Aggregating Expert Judgments'
+  authors:
+  - name: Gould
+  - name: Elliot
+  - name: Gray
+  - family-names: T.
+    given-names: Charles
+  - name: Willcox
+  - name: Aaron
+  - name: O'Dea
+  - name: Rose
+  - name: Groenewgen
+  - name: Rebecca
+  - name: Wilkinson
+  - family-names: P.
+    given-names: David
+  journal: MetArXiv
+  year: '2023'
 url: https://replicats.research.unimelb.edu.au/
 contact:
 - family-names: Wilkinson
@@ -73,36 +91,50 @@ references:
   authors:
   - family-names: Allaire
     given-names: JJ
-    email: jj@rstudio.com
+    email: jj@posit.co
   - family-names: Xie
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
   - family-names: McPherson
     given-names: Jonathan
-    email: jonathan@rstudio.com
+    email: jonathan@posit.co
   - family-names: Luraschi
     given-names: Javier
-    email: javier@rstudio.com
   - family-names: Ushey
     given-names: Kevin
-    email: kevin@rstudio.com
+    email: kevin@posit.co
   - family-names: Atkins
     given-names: Aron
-    email: aron@rstudio.com
+    email: aron@posit.co
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   - family-names: Cheng
     given-names: Joe
-    email: joe@rstudio.com
+    email: joe@posit.co
   - family-names: Chang
     given-names: Winston
-    email: winston@rstudio.com
+    email: winston@posit.co
   - family-names: Iannone
     given-names: Richard
-    email: rich@rstudio.com
+    email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
+  year: '2023'
+- type: software
+  title: covr
+  abstract: 'covr: Test Coverage for Packages'
+  notes: Suggests
+  url: https://covr.r-lib.org
+  repository: https://CRAN.R-project.org/package=covr
+  authors:
+  - family-names: Hester
+    given-names: Jim
+    email: james.f.hester@gmail.com
   year: '2023'
 - type: software
   title: pointblank
@@ -122,6 +154,17 @@ references:
     orcid: https://orcid.org/0000-0003-1017-7574
   year: '2023'
 - type: software
+  title: janitor
+  abstract: 'janitor: Simple Tools for Examining and Cleaning Dirty Data'
+  notes: Suggests
+  url: https://sfirke.github.io/janitor/
+  repository: https://CRAN.R-project.org/package=janitor
+  authors:
+  - family-names: Firke
+    given-names: Sam
+    email: samuel.firke@gmail.com
+  year: '2023'
+- type: software
   title: DescTools
   abstract: 'DescTools: Tools for Descriptive Statistics'
   notes: Suggests
@@ -131,6 +174,24 @@ references:
   - family-names: Signorell
     given-names: Andri
     email: andri@signorell.net
+  year: '2023'
+- type: software
+  title: qualtRics
+  abstract: 'qualtRics: Download ''Qualtrics'' Survey Data'
+  notes: Suggests
+  url: https://docs.ropensci.org/qualtRics/
+  repository: https://CRAN.R-project.org/package=qualtRics
+  authors:
+  - family-names: Ginn
+    given-names: Jasper
+    email: jasperginn@gmail.com
+  - family-names: O'Brien
+    given-names: Joseph
+    email: joseph.obrien@utexas.edu
+  - family-names: Silge
+    given-names: Julia
+    email: julia.silge@gmail.com
+    orcid: https://orcid.org/0000-0002-3671-836X
   year: '2023'
 - type: software
   title: here
@@ -153,11 +214,11 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Bryan
     given-names: Jennifer
-    email: jenny@rstudio.com
+    email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
   year: '2023'
 - type: software
@@ -169,12 +230,12 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   - family-names: Hester
     given-names: Jim
   - family-names: Bryan
     given-names: Jennifer
-    email: jenny@rstudio.com
+    email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
   year: '2023'
 - type: software
@@ -261,6 +322,17 @@ references:
     email: martyn.plummer@gmail.com
   year: '2023'
 - type: software
+  title: tidybayes
+  abstract: 'tidybayes: Tidy Data and ''Geoms'' for Bayesian Models'
+  notes: Suggests
+  url: https://mjskay.github.io/tidybayes/
+  repository: https://CRAN.R-project.org/package=tidybayes
+  authors:
+  - family-names: Kay
+    given-names: Matthew
+    email: mjskay@northwestern.edu
+  year: '2023'
+- type: software
   title: tidyverse
   abstract: 'tidyverse: Easily Install and Load the ''Tidyverse'''
   notes: Suggests
@@ -331,6 +403,39 @@ references:
     given-names: JooYoung
     email: jseo1005@illinois.edu
     orcid: https://orcid.org/0000-0002-4064-6012
+  year: '2023'
+- type: software
+  title: gtExtras
+  abstract: 'gtExtras: Extending ''gt'' for Beautiful HTML Tables'
+  notes: Suggests
+  url: https://jthomasmock.github.io/gtExtras/
+  repository: https://CRAN.R-project.org/package=gtExtras
+  authors:
+  - family-names: Mock
+    given-names: Thomas
+    email: j.thomasmock@gmail.com
+  year: '2023'
+- type: software
+  title: R.rsp
+  abstract: 'R.rsp: Dynamic Generation of Scientific Reports'
+  notes: Suggests
+  url: https://github.com/HenrikBengtsson/R.rsp
+  repository: https://CRAN.R-project.org/package=R.rsp
+  authors:
+  - family-names: Bengtsson
+    given-names: Henrik
+    email: henrikb@braju.com
+  year: '2023'
+- type: software
+  title: BiocStyle
+  abstract: 'BiocStyle: Standard styles for vignettes and other Bioconductor documents'
+  notes: Suggests
+  url: https://github.com/Bioconductor/BiocStyle
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Oleś
+    given-names: Andrzej
+    orcid: https://orcid.org/0000-0003-0285-2787
   year: '2023'
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
@@ -569,7 +674,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Chang
     given-names: Winston
@@ -578,7 +683,7 @@ references:
     given-names: Lionel
   - family-names: Pedersen
     given-names: Thomas Lin
-    email: thomas.pedersen@rstudio.com
+    email: thomas.pedersen@posit.co
     orcid: https://orcid.org/0000-0002-5147-4711
   - family-names: Takahashi
     given-names: Kohske
