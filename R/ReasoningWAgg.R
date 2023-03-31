@@ -46,6 +46,12 @@
 #' \mathbf{CR_i}(c,r)}{C})}{ascii}
 #'
 #' \mjdeqn{\hat{p}_c(ReasonWAgg2) = \sum_{i=1}^N \tilde{w}\_varReason_{i,c}B_{i,c}}{ascii}
+#' 
+#' @note 
+#' 
+#' When `flag_loarmean` is set to `TRUE`, two additional columns will be returned; `method_applied` (a character variable describing the method actually applied with values of either `LoArMean` or `ReasonWAgg`) and `no_reason_score` (a logical variable describing whether no reasoning scores were supplied for any user for the given claim, where `TRUE` indicates no reasoning scores supplied and `FALSE` indicates that at least one participant for that claim had a reasoning score greater than 0).
+#' 
+#' named method_applied (with values LoArMean or ReasonWAgg), and no_reason_score, a logical variable describing whether or not there were no reasoning scores for that claim.
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
 #' @param reasons A dataframe in the form of [data_supp_reasons]
@@ -56,6 +62,10 @@
 #' @param placeholder Toggle the output of the aggregation method to impute placeholder data.
 #' @param percent_toggle Change the values to probabilities. Default is `FALSE`.
 #' @param flag_loarmean A toggle to impute LOArMean instead of ArMean when no participants have a reasoning weight for a specific claim (defaults `FALSE`).
+#' @param round_2_filter Note that the IDEA protocol results in both a Round 1
+#' and Round 2 set of probabilities for each claim. Unless otherwise specified,
+#' we will assume that the final Round 2 responses (after discussion) are being
+#' referred to.
 #'
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
@@ -73,7 +83,8 @@ ReasoningWAgg <- function(expert_judgements,
                           beta_param = c(6, 6),
                           placeholder = FALSE,
                           percent_toggle = FALSE,
-                          flag_loarmean = FALSE) {
+                          flag_loarmean = FALSE,
+                          round_2_filter = TRUE) {
 
   if(!(type %in% c("ReasonWAgg",
                    "ReasonWAgg2"))){
@@ -99,7 +110,8 @@ ReasoningWAgg <- function(expert_judgements,
   } else {
 
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}}) %>%
+      preprocess_judgements(percent_toggle = {{percent_toggle}},
+                            round_2_filter = {{round_2_filter}}) %>%
       dplyr::filter(element == "three_point_best") %>%
       dplyr::group_by(paper_id)
 

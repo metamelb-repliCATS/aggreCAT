@@ -27,3 +27,4 @@ vignettes/test_table.Rmd
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^CITATION\.cff$

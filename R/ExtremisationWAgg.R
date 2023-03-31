@@ -41,6 +41,10 @@
 #' @param cutoff_upper Upper bound of middle region without extremisation in `"BetaArMean2"` aggregation `type`s.
 #' @param placeholder Toggle the output of the aggregation method to impute placeholder data.
 #' @param percent_toggle Change the values to probabilities. Default is `FALSE`.
+#' @param round_2_filter Note that the IDEA protocol results in both a Round 1
+#' and Round 2 set of probabilities for each claim. Unless otherwise specified,
+#' we will assume that the final Round 2 responses (after discussion) are being
+#' referred to.
 #'
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
@@ -58,7 +62,8 @@ ExtremisationWAgg <- function(expert_judgements,
                               cutoff_lower = NULL,
                               cutoff_upper = NULL,
                               placeholder = FALSE,
-                              percent_toggle = FALSE) {
+                              percent_toggle = FALSE,
+                              round_2_filter = TRUE) {
 
   if(!(type %in% c("BetaArMean",
                    "BetaArMean2"))){
@@ -84,7 +89,8 @@ ExtremisationWAgg <- function(expert_judgements,
   } else {
 
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}}) %>%
+      preprocess_judgements(percent_toggle = {{percent_toggle}},
+                            round_2_filter = {{round_2_filter}}) %>%
       dplyr::filter(element == "three_point_best") %>%
       dplyr::group_by(paper_id)
 
