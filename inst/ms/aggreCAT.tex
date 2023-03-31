@@ -264,7 +264,7 @@ David P. Wilkinson\\
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, interior hidden, boxrule=0pt, frame hidden, borderline west={3pt}{0pt}{shadecolor}, breakable, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, frame hidden, sharp corners, breakable, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, interior hidden]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-introduction}{%
 \section{Introduction}\label{sec-introduction}}
@@ -923,7 +923,7 @@ form structure and format.}
 
 \end{figure}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, breakable, colback=white, colframe=quarto-callout-color-frame, leftrule=.75mm, rightrule=.15mm, opacityback=0, bottomrule=.15mm, left=2mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, left=2mm, breakable, bottomrule=.15mm, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame]
 
 \hypertarget{aggWorkflow}{}
 \hypertarget{box-1-aggregation-workflow-blueprint}{%
@@ -2001,7 +2001,7 @@ aggregation of human forecasts is required.
 
 \begingroup\fontsize{6}{8}\selectfont
 
-\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{20em}l>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{5em}>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{10em}}
+\begin{longtable}[l]{>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{20em}>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{5em}>{\raggedright\arraybackslash}p{10em}>{\raggedright\arraybackslash}p{10em}}
 \caption{\label{tbl-method-summary-table} Summary of aggregation methods and functions, including data requirements and sources.}\\
 \toprule
 Method & Description & Data Requirements & Weighting Function & Elicitation Rounds & Elicitation Method & Data Sources\\
@@ -2018,49 +2018,49 @@ Method & Description & Data Requirements & Weighting Function & Elicitation Roun
 \endlastfoot
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{AverageWAgg(): Averaged best estimates}}\\
-\hspace{1em}ArMean & Arithmetic mean of the best estimates &  & NA - Estimates are equally weighted & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}Median & Median of the best estimates &  & NA - Estimates are equally weighted & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}GeoMean & Geometric mean of the best estimates &  & NA - Estimates are equally weighted & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}LOArMean & Arithmetic mean of the log odds transformed best estimates &  & NA - Estimates are equally weighted prior to transformation & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}ProbitArMean & Arithmetic mean of the probit transformed best estimates &  & NA - Estimates are equally weighted prior to transformation & 1 & Single-Point & ${B}_{i,c}$\\
+\hspace{1em}ArMean & Arithmetic mean of the best estimates &  & NA - Estimates are equally weighted & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}Median & Median of the best estimates &  & NA - Estimates are equally weighted & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}GeoMean & Geometric mean of the best estimates &  & NA - Estimates are equally weighted & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}LOArMean & Arithmetic mean of the log odds transformed best estimates &  & NA - Estimates are equally weighted prior to transformation & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}ProbitArMean & Arithmetic mean of the probit transformed best estimates &  & NA - Estimates are equally weighted prior to transformation & 1 & Single-point & ${B}_{i,c}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{LinearWAgg() Linearly-weighted best estimates  }}\\
-\hspace{1em}DistLimitWAgg & Weighted by the distance of the best estimate from the closest certainty limit. Best-estimates closest to certainty limits are more strongly weighted &  & Calculated internally & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}GranWAgg & Weighted by the granularity of best estimates &  & Calculated internally & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}Judgement & Weighted by user-supplied weights at the judgement level & ??? & ??? & ??? & ??? & ???\\
-\hspace{1em}Participant & Weighted by user-supplied weights at the participant level & ??? & ??? & ??? & ??? & ???\\
-\hspace{1em}OutWAgg & Outliers are down-weighted. &  & `weight_outlier()` & ??? & Single-Point & ${B}_{i,c}$\\
+\hspace{1em}DistLimitWAgg & Weighted by the distance of the best estimate from the closest certainty limit. Best-estimates closest to certainty limits are more strongly weighted &  & Calculated internally & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}GranWAgg & Weighted by the granularity of best estimates &  & Calculated internally & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}Judgement & Weighted by user-supplied weights at the judgement level & `data.frame/tibble` with three columns (`paper_id`, `user_name`, `weight`) & Calculated internally & 1 & Single-point & ${B}_{i,c}$, $w{\_}{reason}_{i,c}$\\
+\hspace{1em}Participant & Weighted by user-supplied weights at the participant level & `data.frame`/`tibble` with two columns (`user_name`, `weight`) & Calculated internally & 1 & Single-point & ${B}_{i,c}$, $w{\_}{reason}_{i}$\\
+\hspace{1em}OutWAgg & Outliers are down-weighted. &  & `weight_outlier()` & 1 & Single-point & ${B}_{i,c}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths  }}\\
-\hspace{1em}IntWAgg & Weighted by interval width &  & `weight_interval()` & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
-\hspace{1em}IndIntWAgg & Weighted by the re-scaled interval width (interval width relative to largest interval width provided by individual $i$. &  & `weight_nIndivInterval()` & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}, {U}_{i,d}, {L}_{i,d}$\\
-\hspace{1em}AsymWAgg & Weighted by asymetry of intervals &  & `weight_asym()`, `weight_nIndivInterval()` & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
-\hspace{1em}IndIntAsymWAgg & Weighted by individuals' interval widths and their asymetry &  & `weight_asym()`, `weight_nIndivInterval()` & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}, {U}_{i,d}, {L}_{i,d}$\\
-\hspace{1em}VarIndIntWAgg & Weighted by the variation in individuals' interval widths across estimates &  & `weight_varIndivInterval()` & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}, {U}_{i,d}, {L}_{i,d}$\\
-\hspace{1em}KitchWinkWAgg & Weighted by everything but the kitchen sink - rewards narrow and assymetric intervals as well as the variability of individuals' interval widths across estimates. &  & `weight_asym()`, `weight_nIndivInterval()`, `weight_varIndivInterval()` & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}, {U}_{i,d}, {L}_{i,d}$\\
+\hspace{1em}IntWAgg & Weighted by interval width &  & `weight_interval()` & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
+\hspace{1em}IndIntWAgg & Weighted by the re-scaled interval width (interval width relative to largest interval width provided by individual $i$. &  & `weight_nIndivInterval()` & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$, ${U}_{i,d}$, ${L}_{i,d}$\\
+\hspace{1em}AsymWAgg & Weighted by asymetry of intervals &  & `weight_asym()`, `weight_nIndivInterval()` & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
+\hspace{1em}IndIntAsymWAgg & Weighted by individuals' interval widths and their asymetry &  & `weight_asym()`, `weight_nIndivInterval()` & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$, ${U}_{i,d}$, ${L}_{i,d}$\\
+\hspace{1em}VarIndIntWAgg & Weighted by the variation in individuals' interval widths across estimates &  & `weight_varIndivInterval()` & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$, ${U}_{i,d}$, ${L}_{i,d}$\\
+\hspace{1em}KitchSinkWAgg & Weighted by everything but the kitchen sink - rewards narrow and assymetric intervals as well as the variability of individuals' interval widths across estimates. &  & `weight_asym()`, `weight_nIndivInterval()`, `weight_varIndivInterval()` & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$, ${U}_{i,d}$, ${L}_{i,d}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{ShiftingWAgg() Weighted by judgemetns that shift most after discussion}}\\
-\hspace{1em}ShiftWAgg & Accounts for shifts in individuals' best-estimates, upper and lower bounds between rounds &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements using three-point elicitation & ${B1}_{i,c}, {U1}_{i,c}, {L1}_{i,c}, {B1}_{i,c}, {U1}_{i,c}, {L1}_{i,c}$\\
+\hspace{1em}ShiftWAgg & Accounts for shifts in individuals' best-estimates, upper and lower bounds between rounds &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements using three-point elicitation & ${B1}_{i,c}$, ${U1}_{i,c}$, ${L1}_{i,c}$, ${B1}_{i,c}$, ${U1}_{i,c}$, ${L1}_{i,c}$\\
 \hspace{1em}BestShiftWAgg & Weights constructed from shifts in best-estimates &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements of single point-estimates & ${B}_{i,c}$\\
-\hspace{1em}IntShiftWAgg & Weights constructed from shifts in interval widths &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements using three-point elicitation & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
+\hspace{1em}IntShiftWAgg & Weights constructed from shifts in interval widths &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements using three-point elicitation & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
 \hspace{1em}DistShiftWAgg & Weights constructed from degree of extrimisation shift between rounds &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements of single point-estimates & ${B}_{i,c}$\\
-\hspace{1em}DistIntShiftWAgg & Weights constructed by degree of interval narrowing and shift towards certainty bounds between rounds &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements using three-point elicitation & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
-\hspace{1em}ReasonWAgg & Weighted by the breadth of reasoning (number of supplied reasons) provided to support the individuals' estimate & `data_supp_ReasonWAgg` & `weight_reason()` & 1 & IDEA protocol or other structured protocol to elicit reasoning, but only sinle round (round 2) of data used in aggregation calculation. & ${B}_{i,c}$, $w${\_}${reason}_{i,c}$\\
+\hspace{1em}DistIntShiftWAgg & Weights constructed by degree of interval narrowing and shift towards certainty bounds between rounds &  & Calculated internally & 2 & IDEA protocol or other structured protocol that generates multiple rounds of judgements using three-point elicitation & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data}}\\
-\hspace{1em}ReasonWAgg2 & Weighted by the breadth of reasoning provided to support the individuals' estimate, rescaled  by breadth of reasoning across all claims & `data_supp_ReasonWAgg` & `weight_reason2()` & 1 & IDEA protocol or other structured protocol to elicit reasoning, but only sinle round (round 2) of data used in aggregation calculation. & ${B}_{i,c}, w{\_}{reason}_{i,c}, {U}_{i,d}, {L}_{i,d}, w{\_}{reason}_{i,c}$\\
-\hspace{1em}BetaArMean & Beta-transformed arithmetic mean of the best-estimates &  & NA - Estimates are equally weighted & 1 & Single-Point & ${B}_{i,c}$\\
+\hspace{1em}ReasonWAgg & Weighted by the breadth of reasoning (number of supplied reasons) provided to support the individuals' estimate & `data_supp_ReasonWAgg` & `weight_reason()` & 1 & IDEA protocol or other structured protocol to elicit reasoning, but only sinle round (round 2) of data used in aggregation calculation. & ${B}_{i,c}$, $w{\_}{reason}_{i,c}$\\
+\hspace{1em}ReasonWAgg2 & Weighted by the breadth of reasoning provided to support the individuals' estimate, rescaled  by breadth of reasoning across all claims & `data_supp_ReasonWAgg` & `weight_reason2()` & 1 & IDEA protocol or other structured protocol to elicit reasoning, but only sinle round (round 2) of data used in aggregation calculation. & ${B}_{i,c}$, $w{\_}{reason}_{i,c}$, ${U}_{i,d}$, ${L}_{i,d}$, $w{\_}{reason}_{i,c}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution}}\\
-\hspace{1em}BetaArMean2 & Beta-transformed arithmetic mean of the best-estimates, but only to confidence scores outside a specified middle range. &  & NA - Estimates are equally weighted & 1 & Single-Point & ${B}_{i,c}$\\
-\hspace{1em}DistribArMean & Applies a non-parametric distribution evenly across upper, lower and best-estimates &  & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
+\hspace{1em}BetaArMean & Beta-transformed arithmetic mean of the best-estimates &  & NA - Estimates are equally weighted & 1 & Single-point & ${B}_{i,c}$\\
+\hspace{1em}BetaArMean2 & Beta-transformed arithmetic mean of the best-estimates, but only to confidence scores outside a specified middle range. &  & NA - Estimates are equally weighted & 1 & Single-point & ${B}_{i,c}$\\
 \addlinespace[0.3em]
-\multicolumn{7}{l}{\textbf{DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements. The aggregate is the median of the average distribution fitted to individual estimates}}\\
-\hspace{1em}TriDistribArMean & Applies a triangular distribution to the upper, lower and best-estimates &  & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
+\multicolumn{7}{l}{\textbf{DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements.}}\\
+\hspace{1em}DistribArMean & Applies a non-parametric distribution evenly across upper, lower and best-estimates &  & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
+\hspace{1em}TriDistribArMean & Applies a triangular distribution to the upper, lower and best-estimates &  & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
 \addlinespace[0.3em]
 \multicolumn{7}{l}{\textbf{BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions}}\\
-\hspace{1em}\hspace{1em}BayTriVar & Bayesian tripple variability method &  & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\
-\hspace{1em}BayPRIORsAgg & As per `BayTriVar` but with priors derived from external predictive models, updated with individuals' best-estimates & `data_supp_BayPRIORsAgg` & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}, {U}_{i,c}, {L}_{i,c}$\\*
+\hspace{1em}BayTriVar & Bayesian tripple variability method &  & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\
+\hspace{1em}BayPRIORsAgg & As per `BayTriVar` but with priors derived from external predictive models, updated with individuals' best-estimates & `data_supp_BayPRIORsAgg` & NA - Estimates are equally weighted & 1 & Three-point & ${B}_{i,c}$, ${U}_{i,c}$, ${L}_{i,c}$\\*
 \end{longtable}
 \endgroup{}
 
@@ -2071,7 +2071,7 @@ Method & Description & Data Requirements & Weighting Function & Elicitation Roun
 \section*{Computational details}\label{computational-details}}
 \addcontentsline{toc}{section}{Computational details}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, breakable, colback=white, colframe=quarto-callout-color-frame, leftrule=.75mm, rightrule=.15mm, opacityback=0, bottomrule=.15mm, left=2mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, left=2mm, breakable, bottomrule=.15mm, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame]
 
 The analyses and results in this paper were obtained using the following
 computing environment, versions of \texttt{R} and \texttt{R} packages:
@@ -2091,7 +2091,7 @@ R> devtools::session_info()
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Australia/Melbourne
- date     2023-03-30
+ date     2023-03-31
  pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
 
 - Packages -------------------------------------------------------------------
@@ -2238,7 +2238,7 @@ R> devtools::session_info()
 \section*{Acknowledgments}\label{acknowledgments}}
 \addcontentsline{toc}{section}{Acknowledgments}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, breakable, colback=white, colframe=quarto-callout-color-frame, leftrule=.75mm, rightrule=.15mm, opacityback=0, bottomrule=.15mm, left=2mm, toprule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, left=2mm, breakable, bottomrule=.15mm, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, colback=white, colframe=quarto-callout-color-frame]
 
 This project is sponsored by the Defense Advanced Research Projects
 Agency (DARPA) under cooperative agreement No.HR001118S0047. The content
