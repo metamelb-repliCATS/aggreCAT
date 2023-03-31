@@ -1431,7 +1431,7 @@ turtle_CS %>%
   gt::gt() %>% 
   gt::cols_label(method = "Method",
                  paper_id = "Question ID",
-                 cs = "Confidence Score", # rename something else??
+                 cs = "Confidence Score",
                  n_experts = "N (experts)") %>% 
   gt::fmt_number(columns = cs)
 ```
