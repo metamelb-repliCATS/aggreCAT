@@ -1114,8 +1114,8 @@ confidenceSCOREs <-
     BayesianWAgg(focal_claims,
                  "BayTriVar", 
                  percent_toggle = TRUE),
-    ReasoningWAgg(aggreCAT::data_ratings, 
-                  reasons = aggreCAT::data_supp_reasons, 
+    ReasoningWAgg(focal_claims, 
+                  reasons = data_supp_reasons_focal, 
                   percent_toggle = TRUE)
   )
 
