@@ -1,0 +1,227 @@
+---
+title: "Summary of Aggregation Methods, Functions and Data Requirements"
+output: 
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(aggreCAT)
+library(here)
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(gt))
+suppressPackageStartupMessages(library(gtExtras))
+```
+
+```{r echo = FALSE, include = FALSE, eval = FALSE, label = "tab:tab2", error = TRUE}
+options(gt.html_tag_check = FALSE)
+
+my_tbl <- 
+  aggreCAT::aggreCAT:::method_summary_table  %>%   
+  dplyr::mutate(aggregator_function = paste0("`",aggregator_function , "`"),
+                type = paste0("**",type , "**"),
+                aggregator_fun_desc = paste0("*", aggregator_fun_desc, "*"),
+                type_desc = paste0("*", type_desc, "*"),
+                judgement_data_sources_svg_file = 
+                  stringr::str_replace_all(judgement_data_sources_svg_file, "-", "_")) %>% 
+  dplyr::left_join(svg_assets, by = c( "judgement_data_sources_svg_file"= "asset_name" )) %>% 
+  dplyr::mutate(fn = purrr::map(fn, gt::html))
+
+my_tbl<- 
+  my_tbl%>%
+  tidyr::unite(agg_name_description, aggregator_function, aggregator_fun_desc, sep = "<br>") %>%
+  tidyr::unite(agg_type, type, type_desc, sep = " <br>") %>%
+  select(-judgement_data_sources_eqns) %>%
+  # dplyr::group_by(agg_name_description) %>%
+  gt::gt() %>%
+  gt::tab_header(title = "Table 1: Summary of aggregation methods including data requirements, elicitation protocol requirements, and internal weighting method.") %>%
+  # gt::text_transform(locations = cells_body(columns =judgement_data_sources),fn = gt::escape_latex) %>%  #esxape if output is latex
+  gt::fmt_markdown(columns =c(agg_name_description,
+                              agg_type,
+                              supp_data_requirements,
+                              weighting_fn)) %>%
+  gt::cols_label(agg_name_description = gt::md("Aggregator Function<br>& Short Description"),
+                 agg_type = gt::md("Aggregator Type"),
+                 supp_data_requirements = gt::md("Supp.<br>Data"),
+                 weighting_fn = gt::md("Weighting<br>Function"),
+                 number_rounds = gt::md("Elicitation<br>Rounds"),
+                 elicitation_method = gt::md("Elicitation Method"),
+                 judgement_data_sources_svg_file = gt::md("Judgement<br>Data Sources")) %>%
+  gt::tab_row_group(label = gt::md("`AverageWAgg()` *Averaged best-estimates*"),
+                    rows = contains(match = "AverageWAgg", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`LinearWAgg()` *Linearly-weighted best-estimates*"),
+                    rows = contains(match = "LinearWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`IntervalWAgg()` *Linearly-weighted best estimates, with weights influenced by interval widths*"),
+                    rows = contains("IntervalWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`ShiftingWAgg()` *Weighted by judgements that shift most after discussion*"),
+                    rows = contains("ShiftingWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`ReasoningWAgg()` *Linearly-weighted best estimates, with weights constructed from supplementary reasoning data*"),
+                    rows = contains("ReasoningWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`ExtremisationWAgg()` *Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution.*"),
+                    rows = contains("ExtremisationWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`DistributionWAgg()` *Calculates the arithmetic mean of distributions created from expert judgements. The aggregate is the median of the average distribution fitted to individual estimates.*"),
+                    rows = contains("DistributionWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`BayesianWAgg()` *Bayesian aggregation methods with either uninformative or informative prior distributions.*"),
+                    rows = contains("BayesianWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("Do These fns exist anymore?"),
+                    rows = contains("???", vars = agg_name_description)) %>%
+  gt::cols_hide(agg_name_description) %>%
+  gtExtras::gt_theme_538() %>%
+  gt::tab_style( style = cell_text(size = "xx-small"),
+                 locations = cells_body(columns = everything(), rows = everything())) %>%
+  gt::cols_width(
+    agg_type ~ gt::px(30),
+    weighting_fn ~ gt::px(25),
+    elicitation_method ~ gt::px(50),
+    supp_data_requirements ~ gt::px(25),
+    judgement_data_sources_svg_file ~ gt::px(30),
+    everything() ~ gt::px(20)
+  ) %>%
+  gt::tab_options(table.width = pct(60),
+                  table.font.size = "x-small",
+                  row_group.font.size = "small",
+                  column_labels.font.size = "small",
+                  table.align = "center") %>%
+  gt::tab_style(style = "padding-left:1px;padding-right:1px;padding-top:1px;padding-bottom:1px;",
+                locations = cells_body()) 
+
+# my_tbl %>% 
+#   gt::gtsave("test-tbl-2.png", path = "./", vwidth = 1800, vheight = 1000, zoom = 5)
+
+# my_tbl %>% 
+#    gt::sub_missing(columns=-judgement_data_sources_svg_file, rows = everything(),
+#                   missing_text="") %>% 
+#   gt::gtsave("test-tbl.html", path = "./") #https://stackoverflow.com/questions/69257297/gt-table-truncated-when-output-as-png
+# my_tbl %>% 
+#    gt::sub_missing(columns=-judgement_data_sources_svg_file, rows = everything(),
+#                   missing_text="") %>% 
+#   gt::gtsave("test-tbl.pdf", path = "./")
+# so approach WORKS, BUT we want to read in the file in each line...
+#TODO PDF or PNG files are not retaining formatting, in particular markdown formatting
+# Can we include HTML some way?
+# my_tbl %>%
+  # gtExtras::gtsave_extra("test-tbl-Extra.png", path = "./",vwidth = 1800, vheight = 1000, zoom = 5) # output file maintains formatting, but keeps whitespace on sides - needs some fiddling.
+  # 
+```
+
+```{r, fig.wide = TRUE, echo = FALSE, eval = FALSE}
+my_tbl <- 
+  aggreCAT:::method_summary_table  %>%   
+  dplyr::mutate(aggregator_function = paste0("`",aggregator_function , "`"),
+                type = paste0("**",type , "**"),
+                aggregator_fun_desc = paste0("*", aggregator_fun_desc, "*"),
+                type_desc = paste0("*", type_desc, "*"),
+                judgement_data_sources_svg_file = 
+                  stringr::str_replace_all(judgement_data_sources_svg_file, "-", "_")) %>% 
+  dplyr::left_join(svg_assets, by = c( "judgement_data_sources_svg_file"= "asset_name" )) %>% 
+  dplyr::mutate(fn = purrr::map(fn, gt::html))
+
+my_tbl %>%
+  tidyr::unite(agg_name_description, aggregator_function, aggregator_fun_desc, sep = "<br>") %>%
+  tidyr::unite(agg_type, type, type_desc, sep = " <br>") %>%
+  select(-judgement_data_sources_eqns) %>%
+  # dplyr::group_by(agg_name_description) %>%
+  gt::gt() %>%
+  gt::tab_header(title = "Table 1: Summary of aggregation methods including data requirements, elicitation protocol requirements, and internal weighting method.") %>%
+  # gt::text_transform(locations = cells_body(columns =judgement_data_sources),fn = gt::escape_latex) %>%  #esxape if output is latex
+  gt::fmt_markdown(columns =c(agg_name_description,
+                              agg_type,
+                              supp_data_requirements,
+                              weighting_fn)) %>%
+  gt::cols_label(agg_name_description = gt::md("Aggregator Function<br>& Short Description"),
+                 agg_type = gt::md("Aggregator Type"),
+                 supp_data_requirements = gt::md("Supp.<br>Data"),
+                 weighting_fn = gt::md("Weighting<br>Function"),
+                 number_rounds = gt::md("Elicitation<br>Rounds"),
+                 elicitation_method = gt::md("Elicitation Method"),
+                 judgement_data_sources_svg_file = gt::md("Judgement<br>Data Sources")) %>%
+  gt::tab_row_group(label = gt::md("`AverageWAgg()` *Averaged best-estimates*"),
+                    rows = contains(match = "AverageWAgg", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`LinearWAgg()` *Linearly-weighted best-estimates*"),
+                    rows = contains(match = "LinearWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`IntervalWAgg()` *Linearly-weighted best estimates, with weights influenced by interval widths*"),
+                    rows = contains("IntervalWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`ShiftingWAgg()` *Weighted by judgements that shift most after discussion*"),
+                    rows = contains("ShiftingWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`ReasoningWAgg()` *Linearly-weighted best estimates, with weights constructed from supplementary reasoning data*"),
+                    rows = contains("ReasoningWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`ExtremisationWAgg()` *Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution.*"),
+                    rows = contains("ExtremisationWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`DistributionWAgg()` *Calculates the arithmetic mean of distributions created from expert judgements. The aggregate is the median of the average distribution fitted to individual estimates.*"),
+                    rows = contains("DistributionWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("`BayesianWAgg()` *Bayesian aggregation methods with either uninformative or informative prior distributions.*"),
+                    rows = contains("BayesianWAgg()", vars = agg_name_description)) %>%
+  gt::tab_row_group(label = gt::md("Do These fns exist anymore?"),
+                    rows = contains("???", vars = agg_name_description)) %>%
+  gt::cols_hide(agg_name_description) %>%
+  gtExtras::gt_theme_538() %>% 
+  gt::tab_style( style = cell_text(size = "small"),
+                 locations = cells_body(columns = everything(), rows = everything())) %>% 
+  gt::tab_options(table.width = pct(60),
+                  table.font.size = "x-small",
+                  row_group.font.size = "small",
+                  column_labels.font.size = "small",
+                  table.align = "center") %>%
+  gt::tab_style(style = "padding-left:1px;padding-right:1px;padding-top:1px;padding-bottom:1px;",
+                locations = cells_body()) 
+    gt::cols_width(
+    agg_type ~ gt::px(30),
+    weighting_fn ~ gt::px(25),
+    elicitation_method ~ gt::px(50),
+    supp_data_requirements ~ gt::px(25),
+    judgement_data_sources_svg_file ~ gt::px(30),
+    everything() ~ gt::px(20)
+  )
+
+```
+
+
+```{r tab1, echo = FALSE, eval=FALSE, fig.width=50, out.width = 1000}
+knitr::include_graphics("./test-tbl-Extra.png")
+# my_tbl
+```
+
+```{r, fig.wide=TRUE}
+
+single_2_double_dollar <- . %>%  
+  stringr::str_split(", ") %>% 
+  map(~paste0("$", .x, "$")) %>% 
+  flatten_chr() %>% 
+  paste0(collapse = ", ")
+
+library(huxtable)
+
+aggreCAT:::method_summary_table %>% 
+  select(-fn, -judgement_data_sources_svg_file) %>% 
+  mutate(judgement_data_sources_eqns = map_chr(judgement_data_sources_eqns, single_2_double_dollar)) %>% 
+  mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
+  tidyr::unite(agg_name_description, aggregator_function, aggregator_fun_desc, sep = " ") %>% #sep = "<br>"
+  huxtable::as_huxtable() %>% 
+  huxtable::set_markdown(col = c("weighting_fn", "supp_data_requirements"), row = huxtable::everywhere) %>% 
+  huxtable::set_markdown(col = "agg_name_description", row = huxtable::everywhere) %>% 
+  huxtable::merge_repeated_rows(col = c("agg_name_description"), 
+                                row = huxtable::everywhere) %>% 
+  huxtable::set_col_width(col = "type_desc",value = 10) %>% 
+  huxtable::set_col_width(col = "agg_name_description",value = 10) %>% 
+  huxtable::set_align(row = huxtable::everywhere, 
+                      col = c("agg_name_description", "type_desc", "weighting_fn"),value = "left") %>% #TODO presence of ??? coerces num to chr
+  huxtable::theme_article() %>% 
+  huxtable::set_all_borders(1) %>% 
+  set_all_padding(row = huxtable::everywhere, col = "agg_name_description",value = 1 )
+
+
+
+  # huxtable::set_width(value = 50) %>% 
+  # huxtable::set_wrap(col = huxtable::everywhere, row = huxtable::everywhere, TRUE) %>% 
+```
+
