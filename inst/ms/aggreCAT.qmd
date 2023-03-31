@@ -625,6 +625,7 @@ focal_claims %>%
 #| fig-cap: "ArMean with `AverageWAgg()` uses the Estimates (shown in colour) from each participant to compute the mean. We illustrate this using a single claim `108` for a subset of 5 out of 25 participants from the `data_ratings` dataset. Note that the data representations in this figure are for explanatory purposes only, the data in the actual aggregation is tidy, with long form structure and format."
 #| results: hold
 #| echo: false
+#| out-width: "600px"
 knitr::include_graphics(path = "images/ArMean.png")
 ```
 
