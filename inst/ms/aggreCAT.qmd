@@ -649,8 +649,8 @@ specified by the `type` argument, defaulting to `ArMean` in the above example. T
 method applied, defaulting to the `type` argument, but this can be
 overridden by the user if they supply a non-`NULL` value to `name`.
 \<br\>
-Percentage values, counts, or other non probabilistic quantities are the default expected value type for ratings supplied to the `expert_judgements` argument of aggregation functions. By overriding the default value for the argument `percent_toggle` with `TRUE`, percentage values are converted to probabilities by dividing judgements over 100
-within the aggregation functions.
+
+Percentage values, counts, or other non probabilistic quantities are the default expected value type for ratings supplied to the `expert_judgements` argument of aggregation functions. By overriding the default value for the argument `percent_toggle` with `TRUE`, percentage values are converted to probabilities by dividing judgements over 100 within the aggregation functions.
 
 
 When working with regularly updated data and developing a reproducible
