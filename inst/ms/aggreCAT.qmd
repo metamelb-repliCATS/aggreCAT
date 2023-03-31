@@ -1033,14 +1033,19 @@ their correct mathematical implementation, such as [ShiftingWAgg]{.fct},
 which use two rounds of three-point judgements in which the second round
 judgements are revised after discussion, are listed in Table  \ref{tbl-method-summary-table}.
 
+\newpage
+\blandscape
+
 ```{r}
 #| label: fig-BayesianWAgg
 #| fig-cap: "Illustration of BayTriVar applied with `BayesianWAgg()`for a single claim, `paper_id = 108` from the `focal_claims` data object. Note that the claims `138`, `186` and `24` contained in `focal_claims` are used in the calculation of pariticipant-level SD and claim-level SD, thus the Confidence Score returned by BayTriVar is sensitive to the other claims provided to argument `expert_judgements`."
 #| results: hold
 #| echo: false
+#| out-width: "900px"
 knitr::include_graphics("images/BayesianWAgg.png")
 ```
-
+\newpage
+\elandscape
 
 ## An illustrative workflow for use in real study contexts{#sec-workflow}
 
