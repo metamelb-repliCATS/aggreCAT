@@ -1117,7 +1117,7 @@ confidenceSCOREs <-
                  "BayTriVar", 
                  percent_toggle = TRUE),
     ReasoningWAgg(focal_claims, 
-                  reasons = data_supp_reasons_focal, 
+                  reasons = aggreCAT::data_supp_reasons, 
                   percent_toggle = TRUE)
   )
 
