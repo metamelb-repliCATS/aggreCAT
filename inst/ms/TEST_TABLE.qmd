@@ -1233,6 +1233,7 @@ aggreCAT::confidence_score_evaluation(
  )
 ```
 
+
 ```{r}
 #| label: tbl-multi-method-workflow-eval
 #| tbl-cap: "AUC and Classification Accuracy for forecasts from the aggregation methods 'ShiftWAgg', 'ArMean', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'BayTriVar' for a subset of the repliCATS pilot study claims (`focal_claims`) and known outcomes."
@@ -1246,7 +1247,7 @@ aggreCAT::confidence_score_evaluation(
  ) %>% 
   rename(Method = method,
          `Brier Score` = Brier_Score,
-         `Classification Accuracy (%)` = Classification_Accuracy) %>% 
+         `Classification Accuracy ($\\%$)` = Classification_Accuracy) %>% 
   tt() %>% 
   format_tt(j = c(2,3), digits = 2)
 ```
@@ -1676,5 +1677,128 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 ```
 
+## Listings {.unnumbered}
+
+``` {#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
+purrr::map2_dfr(.x = list(AverageWAgg,
+                          IntervalWAgg,
+                          IntervalWAgg,
+                          ShiftingWAgg,
+                          BayesianWAgg),
+                .y = list("ArMean", 
+                          "IndIntWAgg", 
+                          "IntWAgg", 
+                          "ShiftWAgg", 
+                          "BayTriVar"),
+                .f = ~ .x(focal_claims, 
+                          type = .y, 
+                          percent_toggle = TRUE)
+)
+```
+
+``` {#lst-multi-method-workflow-both .r lst-cap="If we wish to batch aggregate claims using a combination of aggregation methods that do and do not require supplementary data, we must aggregate them separately, since the methods that require supplementary data have an additional argument for the supplementary data that must be parsed to the wrapper function call. We can chain the aggregation of the methods that do not require supplementary data, and the methods that do require supplementary data together very neatly using [dplyr]{.pkg}'s [bind_rows]{.fct} function [@dplyr2021] and the [magrittr]{.fct} pipe `%>%` [@magrittr2020]. Below we implement this approach while applying the aggregation methods `ArMean`, `IntWAgg`, `IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot program dataset `data_ratings`."}
+confidenceSCOREs <-
+  list(
+    AverageWAgg,
+    IntervalWAgg,
+    IntervalWAgg,
+    ShiftingWAgg,
+    BayesianWAgg
+  ) %>%
+  purrr::map2_dfr(
+    .y = list("ArMean", 
+              "IndIntWAgg", 
+              "IntWAgg", 
+              "ShiftWAgg", 
+              "BayTriVar"),
+    .f = ~ .x(aggreCAT::data_ratings, type = .y, percent_toggle = TRUE)
+  ) %>% 
+  dplyr::bind_rows(
+    ReasoningWAgg(aggreCAT::data_ratings, 
+                  reasons = aggreCAT::data_supp_reasons, 
+                  percent_toggle = TRUE)
+  )
+```
+
+``` {#lst-BYO-data-aggregate .r lst-cap="Bring your own data: non-probablistic values"}
+turtle_CS <- 
+  list(
+  AverageWAgg,
+  IntervalWAgg,
+  IntervalWAgg,
+  ShiftingWAgg
+) %>%
+  purrr::map2_dfr(.y = list("ArMean",
+                            "IndIntWAgg",
+                            "IntWAgg",
+                            "ShiftWAgg"),
+                  .f = ~ .x(green_turtles, type = .y,
+                            percent_toggle = FALSE)
+  )
+```
+
+``` {#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
+plot_cs <- 
+  confidenceSCOREs %>% 
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::mutate(data_type = "Confidence Scores") %>% 
+  dplyr::rename(x_vals = cs,
+         y_vals = method) %>% 
+  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
+
+plot_judgements <- 
+  aggreCAT::preprocess_judgements(focal_claims,
+                                  percent_toggle = TRUE) %>% 
+  tidyr::pivot_wider(names_from = element, 
+                     values_from = value) %>%
+  dplyr::left_join(aggreCAT::data_outcomes) %>% 
+  dplyr::rename(x_vals = three_point_best,
+         y_vals = user_name) %>% 
+  dplyr::select(paper_id, 
+         y_vals, 
+         x_vals, 
+         tidyr::contains("three_point"),
+         outcome) %>% 
+  dplyr::mutate(data_type = "Elicited Probabilities")
+
+p <- plot_judgements %>%  
+  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
+                          by = "paper_id")}) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
+  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower, 
+                      xmax = three_point_upper)) +
+  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") + 
+  ggplot2::theme_classic() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
+  ggplot2::xlab("Probability of Replication") +
+  ggplot2::ylab(ggplot2::element_blank()) +
+  ggplot2::scale_colour_brewer(palette = "Set1")
+```
+
+```{=tex}
 \elandscape
 \newpage
+```
+## Computational details {.unnumbered}
+
+The analyses and results in this paper were obtained using the following
+computing environment, versions of `R` and `R` packages:
+
+::: callout
+```{R}
+#| label: session-info
+#| prompt: true
+devtools::session_info()
+```
+:::
+
+## Acknowledgments {.unnumbered}
+
+::: callout
+This project is sponsored by the Defense Advanced Research Projects
+Agency (DARPA) under cooperative agreement No.HR001118S0047. The content
+of the information does not necessarily reflect the position or the
+policy of the Government, and no official endorsement should be
+inferred.
+:::

@@ -79,6 +79,7 @@ library(tinytex)
 library(knitr)
 options(kableExtra.latex.load_packages = FALSE)
 library(kableExtra)
+library(tinytable)
 ```
 
 ## Introduction {#sec-introduction}
@@ -612,13 +613,12 @@ focal_claims %>%
          three_point_lower,
          three_point_best, 
          three_point_upper) %>%
-  gt::gt() %>% 
-  gt::cols_label(paper_id = "Claim ID",
-                 user_name = "User Name",
-                 three_point_lower = "Lower Bound",
-                 three_point_best = "Best Estimate",
-                 three_point_upper = "Upper Bound") %>% 
-  gt::as_latex()
+  rename(`Claim ID` = paper_id,
+         `User Name` = user_name,
+         `Lower Bound` = three_point_lower,
+         `Best Estimate` = three_point_best,
+         `Upper Bound` = three_point_upper) %>% 
+  tt()
 ```
 
 ### Non-weighted linear combination of judgements {#sec-AverageWAgg .section}
@@ -938,13 +938,12 @@ focal_claims %>%
   dplyr::select(paper_id, user_name, round, three_point_lower, three_point_best, three_point_upper) %>% 
   tidyr::drop_na() %>% 
   dplyr::mutate(round = str_remove(round, "round_") %>% as.integer) %>% 
-  gt::gt() %>% 
-  gt::cols_label(paper_id = "Claim ID",
-                 user_name = "User Name",
-                 three_point_lower = "Lower Bound",
-                 three_point_best = "Best Estimate",
-                 three_point_upper = "Upper Bound") %>% 
-  gt::fmt_integer(columns = round)
+  rename(`Claim ID` = paper_id,
+         `User Name` = user_name,
+         `Lower Bound` = three_point_lower,
+         `Best Estimate` = three_point_best,
+         `Upper Bound` = three_point_upper) %>% 
+  tt()
 ```
 
 Confidence Scores estimating the replicability for claim `24`
@@ -1243,13 +1242,11 @@ aggreCAT::confidence_score_evaluation(
    confidenceSCOREs,
    aggreCAT::data_outcomes
  ) %>% 
-  gt::gt() %>% 
-   gt::cols_label(method = "Method",
-        Brier_Score = "Brier Score",
-        Classification_Accuracy = "Classification Accuracy") %>% 
-  gt::fmt_number(columns = -c(method, Classification_Accuracy)) %>% 
-  gt::fmt_percent(Classification_Accuracy,scale_values = FALSE, 
-                  decimals = 0)
+  rename(Method = method,
+         `Brier Score` = Brier_Score,
+         `Classification Accuracy ($\\%$)` = Classification_Accuracy) %>% 
+  tt() %>% 
+  format_tt(j = c(2,3), digits = 2)
 ```
 
 ### Visualising Judgements, Confidence Scores and Forecast Performance
@@ -1510,12 +1507,12 @@ turtle_CS <-
                             percent_toggle = FALSE)
   )
 turtle_CS %>% 
-  gt::gt() %>% 
-  gt::cols_label(method = "Method",
-                 paper_id = "Question ID",
-                 cs = "Confidence Score",
-                 n_experts = "N (experts)") %>% 
-  gt::fmt_number(columns = cs)
+  rename(Method = method,
+         `Question ID` = paper_id,
+         `Confidence Score` = cs,
+         `N (experts)` = n_experts) %>% 
+  tt() %>% 
+  format_tt(j = 3, num_fmt = 'decimal', digits = 2)
 ```
 
 ## Summary and Discussion {#sec-summary}
@@ -1618,9 +1615,8 @@ human forecasts is required.
 \blandscape
 ```
 ```{r}
-#| results: asis
-#| echo: false
-#| label: tbl-method-summary-table
+#| include: TRUE
+#| echo: FALSE
 aggreCAT:::method_summary_table %>% 
   ungroup %>% 
   # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
