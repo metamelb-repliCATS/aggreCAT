@@ -576,7 +576,7 @@ subset the dataset `data_ratings` to include a sample of four claims
 with judgements from five randomly-sampled participants. From these
 focal claims, we select a target claim for which we will apply an
 exemplar aggregation method from each mathematical aggregator
-(@tbl-focal-claim ).
+(@tbl-focal-claim).
 
 ```{r}
 #| label: focal-claim-selection
@@ -628,7 +628,7 @@ implementation using the [aggreCAT]{.pkg} package with the simplest,
 unweighted aggregation method, `ArMean`. All other aggregation methods
 take this underlying computational blueprint, and expand on it according
 to the aggregation methods' requirements (See [Box 1](#aggWorkflow) for
-details). `ArMean` ( @eq-ArMean ) takes the unweighted linear average
+details). `ArMean` (@eq-ArMean) takes the unweighted linear average
 (i.e. arithmetic mean) of the best estimates, $B_{i,c}$.
 
 $$
@@ -1202,10 +1202,10 @@ confidenceSCOREs
 After generating Confidence Scores using various aggregation methods, we
 then evaluate the forecasts. We evaluated the repliCATS pilot study
 forecasts against the outcomes of previous, high-powered replication
-studies [@Hanea2021], which are contained in the `data\_outcomes`
-dataset published with [aggreCAT]{.pkg}. In this dataset, each claim
-`paper_id` is assigned an `outcome` of `0` if the claim did not
-replicate and `1` if the claim was successfully replicated:
+studies [@Hanea2021], which are contained in the `data_outcomes` dataset
+published with [aggreCAT]{.pkg}. In this dataset, each claim `paper_id`
+is assigned an `outcome` of `0` if the claim did not replicate and `1`
+if the claim was successfully replicated:
 
 ```{r}
 #| label: replication-outcomes
