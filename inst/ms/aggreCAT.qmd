@@ -1543,8 +1543,8 @@ package is designed to work within the *tidyverse*. The package is
 premised on the principles of *tidy* data analysis whereby the user
 supplies [data.frame]{.class}s of elicited judgements, and the
 aggregation methods return [data.frame]{.class}s of aggregated
-forecasts. The benefits of this approach are three-fold. Firstly, the
-work of data-wrangling and application of the aggregation methods is
+forecasts. There are four key benefits of the aggreCAT package. Firstly,
+the work of data-wrangling and application of the aggregation methods is
 handled internally by the aggregation methods, so that the researcher
 can focus on analysis and interpretation of the aggregation outputs.
 This is critical in data-deficient contexts where rapid assessments are
