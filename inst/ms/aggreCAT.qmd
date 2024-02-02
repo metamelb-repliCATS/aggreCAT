@@ -25,7 +25,7 @@ format:
         - \newcommand{\blandscape}{\begin{landscape}}
         - \newcommand{\elandscape}{\end{landscape}}
         - \usepackage{underscore}
-        # - \usepackage[authoryear,round]{natbib}
+        # - \usepackage[authoryear,round]{natbib} 
       x11names: true
       journal:
         cite-shortnames: true
@@ -1610,13 +1610,59 @@ rapidly and easily analysing the results of IDEA protocol and other
 structured elicitation procedures where mathematical aggregation of
 human forecasts is required.
 
+::: {.content-hidden unless-format="html"}
+```{r, include = TRUE, echo = FALSE}
+#| column: page
+#| label: tbl-method-summary-table
+#| tbl-cap: "Summary of aggregation methods and functions, including data requirements and sources."
+aggreCAT:::method_summary_table %>% 
+  ungroup %>% 
+  # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
+  mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
+  tidyr::unite(agg_name_description, 
+               aggregator_function, 
+               aggregator_fun_desc, sep = " ") %>% 
+  select(-agg_name_description) %>% 
+  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>% 
+  rename("Method" = type, 
+         "Description" = "type_desc",
+         "Data Requirements" = "supp_data_requirements",
+         "Weighting Function" = "weighting_fn",
+         "Elicitation Rounds" = "number_rounds",
+         "Elicitation Method" = "elicitation_method",
+         "Data Sources" = "judgement_data_sources_eqns") %>% 
+  tt() %>% 
+  group_tt(
+   i = list(
+      "AverageWAgg(): Averaged best estimates" = 1,
+      "LinearWAgg() Linearly-weighted best estimates" = 6,
+      "IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths" = 11,
+      "ShiftingWAgg() Weighted by judgemetns that shift most after discussion" = 17,
+      "ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data" = 22,
+      "ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution" = 24,
+      "DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements." = 26,
+      "BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions" = 28
+    )
+  ) %>% 
+  format_tt(j = c(3,4), markdown = TRUE)
+#TODO needs tidying up for html presentation
+  
+```
+:::
+
+::: {.content-hidden unless-format="pdf"}
+
 ```{=tex}
 \newpage
 \blandscape
 ```
 ```{r}
-#| include: TRUE
-#| echo: FALSE
+#| echo: false
+#| include: true
+#| results: asis
+
+#TODO Table label and caption are missign from first page of table... possibly something
+# todo with https://github.com/quarto-dev/quarto-cli/issues/1486
 aggreCAT:::method_summary_table %>% 
   ungroup %>% 
   # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
@@ -1655,6 +1701,8 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements.", 26,27) %>% 
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 ```
+
+:::
 
 ## Listings {.unnumbered}
 
@@ -1755,10 +1803,15 @@ p <- plot_judgements %>%
   ggplot2::scale_colour_brewer(palette = "Set1")
 ```
 
+::: {.content-hidden unless-format="pdf"}
+
 ```{=tex}
 \elandscape
 \newpage
 ```
+
+:::
+
 ## Computational details {.unnumbered}
 
 The analyses and results in this paper were obtained using the following
