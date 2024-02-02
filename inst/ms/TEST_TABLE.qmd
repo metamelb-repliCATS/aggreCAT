@@ -83,7 +83,6 @@ library(kableExtra)
 library(tinytable)
 ```
 
-
 ## Introduction {#sec-introduction}
 
 Expert judgement is frequently used to inform forecasting about
@@ -1233,7 +1232,6 @@ aggreCAT::confidence_score_evaluation(
  )
 ```
 
-
 ```{r}
 #| label: tbl-multi-method-workflow-eval
 #| tbl-cap: "AUC and Classification Accuracy for forecasts from the aggregation methods 'ShiftWAgg', 'ArMean', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'BayTriVar' for a subset of the repliCATS pilot study claims (`focal_claims`) and known outcomes."
@@ -1613,31 +1611,54 @@ rapidly and easily analysing the results of IDEA protocol and other
 structured elicitation procedures where mathematical aggregation of
 human forecasts is required.
 
-\newpage
-\blandscape
-
-
-```{r}
+::: {.content-hidden unless-format="html"}
+```{r, include = TRUE, echo = FALSE}
 #| label: tbl-method-summary-table
 #| tbl-cap: "Summary of aggregation methods and functions, including data requirements and sources."
-#| echo: FALSE
-#| include: FALSE
 aggreCAT:::method_summary_table %>% 
-    ungroup %>% 
-    # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
-    mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
-    tidyr::unite(agg_name_description, 
-                 aggregator_function, 
-                 aggregator_fun_desc, sep = " ") %>% 
-    select(-agg_name_description) %>% 
-    mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>% 
-  distinct(judgement_data_sources_eqns) %>% 
-  tt()
+  ungroup %>% 
+  # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
+  mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>% 
+  tidyr::unite(agg_name_description, 
+               aggregator_function, 
+               aggregator_fun_desc, sep = " ") %>% 
+  select(-agg_name_description) %>% 
+  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>% 
+  rename("Method" = type, 
+         "Description" = "type_desc",
+         "Data Requirements" = "supp_data_requirements",
+         "Weighting Function" = "weighting_fn",
+         "Elicitation Rounds" = "number_rounds",
+         "Elicitation Method" = "elicitation_method",
+         "Data Sources" = "judgement_data_sources_eqns") %>% 
+  tt() %>% 
+  group_tt(
+   i = list(
+      "AverageWAgg(): Averaged best estimates" = 1,
+      "LinearWAgg() Linearly-weighted best estimates" = 6,
+      "IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths" = 11,
+      "ShiftingWAgg() Weighted by judgemetns that shift most after discussion" = 17,
+      "ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data" = 22,
+      "ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution" = 24,
+      "DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements." = 26,
+      "BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions" = 28
+    )
+  )
+  
+```
+:::
+
+::: {.content-hidden unless-format="pdf"}
+
+```{=tex}
+\newpage
+\blandscape
 ```
 
-
-
-```{r, include = TRUE}
+```{r}
+#| echo: false
+#| include: true
+#| results: asis
 aggreCAT:::method_summary_table %>% 
   ungroup %>% 
   # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
@@ -1658,8 +1679,7 @@ aggreCAT:::method_summary_table %>%
                   escape = FALSE, 
                   booktabs = TRUE, 
                   longtable = TRUE,
-                  caption = "\\label{tbl-method-summary-table} Summary of aggregation methods and functions, including data requirements and sources.",
-                  format = "latex") %>% 
+                  caption = "Summary of aggregation methods and functions, including data requirements and sources. \\label{tbl-method-summary-table}",                   format = "latex") %>% 
   kableExtra::column_spec(column = c(1,3,4,6,7), width = "10em") %>% 
   kableExtra::column_spec(column = c(5), width = "5em") %>% 
   kableExtra::column_spec(column = c(2), width = "20em") %>% 
@@ -1676,6 +1696,7 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements.", 26,27) %>% 
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 ```
+:::
 
 ## Listings {.unnumbered}
 
@@ -1776,10 +1797,15 @@ p <- plot_judgements %>%
   ggplot2::scale_colour_brewer(palette = "Set1")
 ```
 
+:::{.content-hidden unless-format="pdf"}
+
 ```{=tex}
 \elandscape
 \newpage
 ```
+
+:::
+
 ## Computational details {.unnumbered}
 
 The analyses and results in this paper were obtained using the following
