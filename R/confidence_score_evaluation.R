@@ -49,7 +49,7 @@ confidence_score_evaluation <- function(confidence_scores,
     dplyr::group_by(method) %>%
     dplyr::summarise(AUC = precrec::auc(precrec::evalmod(scores = cs,
                                                          labels = outcome))[1, 4],
-                     Brier_Score = DescTools::BrierScore(resp = outcome,
+                     Brier_Score = DescTools::BrierScore(x = outcome,
                                                          pred = cs),
                      Classification_Accuracy = MLmetrics::Accuracy(y_pred = cl,
                                                                    y_true = outcome))
