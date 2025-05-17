@@ -8,7 +8,7 @@ message: 'To cite package "aggreCAT" in publications use:'
 type: software
 license: MIT
 title: 'aggreCAT: Mathematically Aggregating Expert Judgments'
-version: 0.0.0.9004
+version: 1.0.0
 abstract: Aggregation methods for confidence scores.
 authors:
 - family-names: Wilkinson
@@ -24,7 +24,6 @@ authors:
   orcid: https://orcid.org/0000-0003-2536-2596
 - family-names: Gray
   given-names: Charles T.
-  orcid: https://orcid.org/00000-0002-9978-011X
 - family-names: E. O'Dea
   given-names: Rose
   orcid: https://orcid.org/0000-0001-8177-5075

@@ -10,7 +10,7 @@
 #' confidence_scores), and `outcome` containing the known outcome of replication studies
 #'
 #' @importFrom DescTools BrierScore
-#' @importFrom rfUtilities accuracy
+#' @importFrom MLmetrics Accuracy
 #' @importFrom precrec auc
 #' @importFrom precrec evalmod
 #' 
@@ -18,11 +18,11 @@
 #' Evaluated dataframe with four columns: `method` (character variable describing the aggregation method),
 #' `AUC` (Area Under the Curve (AUC) scores of ROC curves - see `?precrec::auc`), `Brier_Score` (see
 #' `?DescTools::BrierScore`) and `Classification_Accuracy`(classification accuracy measured for pcc =
-#' percent correctly classified; see `?rfUtilities::accuracy`).
+#' percent correctly classified; see `?MLmetrics::Accuracy`).
 #'
 #' @examples
 #' \dontrun{
-#' confidence_score_evaluation(data_ratings,
+#' confidence_score_evaluation(data_confidence_scores,
 #'                             data_outcomes)
 #' }
 #'
@@ -51,8 +51,8 @@ confidence_score_evaluation <- function(confidence_scores,
                                                          labels = outcome))[1, 4],
                      Brier_Score = DescTools::BrierScore(resp = outcome,
                                                          pred = cs),
-                     Classification_Accuracy = rfUtilities::accuracy(x = cl,
-                                                                     y = outcome)$PCC)
+                     Classification_Accuracy = MLmetrics::Accuracy(y_pred = cl,
+                                                                   y_true = outcome))
 
   return(eval_df)
 

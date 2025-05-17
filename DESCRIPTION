@@ -17,8 +17,7 @@ Authors@R: c(person(given = "David",
                     comment = structure("0000-0003-2536-2596", .Names = "ORCID")),
              person(given = "Charles T.",
                     family = "Gray",
-                    role = c("aut"),
-                    comment = structure("00000-0002-9978-011X", .Names = "ORCID")),
+                    role = c("aut")),
              person(given = "Rose", 
                     family = "E. O'Dea", 
                     role = "aut", 
@@ -73,15 +72,13 @@ Imports:
     VGAM,
     crayon,
     dplyr, 
-    rfUtilities,
     stringr,
     tidyr, 
     tibble,
     ggplot2,
     insight,
-    DescTools
-Remotes: 
-    softloud/neet
+    DescTools,
+    MLmetrics
 VignetteBuilder: 
   knitr,
   R.rsp
