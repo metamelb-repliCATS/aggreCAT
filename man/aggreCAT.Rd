@@ -22,7 +22,7 @@ Authors:
 \itemize{
   \item Elliot Gould (\href{https://orcid.org/0000-0002-6585-538X}{ORCID})
   \item Aaron Willcox \email{ aaron@willcox.io} (\href{https://orcid.org/0000-0003-2536-2596}{ORCID})
-  \item Charles T. Gray (\href{https://orcid.org/00000-0002-9978-011X}{ORCID})
+  \item Charles T. Gray
   \item Rose E. O'Dea (\href{https://orcid.org/0000-0001-8177-5075}{ORCID})
   \item Rebecca Groenewegen (\href{https://orcid.org/0000-0001-9177-8536}{ORCID})
 }
