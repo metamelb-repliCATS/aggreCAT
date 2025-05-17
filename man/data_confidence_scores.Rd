@@ -8,7 +8,6 @@
 a tibble with 550 rows and 5 columns
 \describe{
 \item{method}{character string of method name}
-\item{method_id}{integer of method IDs}
 \item{paper_id}{character string of paper IDs}
 \item{cs}{numeric of generated confidence scores}
 \item{n_experts}{numeric of the number of expert judgements aggregated in confidence score}
