@@ -40,7 +40,6 @@ Suggests:
     covr,
     pointblank,
     janitor,
-    DescTools,
     qualtRics,
     here,
     readxl,
