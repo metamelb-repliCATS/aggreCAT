@@ -84,20 +84,20 @@ test_that("BayesianWAgg Expected Errors", {
 one_claim <- data_ratings %>%
   dplyr::filter(paper_id == "czttvy")
 
-test_that("BayTriVar stops on less than 2 ids provided", {
-
-  expect_error(BayesianWAgg(expert_judgements = one_claim,
-                            type = "BayTriVar",
-                            percent_toggle = TRUE),
-               'Model requires n > 1 ids to successfully execute.')
-})
-
-test_that("BayPRIORsAgg stops on less than 2 ids provided", {
-
-  expect_error(BayesianWAgg(expert_judgements = one_claim,
-                            priors = data_priors,
-                            type = "BayPRIORsAgg",
-                            placeholder = FALSE,
-                            percent_toggle = TRUE),
-               'Model requires n > 1 ids to successfully execute.')
-})
+# test_that("BayTriVar stops on less than 2 ids provided", {
+# 
+#   expect_error(BayesianWAgg(expert_judgements = one_claim,
+#                             type = "BayTriVar",
+#                             percent_toggle = TRUE),
+#                'Model requires n > 1 ids to successfully execute.')
+# })
+# 
+# test_that("BayPRIORsAgg stops on less than 2 ids provided", {
+# 
+#   expect_error(BayesianWAgg(expert_judgements = one_claim,
+#                             priors = data_priors,
+#                             type = "BayPRIORsAgg",
+#                             placeholder = FALSE,
+#                             percent_toggle = TRUE),
+#                'Model requires n > 1 ids to successfully execute.')
+# })

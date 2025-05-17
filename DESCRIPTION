@@ -1,6 +1,6 @@
 Package: aggreCAT
 Title: Mathematically Aggregating Expert Judgments
-Version: 0.0.0.9004
+Version: 1.0.0
 Authors@R: c(person(given = "David", 
                     family = "Wilkinson", 
                     role = c("aut", "cre"),
@@ -40,7 +40,6 @@ Suggests:
     covr,
     pointblank,
     janitor,
-    DescTools,
     qualtRics,
     here,
     readxl,
@@ -58,8 +57,7 @@ Suggests:
     nlme,
     gt, 
     gtExtras,
-    R.rsp,
-    BiocStyle
+    R.rsp
 RoxygenNote: 7.2.3
 Depends:
     R (>= 2.10)
@@ -80,7 +78,8 @@ Imports:
     tidyr, 
     tibble,
     ggplot2,
-    insight
+    insight,
+    DescTools
 Remotes: 
     softloud/neet
 VignetteBuilder: 

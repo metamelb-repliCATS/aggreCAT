@@ -26,7 +26,7 @@ confidence_score_ridgeplot <- function(confidence_scores = NULL){
     ggplot2::ggplot(ggplot2::aes(x = cs,
                                  y = factor(method,
                                             levels = rev(levels(factor(method)))),
-                                 fill = factor(after_stat(quantile))
+                                 fill = factor(ggplot2::after_stat(stats::quantile))
     )) +
     ggridges::stat_density_ridges(
       geom = "density_ridges_gradient",

@@ -20,12 +20,11 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Aaron Willcox \email{ aaron@willcox.io} (\href{https://orcid.org/0000-0003-2536-2596}{ORCID})
-  \item Charles T. Gray
   \item Elliot Gould (\href{https://orcid.org/0000-0002-6585-538X}{ORCID})
-  \item Anca Hanea (\href{https://orcid.org/0000-0003-3870-5949}{ORCID})
-  \item Bonnie Wintle (\href{https://orcid.org/0000-0003-0236-6906}{ORCID})
+  \item Aaron Willcox \email{ aaron@willcox.io} (\href{https://orcid.org/0000-0003-2536-2596}{ORCID})
+  \item Charles T. Gray (\href{https://orcid.org/00000-0002-9978-011X}{ORCID})
   \item Rose E. O'Dea (\href{https://orcid.org/0000-0001-8177-5075}{ORCID})
+  \item Rebecca Groenewegen (\href{https://orcid.org/0000-0001-9177-8536}{ORCID})
 }
 
 }

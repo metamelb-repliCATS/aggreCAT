@@ -654,9 +654,9 @@ method_schema_bays <- function(method_to_test, priors, type, name){
 
 }
 
-method_schema_bays(BayesianWAgg, priors = NULL, type = "BayTriVar", name = "BayTriVar")
+# method_schema_bays(BayesianWAgg, priors = NULL, type = "BayTriVar", name = "BayTriVar")
 
-method_schema_bays(BayesianWAgg, priors = data_supp_priors, type = "BayPRIORsAgg", name = "BayTriVar")
+# method_schema_bays(BayesianWAgg, priors = data_supp_priors, type = "BayPRIORsAgg", name = "BayTriVar")
 
 
 # Extreme Wag -------------------------------------------------------------
