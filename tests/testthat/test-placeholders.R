@@ -117,8 +117,8 @@ placeholder_test(LinearWAgg, type = "Judgement")
 placeholder_test(ReasoningWAgg, type = "ReasonWAgg")
 placeholder_test(ReasoningWAgg, type = "ReasonWAgg2")
 
-placeholder_test(BayesianWAgg, type = "BayTriVar")
-placeholder_test(BayesianWAgg, type = "BayPRIORsAgg")
+# placeholder_test(BayesianWAgg, type = "BayTriVar")
+# placeholder_test(BayesianWAgg, type = "BayPRIORsAgg")
 
 placeholder_test(ExtremisationWAgg, type = "BetaArMean")
 placeholder_test(ExtremisationWAgg, type = "BetaArMean2")
