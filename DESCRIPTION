@@ -79,7 +79,8 @@ Imports:
     tidyr, 
     tibble,
     ggplot2,
-    insight
+    insight,
+    DescTools
 Remotes: 
     softloud/neet
 VignetteBuilder: 
