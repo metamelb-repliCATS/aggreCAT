@@ -28,3 +28,4 @@ vignettes/test_table.Rmd
 ^docs$
 ^pkgdown$
 ^CITATION\.cff$
+^archive/
