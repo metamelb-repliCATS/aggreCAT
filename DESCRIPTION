@@ -80,8 +80,6 @@ Imports:
     ggplot2,
     insight,
     DescTools
-Remotes: 
-    softloud/neet
 VignetteBuilder: 
   knitr,
   R.rsp
