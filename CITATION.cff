@@ -1,7 +1,7 @@
-# -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.4.1
+# --------------------------------------------
+# CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# -----------------------------------------------------------
+# --------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "aggreCAT" in publications use:'
@@ -43,7 +43,7 @@ preferred-citation:
   - name: Aaron
   - name: O'Dea
   - name: Rose
-  - name: Groenewgen
+  - name: Groenewegen
   - name: Rebecca
   - name: Wilkinson
   - family-names: P.
@@ -66,8 +66,9 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
-  year: '2023'
+    email: hadley@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.testthat
   version: '>= 2.1.0'
 - type: software
   title: knitr
@@ -80,7 +81,8 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.knitr
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
@@ -123,7 +125,8 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.rmarkdown
 - type: software
   title: covr
   abstract: 'covr: Test Coverage for Packages'
@@ -134,24 +137,30 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.f.hester@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.covr
 - type: software
   title: pointblank
   abstract: 'pointblank: Data Validation and Organization of Metadata for Local and
     Remote Tables'
   notes: Suggests
-  url: https://rich-iannone.github.io/pointblank/
+  url: https://rstudio.github.io/pointblank/
   repository: https://CRAN.R-project.org/package=pointblank
   authors:
   - family-names: Iannone
     given-names: Richard
-    email: riannone@me.com
+    email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
   - family-names: Vargas
     given-names: Mauricio
     email: mavargas11@uc.cl
     orcid: https://orcid.org/0000-0003-1017-7574
-  year: '2023'
+  - family-names: Choe
+    given-names: June
+    email: jchoe001@gmail.com
+    orcid: https://orcid.org/0000-0002-0701-921X
+  year: '2025'
+  doi: 10.32614/CRAN.package.pointblank
 - type: software
   title: janitor
   abstract: 'janitor: Simple Tools for Examining and Cleaning Dirty Data'
@@ -162,18 +171,8 @@ references:
   - family-names: Firke
     given-names: Sam
     email: samuel.firke@gmail.com
-  year: '2023'
-- type: software
-  title: DescTools
-  abstract: 'DescTools: Tools for Descriptive Statistics'
-  notes: Suggests
-  url: https://andrisignorell.github.io/DescTools/
-  repository: https://CRAN.R-project.org/package=DescTools
-  authors:
-  - family-names: Signorell
-    given-names: Andri
-    email: andri@signorell.net
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.janitor
 - type: software
   title: qualtRics
   abstract: 'qualtRics: Download ''Qualtrics'' Survey Data'
@@ -191,7 +190,8 @@ references:
     given-names: Julia
     email: julia.silge@gmail.com
     orcid: https://orcid.org/0000-0002-3671-836X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.qualtRics
 - type: software
   title: here
   abstract: 'here: A Simpler Way to Find Your Files'
@@ -203,7 +203,8 @@ references:
     given-names: Kirill
     email: krlmlr+r@mailbox.org
     orcid: https://orcid.org/0000-0002-1416-3412
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.here
 - type: software
   title: readxl
   abstract: 'readxl: Read Excel Files'
@@ -219,7 +220,8 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.readxl
 - type: software
   title: readr
   abstract: 'readr: Read Rectangular Text Data'
@@ -236,18 +238,18 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.readr
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Suggests
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
 - type: software
   title: lubridate
   abstract: 'lubridate: Make Dealing with Dates a Little Easier'
@@ -262,7 +264,8 @@ references:
     given-names: Garrett
   - family-names: Wickham
     given-names: Hadley
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.lubridate
 - type: software
   title: forcats
   abstract: 'forcats: Tools for Working with Categorical Variables (Factors)'
@@ -273,7 +276,8 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.forcats
 - type: software
   title: ggforce
   abstract: 'ggforce: Accelerating ''ggplot2'''
@@ -285,7 +289,8 @@ references:
     given-names: Thomas Lin
     email: thomasp85@gmail.com
     orcid: https://orcid.org/0000-0002-5147-4711
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggforce
 - type: software
   title: ggpubr
   abstract: 'ggpubr: ''ggplot2'' Based Publication Ready Plots'
@@ -296,7 +301,8 @@ references:
   - family-names: Kassambara
     given-names: Alboukadel
     email: alboukadel.kassambara@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggpubr
 - type: software
   title: ggridges
   abstract: 'ggridges: Ridgeline Plots in ''ggplot2'''
@@ -308,7 +314,8 @@ references:
     given-names: Claus O.
     email: wilke@austin.utexas.edu
     orcid: https://orcid.org/0000-0002-7470-9261
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggridges
 - type: software
   title: rjags
   abstract: 'rjags: Bayesian Graphical Models using MCMC'
@@ -319,7 +326,8 @@ references:
   - family-names: Plummer
     given-names: Martyn
     email: martyn.plummer@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.rjags
 - type: software
   title: tidybayes
   abstract: 'tidybayes: Tidy Data and ''Geoms'' for Bayesian Models'
@@ -330,7 +338,8 @@ references:
   - family-names: Kay
     given-names: Matthew
     email: mjskay@northwestern.edu
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.tidybayes
 - type: software
   title: tidyverse
   abstract: 'tidyverse: Easily Install and Load the ''Tidyverse'''
@@ -341,7 +350,8 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.tidyverse
 - type: software
   title: usethis
   abstract: 'usethis: Automate Package and Project Setup'
@@ -351,17 +361,22 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Bryan
     given-names: Jennifer
-    email: jenny@rstudio.com
+    email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
   - family-names: Barrett
     given-names: Malcolm
     email: malcolmbarrett@gmail.com
     orcid: https://orcid.org/0000-0003-0299-5825
-  year: '2023'
+  - family-names: Teucher
+    given-names: Andy
+    email: andy.teucher@posit.co
+    orcid: https://orcid.org/0000-0002-7840-692X
+  year: '2025'
+  doi: 10.32614/CRAN.package.usethis
 - type: software
   title: nlme
   abstract: 'nlme: Linear and Nonlinear Mixed Effects Models'
@@ -375,34 +390,46 @@ references:
     given-names: Douglas
   - name: R Core Team
     email: R-core@R-project.org
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.nlme
 - type: software
   title: gt
   abstract: 'gt: Easily Create Presentation-Ready Display Tables'
   notes: Suggests
-  url: https://gt.rstudio.com/
+  url: https://gt.rstudio.com
   repository: https://CRAN.R-project.org/package=gt
   authors:
   - family-names: Iannone
     given-names: Richard
-    email: rich@rstudio.com
+    email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
   - family-names: Cheng
     given-names: Joe
-    email: joe@rstudio.com
+    email: joe@posit.co
   - family-names: Schloerke
     given-names: Barret
-    email: barret@rstudio.com
+    email: barret@posit.co
     orcid: https://orcid.org/0000-0001-9986-114X
   - family-names: Hughes
     given-names: Ellis
     email: ellis.h.hughes@gsk.com
     orcid: https://orcid.org/0000-0003-0637-4436
+  - family-names: Lauer
+    given-names: Alexandra
+    email: alexandralauer1@gmail.com
+    orcid: https://orcid.org/0000-0002-4191-6301
   - family-names: Seo
     given-names: JooYoung
     email: jseo1005@illinois.edu
     orcid: https://orcid.org/0000-0002-4064-6012
-  year: '2023'
+  - family-names: Brevoort
+    given-names: Ken
+    email: ken@brevoort.com
+    orcid: https://orcid.org/0000-0002-4001-8358
+  - family-names: Roy
+    given-names: Olivier
+  year: '2025'
+  doi: 10.32614/CRAN.package.gt
 - type: software
   title: gtExtras
   abstract: 'gtExtras: Extending ''gt'' for Beautiful HTML Tables'
@@ -413,40 +440,30 @@ references:
   - family-names: Mock
     given-names: Thomas
     email: j.thomasmock@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.gtExtras
 - type: software
   title: R.rsp
   abstract: 'R.rsp: Dynamic Generation of Scientific Reports'
   notes: Suggests
-  url: https://github.com/HenrikBengtsson/R.rsp
+  url: https://henrikbengtsson.github.io/R.rsp/
   repository: https://CRAN.R-project.org/package=R.rsp
   authors:
   - family-names: Bengtsson
     given-names: Henrik
     email: henrikb@braju.com
-  year: '2023'
-- type: software
-  title: BiocStyle
-  abstract: 'BiocStyle: Standard styles for vignettes and other Bioconductor documents'
-  notes: Suggests
-  url: https://github.com/Bioconductor/BiocStyle
-  repository: https://bioconductor.org/
-  authors:
-  - family-names: Oleś
-    given-names: Andrzej
-    orcid: https://orcid.org/0000-0003-0285-2787
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.R.rsp
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
   notes: Depends
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
   version: '>= 2.10'
 - type: software
   title: magrittr
@@ -461,16 +478,20 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.magrittr
 - type: software
   title: GoFKernel
   abstract: 'GoFKernel: Testing Goodness-of-Fit with the Kernel Density Estimator'
   notes: Imports
   repository: https://CRAN.R-project.org/package=GoFKernel
   authors:
-  - family-names: Pavia
+  - family-names: Pavía
     given-names: Jose M.
-  year: '2023'
+    email: jose.m.pavia@uv.es
+    orcid: https://orcid.org/0000-0002-0129-726X
+  year: '2025'
+  doi: 10.32614/CRAN.package.GoFKernel
 - type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'
@@ -480,12 +501,13 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
-  year: '2023'
+    email: lionel@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.purrr
 - type: software
   title: R2jags
   abstract: 'R2jags: Using R to Run ''JAGS'''
@@ -496,10 +518,12 @@ references:
   - family-names: Su
     given-names: Yu-Sung
     email: suyusung@tsinghua.edu.cn
-  - family-names: Yajima,
+    orcid: https://orcid.org/0000-0001-5021-8209
+  - family-names: Yajima
     given-names: Masanao
     email: yajima@bu.edu
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.R2jags
 - type: software
   title: coda
   abstract: 'coda: Output Analysis and Diagnostics for MCMC'
@@ -523,7 +547,8 @@ references:
     given-names: Russell
   - family-names: Magnusson
     given-names: Arni
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.coda
 - type: software
   title: precrec
   abstract: 'precrec: Calculate Accurate Precision-Recall and ROC (Receiver Operator
@@ -540,7 +565,8 @@ references:
     given-names: Marc
     email: marc.rehmsmeier@ii.uib.no
     orcid: https://orcid.org/0000-0002-5021-7721
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.precrec
 - type: software
   title: mathjaxr
   abstract: 'mathjaxr: Using ''Mathjax'' in Rd Files'
@@ -552,7 +578,8 @@ references:
     given-names: Wolfgang
     email: wvb@wvbauer.com
     orcid: https://orcid.org/0000-0003-3463-4063
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.mathjaxr
 - type: software
   title: cli
   abstract: 'cli: Helpers for Developing Command Line Interfaces'
@@ -562,8 +589,9 @@ references:
   authors:
   - family-names: Csárdi
     given-names: Gábor
-    email: csardi.gabor@gmail.com
-  year: '2023'
+    email: gabor@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.cli
 - type: software
   title: VGAM
   abstract: 'VGAM: Vector Generalized Linear and Additive Models'
@@ -575,18 +603,20 @@ references:
     given-names: Thomas
     email: t.yee@auckland.ac.nz
     orcid: https://orcid.org/0000-0002-9970-3907
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.VGAM
 - type: software
   title: crayon
   abstract: 'crayon: Colored Terminal Output'
   notes: Imports
-  url: https://github.com/r-lib/crayon#readme
+  url: https://r-lib.github.io/crayon/
   repository: https://CRAN.R-project.org/package=crayon
   authors:
   - family-names: Csárdi
     given-names: Gábor
     email: csardi.gabor@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.crayon
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -610,18 +640,8 @@ references:
     given-names: Davis
     email: davis@posit.co
     orcid: https://orcid.org/0000-0003-4777-038X
-  year: '2023'
-- type: software
-  title: rfUtilities
-  abstract: 'rfUtilities: Random Forests Model Selection and Performance Evaluation'
-  notes: Imports
-  url: https://github.com/jeffreyevans/rfUtilities
-  repository: https://CRAN.R-project.org/package=rfUtilities
-  authors:
-  - family-names: Evans
-    given-names: Jeffrey S.
-    email: jeffrey_evans@tnc.org
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.dplyr
 - type: software
   title: stringr
   abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
@@ -631,8 +651,9 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
-  year: '2023'
+    email: hadley@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.stringr
 - type: software
   title: tidyr
   abstract: 'tidyr: Tidy Messy Data'
@@ -648,7 +669,8 @@ references:
     email: davis@posit.co
   - family-names: Girlich
     given-names: Maximilian
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.tidyr
 - type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
@@ -663,7 +685,8 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.tibble
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -698,7 +721,12 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
-  year: '2023'
+  - family-names: Brand
+    given-names: Teun
+    name-particle: van den
+    orcid: https://orcid.org/0000-0002-9335-7468
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggplot2
 - type: software
   title: insight
   abstract: 'insight: Easy Access to Model Information for Various Model Objects'
@@ -708,7 +736,7 @@ references:
   authors:
   - family-names: Lüdecke
     given-names: Daniel
-    email: d.luedecke@uke.de
+    email: officialeasystats@gmail.com
     orcid: https://orcid.org/0000-0002-8895-3206
   - family-names: Makowski
     given-names: Dominique
@@ -734,4 +762,35 @@ references:
     given-names: Vincent
     email: vincent.arel-bundock@umontreal.ca
     orcid: https://orcid.org/0000-0003-2042-7063
-  year: '2023'
+  - family-names: Bacher
+    given-names: Etienne
+    email: etienne.bacher@protonmail.com
+    orcid: https://orcid.org/0000-0002-9271-5075
+  year: '2025'
+  doi: 10.32614/CRAN.package.insight
+- type: software
+  title: DescTools
+  abstract: 'DescTools: Tools for Descriptive Statistics'
+  notes: Imports
+  url: https://andrisignorell.github.io/DescTools/
+  repository: https://CRAN.R-project.org/package=DescTools
+  authors:
+  - family-names: Signorell
+    given-names: Andri
+    email: andri@signorell.net
+    orcid: https://orcid.org/0000-0003-4311-1969
+  year: '2025'
+  doi: 10.32614/CRAN.package.DescTools
+- type: software
+  title: MLmetrics
+  abstract: 'MLmetrics: Machine Learning Evaluation Metrics'
+  notes: Imports
+  url: https://github.com/yanyachen/MLmetrics
+  repository: https://CRAN.R-project.org/package=MLmetrics
+  authors:
+  - family-names: Yan
+    given-names: Yachen
+    email: yanyachen21@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.MLmetrics
+
