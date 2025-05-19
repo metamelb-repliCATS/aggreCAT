@@ -136,7 +136,7 @@ results, with one row or observation per unique judgement task.
 replicability of research claims, collected by the [repliCATS
 project](https://replicats.research.unimelb.edu.au) team as a pilot
 study for the [DARPA SCORE
-program](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence.).
+program](https://www.darpa.mil/research/programs/systematizing-confidence-in-open-research-and-evidence).
 Data were elicited using a modified version of the IDEA protocol
 (Hemming et al. 2017, Figure 1), whereby participants *Investigate*,
 *Discuss, Estimate*, and finally *Aggregate* their judgements using
