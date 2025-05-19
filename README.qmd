@@ -95,7 +95,7 @@ Each aggregation wrapper function returns a `dataframe` / `tibble` of results, w
 
 **Elicitation Data**
 
-`aggreCAT` includes datasets with judgements about the likely replicability of research claims, collected by the [repliCATS project](https://replicats.research.unimelb.edu.au) team as a pilot study for the [DARPA SCORE program](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence.). Data were elicited using a modified version of the IDEA protocol [@hemming2017, @fig-IDEA], whereby participants *Investigate*, *Discuss, Estimate*, and finally *Aggregate* their judgements using methods from the `aggreCAT` package [@Fraser:2021]. Following the IDEA protocol, best estimates, and upper and lower bounds are elicited from each participant, over two rounds. The judgement data is contained in the object `data_ratings`, described at `?data_ratings`.
+`aggreCAT` includes datasets with judgements about the likely replicability of research claims, collected by the [repliCATS project](https://replicats.research.unimelb.edu.au) team as a pilot study for the [DARPA SCORE program](https://www.darpa.mil/research/programs/systematizing-confidence-in-open-research-and-evidence). Data were elicited using a modified version of the IDEA protocol [@hemming2017, @fig-IDEA], whereby participants *Investigate*, *Discuss, Estimate*, and finally *Aggregate* their judgements using methods from the `aggreCAT` package [@Fraser:2021]. Following the IDEA protocol, best estimates, and upper and lower bounds are elicited from each participant, over two rounds. The judgement data is contained in the object `data_ratings`, described at `?data_ratings`.
 
 ```{r}
 #| label: fig-IDEA

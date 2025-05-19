@@ -249,7 +249,7 @@ purrr::map_dfr(.x = list(AverageWAgg, IntervalWAgg, ShiftingWAgg),
 This research was conducted as a part of the [repliCATS
 project](https://replicats.research.unimelb.edu.au), funded by the
 [DARPA SCORE
-programme](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence.)
+programme](https://www.darpa.mil/research/programs/systematizing-confidence-in-open-research-and-evidence)
 
 The `aggreCAT` package is the culmination of the hard work and
 persistence of a small team of researchers. Use of this package shall be
