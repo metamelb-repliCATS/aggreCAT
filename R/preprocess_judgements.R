@@ -29,7 +29,7 @@
 #'  and `value` (i.e. participant response).
 #'
 #' @examples
-#' \dontrun{preprocess_judgements(data_ratings)}
+#' \donttest{preprocess_judgements(data_ratings)}
 #'
 #' @export
 

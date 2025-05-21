@@ -39,7 +39,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \dontrun{AverageWAgg(data_ratings)}
+#' \donttest{AverageWAgg(data_ratings)}
 #'
 #' @export
 #' @md

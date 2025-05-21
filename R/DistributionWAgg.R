@@ -81,7 +81,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \dontrun{DistributionWAgg(data_ratings)}
+#' \donttest{DistributionWAgg(data_ratings)}
 #'
 #' @export
 #' @md

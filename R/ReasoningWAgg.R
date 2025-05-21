@@ -70,7 +70,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \dontrun{ReasoningWAgg(data_ratings)}
+#' \donttest{ReasoningWAgg(data_ratings)}
 #'
 #' @export
 #' @md

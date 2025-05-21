@@ -7,7 +7,7 @@
 #' @return A density ridge plot of aggregation methods
 #'
 #' @examples
-#' \dontrun{confidence_scores_ridgeplot(data_confidence_scores)}
+#' \donttest{confidence_scores_ridgeplot(data_confidence_scores)}
 #'
 #' @export
 

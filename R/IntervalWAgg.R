@@ -93,7 +93,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \dontrun{IntervalWAgg(data_ratings)}
+#' \donttest{IntervalWAgg(data_ratings)}
 #'
 #' @export
 #' @md
