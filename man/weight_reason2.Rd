@@ -9,6 +9,9 @@ weight_reason2(expert_reasons)
 \arguments{
 \item{expert_reasons}{A dataframe in the form of \link{data_supp_reasons}}
 }
+\value{
+A tibble of three columns \code{paper_id}, \code{user_name}, and \code{reason_count}
+}
 \description{
 This function is used by \link{ReasoningWAgg} to calculate weights for the aggregation
 type \code{"ReasonWAgg2"}. Weights are based on the number and diversity of reasoning

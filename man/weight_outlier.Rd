@@ -9,6 +9,10 @@ weight_outlier(expert_judgements)
 \arguments{
 \item{expert_judgements}{A dataframe in the form of \link{data_ratings}}
 }
+\value{
+A tibble in the form of the input \code{expert_judgements} argument with additional columns
+supplying the calculated weight for each row's observation.
+}
 \description{
 This method down-weights outliers.
 }

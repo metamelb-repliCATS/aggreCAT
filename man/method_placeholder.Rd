@@ -11,6 +11,9 @@ method_placeholder(expert_judgements, method_name)
 
 \item{method_name}{Aggregation method to place into placeholder mode}
 }
+\value{
+A tibble of confidence scores \code{cs} for each \code{paper_id}.
+}
 \description{
 This functions stands in for when we haven't completed coding the method.
 }
