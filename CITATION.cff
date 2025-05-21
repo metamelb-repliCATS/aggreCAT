@@ -9,7 +9,14 @@ type: software
 license: MIT
 title: 'aggreCAT: Mathematically Aggregating Expert Judgments'
 version: 1.0.0
-abstract: Aggregation methods for confidence scores.
+abstract: The use of structured elicitation to inform decision making has grown dramatically
+  in recent decades, however, judgements from multiple experts must be aggregated
+  into a single estimate. Empirical evidence suggests that mathematical aggregation
+  provides more reliable estimates than enforcing behavioural consensus on group estimates.
+  `aggreCAT` provides state-of-the-art mathematical aggregation methods for elicitation
+  data including those defined in Hanea, A. et al. (2021) <https://doi.org/10.1371/journal.pone.0256919>.
+  The package also provides functions to visualise and evaluate the performance of
+  your aggregated estimates on validation data.
 authors:
 - family-names: Wilkinson
   given-names: David
