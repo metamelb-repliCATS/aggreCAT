@@ -79,7 +79,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \dontrun{ShiftingWAgg(data_ratings)}
+#' \donttest{ShiftingWAgg(data_ratings)}
 #'
 #' @export
 #' @md

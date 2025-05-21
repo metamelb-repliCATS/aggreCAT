@@ -24,9 +24,9 @@ and Bayesian characteristic.
 Display a ridge plot of confidence scores for each aggregation method
 }
 \examples{
-\dontrun{confidence_scores_ridgeplot(data_confidence_scores)}
+\donttest{confidence_scores_ridgeplot(data_confidence_scores)}
 
 
-\dontrun{confidence_scores_ridgeplot(data_confidence_scores)}
+\donttest{confidence_scores_ridgeplot(data_confidence_scores)}
 
 }

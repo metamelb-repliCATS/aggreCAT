@@ -10,6 +10,7 @@
 #'
 #' @param expert_reasons A dataframe in the form of [data_supp_reasons]
 #'
+#' @return A tibble of three columns `paper_id`, `user_name`, and `reason_count` 
 #'
 #' @export
 

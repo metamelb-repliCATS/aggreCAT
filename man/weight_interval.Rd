@@ -9,6 +9,10 @@ weight_interval(expert_judgements)
 \arguments{
 \item{expert_judgements}{A dataframe in the form of \link{data_ratings}}
 }
+\value{
+A tibble in the form of the input \code{expert_judgements} argument with additional columns
+supplying the calculated weight for each row's observation.
+}
 \description{
 Calculates weights by interval width
 }

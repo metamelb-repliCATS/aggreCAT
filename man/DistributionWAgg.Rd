@@ -99,6 +99,6 @@ and the aggregation is the median of the average distribution:
 \mjdeqn{    \hat{p}_c\left(TriDistribArMean\right) = AvDistribution^{-1}(0.5).}{ascii}
 }
 \examples{
-\dontrun{DistributionWAgg(data_ratings)}
+\donttest{DistributionWAgg(data_ratings)}
 
 }

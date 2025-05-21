@@ -45,6 +45,6 @@ meaningful names for coding, to avoid errors in the wrangling process.
 }
 }
 \examples{
-\dontrun{preprocess_judgements(data_ratings)}
+\donttest{preprocess_judgements(data_ratings)}
 
 }

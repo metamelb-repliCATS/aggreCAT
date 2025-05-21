@@ -58,6 +58,6 @@ The average probit estimate is then back transformed to give a final group estim
 \mjdeqn{\hat{p}_c\left(ProbitArMean \right) = \Phi\left({Probit_{c}}\right)}{ascii}
 }
 \examples{
-\dontrun{AverageWAgg(data_ratings)}
+\donttest{AverageWAgg(data_ratings)}
 
 }

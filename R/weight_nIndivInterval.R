@@ -14,6 +14,9 @@
 #'
 #' @param expert_judgements A dataframe in the form of [data_ratings]
 #'
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' supplying the calculated weight for each row's observation.
+#'
 #' @export
 
 weight_nIndivInterval <- function(expert_judgements) {

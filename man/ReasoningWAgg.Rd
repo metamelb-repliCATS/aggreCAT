@@ -96,6 +96,6 @@ When \code{flag_loarmean} is set to \code{TRUE}, two additional columns will be 
 named method_applied (with values LoArMean or ReasonWAgg), and no_reason_score, a logical variable describing whether or not there were no reasoning scores for that claim.
 }
 \examples{
-\dontrun{ReasoningWAgg(data_ratings)}
+\donttest{ReasoningWAgg(data_ratings)}
 
 }

@@ -9,6 +9,10 @@ weight_nIndivInterval(expert_judgements)
 \arguments{
 \item{expert_judgements}{A dataframe in the form of \link{data_ratings}}
 }
+\value{
+A tibble in the form of the input \code{expert_judgements} argument with additional columns
+supplying the calculated weight for each row's observation.
+}
 \description{
 Weighted by the rescaled interval width within individuals across claims.
 }

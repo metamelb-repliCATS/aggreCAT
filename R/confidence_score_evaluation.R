@@ -21,7 +21,7 @@
 #' percent correctly classified; see `?MLmetrics::Accuracy`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' confidence_score_evaluation(data_confidence_scores,
 #'                             data_outcomes)
 #' }

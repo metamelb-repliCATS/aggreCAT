@@ -10,8 +10,8 @@ weight_asym(expert_judgements)
 \item{expert_judgements}{the long tibble exported from the \code{preprocess_judgements} function.}
 }
 \value{
-A tibble of confidence scores (\code{value}) for the three-point best estimate (\code{element}),
-including weighting values for the magnitude of asymmetry between lower, best, and upper estimates.
+A tibble in the form of the input \code{expert_judgements} argument with additional columns
+supplying the calculated weight for each row's observation.
 }
 \description{
 Calculates weights by asymmetry of intervals
