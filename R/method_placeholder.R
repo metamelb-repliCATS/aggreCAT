@@ -11,6 +11,8 @@
 #' @examples
 #' \dontrun{method_placeholder(data_ratings, method_name = "TestMethod")}
 #'
+#' @return A tibble of confidence scores `cs` for each `paper_id`.
+#'
 #' @export
 
 method_placeholder <- function(expert_judgements, method_name) {

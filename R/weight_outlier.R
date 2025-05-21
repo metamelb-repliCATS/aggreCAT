@@ -21,6 +21,9 @@
 #'
 #' @importFrom stats median
 #'
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' supplying the calculated weight for each row's observation.
+#'
 #' @export
 
 weight_outlier <- function(expert_judgements) {

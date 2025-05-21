@@ -20,9 +20,8 @@
 #'
 #' @param expert_judgements the long tibble exported from the `preprocess_judgements` function.
 #'
-#' @return
-#' A tibble of confidence scores (`value`) for the three-point best estimate (`element`),
-#' including weighting values for the magnitude of asymmetry between lower, best, and upper estimates.
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' supplying the calculated weight for each row's observation.
 #'
 #' @export
 #'
