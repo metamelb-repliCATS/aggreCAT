@@ -26,7 +26,7 @@ Authors@R: c(person(given = "David",
                     family = "Groenewegen",
                     role = "aut",
                     comment = structure("0000-0001-9177-8536", .Names = "ORCID")))
-Description: Aggregation methods for confidence scores.
+Description: The use of structured elicitation to inform decision making has grown dramatically in recent decades, however, judgements from multiple experts must be aggregated into a single estimate. Empirical evidence suggests that mathematical aggregation provides more reliable estimates than enforcing behavioural consensus on group estimates. `aggreCAT` provides state-of-the-art mathematical aggregation methods for elicitation data including those defined in Hanea, A. et al. (2021) <doi:10.1371/journal.pone.0256919>. The package also provides functions to visualise and evaluate the performance of your aggregated estimates on validation data.
 URL: https://replicats.research.unimelb.edu.au/
 License: MIT + file LICENSE
 Encoding: UTF-8
