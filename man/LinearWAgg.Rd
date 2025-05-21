@@ -84,6 +84,6 @@ tendency (median) of an individual's best estimates.
 \mjdeqn{\hat{p}_c\left( OutWAgg \right) = \sum_{i=1}^N \tilde{w}\_out_{i}B_{i,c}}{ascii}
 }
 \examples{
-\dontrun{LinearWAgg(data_ratings)}
+\donttest{LinearWAgg(data_ratings)}
 
 }

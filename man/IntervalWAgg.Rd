@@ -112,6 +112,6 @@ the weights calculated in the \code{"AsymWAgg"}, \code{"IndIntWAgg"} and \code{"
 \mjdeqn{\hat{p}_c(KitchSinkWAgg) = \sum_{i=1}^N \tilde{w}\_kitchSink_{i,c}B_{i,c}}{ascii}
 }
 \examples{
-\dontrun{IntervalWAgg(data_ratings)}
+\donttest{IntervalWAgg(data_ratings)}
 
 }

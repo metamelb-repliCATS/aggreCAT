@@ -96,6 +96,6 @@ We simply multiply the weights calculated in the "DistShiftWAgg" and "IntShiftWA
 \mjdeqn{\hat{p}_c(DistIntShiftWAgg) = \sum_{i=1}^N \tilde{w}\_DistIntShift_{i,c}B_{i,c}}{ascii}
 }
 \examples{
-\dontrun{ShiftingWAgg(data_ratings)}
+\donttest{ShiftingWAgg(data_ratings)}
 
 }
