@@ -13,12 +13,14 @@
 #' @importFrom MLmetrics Accuracy
 #' @importFrom precrec auc
 #' @importFrom precrec evalmod
+#' @importFrom stats cor
 #' 
 #' @return
-#' Evaluated dataframe with four columns: `method` (character variable describing the aggregation method),
+#' Evaluated dataframe with five columns: `method` (character variable describing the aggregation method),
 #' `AUC` (Area Under the Curve (AUC) scores of ROC curves - see `?precrec::auc`), `Brier_Score` (see
-#' `?DescTools::BrierScore`) and `Classification_Accuracy`(classification accuracy measured for pcc =
-#' percent correctly classified; see `?MLmetrics::Accuracy`).
+#' `?DescTools::BrierScore`), `Classification_Accuracy`(classification accuracy measured for pcc =
+#' percent correctly classified; see `?MLmetrics::Accuracy`), and `Correlation` (point-biserial correlation;
+#' see `?stats::cor`).
 #'
 #' @examples
 #' \donttest{
@@ -52,7 +54,10 @@ confidence_score_evaluation <- function(confidence_scores,
                      Brier_Score = DescTools::BrierScore(x = outcome,
                                                          pred = cs),
                      Classification_Accuracy = MLmetrics::Accuracy(y_pred = cl,
-                                                                   y_true = outcome))
+                                                                   y_true = outcome),
+                     Correlation = stats::cor(x = cs,
+                                              y = outcome,
+                                              method = "pearson"))
 
   return(eval_df)
 
