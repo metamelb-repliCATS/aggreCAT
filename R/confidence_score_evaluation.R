@@ -50,7 +50,7 @@ confidence_score_evaluation <- function(confidence_scores,
     dplyr::filter(!is.na(outcome)) %>%
     dplyr::group_by(method) %>%
     dplyr::summarise(AUC = precrec::auc(precrec::evalmod(scores = cs,
-                                                         labels = outcome))[1, 4],
+                                                         labels = outcome))[1, "aucs"],
                      Brier_Score = DescTools::BrierScore(x = outcome,
                                                          pred = cs),
                      Classification_Accuracy = MLmetrics::Accuracy(y_pred = cl,
