@@ -1,5 +1,5 @@
-README
-================
+# README
+
 
 [![DOI](https://zenodo.org/badge/531484296.svg)](https://zenodo.org/badge/latestdoi/531484296)
 [![R-CMD-check](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/metamelb-repliCATS/aggreCAT/actions/workflows/R-CMD-check.yaml)
@@ -90,6 +90,12 @@ Then load the package:
 library(aggreCAT)
 ```
 
+Note, if you wish to use any of the Bayesian aggregation methods,you
+will need to have
+[JAGS](https://sourceforge.net/projects/mcmc-jags/files/) installed.
+Note that some mac users may need to install jags dependencies from
+source: `install.packages("rjags",type = "source")`.
+
 # Getting Started with `aggreCAT`
 
 Below we provide a brief summary of the package, for a detailed
@@ -145,29 +151,12 @@ IDEA protocol, best estimates, and upper and lower bounds are elicited
 from each participant, over two rounds. The judgement data is contained
 in the object `data_ratings`, described at `?data_ratings`.
 
-<figure>
-<img src="inst/ms/images/img_IDEA_repliCATS.png" id="fig-IDEA"
-style="width:100.0%" data-fig-pos="hold"
-alt="Figure 1: the repliCATS IDEA protocol was used to elicit judgements about the likely replicability of research claims, a pilot version of this dataset is included in the aggreCAT package" />
-<figcaption aria-hidden="true">Figure 1: the repliCATS IDEA protocol was
-used to elicit judgements about the likely replicability of research
-claims, a pilot version of this dataset is included in the
-<code>aggreCAT</code> package</figcaption>
-</figure>
+<img src="inst/ms/images/img_IDEA_repliCATS.png" style="width:100.0%"
+data-fig-pos="hold" />
 
 ## A minimal working example with `AverageWAgg()`
 
-<figure>
-<img src="inst/ms/images/ArMean.png" id="fig-1" style="width:100.0%"
-alt="Figure 2: Mathematically aggregating a small subset of expert judgements for the claim 28, using the unweighted arithmetic mean. The aggreCAT wrapper function AverageWAgg() is used on this dataset, with the type argument set to the default ArMean." />
-<figcaption aria-hidden="true">Figure 2: Mathematically aggregating a
-small subset of expert judgements for the claim <code>28</code>, using
-the unweighted arithmetic mean. The <code>aggreCAT</code> wrapper
-function <code>AverageWAgg()</code> is used on this dataset, with the
-<code>type</code> argument set to the default
-<code>ArMean</code>.</figcaption>
-</figure>
-
+<img src="inst/ms/images/ArMean.png" style="width:100.0%" />
 Below we demonstrate how to use the most simple commonly implemented
 aggregation method `ArMean`, which takes the arithmetic mean of
 participant Best Estimates. We first use a small subset of 5
@@ -232,7 +221,7 @@ data_ratings %>% AverageWAgg()
 #>  8 ArMean 116       62.6        25
 #>  9 ArMean 118       54.8        25
 #> 10 ArMean 133       59.9        25
-#> # … with 15 more rows
+#> # ℹ 15 more rows
 ```
 
 And other times, we might want to trial different aggregation methods
@@ -257,27 +246,25 @@ appropriately attributed and cited accordingly:
 
 ``` r
 citation("aggreCAT")
+#> To cite aggreCAT in publications use:
 #> 
-#> To cite package 'aggreCAT' in publications use:
-#> 
-#>   Willcox A, Gray C, Gould E, Wilkinson D, Hanea A, Wintle B, E. O'Dea
-#>   R (????). _aggreCAT: Mathematically Aggregating Expert Judgments_. R
-#>   package version 0.0.0.9002,
-#>   <https://replicats.research.unimelb.edu.au/>.
+#>   Gould et al. aggreCAT: An R Package for Mathematically Aggregating
+#>   Expert Judgments (2023). MetArXiv
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
-#>   @Manual{,
-#>     title = {aggreCAT: Mathematically Aggregating Expert Judgments},
-#>     author = {Aaron Willcox and Charles T. Gray and Elliot Gould and David Wilkinson and Anca Hanea and Bonnie Wintle and Rose {E. O'Dea}},
-#>     note = {R package version 0.0.0.9002},
-#>     url = {https://replicats.research.unimelb.edu.au/},
+#>   @Article{,
+#>     title = {aggreCAT: An R Package for Mathematically Aggregating Expert Judgments},
+#>     author = {{Gould} and {Elliot} and {Gray} and Charles T. and {Willcox} and {Aaron} and {O'Dea} and {Rose} and {Groenewgen} and {Rebecca} and {Wilkinson} and David P.},
+#>     journal = {MetArXiv},
+#>     year = {2023},
 #>   }
 ```
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-Fraser:2021" class="csl-entry">
 

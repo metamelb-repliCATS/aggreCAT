@@ -251,7 +251,7 @@ method_types <- function(conf_scores){
   BAYES = c("BayTriVar", "BayPRIORsAgg")
 
   conf_scores <- conf_scores %>%
-    dplyr::mutate(type = dplyr::case_when(method %in% NWL ~ "Non-weighted Linear Combintation",
+    dplyr::mutate(type = dplyr::case_when(method %in% NWL ~ "Non-weighted Linear Combination",
                                           method %in% WLCI ~ "Weighted Linear Combinations",
                                           #method %in% WLCE ~ "Weighted Linear Combinations (Supplementary Data)",
                                           method %in% BAYES ~ "Bayesian Methods"))
@@ -259,7 +259,7 @@ method_types <- function(conf_scores){
 
   # Levels for the plot output
   conf_scores$type <- factor(conf_scores$type,
-                             levels = c("Non-weighted Linear Combintation",
+                             levels = c("Non-weighted Linear Combination",
                                         "Weighted Linear Combinations",
                                         #"Weighted Linear Combinations (Supplementary Data)",
                                         "Bayesian Methods"))
