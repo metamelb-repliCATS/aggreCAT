@@ -49,7 +49,7 @@ The data frame is in long format with six required columns (`group` here is addi
 
 ## Mathematical aggregation
 
-Once you have a dataset in the correct format, conducting the mathematical aggregation is straightforward. All aggregation methods are grouped by type into a series of wrapper functions with a `*WAgg()` naming convention (where *WAgg* is short for 'weighted aggregation' and \* indicating the group). To start with, let’s just do a simple arithmetic mean aggregation with the `AverageWAgg()` function:
+Once you have a dataset in the correct format, conducting the mathematical aggregation is straightforward. All aggregation methods are grouped by type into a series of wrapper functions with a `*WAgg()` naming convention (where `WAgg` is short for 'weighted aggregation' and `*` indicating the group). To start with, let’s just do a simple arithmetic mean aggregation with the `AverageWAgg()` function:
 
 ```{r}
 #| label: ArMean
