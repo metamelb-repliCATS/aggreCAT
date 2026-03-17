@@ -3,6 +3,7 @@ format:
   html:
     code-copy: hover
     code-link: true
+    embed-resources: true #TODO turn off for submission, only for sharing output .html
 title: "Introducing {aggreCAT}: Mathematical aggregation of expert judgments"
 bibliography: ISC_blog.bib
 csl: cell.csl
