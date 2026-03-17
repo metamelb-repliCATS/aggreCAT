@@ -9,6 +9,12 @@ csl: cell.csl
 eval: true
 date-modified: last-modified
 fig-responsive: true
+author: 
+  - name: David P. Wilkinson
+    orcid: 0000-0002-9560-6499
+    email: dwilkinson@unimelb.edu.au
+  - name: Elliot Gould
+    orcid: 0000-0002-6585-538X
 ---
 
 Expert judgements and forecasts are playing an increasingly important role in a variety of fields such as ecological management and decision making [@Legge2022], biosecurity risk analyses [@Wittmann2015], replicability forecasts [@Mody2026], and horizon scanning exercises [@Sutherland2017]. Eliciting judgements from multiple experts is always preferable to relying on single estimates, but it comes with the challenge of aggregating different opinions. Achieving *behavioural consensus* amongst a group of experts, i.e. continued deliberation until everyone agrees on the same answer, is difficult, time consuming, and not always appropriate when multiple, valid viewpoints exist. The alternative is to make use of *mathematical consensus*, whereby data from a group of experts is mathematically aggregated into a single score.
