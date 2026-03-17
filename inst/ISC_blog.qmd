@@ -1,5 +1,147 @@
 ---
-title: "ISC_blog"
-format: html
+format: 
+  html:
+    code-copy: hover
+    code-link: true
+title: "Introducing {aggreCAT}: Mathematical aggregation of expert judgments"
+bibliography: ISC_blog.bib
+csl: cell.csl
+eval: true
+date-modified: last-modified
+fig-responsive: true
 ---
 
+Expert judgements and forecasts are playing an increasingly important role in a variety of fields such as ecological management and decision making [@Legge2022], biosecurity risk analyses [@Wittmann2015], replicability forecasts [@Mody2026], and horizon scanning exercises [@Sutherland2017]. Eliciting judgements from multiple experts is always preferable to relying on single estimates, but it comes with the challenge of aggregating different opinions. Achieving *behavioural consensus* amongst a group of experts, i.e. continued deliberation until everyone agrees on the same answer, is difficult, time consuming, and not always appropriate when multiple, valid viewpoints exist. The alternative is to make use of *mathematical consensus*, whereby data from a group of experts is mathematically aggregated into a single score.
+
+Aggregated elicited judgements form a critical component of decision-making across multiple contexts, but there has been a dearth of accessible tools for implementing anything more complex than linear averages. Existing software options are either closed-source, locked behind paid software licenses, non-reproducible, or written in programming languages scantly used by ecologists or metascientists. Methods implemented in R, one of the most widely used programming languages in the life sciences [@Gao2025], are also limited, either being small in scope or having been archived from CRAN over the years.
+
+# Elicitation at scale: The SCORE program and a need for easy and reliable aggregation methods
+
+{aggreCAT} was initially developed as part of the [repliCATS](https://arts.unimelb.edu.au/school-of-historical-and-philosophical-studies/our-research/research-projects/replicats) (Collaborative Assessment of Trustworthy Science) project within the international [DARPA SCORE program](https://www.darpa.mil/research/programs/systematizing-confidence-in-open-research-and-evidence) (Systemizing Confidence in Open Research and Evidence). As part of SCORE, repliCATS used expert elicitation to evaluate the replicability of 4000 research claims published in the social and behavioural sciences. {aggreCAT} arose out of a need for a software solution to reliably conduct mathematical aggregation at scale. While originally a bespoke implementation for repliCATS, we have since developed {aggreCAT} into a more general R package to handle most types of elicitation data requiring mathematical aggregation allowing for wider applicability.
+
+# What does {aggreCAT} offer?
+
+{aggreCAT} is an open, reliable, and modular R package for the mathematical aggregation of expert elicitation data with a straightforward user interface. {aggreCAT} provides a suite of 29 aggregation methods that explore different approaches to mathematical aggregation from straightforward arithmetic calculations to Bayesian statistical models. In addition, we provide extra functionality such as plotting functions and performance evaluation against known outcomes. While the repliCATS project uses the IDEA protocol to structure their elicitation process, we have generalised {aggreCAT} to work with a variety of elicitation protocols. {aggreCAT} fills a large void in open software for aggregating elicited judgements, providing enormous benefit to researchers and decision makers across any field of research.
+
+# Using {aggreCAT}
+
+{aggreCAT} v1.0.0 is available on [CRAN](https://cran.r-project.org/package=aggreCAT) while a development version is maintained on [GitHub (metamelb-repliCATS/aggreCAT)](https://github.com/metamelb-repliCATS/aggreCAT). For the walkthrough below we make use of the {aggreCAT}’s inbuilt datasets, which were originally published in Wintle et al. (2023) -@Wintle2023. This study served as a pilot of the repliCATS approach to the SCORE program and consists of evaluations by 25 experts of 25 published papers that underwent attempted replication.
+
+## Load Packages
+
+```{r}
+#| label: load-libs
+#| echo: false
+library(aggreCAT)
+library(tidyverse)
+```
+
+## Look at the data object
+
+All aggregation methods require a data frame input of the elicited data, and we’ve included `data_ratings` in the package as an example dataset. Let's take a look:
+
+```{r}
+#| label: examine-data-ratings
+data_ratings
+```
+
+The data frame is in long format with six required columns (`group` here is additional and ignored). The full details are explained in `?data_ratings`, but these columns represent the structure of an IDEA protocol elicitation. You have an elicitation round, IDs for paper and elicitation participant, names of questions and elements (we support three-point elicitation questions), and then the value of the participants’ responses. While set up this way to support the IDEA protocol, {aggreCAT} isn’t limited to that elicitation format. As we’ll show later, we have some function arguments to allow for other elicitation styles.
+
+## Mathematical aggregation
+
+Once you have a dataset in the correct format, conducting the mathematical aggregation is straightforward. All aggregation methods are grouped by type into a series of wrapper functions with a `*WAgg()` naming convention (where *WAgg* is short for 'weighted aggregation' and \* indicating the group). To start with, let’s just do a simple arithmetic mean aggregation with the `AverageWAgg()` function:
+
+```{r}
+#| label: ArMean
+AverageWAgg(expert_judgements = data_ratings)
+```
+
+The output of all `*WAgg()` functions is a four-column data frame. The name of the chosen aggregation method, the ID of the elicitation being aggregated, the aggregated elicitation value (known as a confidence score), and the number of experts whose elicitation was aggregated. `ArMean`, the arithmetic mean aggregation method, is the default method for `AverageWAgg()` but we can use the `type` argument to apply a different aggregation method. Let’s aggregate using the median value instead:
+
+```{r}
+#| label: ArMedian
+AverageWAgg(expert_judgements = data_ratings,
+            type = "Median")
+```
+
+You may have noticed the list of pre-processing methods that are output to the console marked with an <i class="bi bi-info"></i> icon. Every `*WAgg()` function has a different combination of options available, which let the user toggle certain behaviours on or off to suit their chosen elicitation style. IDEA is a two round elicitation where only the second round of data gets used in the aggregation, but the `round_2_filter` argument lets you turn this step off if you wanted to retain both rounds, or if you used a single round elicitation approach. The `percent_toggle` argument lets you convert percentages into probabilities because the original requirements for {aggreCAT} included the need to accept elicited probabilities as percentages. By keeping `round_2_filter` set to `FALSE` you can aggregate other elicitation data formats (e.g. counts) but note that some aggregation methods are only applicable to probabilistic data.
+
+```{r}
+#| label: alt-data-tpes
+cs_ArMean <- AverageWAgg(expert_judgements = data_ratings,
+                         type = "ArMean",
+                         percent_toggle = TRUE,
+                         round_2_filter = TRUE)
+```
+
+Let’s generate confidence scores for several aggregation methods. First, we’ll use `IntervalWAgg()` and the `IntWAgg` aggregation type to perform a weighted aggregation where participants are weighted based on the width of their supplied uncertainty bounds.
+
+```{r}
+#| label: IntWAgg
+cs_IntWAgg <- IntervalWAgg(expert_judgements = data_ratings,
+                           type = "IntWAgg",
+                           percent_toggle = TRUE,
+                           round_2_filter = TRUE)
+```
+
+Next, we’ll use `ReasoningWAgg()` and the `ReasonWAgg` method to conduct a weighted aggregation based on the number of unique reasons the participant used to justify their numeric estimates. This method requires a supplementary dataset of these coded reasons to calculate a weight, which exists as an example dataset called `data_supp_reasons`.
+
+```{r}
+#| label: ReasonWAgg
+cs_ReasonWAgg <- ReasoningWAgg(expert_judgements = data_ratings,
+                               reasons = data_supp_reasons,
+                               type = "ReasonWAgg",
+                               percent_toggle = TRUE,
+                               round_2_filter = TRUE)
+```
+
+Finally, we will use `LinearWAgg()` and the `Participant` type to conduct a weighted aggregation using a user-supplied weight that applies at the participant level. Here we create our `QuizWAgg` method where we weight users based on how well they performed on a quiz they completed prior to conducting the full elicitation. The `data_supp_quiz` object supplies several different ways that participant quiz responses were scored as different columns and we just need to specify which scoring method is to be used as the weight.
+
+```{r}
+#| label: QuizWAgg
+cs_QuizWAgg <- LinearWAgg(expert_judgements = data_ratings,
+                          type = "Participant",
+                          weights = data_supp_quiz |>
+                            rename(weight = quiz_score),
+                          name = "QuizWAgg",
+                          percent_toggle = TRUE,
+                          round_2_filter = TRUE)
+```
+
+## Performance evaluation
+
+The `confidence_score_evaluation()` function evaluates the performance of the aggregation methods when there are known outcomes, or “truth” values to be evaluated against. In our case, `data_outcomes` provides a binary value indicating whether a replication attempt for a given paper was successful or not.
+
+```{r}
+#| label: evaluate-cs-performance
+confidence_score_evaluation(confidence_scores = bind_rows(cs_ArMean,
+                                                          cs_IntWAgg,
+                                                          cs_QuizWAgg,
+                                                          cs_ReasonWAgg),
+                            outcomes = data_outcomes)
+```
+
+This function currently calculates performance using four different metrics: AUC, Brier Score, classification accuracy, and a point-biserial correlation. Performance by each metric is calculated separately for each aggregation method.
+
+## Visualisation
+
+Finally, we have several basic visualisation functions to let you explore your data. Here we use `confidence_score_heatmap()` to generate a heatmap of the aggregated scores across a number of aggregation methods, using the `data_confidence_scores` object, and split by the replication study result within `data_outcomes`.
+
+```{r}
+#| label: visualise-cs-heatmap
+#| message: false
+#| column: body
+#| fig-align: center
+#| fig-width: 8
+#| fig-height: 8
+confidence_score_heatmap(confidence_scores = data_confidence_scores,
+                         data_outcomes = data_outcomes)
+```
+
+{aggreCAT}’s example dataset included some infamous replication studies, so many participants were likely familiar with the outcomes of some or all replication studies before they gave their own estimates. We can see this playing out in the heatmap visualisation, where studies that did replicate mostly had scores above 0.5, while studies that failed to replicate were mostly below 0.5. It also reveals that behaviour was consistent across participants because this pattern largely holds across the different aggregation methods weighting by different behavioural characteristics. The exceptions to this are the methods found in `IntervalWAgg()`, which weights based on the user’s self-reported uncertainty, and `BetaArMean()` which uses a beta distribution to extremise participant scores to account for participant tendencies to provide conservative estimates. Both aggregation methods demonstrate much stronger “will not replicate” signals in the scores.
+
+# What is next for {aggreCAT}?
+
+While {aggreCAT} is perfectly functional in its current form we are always looking for ways to improve it. We have generalised the package functionality to work beyond the IDEA protocol elicitation formats alone, but there are still some hold-over naming conventions for dataset columns or function arguments that could be more generic, which will eventually be changed. We’re also working on some new aggregation methods to be included in future package versions. As a teaser, I have an early version of an aggregation method that implements Cooke’s classical method [@Cooke1991], a method for combining elicited probability distributions. We also have plans to improve and expand visualisation functions. Some of these are new functions based on plots we’ve created for publications, some of them are feature updates to existing functions to allow for some more user customisation.
+
+We’re always happy to hear from existing and would-be users about any additional features that would help them conduct their own research or practitioners conducting their own elicitations. If you have any requests, you can submit them as an issue on our GitHub repository and we can add them to our to do lists, or you’re welcome to submit pull requests with additional features that you’ve coded up that we will review and evaluate for inclusion in the package down the line.
