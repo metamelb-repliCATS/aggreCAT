@@ -30,3 +30,4 @@ vignettes/test_table.Rmd
 ^CITATION\.cff$
 ^archive/
 inst/ISC_blog*
+inst/cell.csl
