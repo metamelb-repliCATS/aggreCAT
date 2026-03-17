@@ -17,6 +17,39 @@ author:
     orcid: 0000-0002-6585-538X
 ---
 
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+knitr::opts_chunk$set(
+  comment = "#>"
+)
+# enable coloured cli text in output chunks
+options(crayon.enabled = TRUE,
+        cli.num_colors = 256)
+fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
+```
+
+```{=html}
+<style>
+/* 1) Collapse spacing on the <pre> blocks produced by fansi */
+pre.fansi {
+  margin: 0 !important;
+}
+
+/* Optional: if you still see gaps, also collapse adjacent fansi blocks */
+pre.fansi + pre.fansi {
+  margin-top: 0 !important;
+}
+
+/* 2) remove the default margin that Quarto adds around output code blocks */
+.cell pre {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+</style>
+```
+
 Expert judgements and forecasts are playing an increasingly important role in a variety of fields such as ecological management and decision making [@Legge2022], biosecurity risk analyses [@Wittmann2015], replicability forecasts [@Mody2026], and horizon scanning exercises [@Sutherland2017]. Eliciting judgements from multiple experts is always preferable to relying on single estimates, but it comes with the challenge of aggregating different opinions. Achieving *behavioural consensus* amongst a group of experts, i.e. continued deliberation until everyone agrees on the same answer, is difficult, time consuming, and not always appropriate when multiple, valid viewpoints exist. The alternative is to make use of *mathematical consensus*, whereby data from a group of experts is mathematically aggregated into a single score.
 
 Aggregated elicited judgements form a critical component of decision-making across multiple contexts, but there has been a dearth of accessible tools for implementing anything more complex than linear averages. Existing software options are either closed-source, locked behind paid software licenses, non-reproducible, or written in programming languages scantly used by ecologists or metascientists. Methods implemented in R, one of the most widely used programming languages in the life sciences [@Gao2025], are also limited, either being small in scope or having been archived from CRAN over the years.
@@ -31,13 +64,15 @@ Aggregated elicited judgements form a critical component of decision-making acro
 
 # Using {aggreCAT}
 
-{aggreCAT} v1.0.0 is available on [CRAN](https://cran.r-project.org/package=aggreCAT) while a development version is maintained on [GitHub (metamelb-repliCATS/aggreCAT)](https://github.com/metamelb-repliCATS/aggreCAT). For the walkthrough below we make use of the {aggreCAT}’s inbuilt datasets, which were originally published in Wintle et al. (2023) -@Wintle2023. This study served as a pilot of the repliCATS approach to the SCORE program and consists of evaluations by 25 experts of 25 published papers that underwent attempted replication.
+{aggreCAT} v1.0.0 is available on [CRAN](https://cran.r-project.org/package=aggreCAT) while a development version is maintained on [GitHub (metamelb-repliCATS/aggreCAT)](https://github.com/metamelb-repliCATS/aggreCAT). For the walkthrough below we make use of the {aggreCAT}’s inbuilt datasets, which were originally published in Wintle et al. (2023) [-@Wintle2023]. This study served as a pilot of the repliCATS approach to the SCORE program and consists of evaluations by 25 experts of 25 published papers that underwent attempted replication.
 
 ## Load Packages
 
 ```{r}
 #| label: load-libs
-#| echo: false
+#| message: false
+#| warning: false
+#| echo: true
 library(aggreCAT)
 library(tidyverse)
 ```
