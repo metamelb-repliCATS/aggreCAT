@@ -29,3 +29,4 @@ vignettes/test_table.Rmd
 ^pkgdown$
 ^CITATION\.cff$
 ^archive/
+inst/ISC_blog.qmd
