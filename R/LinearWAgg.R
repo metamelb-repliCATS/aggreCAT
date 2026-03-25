@@ -61,7 +61,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \donttest{LinearWAgg(data_ratings)}
+#' \donttest{LinearWAgg(data_ratings, percent_toggle = TRUE)}
 #'
 #' @export
 #' @md
