@@ -49,7 +49,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \donttest{ExtremisationWAgg(data_ratings)}
+#' \donttest{ExtremisationWAgg(data_ratings, percent_toggle = TRUE)}
 #'
 #' @export
 #' @md
