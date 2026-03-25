@@ -1,42 +1,38 @@
 Package: aggreCAT
 Title: Mathematically Aggregating Expert Judgments
 Version: 1.0.1
-Authors@R: c(person(given = "David", 
-                    family = "Wilkinson", 
+Authors@R: c(person(given = "David",
+                    family = "Wilkinson",
                     role = c("aut", "cre"),
                     email = "david.wilkinson.research@gmail.com",
                     comment = structure("0000-0002-9560-6499", .Names = "ORCID")),
-             person(given = "Elliot", 
-                    family = "Gould", 
-                    role = "aut", 
+             person(given = "Elliot",
+                    family = "Gould",
+                    role = "aut",
                     comment = structure("0000-0002-6585-538X", .Names = "ORCID")),
-             person(given = "Aaron", 
-                    family = "Willcox", 
+             person(given = "Aaron",
+                    family = "Willcox",
                     role = "aut",
                     email = " aaron@willcox.io",
                     comment = structure("0000-0003-2536-2596", .Names = "ORCID")),
              person(given = "Charles T.",
                     family = "Gray",
                     role = c("aut")),
-             person(given = "Rose", 
-                    family = "E. O'Dea", 
-                    role = "aut", 
+             person(given = "Rose",
+                    family = "E. O'Dea",
+                    role = "aut",
                     comment = structure("0000-0001-8177-5075", .Names = "ORCID")),
              person(given = "Rebecca",
                     family = "Groenewegen",
                     role = "aut",
                     comment = structure("0000-0001-9177-8536", .Names = "ORCID")))
 Description: The use of structured elicitation to inform decision making has grown dramatically in recent decades, however, judgements from multiple experts must be aggregated into a single estimate. Empirical evidence suggests that mathematical aggregation provides more reliable estimates than enforcing behavioural consensus on group estimates. 'aggreCAT' provides state-of-the-art mathematical aggregation methods for elicitation data including those defined in Hanea, A. et al. (2021) <doi:10.1371/journal.pone.0256919>. The package also provides functions to visualise and evaluate the performance of your aggregated estimates on validation data.
-<<<<<<< HEAD
-URL: https://replicats.research.unimelb.edu.au/
-=======
 URL: https://replicats.research.unimelb.edu.au/, https://github.com/metamelb-repliCATS/aggreCAT, https://metamelb-replicats.github.io/aggreCAT/
->>>>>>> 75aebb9 (Add pkdgdown URL for linking across vignettes)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Suggests: 
+Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
@@ -49,21 +45,21 @@ Suggests:
     readr,
     lubridate,
     forcats,
-    ggforce, 
+    ggforce,
     ggpubr,
-    ggridges, 
+    ggridges,
     rjags,
     tidybayes,
     tidyverse,
     usethis,
     nlme,
-    gt, 
+    gt,
     gtExtras,
     R.rsp
-RoxygenNote: 7.3.3
+RoxygenNote: 7.2.3
 Depends:
     R (>= 2.10)
-Imports: 
+Imports:
     magrittr,
     GoFKernel,
     purrr,
@@ -74,16 +70,16 @@ Imports:
     cli,
     VGAM,
     crayon,
-    dplyr, 
+    dplyr,
     stats,
     stringr,
-    tidyr, 
+    tidyr,
     tibble,
     ggplot2,
     insight,
     DescTools,
     MLmetrics
-VignetteBuilder: 
+VignetteBuilder:
   knitr,
   R.rsp
 RdMacros: mathjaxr

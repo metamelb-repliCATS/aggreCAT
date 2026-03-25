@@ -447,12 +447,22 @@ focal_claims <- data_ratings %>%
 # select 5 users to highlight in focal claim demonstration
 focal_users <- focal_claims %>%
   dplyr::distinct(user_name) %>%
-  dplyr::slice_sample(n=5)
+  dplyr::slice_sample(n = 5)
 # filter out non-focal users from focal claims
 focal_claims <- focal_claims %>%
   dplyr::right_join(focal_users, by = "user_name")
 focal_claims
 ```
+
+`focal_claims` contains 220 rows across four claims and five participants. Each row records a
+single `element` of a participant's assessment for a given `paper_id` and `round`. The
+`question` column distinguishes the three-point probabilistic judgements about replicability
+(`direct_replication`, with `element` values `three_point_lower`, `three_point_best`, and
+`three_point_upper`) from supplementary assessment data: participants' plausibility ratings
+(`belief_binary`), comprehensibility ratings (`comprehension`), and involvement in the original
+study (`involved_binary`). All aggregation functions require at minimum the
+`direct_replication` rows, and expect data in this long, tidy format.
+
 
 ```{r}
 #| label: tbl-focal-claim
