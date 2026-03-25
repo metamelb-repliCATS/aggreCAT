@@ -41,3 +41,8 @@ reference:
   - data_supp_priors
   - data_supp_quiz
   - data_supp_reasons
+articles:
+- title: aggreCAT Datasets
+  navbar: ~
+  contents:
+  - data
