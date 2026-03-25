@@ -14,7 +14,7 @@
 #' @return Plot in viewer
 #'
 #' @examples
-#' \donttest{confidencescore_heatmap(data_confidence_scores, data_outcomes)}
+#' \donttest{confidence_score_heatmap(data_confidence_scores, data_outcomes)}
 #'
 #' @export
 
