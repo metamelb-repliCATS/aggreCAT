@@ -1,1 +1,42 @@
 destination: docs
+reference:
+- title: Data Processing
+- subtitle: Standardise and Tidy Data
+  contents:
+  - postprocess_judgements
+  - preprocess_judgements
+- subtitle: Calculate Weights
+  contents:
+  - weight_asym
+  - weight_interval
+  - weight_nIndivInterval
+  - weight_outlier
+  - weight_reason
+  - weight_reason2
+  - weight_varIndivInterval
+- title: Aggregate Judgements
+  contents:
+  - AverageWAgg
+  - BayesianWAgg
+  - DistributionWAgg
+  - ExtremisationWAgg
+  - IntervalWAgg
+  - LinearWAgg
+  - ReasoningWAgg
+  - ShiftingWAgg
+  - method_placeholder
+- title: Evaluating and Visualising Confidence Scores
+  contents:
+  - confidence_score_evaluation
+  - confidence_score_heatmap
+  - confidence_score_ridgeplot
+- title: Datasets
+  contents:
+  - data_comments
+  - data_confidence_scores
+  - data_justifications
+  - data_outcomes
+  - data_ratings
+  - data_supp_priors
+  - data_supp_quiz
+  - data_supp_reasons
