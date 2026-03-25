@@ -7,7 +7,7 @@
 #' @return A density ridge plot of aggregation methods
 #'
 #' @examples
-#' \donttest{confidence_scores_ridgeplot(data_confidence_scores)}
+#' \donttest{confidence_score_ridgeplot(data_confidence_scores)}
 #'
 #' @export
 
@@ -26,7 +26,8 @@ confidence_score_ridgeplot <- function(confidence_scores = NULL){
     ggplot2::ggplot(ggplot2::aes(x = cs,
                                  y = factor(method,
                                             levels = rev(levels(factor(method)))),
-                                 fill = factor(ggplot2::after_stat(stats::quantile))
+                                 fill = factor(ggplot2::after_stat(quantile))
+                                 # fill = factor(ggplot2::after_stat(stats::quantile))
     )) +
     ggridges::stat_density_ridges(
       geom = "density_ridges_gradient",
