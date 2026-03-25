@@ -5,6 +5,8 @@
 #'
 #' @param confidence_scores A data frame of confidence scores in long format in the form of [data_confidence_scores]
 #'
+#' @importFrom stats quantile
+#' 
 #' @return A density ridge plot of aggregation methods
 #'
 #' @examples
