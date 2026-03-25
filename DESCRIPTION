@@ -60,7 +60,7 @@ Suggests:
     gt, 
     gtExtras,
     R.rsp
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Depends:
     R (>= 2.10)
 Imports: 
