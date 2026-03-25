@@ -74,7 +74,7 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \dontrun{BayesianWAgg(data_ratings)}
+#' \dontrun{BayesianWAgg(data_ratings, percent_toggle = TRUE)}
 #'
 #' @export
 #' @md
