@@ -15,9 +15,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message=FALSE, warning=FALSE}
 library(aggreCAT)
-library(tidyverse,quietly = TRUE)
+library(tidyverse)
 ```
 
 
@@ -43,6 +43,8 @@ form measures of reasoning breadth and engagement [@Fraser:2021].
 [^2]: See @Hanea2021 for details. The workshop was held at the annual
     meeting of the Society for the Improvement of Psychological Science
     (SIPS), [\<https://osf.io/ndzpt/\>](https://osf.io/ndzpt/){.uri}.
+
+## Formatted Judgement Data
 
 `data_ratings` is a *tidy* [data.frame]{.class} wherein each
 *observation* (or row) corresponds to a single value in the set of
@@ -76,11 +78,12 @@ the group number the participant was a part of. Below we show some
 example data for a single user for a single claim to illustrate this
 structure of the core `data_ratings` dataset.
 
-```{r data_ratings-sample, message=TRUE,prompt=TRUE,results='hold'}
+```{r data_ratings-sample, message=TRUE, results='hold'}
 aggreCAT::data_ratings %>% 
   dplyr::filter(paper_id == dplyr::first(paper_id), 
                 user_name == dplyr::first(user_name)) %>% 
-  print(., n = nrow(.))
+  head()
+
 ```
 
 Not all data necessary for constructing weights on performance is
@@ -102,13 +105,18 @@ Prior to the workshop, participants were asked to complete an optional
 quiz on statistical concepts and meta-research which we thought would
 aid in reliably evaluating the replicability of research claims. Quiz
 responses are contained in `data_supp_quiz` and are used to construct
-performance weights for the aggregation method `QuizWAgg` where each
+performance weights for the aggregation method `QuizWAgg`, where each
 participant receives a `quiz_score` if they completed the quiz, and `NA`
-if they did not attempt the quiz [see @Hanea2021 for further details].
+if they did not attempt the quiz [see @Hanea2021 for further details]. Additional methods of scoring the quiz responses are provided in `data_supp_quiz`. 
+
+```{r data_supp_quiz-sample, message=TRUE, results='hold'}
+aggreCAT::data_supp_quiz
+```
+
 
 ## Reasoning Data {#sec-reasonwagg-supplementary-data}
 
-`ReasonWAgg` uses the number of unique reasons given by participants to
+The `ReasonWAgg` aggregation type uses the number of unique reasons given by participants to
 support a Best Estimate for a given claim $B_{i,c}$ to construct
 performance weights, and is contained within `data_supp_reasons`.
 Qualitative statements made by individuals during claim evaluation were
@@ -122,17 +130,35 @@ inter-coder reliability threshold are distributed as columns in the
 dataset whose names are prefixed with `RW`, and for each claim
 `paper_id`, each participant `user_id` is assigned a logical `1` or `0`
 if they included that reasoning category in support of their Best
-estimate for that claim. See @sec-ReasoningWAgg for details on the
+estimate for that claim. See `ReasoningWAgg()` for details on the
 `ReasonWAgg` aggregation method.
+
+```{r data_supp_reasons-sample}
+aggreCAT::data_supp_reasons %>% 
+  glimpse()
+```
+
 
 ## Bayesian Prior Data {#sec-bayesian-supplementary-data}
 
-The method `BayPRIORsAgg` uses Bayesian updating to update a prior
+The method `BayPRIORsAgg` (implemented in `BayesianWAgg()`) uses Bayesian updating to update a prior
 probability of a claim replicating estimated from a predictive model
 [@Gould2021a] using an aggregate of the best estimates for all
 participants assessing a given claim $c$ [@Hanea2021]. The prior data is
 contained in `data_supp_priors` with each claim in column `paper_id`
 being assigned a prior probability (on the logit scale) of the claim
 replicating in column `prior_means`.
+
+```{r data_supp_priors-sample}
+aggreCAT::data_supp_priors
+```
+
+
+# TODO
+
+- [ ] `data_comments`
+- [ ] `data_confidence_scores`
+- [ ] `data_justifications`
+- [ ] `data_outcomes`
 
 # References
