@@ -1,4 +1,5 @@
 destination: docs
+url: https://metamelb-replicats.github.io/aggreCAT/
 reference:
 - title: Data Processing
 - subtitle: Standardise and Tidy Data
