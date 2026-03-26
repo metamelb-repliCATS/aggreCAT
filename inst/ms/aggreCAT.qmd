@@ -246,15 +246,13 @@ multiple individuals that must be combined into a single forecast.
 Mathematically, the aggregation methods can be divided into three main
 types:
 
--   Un-weighted linear combination of best estimates, transformed best
+1.   Un-weighted linear combination of best estimates, transformed best
     estimates or distributions,
-
--   Weighted linear combinations of best estimates, transformed best
+2.   Weighted linear combinations of best estimates, transformed best
     estimates and of distributions, where weights are proxies of
     forecasting performance constructed from characteristics of
     participants and/or their judgements, and
-
--   Bayesian methods that use participant judgements as data with which
+3.   Bayesian methods that use participant judgements as data with which
     to update both uninformative and informative priors.
 
 However, the [aggreCAT]{.pkg} package user might wish to categorise the
