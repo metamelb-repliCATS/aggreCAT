@@ -389,17 +389,6 @@ structure, and example data, are provided in the [aggreCAT]{.pkg}
 package documentation (`?data_ratings`) and in the Package Datasets
 vignette available on the [aggreCAT]{.pkg} pkgdown website.
 
-#### Aggregation Wrapper Functions
-
-Although there are 27 aggregation methods in total, we grouped
-methods based on their mathematical properties into eight 'wrapper'
-functions, denoted by the suffix `WAgg`, the abbreviation of *weighted
-aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
-`IntervalWAgg()`, `ShiftingWAgg()`, `ReasoningWAgg()`,
-`DistributionWAgg()`, and `ExtremisationWAgg()`. The specific
-aggregation *method* is applied according to the `type` argument, whose
-options are described in each aggregation wrapper functions' help page.
-
 ### 'Tidy' Aggregation and Required Inputs
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
@@ -426,6 +415,16 @@ method *CompWAgg* additionally requires comprehensibility ratings
 method, its calling function, and data requirements, see
 @tbl-method-summary-table.
 
+#### Aggregation Wrapper Functions
+
+Although there are 27 aggregation methods in total, we grouped methods
+based on their mathematical properties into eight 'wrapper' functions,
+denoted by the suffix `WAgg`, the abbreviation of *weighted
+aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
+`IntervalWAgg()`, `ShiftingWAgg()`, `ReasoningWAgg()`,
+`DistributionWAgg()`, and `ExtremisationWAgg()`. The specific
+aggregation *method* is applied according to the `type` argument, whose
+options are described in each aggregation wrapper functions' help page.
 
 ## Focal Claim Aggregation {#sec-focal-claims}
 
