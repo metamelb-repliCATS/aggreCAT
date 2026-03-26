@@ -200,8 +200,9 @@ to behavioural or consensus-based aggregation.
 
 We begin by formulating the problem of mathematically aggregating expert
 judgements. Each method, and its data requirements is summarised in
-
-Table \ref{tbl-method-summary-table}. Before outlining key aggregation
+Table \ref{tbl-method-summary-table}.
+<!-- Consider deleting below sentence -->
+Before outlining key aggregation
 methods, we briefly summarise package datasets, which were collected by
 the repliCATS project. By first describing the datasets before
 describing the aggregation methods in detail, we aim to provide a
@@ -365,14 +366,30 @@ with `weight_`.
 
 ### Package datasets
 
-The [aggreCAT]{.pkg} package includes several datasets collected by the repliCATS project during a pilot study at a two-day workshop in the Netherlands in July 2019, at which 25 participants assessed the replicability of 25 unique SBS research claims with known outcomes using the IDEA protocol [@Hanea2021].
+The [aggreCAT]{.pkg} package includes several datasets collected by the
+repliCATS project during a pilot study at a two-day workshop in the
+Netherlands in July 2019, at which 25 participants assessed the
+replicability of 25 unique SBS research claims with known outcomes using
+the IDEA protocol [@Hanea2021].
 
-The core dataset data_ratings is a tidy [data.frame]{.class} of probabilistic three-point judgements (lower bound, best estimate, upper bound) elicited from participants for each claim, across two rounds of elicitation. Additional datasets [@Fraser:2021] capture participants' written justifications (`data_justifications`), peer comments and ratings (`data_comments`), and three supplementary datasets collected externally to the IDEA protocol: a statistical knowledge quiz (`data_supp_quiz`), qualitatively coded reasoning categories (`data_supp_reasons`), and model-derived Bayesian priors (`data_supp_priors`). Known replication outcomes sourced from previous large-scale replication projects [@Klein2014; @Klein2018ManyL2; @Ebersole2016; @Camerer2018; @aac4716] for a subset of claims are provided in `data_outcomes`.
+The core dataset `data_ratings` is a tidy [data.frame]{.class} of
+probabilistic three-point judgements (lower bound, best estimate, upper
+bound) elicited from participants for each claim, across two rounds of
+elicitation. Additional datasets [@Fraser:2021] capture participants'
+written justifications (`data_justifications`), peer comments and
+ratings (`data_comments`), and three supplementary datasets collected
+externally to the IDEA protocol: a statistical knowledge quiz
+(`data_supp_quiz`), qualitatively coded reasoning categories
+(`data_supp_reasons`), and model-derived Bayesian priors
+(`data_supp_priors`). Known replication outcomes sourced from previous
+large-scale replication projects [@Klein2014; @Klein2018ManyL2;
+@Ebersole2016; @Camerer2018; @aac4716] for a subset of claims are
+provided in `data_outcomes`.
 
-Full descriptions of each dataset, including variable definitions, data structure, and example data, are provided in the [aggreCAT]{.pkg} package documentation (`?data_ratings`) and in the Package Datasets vignette available on the [aggreCAT]{.pkg} pkgdown website.
-
-
-
+Full descriptions of each dataset, including variable definitions, data
+structure, and example data, are provided in the [aggreCAT]{.pkg}
+package documentation (`?data_ratings`) and in the Package Datasets
+vignette available on the [aggreCAT]{.pkg} pkgdown website.
 
 #### Aggregation Wrapper Functions
 
@@ -385,36 +402,34 @@ aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
 aggregation *method* is applied according to the `type` argument, whose
 options are described in each aggregation wrapper functions' help page.
 
-### 'Tidy' Aggregation and Prescribed Inputs
+### 'Tidy' Aggregation and Required Inputs
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
-[@Wickham:2014vp]. Each aggregation method expects a [data.frame]{.class} or
-[tibble]{.class} of judgements (`data_ratings`) as its input, and
-returns a [tibble]{.class} consisting of the variables `method`,
-`paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for
-illustration of outputs); where `method` is a character vector
-corresponding to the aggregation method name specified in the `type`
-argument. Each aggregation is applied as a summary function
-[@Wickham2017R], and therefore returns a single row or observation with
-a single confidence score `cs` for each claim or `paper_id`. The number
-of expert judgements summarised in the aggregated confidence score is
-returned in the column `n_experts`. Because of the tidy nature of the
-aggregation outputs, multiple aggregations can be applied to the same
-data with the results of all aggregation methods row bound together in a
-single `tibble`.
+[@Wickham:2014vp]. Each aggregation method expects a
+[data.frame]{.class} or [tibble]{.class} of judgements as its input, and
+returns a [tibble]{.class} containing the variables `method`, `paper_id`,
+`cs` and `n_experts` (see @sec-AverageWAgg for illustration of outputs);
+where `method` is a character vector corresponding to the aggregation
+method name specified in the `type` argument. Each aggregation is applied
+as a summary function [@Wickham2017R], and therefore returns a single row
+with a single confidence score `cs` for each claim or `paper_id`. The
+number of expert judgements summarised in the aggregated confidence score
+is returned in `n_experts`. Because of the tidy nature of the aggregation
+outputs, multiple aggregation methods can be applied to the same data with the
+results of all aggregation methods row-bound together in a single
+`tibble` (see the example repliCATS workflow in @sec-workflow).
 
-Each aggregation function requires values derived from three-point
-elicitation (best-estimate, upper and lower bound), however, some methods
-require only the best-estimates for mathematical aggregation. For every
-aggregation function, the three-point elicitation values corresponding
-to the `direct_replication` question are required inputs. Of the
-`question` and `element`s other than the three-point elicitation
-`element`s belonging to the direct replication `question`, only the
-`comprehension` question with the `likert_binary` elements is required
--- this is an input into [CompWAgg]{.fun}, which is used to weight
-participants judgements.
+Every aggregation function requires at minimum the three-point
+probabilistic judgements (`question == "direct_replication"`), however
+some methods require only best estimates (`element == "three_point_best"`),
+and some require multiple rounds of elicitation. Only the aggregation
+method *CompWAgg* additionally requires comprehensibility ratings
+(`question == "comprehension"`). For a full summary of each aggregation
+method, its calling function, and data requirements, see
+@tbl-method-summary-table.
 
-## Focal Claim Aggregation{#sec-focal-claims}
+
+## Focal Claim Aggregation {#sec-focal-claims}
 
 We now demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
