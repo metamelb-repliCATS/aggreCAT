@@ -76,6 +76,6 @@ which we expect to have for most of the claims assessed by repliCATS.
 \end{cases}}{ascii}
 }
 \examples{
-\donttest{ExtremisationWAgg(data_ratings)}
+\donttest{ExtremisationWAgg(data_ratings, percent_toggle = TRUE)}
 
 }

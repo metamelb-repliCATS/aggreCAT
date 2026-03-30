@@ -1,6 +1,6 @@
 Package: aggreCAT
 Title: Mathematically Aggregating Expert Judgments
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person(given = "David", 
                     family = "Wilkinson", 
                     role = c("aut", "cre"),
@@ -43,7 +43,6 @@ Suggests:
     here,
     readxl,
     readr,
-    stats,
     lubridate,
     forcats,
     ggforce, 
@@ -72,6 +71,7 @@ Imports:
     VGAM,
     crayon,
     dplyr, 
+    stats,
     stringr,
     tidyr, 
     tibble,

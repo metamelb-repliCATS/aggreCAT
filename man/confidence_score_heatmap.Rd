@@ -42,7 +42,7 @@ split into the group type of the underlying statistical characteristic for each 
 weighted linear & Bayesian).
 }
 \examples{
-\donttest{confidencescore_heatmap(data_confidence_scores, data_outcomes)}
+\donttest{confidence_score_heatmap(data_confidence_scores, data_outcomes)}
 
 \dontrun{confidencescore_heatmap(data_confidence_scores, data_outcomes)}
 
