@@ -79,6 +79,7 @@ library(tinytex)
 library(knitr)
 options(kableExtra.latex.load_packages = FALSE)
 library(kableExtra)
+library(tinytable)
 ```
 ## Introducing the aggreCAT package {#sec-introduction}
 
