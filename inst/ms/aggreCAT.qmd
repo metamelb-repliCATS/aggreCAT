@@ -80,8 +80,7 @@ library(knitr)
 options(kableExtra.latex.load_packages = FALSE)
 library(kableExtra)
 ```
-
-## Introduction {#sec-introduction}
+## Introducing the aggreCAT package {#sec-introduction}
 
 Expert judgement is frequently used to inform forecasting about
 uncertain future events across a range of disciplines, including
@@ -100,97 +99,35 @@ or by using mathematical approaches [@Goossens2008].
 Although there are a variety of methods for mathematically aggregating
 expert judgements into single point-predictions, there are few
 open-source software implementations available to analysts or
-researchers. The [R]{.proglang} [@R] package [expert]{.pkg} provides three
-models of expert opinion to combine judgements elicited from groups of
-experts (CITE) , and [SHELF]{.pkg} implements only a single method
-(weighted linear pool) for aggregating expert judgements (CITE). Other
-[R]{.proglang} packages providing methods to mathematically aggregate
-expert judgements do so for non-point predictions, for example,
-[opera]{.pkg}, which generates time-series predictions (CITE). In this
-paper we present the [aggreCAT]{.pkg} package, which provides 27
+researchers. The [R]{.proglang} [@R] package [expert]{.pkg} provides
+three models of expert opinion to combine judgements elicited from
+groups of experts (CITE) , and [SHELF]{.pkg} implements only a single
+method (weighted linear pool) for aggregating expert judgements (CITE).
+Other [R]{.proglang} packages providing methods to mathematically
+aggregate expert judgements do so for non-point predictions, for
+example, [opera]{.pkg}, which generates time-series predictions (CITE).
+
+In this paper we present the [aggreCAT]{.pkg} package, which was developed by the repliCATS
+(Collaborative Assessment for Trustworthy Science) project [@Fraser:2021]
+as part of the DARPA SCORE (Systematizing Confidence in Open Research and
+Evidence) program [@alipourfard2021], which aimed to generate quantitative
+'Confidence Scores' — estimates of the likely replicability of research
+claims from the social and behavioural sciences — for use as a proxy
+measure of credibility in the absence of direct replication effort. The
+repliCATS project generated Confidence Scores for $> 4000$ claims using
+structured expert elicitation via the IDEA protocol [@hemming2017],
+implemented on the repliCATS platform [@Pearson2021]. A subset of claims
+were randomly selected for direct replication, against which the elicited
+Confidence Scores were ground-truthed [@Hanea2021].
+
+<!-- find segue into next para -->
+
+agg package: which provides 27
 different methods for mathematically aggregating judgements within
 groups of experts into a single forecast.
 
-### DARPA SCORE program and the repliCATS project {#sec-repliCATS}
-
-The [aggreCAT]{.pkg} package, and the mathematical aggregators therein,
-were developed by [the repliCATS (Collaborative Assessment for
-Trustworthy Science)
-project](https://replicats.research.unimelb.edu.au/) as a part of the
-[SCORE
-program](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence)
-(Systematizing Confidence in Open Research and Evidence), funded by
-DARPA (Defense Advanced Research Projects Agency) [@alipourfard2021].
-The SCORE program is the largest replication project in science to date,
-and aims to build automated tools that can rapidly and reliably assign
-"Confidence Scores" to research claims from empirical studies in the
-Social and Behavioural Sciences (SBS). Confidence Scores are
-quantitative measures of the likely reproducibility or replicability of
-a research claim or result, and may be used by consumers of scientific
-research as a proxy measure for their credibility in the absence of
-replication effort [@alipourfard2021].
-
-Replications are time-consuming and costly [@Isager2020], and studies
-have shown that replication outcomes can be reliably elicited from
-researchers [@Gordon2020]. Consequently, the DARPA SCORE program
-generated Confidence Scores for $> 4000$ SBS claims using expert elicitation based on two very
-different strategies -- prediction markets [@Gordon2020] and the IDEA
-protocol [@hemming2017], the latter of which is used by the repliCATS
-project [@Fraser:2021]. A proportion of these research claims were randomly
-selected for direct replication, against which the elicited and
-aggregated Confidence Scores are 'ground-truthed'. These aim of the DARPA SCORE project is to
-aid the development of artificial intelligence tools that can
-automatically assign Confidence Scores.
-
-#### The repliCATS IDEA protocol {#sec-IDEAprotocol}
-
-The repliCATS project adapted and deployed the IDEA protocol to elicit
-crowd-sourced judgements from diverse groups about the likely
-replicability of SBS research claims [@Fraser:2021]. The IDEA
-('Investigate', 'Discuss', 'Estimate' and 'Aggregate') protocol is a
-four-step structured elicitation protocol that draws on the 'wisdom of
-crowds' to elicit subjective judgements about the likelihood of
-uncertain events [@hemming2017, figure 1]. To collect expert judgements
-about the replicability of SBS claims, we asked participants to estimate
-the "probability that direct replications of a study would find a
-statistically significant effect in the same direction as the original
-claim", eliciting estimates of uncertainty in the form of upper and
-lower bounds on those point-estimates. Judgements were elicited using
-the repliCATS platform [@Pearson2021], a multi-user cloud-based software
-platform that implements the IDEA protocol, between July 7th 2019 and
-November 30th 2020.
-
-For a single claim under assessment, between 4 and 15 experts
-individually drew on background information to provide estimates of the
-probability, including 4 numeric data points and one character data
-point: an upper and lower bound, and best estimate of the event
-probability, as well as justifications for their estimates, and a value
-on the likert binary scale up to 7 rating the individuals' degree of
-comprehension of the claim (Round 1, *Investigate*). In the *Discuss*
-phase, three-point estimates from each group member are anonymously
-presented to the group, who then collectively discuss differences in
-opinion and provide potential evidence for these differences. Group
-members subsequently provide a second set of probabilistic judgements
-(Round 2, *Estimate*). Thus, for a single assessment, 2 sets of
-judgements are elicited from each expert (*pre-* and *post-*group
-discussion).
-
-During the fourth step, *Aggregate*, judgements are mathematically
-aggregated into a single Confidence Score or forecast of
-replicability. The repliCATS project developed 27 different methods for
-mathematically aggregating judgements elicited from groups of experts
-into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
-package to implement these aggregation methods and deliver Confidence
-Scores for over 4000 SBS research claims as a part of the DARPA SCORE project.
-
-![The IDEA protocol as deployed by the repliCATS project (reproduced
-with permission from Wintle et al.
-2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021"){#fig1}
-
-## Introducing the aggreCAT package
-
-In this paper we aim to provide a detailed overview of the
-[aggreCAT]{.pkg} package so that researchers may apply the aggregation
+We aim to provide a detailed overview of the
+[aggreCAT]{.pkg} package so that researchers may apply any of the the  aggregation
 functions described in [@Hanea2021] to their own expert elicitation
 datasets where mathematical aggregation is required. Note that judgements
 that have already been subjected to behavioural or consensus aggregation
@@ -201,14 +138,12 @@ to behavioural or consensus-based aggregation.
 We begin by formulating the problem of mathematically aggregating expert
 judgements. Each method, and its data requirements is summarised in
 Table \ref{tbl-method-summary-table}.
-<!-- Consider deleting below sentence -->
+
+<!-- ?Consider deleting below sentence -->
+
 Before outlining key aggregation
 methods, we briefly summarise package datasets, which were collected by
-the repliCATS project. By first describing the datasets before
-describing the aggregation methods in detail, we aim to provide a
-grounded understanding of the different outputs of expert elicitation
-using the repliCATS IDEA protocol, and the inputs available to the
-aggregation functions.
+the repliCATS project.
 
 Next, we describe and illustrate the main types of aggregators, which
 may be categorised according to their data requirements, mathematical
@@ -290,6 +225,107 @@ single round of estimates can therefore be applied to expert judgments
 derived from any structured elicitation protocol that generates, lower,
 upper, and best estimates from each individual (i.e. not just the IDEA
 protocol), and does not enforce behavioural consensus.
+
+#### The repliCATS IDEA protocol {#sec-IDEAprotocol}
+
+The aggregation methods in [aggreCAT]{.pkg} were developed in the context
+of the IDEA ('Investigate', 'Discuss', 'Estimate', 'Aggregate') protocol
+[@hemming2017], a structured elicitation procedure that draws on the
+'wisdom of crowds' to elicit probabilistic judgements from groups of
+experts about uncertain events.
+
+The IDEA protocol structures elicitation across two rounds: individuals
+first provide judgements independently (*Round 1*), before anonymously
+reviewing one another's estimates and engaging in group discussion, after
+which they provide a revised set of judgements (*Round 2*). In each round,
+participants provide probabilistic three-point judgements — a best estimate
+and upper and lower bounds — alongside supplementary ratings of
+plausibility, comprehensibility, and involvement in the original study.
+
+This elicitation structure directly determines which aggregation methods
+in [aggreCAT]{.pkg} are applicable to a given dataset: most methods
+require only the post-discussion (*Round 2*) three-point judgements, some
+additionally use the pre-discussion (*Round 1*) judgements, and a small
+number require supplementary ratings or externally collected data. These
+requirements are summarised for each method in
+@tbl-method-summary-table. Although the aggregation methods were developed
+in the context of the IDEA protocol, all methods requiring only a single
+round of elicitation can be applied to any structured elicitation procedure
+that generates lower, upper, and best estimates from each individual without
+enforcing behavioural consensus.
+
+
+The IDEA ('Investigate', 'Discuss', 'Estimate', 'Aggregate') protocol
+structures elicitation across two rounds [@hemming2017]: individuals first
+provide judgements independently, before anonymously reviewing one
+another's estimates and engaging in group discussion, after which they
+provide a revised set of judgements. In each round, participants provide
+probabilistic three-point judgements — a best estimate and upper and lower
+bounds — alongside supplementary ratings of plausibility,
+comprehensibility, and involvement in the original study. This elicitation
+structure directly determines which aggregation methods in [aggreCAT]{.pkg}
+are applicable to a given dataset: most methods require only the
+post-discussion three-point judgements, some additionally use the
+pre-discussion judgements, and a small number require supplementary ratings
+or externally collected data.
+
+---
+
+The repliCATS project adapted and deployed the IDEA protocol to elicit
+crowd-sourced judgements from diverse groups about the likely
+replicability of SBS research claims [@Fraser:2021]. The IDEA
+('Investigate', 'Discuss', 'Estimate' and 'Aggregate') protocol is a
+four-step structured elicitation protocol that draws on the 'wisdom of
+crowds' to elicit subjective judgements about the likelihood of
+uncertain events [@hemming2017, figure 1]. To collect expert judgements
+about the replicability of SBS claims, we asked participants to estimate
+the "probability that direct replications of a study would find a
+statistically significant effect in the same direction as the original
+claim", eliciting estimates of uncertainty in the form of upper and
+lower bounds on those point-estimates. Judgements were elicited using
+the repliCATS platform [@Pearson2021], a multi-user cloud-based software
+platform that implements the IDEA protocol, between July 7th 2019 and
+November 30th 2020.
+
+
+::: callout
+::: {#ideaProtocol}
+### Box 1: The IDEA Protocol {.unnumbered}
+
+During the *Investigate* phase, individuals review the claim and draw on
+background knowledge to provide estimates of the probability of the
+claim replicating. These estimates are numeric (0 - 100%) and include a
+best estimate, and upper and lower bounds on that estimate. Individuals
+also provide a value on the likert binary scale up to 7, rating the
+individuals' degree of comprehension of the claim. Individuals were also
+asked to provide short comments justifying their estimates.
+
+In the *Discuss* phase, three-point estimates from each group member are
+anonymously presented to the group, who then collectively discuss
+differences in opinion and provide potential evidence for these
+differences. Next, in the *Estimate* phase, individuals are asked to
+provide a second set of three-point probablistic judgements. Thus, for a
+single assessment, 2 sets of judgements are elicited from each expert,
+*pre-* and *post-*group discussion, referred to here on as *Round 1* and
+*Round 2* judgements, respectively.
+
+During the fourth phase, *Aggregate*, judgements are mathematically
+aggregated into a single Confidence Score, or in this case, forecast of
+replicability. The repliCATS project developed 27 different methods for
+mathematically aggregating judgements elicited from groups of experts
+into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
+package to implement these aggregation methods and deliver Confidence
+Scores for over 4000 SBS research claims as a part of the DARPA SCORE
+project.
+
+![The IDEA protocol as deployed by the repliCATS project (reproduced
+with permission from Wintle et al.
+2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021"){#fig1}
+
+:::
+:::
+
+
 
 #### Notation and Problem Formulation
 
@@ -466,15 +502,21 @@ focal_claims <- focal_claims %>%
 focal_claims
 ```
 
-`focal_claims` contains 220 rows across four claims and five participants. Each row records a
-single `element` of a participant's assessment for a given `paper_id` and `round`. The
-`question` column distinguishes the three-point probabilistic judgements about replicability
-(`direct_replication`, with `element` values `three_point_lower`, `three_point_best`, and
-`three_point_upper`) from supplementary assessment data: participants' plausibility ratings
-(`belief_binary`), comprehensibility ratings (`comprehension`), and involvement in the original
-study (`involved_binary`). All aggregation functions require at minimum the
-`direct_replication` rows, and expect data in this long, tidy format.
+`focal_claims` contains 220 rows across four claims and five
+participants. Each row records a single `element` of a participant's
+assessment for a given `paper_id` and `round`. The `question` column
+distinguishes the three-point probabilistic judgements about
+replicability (`direct_replication`, with `element` values
+`three_point_lower`, `three_point_best`, and `three_point_upper`) from
+supplementary assessment data: participants' plausibility ratings
+(`belief_binary`), comprehensibility ratings (`comprehension`), and
+involvement in the original study (`involved_binary`). All aggregation
+functions require at minimum the `direct_replication` rows, and expect
+data in this long, tidy format.
 
+We will work with data from a subset of participants from a single claim
+`108` for a subset of participants who assessed this claim
+(@tbl-focal-claim).
 
 ```{r}
 #| label: tbl-focal-claim
@@ -494,13 +536,12 @@ focal_claims %>%
          three_point_lower,
          three_point_best,
          three_point_upper) %>%
-  gt::gt() %>%
-  gt::cols_label(paper_id = "Claim ID",
-                 user_name = "User Name",
-                 three_point_lower = "Lower Bound",
-                 three_point_best = "Best Estimate",
-                 three_point_upper = "Upper Bound") %>%
-  gt::as_latex()
+  rename(`Claim ID` = paper_id,
+         `User Name` = user_name,
+         `Lower Bound` = three_point_lower,
+         `Best Estimate` = three_point_best,
+         `Upper Bound` = three_point_upper) %>%
+  tt()
 ```
 
 ### Non-weighted linear combination of judgements {#sec-AverageWAgg .section}
@@ -517,14 +558,13 @@ $$
 \hat{p}_c\left(ArMean \right ) = \frac{1}{N}\sum_{i=1}^N B_{i,c}
 $$ {#eq-ArMean}
 
-Below we demonstrate the application of `ArMean` on a single claim
-`108` for a subset of participants who assessed this claim. We also
-illustrate this aggregation visually in [Figure 2](#fig-ArMean).
-`ArMean` is applied using the aggregation method [AverageWAgg]{.fct},
-which is a wrapper function for several aggregation methods that
-calculate different types of averaged best-estimates (see
-`?AverageWAgg`). The function returns the Confidence Score for the claim
-in the form of a [tibble]{.class}:
+Below we demonstrate the application of `ArMean` on claim `108`
+(@tbl-focal-claim). We also illustrate this aggregation visually in
+[Figure 2](#fig-ArMean). `ArMean` is applied using the aggregation
+method [*AverageWAgg*]{.fct}, which is a wrapper function for several
+aggregation methods that calculate different types of averaged
+best-estimates (see `?AverageWAgg`). The function returns the Confidence
+Score for the claim in the form of a [tibble]{.class}:
 
 ```{r}
 #| label: focal-claim-ArMean
@@ -544,9 +584,9 @@ focal_claims %>%
 knitr::include_graphics(path = "images/ArMean.png")
 ```
 
-::: {.callout}
-:::{#aggWorkflow}
-### Box 1: Aggregation Workflow Blueprint{.unnumbered}
+:::: callout
+::: {#aggWorkflow}
+### Box 1: Aggregation Workflow Blueprint {.unnumbered}
 
 #### Argument Structure and Expected Form
 
@@ -643,7 +683,7 @@ observations equal to the number of unique claims that were parsed to
 `postprocess_judgements()`, the `method`, `paper_id` , the Confidence Score `value`,
 as well as the total number of participants `n_experts` whose assessments were used in the aggregation.
 :::
-:::
+::::
 
 ### Weighted linear combinations of judgements {#sec-IntWAgg .section}
 
@@ -719,7 +759,7 @@ knitr::include_graphics("images/IntervalWAgg.png")
 \newpage
 \elandscape
 
-### Aggregation Methods Requiring Supplementary Data{#sec-ReasoningWAgg}
+### Aggregation Methods Requiring Supplementary Data {#sec-ReasoningWAgg}
 
 In addition to the three-point elicitation dataset `data_ratings`, some
 aggregation methods require supplementary data inputs collected
@@ -764,14 +804,12 @@ best estimates are then summed to generate the Confidence Score
 knitr::include_graphics("images/ReasonWAgg.png")
 ```
 
-The focal claim selected for aggregation using `ReasonWAgg` is `24`,
-the round two three-point estimates from the five focal participants for
-this claim are shown in @tbl-reason-wagg-focal-claim. We first prepare
-the supplementary data for aggregation `data_supp_reasons`, subsetting
-only the participants contained in our `focal_claims` dataset. We also
-illustrate a subset of the supplementary data for our five focal
-participants for the focal claim `24` (see `?data_supp_reasons` for
-a description of variables):
+`ReasonWAgg` requires supplementary data following the format of `data_supp_reasons`, in which each row records
+whether a given participant (`user_name`) invoked each of the 25 qualitatively coded reasoning
+categories [@Wintle:2021] in support of their estimate for a given claim (`paper_id`). Column
+names are prefixed with `RW`. We prepare this data by subsetting to the participants in
+`focal_claims`, and illustrate the structure for focal claim `24` below
+(Shown in @tbl-reason-wagg-focal-claim, see `?data_supp_reasons` for full variable definitions):
 
 ```{r}
 #| label: prepare-supp-data
@@ -804,13 +842,12 @@ focal_claims %>%
   dplyr::select(paper_id, user_name, round, three_point_lower, three_point_best, three_point_upper) %>%
   tidyr::drop_na() %>%
   dplyr::mutate(round = str_remove(round, "round_") %>% as.integer) %>%
-  gt::gt() %>%
-  gt::cols_label(paper_id = "Claim ID",
-                 user_name = "User Name",
-                 three_point_lower = "Lower Bound",
-                 three_point_best = "Best Estimate",
-                 three_point_upper = "Upper Bound") %>%
-  gt::fmt_integer(columns = round)
+  rename(`Claim ID` = paper_id,
+         `User Name` = user_name,
+         `Lower Bound` = three_point_lower,
+         `Best Estimate` = three_point_best,
+         `Upper Bound` = three_point_upper) %>%
+  tt()
 ```
 
 Confidence Scores estimating the replicability for claim `24` (@tbl-reason-wagg-focal-claim) using the `ReasonWAgg` method are computed
@@ -865,9 +902,9 @@ confidence score is the mean of this posterior distribution.
 `BayPRIORsAgg` is a modified version of `BayTriVar` where, instead of
 using default priors, priors are generated from a predictive model that
 estimates the probability of a claim replicating based on
-characteristics of the claim and publication [@Gould2021a]. Priors are
-parsed as supplementary data to the wrapper function
-[BayesianWAgg]{.fct} using the argument `priors` (@sec-bayesian-supplementary-data) with each claim having its own unique prior.
+characteristics of the claim and publication [@Gould2021a]. Priors are parsed as supplementary data to the wrapper function [BayesianWAgg]{.fct} using
+the argument `priors`, where `data_supp_priors` provides a prior probability of replication
+on the logit scale (`prior_means`) for each claim (`paper_id`).
 
 We illustrate aggregation of participant judgements using the method
 `BayTriVar` to generate a Confidence Score for the claim `108`. Note
@@ -959,8 +996,11 @@ judgements are revised after discussion, are listed in Table  \ref{tbl-method-su
 #| out-width: "900px"
 knitr::include_graphics("images/BayesianWAgg.png")
 ```
+
 \newpage
 \elandscape
+
+## An illustrative workflow for use in real study contexts {#sec-workflow}
 
 ## An illustrative workflow for use in real study contexts{#sec-workflow}
 
@@ -1047,10 +1087,8 @@ confidenceSCOREs
 After generating Confidence Scores using various aggregation methods, we
 then evaluate the forecasts. We evaluated the repliCATS pilot study
 forecasts against the outcomes of previous, high-powered replication
-studies [@Hanea2021], which are contained in the `data\_outcomes`
-dataset published with [aggreCAT]{.pkg}. In this dataset, each claim
-`paper_id` is assigned an `outcome` of `0` if the claim did not
-replicate and `1` if the claim was successfully replicated:
+studies [@Hanea2021], which are contained in the `data_outcomes` dataset
+published with [aggreCAT]{.pkg}. `data_outcomes` records the binary replication outcome (`outcome`: `1` if the claim successfully replicated, `0` if not) for each `paper_id`, sourced from previous large-scale replication projects [@Klein2014; @Klein2018ManyL2; @Ebersole2016; @Camerer2018; @aac4716]:
 
 ```{r}
 #| label: replication-outcomes
@@ -1087,13 +1125,11 @@ aggreCAT::confidence_score_evaluation(
    confidenceSCOREs,
    aggreCAT::data_outcomes
  ) %>%
-  gt::gt() %>%
-   gt::cols_label(method = "Method",
-        Brier_Score = "Brier Score",
-        Classification_Accuracy = "Classification Accuracy") %>%
-  gt::fmt_number(columns = -c(method, Classification_Accuracy)) %>%
-  gt::fmt_percent(Classification_Accuracy,scale_values = FALSE,
-                  decimals = 0)
+  rename(Method = method,
+         `Brier Score` = Brier_Score,
+         `Classification Accuracy ($\\%$)` = Classification_Accuracy) %>%
+  tt() %>%
+  format_tt(j = c(2,3), digits = 2)
 ```
 
 ### Visualising Judgements, Confidence Scores and Forecast Performance
@@ -1118,6 +1154,7 @@ mathematical properties of the aggregation method (@fig-ridgeplot).
 #| message: false
 #| warning: false
 #| fig-pos: H
+#| eval: false
 # not run, eval = FALSE
 suppressPackageStartupMessages(library(ggridges))
 confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
@@ -1349,12 +1386,12 @@ turtle_CS <-
                             percent_toggle = FALSE)
   )
 turtle_CS %>%
-  gt::gt() %>%
-  gt::cols_label(method = "Method",
-                 paper_id = "Question ID",
-                 cs = "Confidence Score",
-                 n_experts = "N (experts)") %>%
-  gt::fmt_number(columns = cs)
+  rename(Method = method,
+         `Question ID` = paper_id,
+         `Confidence Score` = cs,
+         `N (experts)` = n_experts) %>%
+  tt() %>%
+  format_tt(j = 3, num_fmt = 'decimal', digits = 2)
 ```
 
 ## Summary and Discussion {#sec-summary}
@@ -1444,12 +1481,61 @@ rapidly and easily analysing the results of IDEA protocol and other
 structured elicitation procedures where mathematical aggregation of
 human forecasts is required.
 
+::: {.content-hidden unless-format="html"}
+```{r}
+#| column: page
+#| include: true
+#| echo: false
+#| label: tbl-method-summary-table
+#| tbl-cap: "Summary of aggregation methods and functions, including data requirements and sources."
+#| results: asis
+aggreCAT:::method_summary_table %>%
+  ungroup %>%
+  # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
+  mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>%
+  tidyr::unite(agg_name_description,
+               aggregator_function,
+               aggregator_fun_desc, sep = " ") %>%
+  select(-agg_name_description) %>%
+  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>%
+  rename("Method" = type,
+         "Description" = "type_desc",
+         "Data Requirements" = "supp_data_requirements",
+         "Weighting Function" = "weighting_fn",
+         "Elicitation Rounds" = "number_rounds",
+         "Elicitation Method" = "elicitation_method",
+         "Data Sources" = "judgement_data_sources_eqns") %>%
+  tt() %>%
+  group_tt(
+   i = list(
+      "`AverageWAgg()` *Averaged best estimates*" = 1,
+      "`LinearWAgg()` *Linearly-weighted best estimates*" = 6,
+      "`IntervalWAgg()` *Linearly-weighted best estimates, with weights influenced by interval widths*" = 11,
+      "`ShiftingWAgg()` *Weighted by judgemetns that shift most after discussion*" = 17,
+      "`ReasoningWAgg()` *Linearly-weighted best estimates, with weights constructed from supplementary reasoning data*" = 22,
+      "`ExtremisationWAgg()` *Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution*" = 24,
+      "`DistributionWAgg()` *Calculates the arithmetic mean of distributions created from expert judgements*" = 26,
+      "`BayesianWAgg()` *Bayesian aggregation methods with either uninformative or informative prior distributions*" = 28
+    )
+  ) %>%
+  # format_tt(j = c(3,4), markdown = TRUE) %>%
+  print("markdown")
+  # style_tt(i = c(1,6,11,17,22,26,28), markdown = TRUE)
+
+#TODO needs tidying up for html presentation
+
+```
+:::
+
+::: {.content-hidden unless-format="pdf"}
 \newpage
 \blandscape
+
 ```{r}
 #| results: asis
-#| echo: false
-#| label: method-summary-table
+
+#TODO Table label and caption are missign from first page of table... possibly something
+# todo with https://github.com/quarto-dev/quarto-cli/issues/1486
 aggreCAT:::method_summary_table %>%
   ungroup %>%
   # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
@@ -1488,6 +1574,7 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements.", 26,27) %>%
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 ```
+:::
 
 ## Listings {.unnumbered}
 
@@ -1532,7 +1619,7 @@ confidenceSCOREs <-
   )
 ```
 
-```{#lst-BYO-data-aggregate .r lst-cap="Bring your own data: non-probablistic values"}
+``` {#lst-BYO-data-aggregate .r lst-cap="Bring your own data: non-probablistic values"}
 turtle_CS <-
   list(
   AverageWAgg,
@@ -1549,7 +1636,7 @@ turtle_CS <-
   )
 ```
 
-```{#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
+``` {#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
 plot_cs <-
   confidenceSCOREs %>%
   dplyr::left_join(aggreCAT::data_outcomes) %>%
@@ -1588,8 +1675,10 @@ p <- plot_judgements %>%
   ggplot2::scale_colour_brewer(palette = "Set1")
 ```
 
+::: {.content-hidden unless-format="pdf"}
 \elandscape
 \newpage
+:::
 
 ## Computational details {.unnumbered}
 

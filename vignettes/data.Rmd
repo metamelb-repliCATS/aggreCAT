@@ -8,7 +8,7 @@ vignette: >
 bibliography: vignette_references.bib
 ---
 
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -20,6 +20,40 @@ library(aggreCAT)
 library(tidyverse)
 ```
 
+### DARPA SCORE program and the repliCATS project
+
+The [aggreCAT]{.pkg} package, and the mathematical aggregators therein,
+were developed by [the repliCATS (Collaborative Assessment for
+Trustworthy Science)
+project](https://replicats.research.unimelb.edu.au/) as a part of the
+[SCORE
+program](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence)
+(Systematizing Confidence in Open Research and Evidence), funded by
+DARPA (Defense Advanced Research Projects Agency) [@alipourfard2021].
+The SCORE program is the largest replication project in science to date,
+and aims to build automated tools that can rapidly and reliably assign
+"Confidence Scores" to research claims from empirical studies in the
+Social and Behavioural Sciences (SBS). Confidence Scores are
+quantitative measures of the likely reproducibility or replicability of
+a research claim or result, and may be used by consumers of scientific
+research as a proxy measure for their credibility in the absence of
+replication effort [@alipourfard2021].
+
+Replications are time-consuming and costly [@Isager2020], and studies
+have shown that replication outcomes can be reliably elicited from
+researchers [@Gordon2020]. Consequently, the DARPA SCORE program
+generated Confidence Scores for $> 4000$ SBS claims using expert
+elicitation based on two very different strategies -- prediction markets
+[@Gordon2020] and the IDEA protocol [@hemming2017], the latter of which
+is used by the repliCATS project [@Fraser:2021]. A proportion of these
+research claims were randomly selected for direct replication, against
+which the elicited and aggregated Confidence Scores are 'ground-truthed'
+or verified. The aim of the DARPA SCORE project is to aid the
+development of artificial intelligence tools that can automatically
+assign Confidence Scores.
+
+
+# Datasets
 
 The [aggreCAT]{.pkg} package includes the core dataset `data_ratings`
 consisting of judgements elicited during a pilot experiment exploring
@@ -79,9 +113,9 @@ example data for a single user for a single claim to illustrate this
 structure of the core `data_ratings` dataset.
 
 ```{r data_ratings-sample, message=TRUE, results='hold'}
-aggreCAT::data_ratings %>% 
-  dplyr::filter(paper_id == dplyr::first(paper_id), 
-                user_name == dplyr::first(user_name)) %>% 
+aggreCAT::data_ratings %>%
+  dplyr::filter(paper_id == dplyr::first(paper_id),
+                user_name == dplyr::first(user_name)) %>%
   head()
 
 ```
@@ -107,7 +141,7 @@ aid in reliably evaluating the replicability of research claims. Quiz
 responses are contained in `data_supp_quiz` and are used to construct
 performance weights for the aggregation method `QuizWAgg`, where each
 participant receives a `quiz_score` if they completed the quiz, and `NA`
-if they did not attempt the quiz [see @Hanea2021 for further details]. Additional methods of scoring the quiz responses are provided in `data_supp_quiz`. 
+if they did not attempt the quiz [see @Hanea2021 for further details]. Additional methods of scoring the quiz responses are provided in `data_supp_quiz`.
 
 ```{r data_supp_quiz-sample, message=TRUE, results='hold'}
 aggreCAT::data_supp_quiz
@@ -134,7 +168,7 @@ estimate for that claim. See `ReasoningWAgg()` for details on the
 `ReasonWAgg` aggregation method.
 
 ```{r data_supp_reasons-sample}
-aggreCAT::data_supp_reasons %>% 
+aggreCAT::data_supp_reasons %>%
   glimpse()
 ```
 
