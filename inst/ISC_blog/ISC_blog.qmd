@@ -4,7 +4,7 @@ format:
     code-copy: hover
     code-link: true
     embed-resources: true #TODO turn off for submission, only for sharing output .html
-  pdf: 
+  pdf:
     documentclass: scrreprt
     papersize: A4
 title: "Introducing {aggreCAT}: Mathematical aggregation of expert judgments"
