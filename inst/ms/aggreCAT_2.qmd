@@ -82,7 +82,7 @@ library(kableExtra)
 library(tinytable)
 ```
 
-## Introducing the aggreCAT package {#sec-introduction}
+## Introduction {#sec-introduction}
 
 Expert judgement is frequently used to inform forecasting about
 uncertain future events across a range of fields and applications
@@ -147,7 +147,310 @@ protocols. aggreCAT fills a large void in open software for aggregating
 elicited judgements, providing enormous benefit to researchers and
 decision makers across any field of research.
 
-This paper aims to provide an overview of the [aggreCAT]{.pkg} package
-so that researchers may apply any of the the aggregation functions
+In this paper we give an overview of the [aggreCAT]{.pkg} package so
+that researchers may apply any of the the aggregation functions
 described in [@Hanea2021] and provided by aggreCAT to their own expert
 elicitation datasets where mathematical aggregation is required.
+
+# Mathematically Aggregating Expert Judgements
+
+The aggregation methods in [aggreCAT]{.pkg} were developed in the
+context of the IDEA protocol (CROSSREF Box 1), a structured elicitation
+procedure that draws on the 'wisdom of crowds' to elicit probabilistic
+judgements from groups of experts about uncertain events.
+
+This elicitation structure directly determines which aggregation methods
+in [aggreCAT]{.pkg} are applicable to a given dataset: most methods
+require only the post-discussion (*Round 2*) three-point judgements,
+some additionally use the pre-discussion (*Round 1*) judgements, and a
+small number require supplementary ratings or externally collected data.
+These requirements are summarised for each method in
+@tbl-method-summary-table. Although the aggregation methods were
+developed in the context of the IDEA protocol, all methods requiring
+only a single round of elicitation can be applied to any structured
+elicitation procedure that generates lower, upper, and best estimates
+from each individual without enforcing behavioural consensus.
+
+:::: callout
+::: {#ideaProtocol}
+### Box 1: The repliCATS IDEA Protocol {.unnumbered}
+
+The repliCATS project adapted and deployed the IDEA protocol to elicit
+crowd-sourced judgements from diverse groups about the likely
+replicability of SBS research claims [@Fraser:2021]. The IDEA
+('Investigate', 'Discuss', 'Estimate' and 'Aggregate') protocol is a
+four-step structured elicitation protocol that draws on the 'wisdom of
+crowds' to elicit subjective judgements about the likelihood of
+uncertain events [@hemming2017, figure 1]. To collect expert judgements
+about the replicability of SBS claims, we asked participants to estimate
+the "probability that direct replications of a study would find a
+statistically significant effect in the same direction as the original
+claim", eliciting estimates of uncertainty in the form of upper and
+lower bounds on those point-estimates.
+
+The IDEA protocol structures elicitation across two rounds: individuals
+first provide judgements independently (*Round 1*), before anonymously
+reviewing one another's estimates and engaging in group discussion,
+after which they provide a revised set of judgements (*Round 2*). In
+each round, participants provide probabilistic three-point judgements —
+a best estimate and upper and lower bounds — alongside supplementary
+ratings of plausibility, comprehensibility, and involvement in the
+original study.
+
+During the *Investigate* phase, individuals review the claim and draw on
+background knowledge to provide estimates of the probability of the
+claim replicating. These estimates are numeric (0 - 100%) and include a
+best estimate, and upper and lower bounds on that estimate. Individuals
+also provide a value on the likert binary scale up to 7, rating the
+individuals' degree of comprehension of the claim. Individuals were also
+asked to provide short comments justifying their estimates.
+
+In the *Discuss* phase, three-point estimates from each group member are
+anonymously presented to the group, who then collectively discuss
+differences in opinion and provide potential evidence for these
+differences. Next, in the *Estimate* phase, individuals are asked to
+provide a second set of three-point probablistic judgements. Thus, for a
+single assessment, 2 sets of judgements are elicited from each expert,
+*pre-* and *post-*group discussion, referred to here on as *Round 1* and
+*Round 2* judgements, respectively.
+
+During the fourth phase, *Aggregate*, judgements are mathematically
+aggregated into a single Confidence Score, or in this case, forecast of
+replicability. The repliCATS project developed 29 different methods for
+mathematically aggregating judgements elicited from groups of experts
+into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
+package to implement these aggregation methods and deliver Confidence
+Scores for over 4000 SBS research claims as a part of the DARPA SCORE
+project.
+
+![The IDEA protocol as deployed by the repliCATS project (reproduced
+with permission from Wintle et al.
+2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021"){#fig1}
+:::
+::::
+
+## Notation and Problem Formulation
+
+We describe some preliminary mathematical notation used to represent
+each aggregation method. The total number of research claims, $claim$,
+or unique forecasts being assessed, $C$ , is indexed by $c = 1, ..., C$.
+For each claim $c$, an individual $i$ assesses the probability of a
+claim replicating by providing three probabilities: a lower bound
+${L}_{i,c}$, an upper bound ${U}_{i,c}$, and a best estimate $B_{i,c}$,
+satisfying the inequalities: $0 \le Li,c \le Bi,c \le Ui,c \le 1$. Every
+claim $c$ is assessed by multiple experts, with the total total number
+of individuals is denoted by $N$, and is indexed by $i = 1, ..., N$.
+These probabilities are aggregated using one of the aggregation methods
+to obtain a group or aggregate probability, denoted by $\hat{p}_c$. The
+aggregated probability calculated using a specific method is given by
+$\hat{p}_{c}\left(Method \space ID \right)$. Each aggregation is
+assigned a unique $Method \space ID$ which is the abbreviation of the
+mathematical operation used in calculating the weights. Note that all
+Best, Lower and Upper estimates are taken to be `round 2` judgements
+from the repliCATS IDEA protocol [Figure 1](#fig1), Box 1), unless
+appended by a "1", where they are `round 1` judgements, e.g. $B1_{i,c}$
+denotes the `round 1` Best estimate from individual $i$ for claim $c$.
+
+Equal-weighting of judgements are less calibrated, accurate and
+informative than weighted aggregation methods where judgements from
+experts who performed well in similar judgement tasks are more heavily
+weighted [@Hanea2021]. Proxies for forecasting performance, such as
+breadth and variability of qualitative reasons used by experts to
+justify their judgements, can be used to form weights in the absence of
+measures of experts' prior performance [@Hanea2021].
+
+The aggregation methods other than the [AverageWAgg]{.fct} and Bayesian
+approaches in [aggreCAT]{.pkg} each employ weighting schemes that are
+informed by proxies for good forecasting performance whereby experts'
+estimates are weighted differently by measures of reasoning, engagement,
+openness to changing their mind in light of new facts, evidence or
+opinions presented in the discussion round, extremity of estimates,
+informativeness of estimates, asymmetry of estimate bounds, granularity
+of estimates, and by prior statistical knowledge as measured in a quiz.
+
+Below, we define standardised notation for describing weighted linear
+combinations of individual judgements where un-normalised weights are
+denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$
+(@eq-eqn1). Given that for all aggregation methods weights are
+normalised, and that the normalisation process is the same for each
+aggregation method, the equations for the aggregation methods are
+presented for un-normalised weights.
+
+$$\hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}$$
+
+Each claim *outcome* (i.e. the outcome of a replication study) assumes
+binary values, where the value is 0 if the claim is false, and 1 if the
+claim is true. '`TRUE`' claims are claims where the replication study
+found a significant result in the same direction as the original
+research claim, and '`FALSE`' claims are those where the replication
+study *did not* find a significant result in the same direction as the
+original study.
+
+By default, weights are calculated across all claims on a
+per-individual, per-claim basis, such that judgements for the same
+individual are weighted differently across all claims they have provided
+judgements for. There are some exceptions to this default: `GranWAgg`,
+`QuizWAgg`, `IndIntWAgg` `IndIntAsymWAgg`, `VarIndIntWAgg`,
+`KitchSinkWAgg`. Note that `IndIntWAgg`, and methods that include its
+weighting function `weight_nIndivInterval()` as a component, re-scale
+weights by a fixed measure across all claims. Hence, for aggregation
+methods that use information from multiple claims other than the target
+claim for which the Confidence Score is being computed, each individual
+claim $c$ is indexed by $d = 1, ..., C$. Where the default weighting is
+used, this is coded into each function. However, where more complex and
+method-specific weighting methods are used, modularised functions have
+been created for ease of debugging. These function names are prefixed
+with `weight_`.
+
+## Aggregation Wrapper Functions
+
+Although there are 29 aggregation methods in total, we grouped methods
+based on their mathematical properties into eight 'wrapper' functions,
+denoted by the suffix `WAgg`, the abbreviation of *weighted
+aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
+`IntervalWAgg()`, `ShiftingWAgg()`, `ReasoningWAgg()`,
+`DistributionWAgg()`, and `ExtremisationWAgg()`. The specific
+aggregation *method* is applied according to the `type` argument, whose
+options are described in each aggregation wrapper functions' help page.
+
+### 'Tidy' Aggregation and Required Inputs
+
+The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
+[@Wickham:2014vp]. Each aggregation method expects a
+[data.frame]{.class} or [tibble]{.class} of judgements as its input, and
+returns a [tibble]{.class} containing the variables `method`,
+`paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for illustration
+of outputs); where `method` is a character vector corresponding to the
+aggregation method name specified in the `type` argument. Each
+aggregation is applied as a summary function [@Wickham2017R], and
+therefore returns a single row with a single confidence score `cs` for
+each claim or `paper_id`. The number of expert judgements summarised in
+the aggregated confidence score is returned in `n_experts`. Because of
+the tidy nature of the aggregation outputs, multiple aggregation methods
+can be applied to the same data with the results of all aggregation
+methods row-bound together in a single `tibble` (see the example
+repliCATS workflow in @sec-workflow).
+
+Every aggregation function requires at minimum the three-point
+probabilistic judgements (`question == "direct_replication"`), however
+some methods require only best estimates
+(`element == "three_point_best"`), and some require multiple rounds of
+elicitation. Only the aggregation method *CompWAgg* additionally
+requires comprehensibility ratings (`question == "comprehension"`). For
+a full summary of each aggregation method, its calling function, and
+data requirements, see @tbl-method-summary-table.
+
+## Package datasets
+
+The [aggreCAT]{.pkg} package includes several datasets collected by the
+repliCATS project during a pilot study at a two-day workshop in the
+Netherlands in July 2019, at which 25 participants assessed the
+replicability of 25 unique SBS research claims with known outcomes using
+the IDEA protocol [@Hanea2021].
+
+The core dataset `data_ratings` is a tidy [data.frame]{.class} of
+probabilistic three-point judgements (lower bound, best estimate, upper
+bound) elicited from participants for each claim, across two rounds of
+elicitation. Additional datasets [@Fraser:2021] capture participants'
+written justifications (`data_justifications`), peer comments and
+ratings (`data_comments`), and three supplementary datasets collected
+externally to the IDEA protocol: a statistical knowledge quiz
+(`data_supp_quiz`), qualitatively coded reasoning categories
+(`data_supp_reasons`), and model-derived Bayesian priors
+(`data_supp_priors`). Known replication outcomes sourced from previous
+large-scale replication projects [@Klein2014; @Klein2018ManyL2;
+@Ebersole2016; @Camerer2018; @aac4716] for a subset of claims are
+provided in `data_outcomes`.
+
+Full descriptions of each dataset, including variable definitions, data
+structure, and example data, are provided in the [aggreCAT]{.pkg}
+package documentation (`?data_ratings`) and in the Package Datasets
+vignette available on the [aggreCAT]{.pkg} pkgdown website.
+
+# Demonstration of Aggregation
+
+We now demonstrate how judgements elicited from a diverse group of
+individuals may be mathematically aggregated for a single forecasting
+problem, using the datasets provided by [aggreCAT]{.pkg}. We illustrate
+the internal mechanics of the weighting methods and the different data
+requirements of each of the different types of aggregators -- namely;
+methods with non-weighted linear combinations of judgements, weighted
+linear combinations of judgements, re-scaled weighted linear
+combinations of judgements, methods that require supplementary data, and
+methods that require data elicited from the full IDEA protocol. Each
+group of methods differs in the type of judgements elicited (single- or
+three-point estimates), the number of elicitation rounds (one or two
+rounds), whether multiple forecasts / elicited judgements are used
+during confidence score computation for a target forecast / claim, and
+finally whether supplementary data is required for aggregation.
+
+## Focal Claim Aggregation {#sec-focal-claims}
+
+Here we demonstrate the application of aggregation methods for each
+group of methods using a set of 'focal claims' selected from the pilot
+study dataset supplied with the [aggreCAT]{.pkg} package. Below we
+subset the dataset `data_ratings` to include a sample of four claims
+with judgements from five randomly-sampled participants. From these
+focal claims, we select a target claim for which we will apply an
+exemplar aggregation method from each mathematical aggregator
+(@tbl-focal-claim ).
+
+```{r}
+#| label: focal-claim-selection
+#| prompt: true
+set.seed(1234)
+focal_claims <- data_ratings %>%
+  dplyr::filter(paper_id %in% c("24", "138", "186", "108"))
+# select 5 users to highlight in focal claim demonstration
+focal_users <- focal_claims %>%
+  dplyr::distinct(user_name) %>%
+  dplyr::slice_sample(n = 5)
+# filter out non-focal users from focal claims
+focal_claims <- focal_claims %>%
+  dplyr::right_join(focal_users, by = "user_name")
+focal_claims
+```
+
+`focal_claims` contains 220 rows across four claims and five
+participants. Each row records a single `element` of a participant's
+assessment for a given `paper_id` and `round`. The `question` column
+distinguishes the three-point probabilistic judgements about
+replicability (`direct_replication`, with `element` values
+`three_point_lower`, `three_point_best`, and `three_point_upper`) from
+supplementary assessment data: participants' plausibility ratings
+(`belief_binary`), comprehensibility ratings (`comprehension`), and
+involvement in the original study (`involved_binary`). All aggregation
+functions require at minimum the `direct_replication` rows, and expect
+data in this long, tidy format.
+
+We will work with data from a subset of participants from a single claim
+`108` for a subset of participants who assessed this claim
+(@tbl-focal-claim).
+
+```{r}
+#| label: tbl-focal-claim
+#| tbl-cap: "Focal Claim Data: Round 2 expert judgements for claim 108 derived from a subset of 5 claims and 5 participants from `data\_ratings`. Judgements are displayed as percentages."
+#| eval: true
+#| echo: false
+#| results: asis
+focal_claims %>%
+  filter(question == "direct_replication",
+         paper_id == "108",
+         round == "round_2") %>%
+  pivot_wider(names_from = element,
+              values_from = value) %>%
+  arrange(user_name) %>%
+  select(paper_id,
+         user_name,
+         three_point_lower,
+         three_point_best,
+         three_point_upper) %>%
+  rename(`Claim ID` = paper_id,
+         `User Name` = user_name,
+         `Lower Bound` = three_point_lower,
+         `Best Estimate` = three_point_best,
+         `Upper Bound` = three_point_upper) %>%
+  tt()
+```
+
+# References
