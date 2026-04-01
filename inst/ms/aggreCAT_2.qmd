@@ -1,0 +1,153 @@
+---
+title: "aggreCAT: an R Package for Mathematically Aggregating Expert Judgements"
+format:
+    jss-pdf:
+      keep-tex: true
+      header-includes:
+        - \usepackage[utf8]{inputenc}
+        - \usepackage{amsmath}
+        - \usepackage{amsfonts}
+        - \usepackage{caption}
+        - \usepackage{booktabs}
+        - \usepackage{longtable}
+        - \usepackage{array}
+        - \usepackage{multirow}
+        - \usepackage{wrapfig}
+        - \usepackage{float}
+        #- \usepackage{colortbl}
+        - \usepackage{pdflscape}
+        - \usepackage{tabu}
+        - \usepackage{threeparttable}
+        - \usepackage{threeparttablex}
+        - \usepackage[normalem]{ulem}
+        - \usepackage{makecell}
+        - \usepackage{xcolor}
+        - \newcommand{\blandscape}{\begin{landscape}}
+        - \newcommand{\elandscape}{\end{landscape}}
+        - \usepackage{underscore}
+        # - \usepackage[authoryear,round]{natbib}
+      x11names: true
+      journal:
+        cite-shortnames: true
+        type: article
+    jss-html: default
+author:
+    # use this syntax to add text on several lines
+    # To add another line, use \AND at the end of the previous one as above
+  - name: 'Elliot Gould^[School of Ecosystem and Forest Sciences, University of Melbourne]'
+    email: 'elliot.gould (at) unimelb.edu.au'
+    orcid: '0000-0002-6585-538X'
+    affiliations: 'University of Melbourne'
+    address: |
+      | School of Forest and Ecosystem Sciences
+      | University of Melbourne, Parkville, Victoria 3010
+  - name: "Charles T. Gray"
+    affiliations: 'Newcastle University'
+  - name: "Aaron Willcox"
+    affiliations:  'University of Melbourne'
+    orcid: '0000-0003-2536-2596'
+  - name: "Rose O'Dea"
+    affiliations: 'University of New South Wales'
+    orcid: '0000-0001-8177-5075'
+  - name: "Rebecca Groenewegen"
+    affiliations:  'University of Melbourne'
+    orcid: '0000-0001-9177-8536'
+  - name: 'David P. Wilkinson'
+    orcid: '0000-0002-9560-6499'
+    affiliations: 'University of Melbourne'
+abstract: |
+  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 29 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for over 4000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
+keywords: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, R]
+keywords-formatted: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, "[R]{.proglang}"]
+bibliography: bibliography.bib
+editor:
+  markdown:
+    wrap: 72
+callout-appearance: simple
+callout-icon: false
+appendix-style: none
+# pdf-engine: citeproc #until quarto repsects classoption:shortnames
+---
+
+```{r, setup, include=FALSE, message=FALSE}
+options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE, comment = "#>")
+options(tinytex.verbose = TRUE)
+options(width = 80)
+suppressPackageStartupMessages(library(tidyverse))
+library(aggreCAT)
+library(tinytex)
+library(knitr)
+options(kableExtra.latex.load_packages = FALSE)
+library(kableExtra)
+library(tinytable)
+```
+
+## Introducing the aggreCAT package {#sec-introduction}
+
+Expert judgement is frequently used to inform forecasting about
+uncertain future events across a range of fields and applications
+including ecological management and decision making [@Legge2022] ,
+biosecurity risk analyses [@Wittmann2015], replicability forecasts
+[@Mody2026], and horizon scanning exercises [@Sutherland2017].
+Judgements from groups of experts tend to perform better than a single
+expert [@Goossens2008], and it is best-practice to elicit judgements
+from diverse groups so that group members can bring "different
+perspectives, cross-examine each others' reasoning, and share
+information", however judgements or forecasts must then be distilled
+into a single forecast, ideally accompanied by estimates of uncertainty
+around those estimates [@Hanea2021]. Judgements from multiple experts
+may be combined into a single score using either behavioural approaches
+that force experts into forming consensus, or by using mathematical
+approaches [@Goossens2008].
+
+Aggregated elicited judgements form a critical component of
+decision-making across multiple contexts, and while there are a variety
+of methods for mathematically aggregating expert judgements into single
+point-predictions, there has been a dearth of accessible tools for
+implementing any aggregation more complex than linear averages. Many
+existing software tools are closed-source, are irreproducible, or
+written in programming languages rarely used by ecologists or
+metascientists. Methods implemented in R, one of the most widely used
+programming languages in the life sciences [@Gao2025], are limited in
+scope, or have been archived from CRAN. For instance, the [R]{.proglang}
+[@R] package [expert]{.pkg} provides three models of expert opinion to
+combine judgements elicited from groups of experts (CITE) , and
+[SHELF]{.pkg} implements only a single method (weighted linear pool) for
+aggregating expert judgements (CITE). Other [R]{.proglang} packages
+providing methods to mathematically aggregate expert judgements do so
+for non-point predictions, for example, [opera]{.pkg}, which generates
+time-series predictions (CITE).
+
+aggreCAT is an open, reliable, and modular R package for the
+mathematical aggregation of expert elicitation data with a
+straightforward user interface. The aggreCAT package was developed by
+the by the repliCATS (Collaborative Assessment for Trustworthy Science)
+project [@Fraser:2021] as part of the DARPA SCORE (Systematizing
+Confidence in Open Research and Evidence) program [@alipourfard2021],
+which aimed to generate quantitative 'Confidence Scores' — estimates of
+the likely replicability of research claims from the social and
+behavioural sciences — for use as a proxy measure of credibility in the
+absence of direct replication effort. aggreCAT arose from the need for a
+software solution to reliably conduct mathematical aggregation at scale.
+The repliCATS project used aggreCAT to aggregate expert elicited
+judgements into Confidence Scores for $> 4000$ claims [@Mody2026]. While
+originally a bespoke implementation for repliCATS, we have since
+developed aggreCAT into a more general R package that can handle most
+types of elicitation data requiring mathematical aggregation, allowing
+for wider applicability.
+
+aggreCAT provides a suite of 29 aggregation methods that explore
+different approaches to mathematical aggregation from straightforward
+arithmetic calculations to Bayesian statistical models. In addition, we
+provide extra functionality such as plotting functions and performance
+evaluation against known outcomes. While the repliCATS project uses the
+IDEA protocol to structure their elicitation process (CROSS-REF), we
+have generalised aggreCAT to work with a variety of elicitation
+protocols. aggreCAT fills a large void in open software for aggregating
+elicited judgements, providing enormous benefit to researchers and
+decision makers across any field of research.
+
+This paper aims to provide an overview of the [aggreCAT]{.pkg} package
+so that researchers may apply any of the the aggregation functions
+described in [@Hanea2021] and provided by aggreCAT to their own expert
+elicitation datasets where mathematical aggregation is required.
