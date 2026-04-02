@@ -283,15 +283,17 @@ opinions presented in the discussion round, extremity of estimates,
 informativeness of estimates, asymmetry of estimate bounds, granularity
 of estimates, and by prior statistical knowledge as measured in a quiz.
 
-Below, we define standardised notation for describing weighted linear
+@eq-weight defines standardised notation for describing weighted linear
 combinations of individual judgements where un-normalised weights are
-denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$
-(@eq-eqn1). Given that for all aggregation methods weights are
+denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$.
+Given that for all aggregation methods weights are
 normalised, and that the normalisation process is the same for each
 aggregation method, the equations for the aggregation methods are
 presented for un-normalised weights.
 
-$$\hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}$$
+$$
+\hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}
+$$ {#eq-weight}
 
 Each claim *outcome* (i.e. the outcome of a replication study) assumes
 binary values, where the value is 0 if the claim is false, and 1 if the
