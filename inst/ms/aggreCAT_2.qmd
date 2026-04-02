@@ -349,11 +349,10 @@ with `weight_`.
 Although there are 29 aggregation methods in total, we grouped methods
 based on their mathematical properties into eight 'wrapper' functions,
 denoted by the suffix `WAgg`, the abbreviation of *weighted
-aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
-`IntervalWAgg()`, `ShiftingWAgg()`, `ReasoningWAgg()`,
-`DistributionWAgg()`, and `ExtremisationWAgg()`. The specific
-aggregation *method* is applied according to the `type` argument, whose
-options are described in each aggregation wrapper functions' help page.
+aggregation*: `LinearWAgg()` (linearly-weighted best estimates), `AverageWAgg()` (averaged best estimates), `BayesianWAgg()` (Bayesian aggregation methods), `IntervalWAgg()` (linearly-weighted best estimates, with weights influenced by interval-widths), `ShiftingWAgg()` (weights estimates based on shifts in expert opinions between rounds),
+`DistributionWAgg()` (averages distributions constructed from point-estimates across participants), and `ExtremisationWAgg()` (applies extremisation techniques to averaged estimates).
+
+The specific aggregation *method* is applied according to the `type` argument, whose options are described in each aggregation wrapper functions' help page.
 
 #### 'Tidy' Aggregation and Required Inputs
 
@@ -411,20 +410,14 @@ data requirements, see @tbl-method-summary-table.
 
 ## Demonstrating Mathematical Aggregation with aggreCAT
 
-We now demonstrate how judgements elicited from a diverse group of
+Here we demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
 problem, using the datasets provided by [aggreCAT]{.pkg}. We illustrate
 the internal mechanics of the weighting methods and the different data
-requirements of each of the different types of aggregators -- namely;
-methods with non-weighted linear combinations of judgements, weighted
-linear combinations of judgements, re-scaled weighted linear
-combinations of judgements, methods that require supplementary data, and
-methods that require data elicited from the full IDEA protocol. Each
+requirements of each of the different types of aggregators. Each
 group of methods differs in the type of judgements elicited (single- or
 three-point estimates), the number of elicitation rounds (one or two
-rounds), whether multiple forecasts / elicited judgements are used
-during confidence score computation for a target forecast / claim, and
-finally whether supplementary data is required for aggregation.
+rounds), whether judgements are weighted at the judgement-, participant- or claim-level, the type of mathematical operation used to combine judgements, whether weights are calculated internally or require user-supplied data.
 
 Here we demonstrate the application of aggregation methods for each
 group of methods using a set of 'focal claims' selected from the pilot
@@ -550,6 +543,8 @@ focal_claims %>%
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
+Other aggregation functions that do not weight judgements include: `ExtremisationWAgg()`, `DistributionWAgg()`, and `BayesianWAgg()` (illustrated below in #sec-BayesianWAgg).
+
 ### Weighted Linear Combination of Judgements (Internally Calculated Weights)
 
 Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to proxies of forecasting performance. Weights may be calculated at the judgement-level or participant-level. At the judgement-level, weights are calculated from the elicited judgements themselves for each claim. At the participant-level, weights are calculated from the elicited judgements across all claims for each individual.
@@ -658,7 +653,6 @@ If all participants are missing a reasoning score, the log-odds transformed best
 The `QuizWAgg` method implemented by the `LinearWAgg()` function applies a user-supplied weight at the participant-level. `QuizWAgg` weights each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters.
 
 ```{r}
-#| echo: false
 #| label: focal-claim-QuizWAgg
 #| message: false
 LinearWAgg(expert_judgements = focal_claims,
@@ -670,7 +664,7 @@ LinearWAgg(expert_judgements = focal_claims,
                           name = "QuizWAgg")
 ```
 
-### Bayesian Aggregation Methods
+### Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
 
