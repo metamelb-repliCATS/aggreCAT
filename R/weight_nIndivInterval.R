@@ -14,8 +14,10 @@
 #'
 #' @param expert_judgements A dataframe in the form of [data_ratings]
 #'
-#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns
 #' supplying the calculated weight for each row's observation.
+#'
+#' @family weighting functions
 #'
 #' @export
 
@@ -52,4 +54,3 @@ weight_nIndivInterval <- function(expert_judgements) {
                 dplyr::filter(element == "three_point_best")
 
 }
-

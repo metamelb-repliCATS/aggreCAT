@@ -5,7 +5,7 @@
 #' This method down-weights outliers.
 #'
 #' @details
-#' This function is used by [LinearWAgg] to calculate weights for the aggregation type
+#' This function is used by [LinearWAgg] to weighting functions for the aggregation type
 #' `"OutWAgg"`. Outliers are given less weight by using the squared difference between the
 #' median of an individual's best estimates across all claims and their best estimate
 #' for the claim being assessed:
@@ -21,8 +21,10 @@
 #'
 #' @importFrom stats median
 #'
-#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns
 #' supplying the calculated weight for each row's observation.
+#'
+#' @family weighting functions
 #'
 #' @export
 

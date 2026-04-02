@@ -17,8 +17,10 @@
 #'
 #' @importFrom stats var
 #'
-#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns
 #' supplying the calculated weight for each row's observation.
+#'
+#' @family weighting functions
 #'
 #' @export
 

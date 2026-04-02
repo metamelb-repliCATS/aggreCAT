@@ -20,10 +20,12 @@
 #'
 #' @param expert_judgements the long tibble exported from the `preprocess_judgements` function.
 #'
-#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns
 #' supplying the calculated weight for each row's observation.
 #'
 #' @export
+#'
+#' @family weighting functions
 #'
 #' @examples
 #' weight_asym(preprocess_judgements(data_ratings))

@@ -2,7 +2,7 @@
 #' Weighting method: Total number and diversity of judgement reasons
 #'
 #' @description
-#' This function is used by [ReasoningWAgg] to calculate weights for the aggregation
+#' This function is used by [ReasoningWAgg] to weighting functions for the aggregation
 #' type `"ReasonWAgg2"`. Weights are based on the number and diversity of reasoning
 #' methods used by the participant to support their judgement.
 #'
@@ -15,7 +15,9 @@
 #'
 #' @param expert_reasons A dataframe in the form of [data_supp_reasons]
 #'
-#' @return A tibble of three columns `paper_id`, `user_name`, and `reason_count` 
+#' @return A tibble of three columns `paper_id`, `user_name`, and `reason_count`
+#'
+#' @family weighting functions
 #'
 #' @export
 
