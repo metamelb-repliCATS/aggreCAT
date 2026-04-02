@@ -2,6 +2,8 @@
 title: "aggreCAT: an R Package for Mathematically Aggregating Expert Judgements"
 format:
     jss-pdf:
+      number-sections: true
+      number-depth: 4
       keep-tex: true
       header-includes:
         - \usepackage[utf8]{inputenc}
@@ -25,13 +27,12 @@ format:
         - \newcommand{\blandscape}{\begin{landscape}}
         - \newcommand{\elandscape}{\end{landscape}}
         - \usepackage{underscore}
-        # - \usepackage[authoryear,round]{natbib}
       x11names: true
       journal:
         cite-shortnames: true
         type: article
     jss-html:
-        number-depth: 3
+        number-depth: 4
         default-style: true
 author:
     # use this syntax to add text on several lines
@@ -160,7 +161,7 @@ that researchers may apply any of the the aggregation functions
 described in [@Hanea2021] and provided by aggreCAT to their own expert
 elicitation datasets where mathematical aggregation is required.
 
-# Mathematically Aggregating Expert Judgements
+## Mathematically Aggregating Expert Judgements
 
 The aggregation methods in [aggreCAT]{.pkg} were developed in the
 context of the IDEA protocol (CROSSREF Box 1), a structured elicitation
@@ -242,7 +243,7 @@ with permission from Wintle et al.
 :::
 ::::
 
-## Notation and Problem Formulation
+### Notation and Problem Formulation
 
 We describe some preliminary mathematical notation used to represent
 each aggregation method. The total number of research claims, $claim$,
@@ -315,7 +316,7 @@ method-specific weighting methods are used, modularised functions have
 been created for ease of debugging. These function names are prefixed
 with `weight_`.
 
-## Aggregation Wrapper Functions
+### Aggregation Wrapper Functions
 
 Although there are 29 aggregation methods in total, we grouped methods
 based on their mathematical properties into eight 'wrapper' functions,
@@ -326,7 +327,7 @@ aggregation*: `LinearWAgg()`, `AverageWAgg()`, `BayesianWAgg()`,
 aggregation *method* is applied according to the `type` argument, whose
 options are described in each aggregation wrapper functions' help page.
 
-### 'Tidy' Aggregation and Required Inputs
+#### 'Tidy' Aggregation and Required Inputs
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
 [@Wickham:2014vp]. Each aggregation method expects a
@@ -353,7 +354,7 @@ requires comprehensibility ratings (`question == "comprehension"`). For
 a full summary of each aggregation method, its calling function, and
 data requirements, see @tbl-method-summary-table.
 
-## Package Datasets
+### Package Datasets
 
 The [aggreCAT]{.pkg} package includes several datasets collected by the
 repliCATS project during a pilot study at a two-day workshop in the
@@ -380,7 +381,7 @@ structure, and example data, are provided in the [aggreCAT]{.pkg}
 package documentation (`?data_ratings`) and in the Package Datasets
 vignette available on the [aggreCAT]{.pkg} pkgdown website.
 
-# Demonstrating Mathematical Aggregation with aggreCAT
+## Demonstrating Mathematical Aggregation with aggreCAT
 
 We now demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
@@ -421,7 +422,7 @@ After weights are computed (if required) and aggregation is performed, results a
 :::
 ::::
 
-## Prepare Focal Claim Data {#sec-focal-claims}
+### Prepare Focal Claim Data {#sec-focal-claims}
 
 Below we subset the dataset `data_ratings` to include a sample of four claims
 with judgements from five randomly-sampled participants. From these
@@ -464,6 +465,7 @@ We will work with data from a subset of participants from a single claim
 ```{r}
 #| label: tbl-focal-claim
 #| tbl-cap: "Focal Claim Data: Round 2 expert judgements for claim 108 derived from a subset of 5 claims and 5 participants from `data\_ratings`. Judgements are displayed as percentages."
+#| tbl-cap-location: top
 #| eval: true
 #| echo: false
 #| results: asis
@@ -487,7 +489,7 @@ focal_claims %>%
   tt()
 ```
 
-## Unweighted Linear Combination of Judgements
+### Unweighted Linear Combination of Judgements
 
 We first demonstrate the mechanics of mathematical aggregation and its
 implementation using the [aggreCAT]{.pkg} package with the simplest,
@@ -521,7 +523,7 @@ focal_claims %>%
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
-## Weighted Linear Combination of Judgements {#sec-IntWAgg .section}
+### Weighted Linear Combination of Judgements {#sec-IntWAgg .section}
 
 We now demonstrate the construction of weights for forecasting
 performance, as well as the use of uncertainty bounds in addition to the
@@ -538,8 +540,9 @@ the sum of all weights per claim). Normalised weights are then
 multiplied by the corresponding individual's best estimates $B_{i,c}$
 andsummed together into a single Confidence Score [@eq-IntWAgg].
 
-$$w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}$$
-{#eq-weightInterval}
+$$
+w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}
+$$ {#eq-weightInterval}
 
 $$
 \hat{p}_c\left(IntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{IntWAgg}_{i,c}  B_{i,c}
@@ -554,7 +557,7 @@ focal_claims %>%
   IntervalWAgg(type = "IntWAgg")
 ```
 
-# Weighted Linear Combination of Judgements with Supplementary Data
+### Weighted Linear Combination of Judgements with Supplementary Data
 
 Some aggregation methods require supplementary data in addition to the three-point estimates elicited from experts. For instance, the `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. The `ReasonWAgg` method weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
@@ -562,8 +565,9 @@ Each row of the dataset `data_supp_reasons` contains a single reason that a part
 
 The weighting function `weight_reason()` counts the number of unique `reason_id`s used by each participant for each claim, and uses this as a proxy for forecasting performance [@eq-weightReason]. The more unique reasons a participant uses to justify their estimates, the higher their weight in the aggregation. The weights are then normalised across the claim and multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-ReasonWAgg].
 
-$$w\_reason_{i,c}= \sum_{r=1}^R I\left(\text{reason}_{i,c} = r\right)$$
-{#eq-weightReason}
+$$
+w\_reason_{i,c}= \sum_{r=1}^R I\left(\text{reason}_{i,c} = r\right)
+$$ {#eq-weightReason}
 
 $$
 \hat{p}_c\left(ReasonWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{ReasonWAgg}_{i,c}  B_{i,c}
