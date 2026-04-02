@@ -32,6 +32,7 @@ format:
         type: article
     jss-html:
         number-depth: 3
+        default-style: true
 author:
     # use this syntax to add text on several lines
     # To add another line, use \AND at the end of the previous one as above
@@ -182,7 +183,8 @@ behavioural consensus.
 
 :::: callout
 ::: {#ideaProtocol}
-### Box 1: The repliCATS IDEA Protocol {.unnumbered}
+
+## Box 1: The repliCATS IDEA Protocol {.unnumbered}
 
 The repliCATS project adapted and deployed the IDEA protocol to elicit
 crowd-sourced judgements from diverse groups about the likely
@@ -399,6 +401,26 @@ Here we demonstrate the application of aggregation methods for each
 group of methods using a set of 'focal claims' selected from the pilot
 study dataset supplied with the [aggreCAT]{.pkg} package.
 
+:::: {.callout}
+::: {#aggWorkflow}
+
+## Box 2: Aggregation Workflow Blueprint {.unnumbered}
+
+All aggregation wrapper functions in aggreCAT accept the following core arguments: the `type` of aggregation method to be applied to a tibble of `expert_judgements`,  an optional custom method `name` to overwrite the default `type`, a logical value `placeholder` indicating whether to return a fixed Confidence Score value, and a logical value `percent_toggle` indicating whether percentage inputs should be converted to probabilities.
+
+Some aggregation methods require additional arguments, especially methods that use supplementary data or multiple rounds of elicitation. For instance, `ReasoningWAgg()` requires the argument `reasons` to specify the dataset containing qualitatively coded reasoning categories, and `BayesianWAgg()` requires the argument `priors` to specify the dataset containing Bayesian priors. The core arguments above are common to all aggregation methods, and the additional arguments are method-specific.
+
+Each aggregation function follows a standard computational workflow: input data are pre-processed (e.g., filtering by elicitation round and element type) with `pre_process_judgements()`, weights are computed if required, aggregation is performed (typically via `dplyr::summarise()`), and results are post-processed into a tidy output by `post_process_results()`.
+
+Each aggregation function follows a standard workflow. Input data are first standardized and filtered using `pre_process_judgements()`, which ensures only relevant rounds, elements, and questions are included in the aggregation. For instance, if an aggregation method requires only `round 2` judgements, then `pre_process_judgements()` will filter out all other rounds of elicitation. Similarly, if an aggregation method requires only best estimates, then `pre_process_judgements()` will filter out all other elements. This function ensures that only relevant data are included in the aggregation, and that data are in the correct format for aggregation. Note that all aggregation methods that require only a single round of elicitation default to using `round 2` judgements, and all methods that require three-point estimates default to using the `three_point_best` element, unless specified otherwise by the user or overriden by method-specific requirements.
+
+For methods that require weighting, weights are computed prior to aggregation. Some aggregation methods compute weights using separate weighting functions (See Table
+\ref{tbl-method-summary-table}) according to the method specified in the `type` argument. For instance, if `type = "ReasonWAgg"` for `ReasoningWAgg()`, then weights are computed using the function `weight_reason()`. For methods with simpler weight computations, these are defined in-function, rather than being modularised. The weighting functions compute un-normalised weights based on the specified method, and these weights are then normalised within each claim by dividing by their sum across all experts for that claim.
+
+After weights are computed (if required) and aggregation is performed, results are formatted into a tidy output using `post_process_results()`, which returns one row per claim and the number of experts whose judgements were aggregated, alongside the method name and confidence score.
+:::
+::::
+
 ## Prepare Focal Claim Data {#sec-focal-claims}
 
 Below we subset the dataset `data_ratings` to include a sample of four claims
@@ -498,5 +520,6 @@ focal_claims %>%
 #| out-width: "600px"
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
+
 
 # References {.unnumbered}
