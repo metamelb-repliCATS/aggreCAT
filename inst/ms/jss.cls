@@ -59,7 +59,7 @@
 \if@shortnames
   \usepackage[authoryear,round]{natbib}
 \else
-  \usepackage[authoryear,round,longnamesfirst]{natbib}
+  \usepackage[authoryear,round]{natbib}
 \fi
 \bibpunct{(}{)}{;}{a}{}{,}
 \bibliographystyle{jss}
