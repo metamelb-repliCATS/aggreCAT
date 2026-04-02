@@ -30,7 +30,8 @@ format:
       journal:
         cite-shortnames: true
         type: article
-    jss-html: default
+    jss-html:
+        number-depth: 3
 author:
     # use this syntax to add text on several lines
     # To add another line, use \AND at the end of the previous one as above
@@ -82,11 +83,11 @@ library(kableExtra)
 library(tinytable)
 ```
 
-## Introduction {#sec-introduction}
+# Introduction {#sec-introduction}
 
 Expert judgement is frequently used to inform forecasting about
 uncertain future events across a range of fields and applications
-including ecological management and decision making [@Legge2022] ,
+including ecological management and decision making [@Legge2022],
 biosecurity risk analyses [@Wittmann2015], replicability forecasts
 [@Mody2026], and horizon scanning exercises [@Sutherland2017].
 Judgements from groups of experts tend to perform better than a single
@@ -136,6 +137,12 @@ developed aggreCAT into a more general R package that can handle most
 types of elicitation data requiring mathematical aggregation, allowing
 for wider applicability.
 
+The repliCATS project developed 29 different methods for mathematically
+aggregating judgements elicited from groups of experts into Confidence
+Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg} package to
+implement these aggregation methods and deliver Confidence Scores for
+over 4000 SBS research claims as a part of the DARPA SCORE project.
+
 aggreCAT provides a suite of 29 aggregation methods that explore
 different approaches to mathematical aggregation from straightforward
 arithmetic calculations to Bayesian statistical models. In addition, we
@@ -165,11 +172,13 @@ require only the post-discussion (*Round 2*) three-point judgements,
 some additionally use the pre-discussion (*Round 1*) judgements, and a
 small number require supplementary ratings or externally collected data.
 These requirements are summarised for each method in
-@tbl-method-summary-table. Although the aggregation methods were
-developed in the context of the IDEA protocol, all methods requiring
-only a single round of elicitation can be applied to any structured
-elicitation procedure that generates lower, upper, and best estimates
-from each individual without enforcing behavioural consensus.
+@tbl-method-summary-table.
+
+Although the aggregation methods were developed in the context of the
+IDEA protocol, all methods requiring only a single round of elicitation
+can be applied to any structured elicitation procedure that generates
+lower, upper, and best estimates from each individual without enforcing
+behavioural consensus.
 
 :::: callout
 ::: {#ideaProtocol}
@@ -177,16 +186,16 @@ from each individual without enforcing behavioural consensus.
 
 The repliCATS project adapted and deployed the IDEA protocol to elicit
 crowd-sourced judgements from diverse groups about the likely
-replicability of SBS research claims [@Fraser:2021]. The IDEA
-('Investigate', 'Discuss', 'Estimate' and 'Aggregate') protocol is a
-four-step structured elicitation protocol that draws on the 'wisdom of
-crowds' to elicit subjective judgements about the likelihood of
-uncertain events [@hemming2017, figure 1]. To collect expert judgements
-about the replicability of SBS claims, we asked participants to estimate
-the "probability that direct replications of a study would find a
-statistically significant effect in the same direction as the original
-claim", eliciting estimates of uncertainty in the form of upper and
-lower bounds on those point-estimates.
+replicability of Social and Behavioural Science (SBS) research claims
+[@Fraser:2021]. The IDEA ('Investigate', 'Discuss', 'Estimate' and
+'Aggregate') protocol is a four-step structured elicitation protocol
+that draws on the 'wisdom of crowds' to elicit subjective judgements
+about the likelihood of uncertain events [@hemming2017, figure 1]. To
+collect expert judgements about the replicability of SBS claims, we
+asked participants to estimate the "probability that direct replications
+of a study would find a statistically significant effect in the same
+direction as the original claim", eliciting estimates of uncertainty in
+the form of upper and lower bounds on those point-estimates.
 
 The IDEA protocol structures elicitation across two rounds: individuals
 first provide judgements independently (*Round 1*), before anonymously
@@ -195,33 +204,35 @@ after which they provide a revised set of judgements (*Round 2*). In
 each round, participants provide probabilistic three-point judgements —
 a best estimate and upper and lower bounds — alongside supplementary
 ratings of plausibility, comprehensibility, and involvement in the
-original study.
+original study. Thus, for a single assessment, 2 sets of judgements are
+elicited from each expert, *pre-* and *post-*group discussion, referred
+to here on as *Round 1* and *Round 2* judgements, respectively.
 
 During the *Investigate* phase, individuals review the claim and draw on
-background knowledge to provide estimates of the probability of the
-claim replicating. These estimates are numeric (0 - 100%) and include a
-best estimate, and upper and lower bounds on that estimate. Individuals
-also provide a value on the likert binary scale up to 7, rating the
-individuals' degree of comprehension of the claim. Individuals were also
-asked to provide short comments justifying their estimates.
+background knowledge to provide numeric estimates of the percent
+probability of the claim replicating.
+
+These estimates are numeric (0 - 100%) and include a best estimate, and
+upper and lower bounds on that estimate.
+
+<!-- Not sure whether to include the below or not? Can it be explained elsewhere? -->
+
+Individuals also provide a value on the likert binary scale up to 7,
+rating the individuals' degree of comprehension of the claim.
+Individuals were also asked to provide short comments justifying their
+estimates.
 
 In the *Discuss* phase, three-point estimates from each group member are
 anonymously presented to the group, who then collectively discuss
 differences in opinion and provide potential evidence for these
-differences. Next, in the *Estimate* phase, individuals are asked to
-provide a second set of three-point probablistic judgements. Thus, for a
-single assessment, 2 sets of judgements are elicited from each expert,
-*pre-* and *post-*group discussion, referred to here on as *Round 1* and
-*Round 2* judgements, respectively.
+differences.
+
+Next, in the *Estimate* phase, individuals are asked to provide a second
+set of three-point probablistic judgements.
 
 During the fourth phase, *Aggregate*, judgements are mathematically
-aggregated into a single Confidence Score, or in this case, forecast of
-replicability. The repliCATS project developed 29 different methods for
-mathematically aggregating judgements elicited from groups of experts
-into Confidence Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg}
-package to implement these aggregation methods and deliver Confidence
-Scores for over 4000 SBS research claims as a part of the DARPA SCORE
-project.
+aggregated into a single Confidence Score, or in the repliCATS case,
+forecast of replicability.
 
 ![The IDEA protocol as deployed by the repliCATS project (reproduced
 with permission from Wintle et al.
@@ -340,7 +351,7 @@ requires comprehensibility ratings (`question == "comprehension"`). For
 a full summary of each aggregation method, its calling function, and
 data requirements, see @tbl-method-summary-table.
 
-## Package datasets
+## Package Datasets
 
 The [aggreCAT]{.pkg} package includes several datasets collected by the
 repliCATS project during a pilot study at a two-day workshop in the
@@ -367,7 +378,7 @@ structure, and example data, are provided in the [aggreCAT]{.pkg}
 package documentation (`?data_ratings`) and in the Package Datasets
 vignette available on the [aggreCAT]{.pkg} pkgdown website.
 
-# Demonstration of Aggregation
+# Demonstrating Mathematical Aggregation with aggreCAT
 
 We now demonstrate how judgements elicited from a diverse group of
 individuals may be mathematically aggregated for a single forecasting
