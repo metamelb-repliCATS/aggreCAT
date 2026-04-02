@@ -341,7 +341,7 @@ claim for which the Confidence Score is being computed, each individual
 claim $c$ is indexed by $d = 1, ..., C$. Where the default weighting is
 used, this is coded into each function. However, where more complex and
 method-specific weighting methods are used, modularised functions have
-been created for ease of debugging. These function names are prefixed
+been created for ease of debugging, and where the weighting method is shared across aggregation methods. These function names are prefixed
 with `weight_`.
 
 ### Aggregation Wrapper Functions
