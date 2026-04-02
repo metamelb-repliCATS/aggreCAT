@@ -654,7 +654,7 @@ If all participants are missing a reasoning score, the log-odds transformed best
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
 
-The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participantsbest estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The Confidence Score is then derived from the mean of the posterior distribution.
+The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participants' best estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The Confidence Score is then derived from the mean of the posterior distribution.
 
 Below we apply the `BayTriVar` method to the focal claim `108`. Note that this method expects best estimates in the form of probabilities, so to convert elicited values in the form of percentages to probabilities in the data parsed to the `expert_judgement` argument, we toggle the argument `percent_toggle` to `TRUE`:
 
@@ -670,6 +670,7 @@ focal_claims %>%
   dplyr::filter(paper_id == "108")
 ```
 
+While `BayTriVar` assumes default priors, a second method `type = "BayPriorsAgg"` applies user-supplied informative priors. This method follows the same methodology as `BayTriVar`, but instead of using default priors, it allows users to specify their own prior estimates for each claim using the `priors` argument.
 
 ::: {.content-hidden unless-format="pdf"}
 \newpage
