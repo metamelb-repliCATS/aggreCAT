@@ -236,7 +236,7 @@ forecast of replicability.
 
 ![The IDEA protocol as deployed by the repliCATS project (reproduced
 with permission from Wintle et al.
-2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021"){#fig1}
+2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021"){#fig-1}
 :::
 ::::
 
@@ -258,7 +258,7 @@ $\hat{p}_{c}\left(Method \space ID \right)$. Each aggregation is
 assigned a unique $Method \space ID$ which is the abbreviation of the
 mathematical operation used in calculating the weights. Note that all
 Best, Lower and Upper estimates are taken to be `round 2` judgements
-from the repliCATS IDEA protocol [Figure 1](#fig1), Box 1), unless
+from the repliCATS IDEA protocol [Figure 1](#fig-1), Box 1), unless
 appended by a "1", where they are `round 1` judgements, e.g. $B1_{i,c}$
 denotes the `round 1` Best estimate from individual $i$ for claim $c$.
 
@@ -395,12 +395,13 @@ rounds), whether multiple forecasts / elicited judgements are used
 during confidence score computation for a target forecast / claim, and
 finally whether supplementary data is required for aggregation.
 
-## Focal Claim Aggregation {#sec-focal-claims}
-
 Here we demonstrate the application of aggregation methods for each
 group of methods using a set of 'focal claims' selected from the pilot
-study dataset supplied with the [aggreCAT]{.pkg} package. Below we
-subset the dataset `data_ratings` to include a sample of four claims
+study dataset supplied with the [aggreCAT]{.pkg} package.
+
+## Prepare Focal Claim Data {#sec-focal-claims}
+
+Below we subset the dataset `data_ratings` to include a sample of four claims
 with judgements from five randomly-sampled participants. From these
 focal claims, we select a target claim for which we will apply an
 exemplar aggregation method from each mathematical aggregator
@@ -464,4 +465,38 @@ focal_claims %>%
   tt()
 ```
 
-# References
+## Unweighted Linear Combination of Judgements
+
+We first demonstrate the mechanics of mathematical aggregation and its
+implementation using the [aggreCAT]{.pkg} package with the simplest,
+unweighted aggregation method, `ArMean`. All other aggregation methods
+take this underlying computational blueprint, and expand on it according
+to the aggregation methods' requirements (See [Box 1](#aggWorkflow) for
+details). `ArMean` ( @eq-ArMean ) takes the unweighted linear average
+(i.e. arithmetic mean) of the best estimates, $B_{i,c}$.
+
+$$
+\hat{p}_c\left(ArMean \right ) = \frac{1}{N}\sum_{i=1}^N B_{i,c}
+$$ {#eq-ArMean}
+
+Below we apply the `ArMean` method to the focal claim `108` (@tbl-focal-claim) using the [*AverageWAgg*]{.fct} wrapper function, which implements several methods that calculate different types of averaged best-estimates (see `?AverageWAgg`). The `type` argument specifies the method of averaging, and in this case, we specify `type = "ArMean"` to apply the arithmetic mean method. The output is a [tibble]{.class} containing the method name, paper ID, confidence score, and number of experts whose judgements were aggregated.
+
+```{r}
+#| label: focal-claim-ArMean
+#| prompt: true
+#| message: false
+focal_claims %>%
+  dplyr::filter(paper_id == "108") %>%
+  AverageWAgg(type = "ArMean")
+```
+
+```{r}
+#| label: fig-ArMean
+#| fig-cap: "ArMean with `AverageWAgg()` uses the Estimates (shown in colour) from each participant to compute the mean. We illustrate this using a single claim `108` for a subset of 5 out of 25 participants from the `data_ratings` dataset. Note that the data representations in this figure are for explanatory purposes only, the data in the actual aggregation is tidy, with long form structure and format."
+#| results: hold
+#| echo: false
+#| out-width: "600px"
+knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
+```
+
+# References {.unnumbered}
