@@ -124,19 +124,19 @@ time-series predictions (CITE).
 
 aggreCAT is an open, reliable, and modular R package for the
 mathematical aggregation of expert elicitation data with a
-straightforward user interface. The aggreCAT package was developed by
+straightforward user interface. The [aggreCAT]{.pkg} package was developed by
 the by the repliCATS (Collaborative Assessment for Trustworthy Science)
 project [@Fraser:2021] as part of the DARPA SCORE (Systematizing
 Confidence in Open Research and Evidence) program [@alipourfard2021],
 which aimed to generate quantitative 'Confidence Scores' — estimates of
 the likely replicability of research claims from the social and
 behavioural sciences — for use as a proxy measure of credibility in the
-absence of direct replication effort. aggreCAT arose from the need for a
+absence of direct replication effort. [aggreCAT]{.pkg} arose from the need for a
 software solution to reliably conduct mathematical aggregation at scale.
-The repliCATS project used aggreCAT to aggregate expert elicited
+The repliCATS project used [aggreCAT]{.pkg} to aggregate expert elicited
 judgements into Confidence Scores for $> 4000$ claims [@Mody2026]. While
 originally a bespoke implementation for repliCATS, we have since
-developed aggreCAT into a more general R package that can handle most
+developed [aggreCAT]{.pkg} into a more general R package that can handle most
 types of elicitation data requiring mathematical aggregation, allowing
 for wider applicability.
 
@@ -152,14 +152,14 @@ arithmetic calculations to Bayesian statistical models. In addition, we
 provide extra functionality such as plotting functions and performance
 evaluation against known outcomes. While the repliCATS project uses the
 IDEA protocol to structure their elicitation process (CROSS-REF), we
-have generalised aggreCAT to work with a variety of elicitation
-protocols. aggreCAT fills a large void in open software for aggregating
+have generalised [aggreCAT]{.pkg} to work with a variety of elicitation
+protocols. [aggreCAT]{.pkg} fills a large void in open software for aggregating
 elicited judgements, providing enormous benefit to researchers and
 decision makers across any field of research.
 
 In this paper we give an overview of the [aggreCAT]{.pkg} package so
 that researchers may apply any of the the aggregation functions
-described in [@Hanea2021] and provided by aggreCAT to their own expert
+described in [@Hanea2021] and provided by [aggreCAT]{.pkg} to their own expert
 elicitation datasets where mathematical aggregation is required.
 
 ## Mathematically Aggregating Expert Judgements
@@ -408,7 +408,7 @@ study dataset supplied with the [aggreCAT]{.pkg} package.
 
 ## Box 2: Aggregation Workflow Blueprint {.unnumbered}
 
-All aggregation wrapper functions in aggreCAT accept the following core arguments: the `type` of aggregation method to be applied to a tibble of `expert_judgements`,  an optional custom method `name` to overwrite the default `type`, a logical value `placeholder` indicating whether to return a fixed Confidence Score value, and a logical value `percent_toggle` indicating whether percentage inputs should be converted to probabilities.
+All aggregation wrapper functions in [aggreCAT]{.pkg} accept the following core arguments: the `type` of aggregation method to be applied to a tibble of `expert_judgements`,  an optional custom method `name` to overwrite the default `type`, a logical value `placeholder` indicating whether to return a fixed Confidence Score value, and a logical value `percent_toggle` indicating whether percentage inputs should be converted to probabilities.
 
 Some aggregation methods require additional arguments, especially methods that use supplementary data or multiple rounds of elicitation. For instance, `ReasoningWAgg()` requires the argument `reasons` to specify the dataset containing qualitatively coded reasoning categories, and `BayesianWAgg()` requires the argument `priors` to specify the dataset containing Bayesian priors. The core arguments above are common to all aggregation methods, and the additional arguments are method-specific.
 
