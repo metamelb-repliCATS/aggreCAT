@@ -521,5 +521,87 @@ focal_claims %>%
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
+## Weighted Linear Combination of Judgements {#sec-IntWAgg .section}
+
+We now demonstrate the construction of weights for forecasting
+performance, as well as the use of uncertainty bounds in addition to the
+Best Estimates (i.e. three-point estimates) in the aggregation
+computation. The aggregation method `IntWAgg` weights each participant's
+best estimate $B_{i,c}$ by the width of their uncertainty intervals,
+i.e. the difference between an individual's upper ${U}_{i,c}$ and lower
+bounds ${L}_{i,c}$. For a given claim $c$, a vector of weights for all
+individuals is calculated from their upper and lower estimates using the
+weighting function, [weight_interval]{.fct}, which calculates the
+interval width for each individual's estimate for the target claim [@eq-weightInterval]. The
+weights are then normalised across the claim (by dividing each weight by
+the sum of all weights per claim). Normalised weights are then
+multiplied by the corresponding individual's best estimates $B_{i,c}$
+andsummed together into a single Confidence Score [@eq-IntWAgg].
+
+$$w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}$$
+{#eq-weightInterval}
+
+$$
+\hat{p}_c\left(IntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{IntWAgg}_{i,c}  B_{i,c}
+$$ {#eq-IntWAgg}
+
+```{r}
+#| label: focal-claim-IntWAgg
+#| prompt: true
+#| message: false
+focal_claims %>%
+  dplyr::filter(paper_id == "108") %>%
+  IntervalWAgg(type = "IntWAgg")
+```
+
+# Weighted Linear Combination of Judgements with Supplementary Data
+
+Some aggregation methods require supplementary data in addition to the three-point estimates elicited from experts. For instance, the `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. The `ReasonWAgg` method weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
+
+Each row of the dataset `data_supp_reasons` contains a single reason that a participant used to justify their estimates for a given claim. The variable `reason` contains the qualitatively coded reason category, and the variable `reason_id` contains the unique identifier for each reason category. The dataset is in long format, with one row per reason per participant per claim.
+
+The weighting function `weight_reason()` counts the number of unique `reason_id`s used by each participant for each claim, and uses this as a proxy for forecasting performance [@eq-weightReason]. The more unique reasons a participant uses to justify their estimates, the higher their weight in the aggregation. The weights are then normalised across the claim and multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-ReasonWAgg].
+
+$$w\_reason_{i,c}= \sum_{r=1}^R I\left(\text{reason}_{i,c} = r\right)$$
+{#eq-weightReason}
+
+$$
+\hat{p}_c\left(ReasonWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{ReasonWAgg}_{i,c}  B_{i,c}
+$$ {#eq-ReasonWAgg}
+
+Below we apply the `ReasonWAgg` method to the focal claim `24` using the [ReasoningWAgg()]{.fct} wrapper function. First, we prepare the dataset of reasons by filtering `data_supp_reasons` to include only the focal users who assessed claim `24`. We reshape the output to illustrate the number of unique reasoning categories used by each participant to justify their estimates for claim `24`. Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0) to justify their estimates for claim `24`. The total number of unique reasons used by each participant is then calculated by summing across the reason category columns.
+
+```{r}
+data_supp_reasons_focal <- data_supp_reasons %>%
+  right_join(focal_users, by = "user_name")
+
+data_supp_reasons_focal %>%
+  filter(paper_id == "24") %>%
+  pivot_longer(cols = c(-paper_id, -user_name)) |>
+  dplyr::arrange(name) |>
+  tidyr::separate(name, into = c("reason_num", "reason"), sep = "_") |>
+  select(-reason) |>
+  group_by(paper_id, user_name) |>
+  pivot_wider(names_from = reason_num) |>
+  dplyr::arrange(user_name)
+```
+
+Then we apply the `ReasonWAgg` method to compute a Confidence Score for claim `24` using the best estimates from the focal users weighted by the number of unique reasoning categories they used to justify their estimates.
+
+```{r}
+#| label: focal-claim-ReasonWAgg
+#| prompt: true
+#| message: false
+focal_claims %>%
+  dplyr::filter(paper_id == "24") %>%
+  ReasoningWAgg(type = "ReasonWAgg",
+                reasons = data_supp_reasons_focal)
+```
+
+If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target claim.
+
+
+
+
 
 # References {.unnumbered}
