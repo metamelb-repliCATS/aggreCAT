@@ -598,10 +598,13 @@ $$
 \hat{p}_c\left(IndIntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{nIndivInterval}_{i,c}  B_{i,c}
 $$ {#eq-IndIntWAgg}
 
+### User-supplied Weights
 
-#### User-supplied Weights
+Some aggregation methods require user-supplied data in addition to the three-point estimates elicited from experts.
 
-Some aggregation methods require user-supplied data in addition to the three-point estimates elicited from experts. For instance, the `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. The `ReasonWAgg` method weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
+#### Judgement-level User-supplied Weights
+
+The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
 The weighting function `weight_reason()` counts the number of unique reasons used by each participant for each claim, and uses this as a proxy for forecasting performance [@eq-weightReason]. The more unique reasons a participant uses to justify their estimates, the higher their weight in the aggregation. The weights are then normalised across the claim and multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-ReasonWAgg].
 
@@ -636,7 +639,7 @@ data_supp_reasons_focal %>%
   tt()
 ```
 
-Then we apply the `ReasonWAgg` method to compute a Confidence Score for claim `24` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for claim `24`.
+Then we apply the `ReasonWAgg` method to compute a Confidence Score for claim `24` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for that claim.
 
 ```{r}
 #| label: focal-claim-ReasonWAgg
@@ -649,6 +652,23 @@ focal_claims %>%
 ```
 
 If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target claim.
+
+#### Participant-level User-supplied Weights
+
+The `QuizWAgg` method implemented by the `LinearWAgg()` function applies a user-supplied weight at the participant-level. `QuizWAgg` weights each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters.
+
+```{r}
+#| echo: false
+#| label: focal-claim-QuizWAgg
+#| message: false
+LinearWAgg(expert_judgements = focal_claims,
+                          type = "Participant",
+                          weights = data_supp_quiz |>
+                            rename(weight = quiz_score) |>
+                            right_join(focal_users,
+                            by = "user_name"),
+                          name = "QuizWAgg")
+```
 
 ### Bayesian Aggregation Methods
 
