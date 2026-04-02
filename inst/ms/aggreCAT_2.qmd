@@ -652,7 +652,7 @@ If all participants are missing a reasoning score, the log-odds transformed best
 
 #### Participant-level User-supplied Weights
 
-Any user-supplied weight can be applied at the participant-level using the `LinearWAgg()` function. We apply the `QuizWAgg` method [@Hanea2021] to the focal claims dataset, weighting each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters. See `?data_supp_quiz` for details of the quiz dataset, including the quiz questions and scoring.
+Any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`) using the `LinearWAgg()` function. We apply the `QuizWAgg` method [@Hanea2021] to the focal claims dataset, weighting each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters. See `?data_supp_quiz` for details of the quiz dataset, including the quiz questions and scoring.
 
 ```{r}
 #| label: focal-claim-QuizWAgg
