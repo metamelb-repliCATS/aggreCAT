@@ -28,12 +28,14 @@ format:
         - \newcommand{\elandscape}{\end{landscape}}
         - \usepackage{underscore}
       x11names: true
+      message: false
       journal:
         cite-shortnames: true
         type: article
     jss-html:
         number-depth: 4
         default-style: true
+        message: true
 author:
     # use this syntax to add text on several lines
     # To add another line, use \AND at the end of the previous one as above
@@ -73,7 +75,10 @@ appendix-style: none
 # pdf-engine: citeproc #until quarto repsects classoption:shortnames
 ---
 
-```{r, setup, include=FALSE, message=FALSE}
+```{r}
+#| label: setup
+#| include: false
+#| message: false
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE, comment = "#>")
 options(tinytex.verbose = TRUE)
 options(width = 80)
@@ -84,12 +89,18 @@ library(knitr)
 options(kableExtra.latex.load_packages = FALSE)
 library(kableExtra)
 library(tinytable)
-
-# enable coloured cli text in output chunks
-options(crayon.enabled = TRUE,
-        cli.num_colors = 256)
-fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
+
+::: {.content-visible when-format="html"}
+```{r}
+#| include: false
+#| message: false
+# enable coloured cli text in output chunks
+# options(crayon.enabled = TRUE,
+#         cli.num_colors = 256)
+# fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
+```
+:::
 
 ```{=html}
 <style>
@@ -528,7 +539,6 @@ Below we apply the `ArMean` method to the focal claim `108` (@tbl-focal-claim) u
 ```{r}
 #| label: focal-claim-ArMean
 #| prompt: true
-#| message: true
 focal_claims %>%
   dplyr::filter(paper_id == "108") %>%
   AverageWAgg(type = "ArMean")
@@ -573,7 +583,6 @@ $$ {#eq-IntWAgg}
 ```{r}
 #| label: focal-claim-IntWAgg
 #| prompt: true
-#| message: true
 focal_claims %>%
   dplyr::filter(paper_id == "108") %>%
   IntervalWAgg(type = "IntWAgg")
@@ -641,7 +650,6 @@ Then we apply the `ReasonWAgg` method to compute a Confidence Score for claim `2
 ```{r}
 #| label: focal-claim-ReasonWAgg
 #| prompt: true
-#| message: true
 focal_claims %>%
   dplyr::filter(paper_id == "24") %>%
   ReasoningWAgg(type = "ReasonWAgg",
@@ -677,7 +685,6 @@ Below we apply the `BayTriVar` method to the focal claim `108`. Note that this m
 ```{r}
 #| label: focal-claim-BayTriVar
 #| prompt: true
-#| message: true
 #| cache: true
 
 focal_claims %>%
@@ -686,7 +693,19 @@ focal_claims %>%
   dplyr::filter(paper_id == "108")
 ```
 
-While `BayTriVar` assumes default priors, a second method `type = "BayPriorsAgg"` applies user-supplied informative priors. This method follows the same methodology as `BayTriVar`, but instead of using default priors, it allows users to specify their own prior estimates for each claim using the `priors` argument.
+Users should be aware that for any aggregation methods that compute weights across multiple claims or forecasts, the aggregated estimates are sensitive to the input data. This is also true for methods applying participant-level weights that are calculated using information from across multiple claims.
+
+In these cases, if the user wish to filter aggregated estimates for a particular claim, they should first apply the aggregation method to the full dataset, then filter the aggregated estimates for the target claim. This is because the weights are calculated across all claims, and therefore the aggregated estimate for a particular claim is influenced by the data from all claims. If the user filters the data prior to applying the aggregation method, then the weights will be calculated using only the filtered data, which may lead to different weights and therefore different aggregated estimates. In the case of `BayesianWAgg()`, more than one claim is required to compute weights, and the aggregation will fail when $C < 1$:
+
+```{r}
+#| label: focal-claim-BayTriVar-filtered
+#| echo: true
+#| error: true
+focal_claims %>%
+  dplyr::filter(paper_id == "108") |>
+  BayesianWAgg(type = "BayTriVar",
+  percent_toggle = TRUE)
+```
 
 ## An illustrative workflow for use in real study contexts {#sec-workflow}
 
