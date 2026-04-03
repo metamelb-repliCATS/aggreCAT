@@ -674,6 +674,9 @@ LinearWAgg(expert_judgements = focal_claims,
                           name = "QuizWAgg")
 ```
 
+In this way users can specify their own custom weights in addition to those described by @Hanea2021 by preparing a dataset of weights and parsing this to `LinearWAgg()`'s `weights` argument. The dataset of weights must contain a column named `weight` containing the weight values, and a column that can be used to join the weights to the `expert_judgements` dataset by participant (e.g. `user_name`) or by judgement (e.g. `paper_id` and `user_name`).
+
+
 ### Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
