@@ -16,17 +16,17 @@ format:
         - \usepackage{multirow}
         - \usepackage{wrapfig}
         - \usepackage{float}
-        #- \usepackage{colortbl}
         - \usepackage{pdflscape}
         - \usepackage{tabu}
         - \usepackage{threeparttable}
         - \usepackage{threeparttablex}
         - \usepackage[normalem]{ulem}
         - \usepackage{makecell}
-        - \usepackage{xcolor}
         - \newcommand{\blandscape}{\begin{landscape}}
         - \newcommand{\elandscape}{\end{landscape}}
         - \usepackage{underscore}
+        - \usepackage{fancyvrb}
+        # - \input{preamble.tex}
       x11names: true
       message: false
       journal:
@@ -36,6 +36,8 @@ format:
         number-depth: 4
         default-style: true
         message: true
+        # header-includes:
+        #   - styles.css
 author:
     # use this syntax to add text on several lines
     # To add another line, use \AND at the end of the previous one as above
