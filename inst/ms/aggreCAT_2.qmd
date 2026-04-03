@@ -72,7 +72,7 @@ editor:
 callout-appearance: simple
 callout-icon: false
 appendix-style: none
-# pdf-engine: citeproc #until quarto repsects classoption:shortnames
+# pdf-engine: citeproc #until quarto repsects classoption:shortnames #have hard-coded appropriate bib in jss.csl
 ---
 
 ```{r}
@@ -91,16 +91,17 @@ library(kableExtra)
 library(tinytable)
 ```
 
-::: {.content-visible when-format="html"}
+
 ```{r}
 #| include: false
 #| message: false
-# enable coloured cli text in output chunks
-# options(crayon.enabled = TRUE,
-#         cli.num_colors = 256)
-# fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
+#| eval: !expr knitr::is_html_output()
+#enable coloured cli text in output chunks
+options(crayon.enabled = TRUE,
+        cli.num_colors = 256)
+fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
-:::
+
 
 ```{=html}
 <style>
@@ -477,7 +478,7 @@ focal_claims <- focal_claims %>%
 focal_claims
 ```
 
-`focal_claims` contains 220 rows across four claims and five
+`focal_claims` contains `r focal_claims  |> nrow()` rows across four claims and five
 participants. Each row records a single `element` of a participant's
 assessment for a given `paper_id` and `round`. The `question` column
 distinguishes the three-point probabilistic judgements about
@@ -524,17 +525,16 @@ focal_claims %>%
 
 We first demonstrate the mechanics of mathematical aggregation and its
 implementation using the [aggreCAT]{.pkg} package with the simplest,
-unweighted aggregation method, `ArMean`. All other aggregation methods
-take this underlying computational blueprint, and expand on it according
-to the aggregation methods' requirements (See Box [2](#aggWorkflow) for
-details). `ArMean` ( @eq-ArMean ) takes the unweighted linear average
-(i.e. arithmetic mean) of the best estimates, $B_{i,c}$.
+unweighted aggregation wrapper, `ArMean()`. Below we apply the arithmetic mean method   to the focal claim `108` (@tbl-focal-claim) using the [*AverageWAgg*]{.fct} wrapper function, which implements several methods that calculate different types of averaged best-estimates (see `?AverageWAgg`). The `type` argument specifies the method of averaging, and in this case, we specify `type = "ArMean"` to apply the `ArMean`. The output is a [tibble]{.class} containing the method name, paper ID, confidence score, and number of experts whose judgements were aggregated.
+All other aggregation methods take this underlying computational blueprint, and expand on it according
+to the aggregation methods' requirements (See Box [2](#aggWorkflow) for details).
+
+`ArMean()` takes the unweighted linear average (i.e. arithmetic mean) of the best estimates, $B_{i,c}$, across all $N$ experts for a given claim $c$ to calculate the aggregated confidence score $\hat{p}_c$ [@eq-ArMean].
 
 $$
 \hat{p}_c\left(ArMean \right ) = \frac{1}{N}\sum_{i=1}^N B_{i,c}
 $$ {#eq-ArMean}
 
-Below we apply the `ArMean` method to the focal claim `108` (@tbl-focal-claim) using the [*AverageWAgg*]{.fct} wrapper function, which implements several methods that calculate different types of averaged best-estimates (see `?AverageWAgg`). The `type` argument specifies the method of averaging, and in this case, we specify `type = "ArMean"` to apply the arithmetic mean method. The output is a [tibble]{.class} containing the method name, paper ID, confidence score, and number of experts whose judgements were aggregated.
 
 ```{r}
 #| label: focal-claim-ArMean
@@ -553,15 +553,17 @@ focal_claims %>%
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
-Other aggregation functions that do not weight judgements include: `ExtremisationWAgg()`, `DistributionWAgg()`, and `BayesianWAgg()` (illustrated below in #sec-BayesianWAgg).
+Other aggregation wrapper functions that do not weight judgements include: `ExtremisationWAgg()`, `DistributionWAgg()`, and `BayesianWAgg()` (see @sec-BayesianWAgg).
 
-### Weighted Linear Combination of Judgements (Internally Calculated Weights)
+<!-- #TODO check the above sentence true?? -->
 
-Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to proxies of forecasting performance. Weights may be calculated at the judgement-level or participant-level. At the judgement-level, weights are calculated from the elicited judgements themselves for each claim. At the participant-level, weights are calculated from the elicited judgements across all claims for each individual.
+### Weighted Linear Combination of Judgements
+
+Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to proxies of forecasting performance. Weights may be calculated at the judgement-level or participant-level. At the judgement-level, weights are calculated from the elicited judgements themselves for each claim. At the participant-level, weights may be calculated by additional information about the individual, such as their performance on a quiz of statistical knowledge, or their average interval width across all claims. In the latter case, participant-level weights are calculated from the elicited judgements themselves but are rescaled across all claims to reflect systematic differences in the elicited judgements across all claims for each individual.
 
 #### Judgement-level Weights
 
-The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
+`IntervalWAgg` uses judgement-level weights by generating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
 
 For a given claim $c$, a vector of weights for all
 individuals is calculated from their upper and lower estimates using the
@@ -588,11 +590,17 @@ focal_claims %>%
   IntervalWAgg(type = "IntWAgg")
 ```
 
+The wrapper functions `DistributionWAgg()`, which calculates judgement-level weights, which calculates the arithmetic mean of distributions from individual estimates, and `ExtremisationWAgg()`, which applies extremisation techniques to averaged estimates, also use judgement-level weights, as do some of the `BayesianWAgg` methods (see @sec-BayesianWAgg).
+
+Other wrapper functions that weight judgements at the judgement-level include `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)), and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg()`, which downweights extreme estimates.
+
+<!-- #TODO check this with David! Is the above true? -->
+
 #### Participant-level Weights
 
 To reflect the fact that individuals may vary systematically in the interval widths they give across claims, participant weights may be re-scaled. For instance, the `IndIntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals for the target claim $c$ relative to the individual's average interval width across all claims. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals on average across all claims are more confident in their estimates, and therefore may be more accurate forecasters.
 
-Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` calculates the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-IndIntWAgg].
+Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` rescales the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-IndIntWAgg].
 
 $$
 w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}
@@ -602,13 +610,15 @@ $$
 \hat{p}_c\left(IndIntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{nIndivInterval}_{i,c}  B_{i,c}
 $$ {#eq-IndIntWAgg}
 
-### User-supplied Weights
+Other methods that rescale weights at the participant-level include `IndIntAsymWAgg()`, which weights each participant's best estimate $B_{i,c}$ by the asymmetry of their uncertainty intervals for the target claim $c$ relative to the individual's average interval asymmetry across all claims, `VarIndIntWAgg()`, which weights each participant's best estimate $B_{i,c}$ by the variability of their interval widths across all claims, and `KitchSinkWAgg()`, which weights each participant's best estimate $B_{i,c}$ by the variability of their interval widths across all claims relative to the variability of interval widths across all participants.
 
-Several aggregation methods require user-supplied data in addition to the three-point estimates elicited from experts. the
+### Weighted Linear Combination of Judgements with User-supplied Weights
+
+Several aggregation methods require user-supplied data in addition to the three-point estimates elicited from experts.
 
 For example, the `ReasonWAgg` method implemented by the `ReasoningWAgg()` function requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates, and the `QuizWAgg` method implemented by the `LinearWAgg()` function requires a dataset of participants' scores on a statistical knowledge quiz. These user-supplied datasets are used to calculate weights for each participant's best estimate $B_{i,c}$ according to the specific weighting scheme of each method.
 
-#### Judgement-level User-supplied Weights
+#### User-supplied Weights: Judgement-level
 
 The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
@@ -658,30 +668,52 @@ focal_claims %>%
 
 If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target claim.
 
-#### Participant-level User-supplied Weights
 
-Any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`) using the `LinearWAgg()` function. We apply the `QuizWAgg` method [@Hanea2021] to the focal claims dataset, weighting each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters. See `?data_supp_quiz` for details of the quiz dataset, including the quiz questions and scoring.
+:::{.content-visible when-format="pdf"}
+\blandscape
+:::
+
+```{r}
+#| label: fig-ReasonWAgg
+#| echo: false
+#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `24`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of Confidence Scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
+#| results: asis
+#| column: body-outset
+#| fig-width: 12
+knitr::include_graphics("images/ReasonWAgg.png")
+```
+
+:::{.content-visible when-format="pdf"}
+\endlandscape
+:::
+
+#### User-supplied Weights: Participant-level
+
+Using the `LinearWAgg()` function, any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`). We show how to apply the `QuizWAgg` method described in [@Hanea2021] to the focal claims dataset, weighting each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters. See `?data_supp_quiz` for details of the quiz dataset, including the quiz questions and scoring.
 
 ```{r}
 #| label: focal-claim-QuizWAgg
 #| message: false
-LinearWAgg(expert_judgements = focal_claims,
-                          type = "Participant",
-                          weights = data_supp_quiz |>
-                            rename(weight = quiz_score) |>
-                            right_join(focal_users,
-                            by = "user_name"),
-                          name = "QuizWAgg")
+LinearWAgg(
+  expert_judgements = focal_claims |>
+    dplyr::filter(paper_id == "108"),
+  type = "Participant",
+  weights = data_supp_quiz |>
+    rename(weight = quiz_score) |>
+    right_join(focal_users, by = "user_name"),
+  name = "QuizWAgg"
+)
 ```
 
 In this way users can specify their own custom weights in addition to those described by @Hanea2021 by preparing a dataset of weights and parsing this to `LinearWAgg()`'s `weights` argument. The dataset of weights must contain a column named `weight` containing the weight values, and a column that can be used to join the weights to the `expert_judgements` dataset by participant (e.g. `user_name`) or by judgement (e.g. `paper_id` and `user_name`).
-
 
 ### Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
 
 The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participants' best estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The Confidence Score is then derived from the mean of the posterior distribution.
+
+While `BayTriVar` assumes default priors, a second method `type = "BayPriorsAgg"` applies user-supplied informative priors. This method follows the same methodology as `BayTriVar`, but instead of using default priors, it allows users to specify their own prior estimates for each claim using the `priors` argument.
 
 Below we apply the `BayTriVar` method to the focal claim `108`. Note that this method expects best estimates in the form of probabilities, so to convert elicited values in the form of percentages to probabilities in the data parsed to the `expert_judgement` argument, we toggle the argument `percent_toggle` to `TRUE`:
 
@@ -1225,13 +1257,13 @@ human forecasts is required.
 #| results: asis
 aggreCAT:::method_summary_table %>%
   ungroup %>%
-  # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
   mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>%
   tidyr::unite(agg_name_description,
                aggregator_function,
                aggregator_fun_desc, sep = " ") %>%
   select(-agg_name_description) %>%
-  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>%
+  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " "),
+	type_desc = textclean::add_missing_endmark(type_desc, ".")) %>%
   rename("Method" = type,
          "Description" = "type_desc",
          "Data Requirements" = "supp_data_requirements",
@@ -1245,7 +1277,7 @@ aggreCAT:::method_summary_table %>%
       "`AverageWAgg()` *Averaged best estimates*" = 1,
       "`LinearWAgg()` *Linearly-weighted best estimates*" = 6,
       "`IntervalWAgg()` *Linearly-weighted best estimates, with weights influenced by interval widths*" = 11,
-      "`ShiftingWAgg()` *Weighted by judgemetns that shift most after discussion*" = 17,
+      "`ShiftingWAgg()` *Weighted by judgements that shift most after discussion*" = 17,
       "`ReasoningWAgg()` *Linearly-weighted best estimates, with weights constructed from supplementary reasoning data*" = 22,
       "`ExtremisationWAgg()` *Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution*" = 24,
       "`DistributionWAgg()` *Calculates the arithmetic mean of distributions created from expert judgements*" = 26,
@@ -1266,18 +1298,15 @@ aggreCAT:::method_summary_table %>%
 #| results: asis
 #| echo: false
 #| include: true
-
-#TODO Table label and caption are missign from first page of table... possibly something
-# todo with https://github.com/quarto-dev/quarto-cli/issues/1486
 aggreCAT:::method_summary_table %>%
   ungroup %>%
-  # filter(str_detect(aggregator_fun_desc, "[?]",negate = TRUE)) %>% #drop Eng/CompWAgg
   mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>%
   tidyr::unite(agg_name_description,
                aggregator_function,
                aggregator_fun_desc, sep = " ") %>%
   select(-agg_name_description) %>%
-  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " ")) %>%
+  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " "),
+	type_desc = textclean::add_missing_endmark(type_desc, ".")) %>%
   kableExtra::kbl(col.names = c(
                              "Method",
                              "Description",
@@ -1294,6 +1323,7 @@ aggreCAT:::method_summary_table %>%
   kableExtra::column_spec(column = c(1,3,4,6,7), width = "10em") %>%
   kableExtra::column_spec(column = c(5), width = "5em") %>%
   kableExtra::column_spec(column = c(2), width = "20em") %>%
+	kableExtra::collapse_rows(columns = c(3,4,6), longtable_clean_cut = TRUE) |>
   kableExtra::kable_styling(latex_options =
                               c("HOLD_position", "repeat_header"),
                             font_size = 6,
@@ -1301,7 +1331,7 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("AverageWAgg(): Averaged best estimates", 1,5) %>%
   kableExtra::pack_rows("LinearWAgg() Linearly-weighted best estimates", 6,10) %>%
   kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths", 11,16) %>%
-  kableExtra::pack_rows("ShiftingWAgg() Weighted by judgemetns that shift most after discussion", 17, 21) %>%
+  kableExtra::pack_rows("ShiftingWAgg() Weighted by judgements that shift most after discussion", 17, 21) %>%
   kableExtra::pack_rows("ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data", 22,23) %>%
   kableExtra::pack_rows("ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution",24,25) %>%
   kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements", 26,27) %>%
