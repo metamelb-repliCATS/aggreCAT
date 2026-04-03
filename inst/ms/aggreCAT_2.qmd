@@ -1003,7 +1003,7 @@ outcome type were inaccurate, and to what degree.
 For example, in @fig-heatmap, for the dataset `confidenceSCOREs` the
 successful replication of most claims was accurately forecasted by most
 methods, except for several claims. Some methods performed better than
-others for some claims (e.g. `ReasonWAgg` for claims `109` and `138`.
+others for some claims (e.g. `ReasonWAgg` for claims `109` and `138`).
 
 Finally, creating bespoke user-defined plots is relatively easy --
 because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or
