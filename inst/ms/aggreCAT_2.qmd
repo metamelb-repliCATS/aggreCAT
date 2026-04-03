@@ -368,7 +368,7 @@ aggregation*: `LinearWAgg()` (linearly-weighted best estimates), `AverageWAgg()`
 
 The specific aggregation *method* is applied according to the `type` argument, whose options are described in each aggregation wrapper functions' help page.
 
-#### 'Tidy' Aggregation and Required Inputs
+#### 'Tidy' Aggregation and Required Inputs {#sec-tidy-aggregation}
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
 [@Wickham:2014vp]. Each aggregation method expects a
@@ -894,7 +894,7 @@ mathematical properties of the aggregation method (@fig-ridgeplot).
 #| message: false
 #| warning: false
 #| fig-pos: H
-#| eval: true
+#| eval: false
 suppressPackageStartupMessages(library(ggridges))
 confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
 ```
