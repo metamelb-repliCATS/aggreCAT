@@ -686,7 +686,7 @@ knitr::include_graphics("images/ReasonWAgg.png")
 ```
 
 :::{.content-visible when-format="pdf"}
-\endlandscape
+\elandscape
 :::
 
 #### User-supplied Weights: Participant-level
