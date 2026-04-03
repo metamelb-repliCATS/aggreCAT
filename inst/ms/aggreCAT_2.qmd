@@ -637,7 +637,7 @@ data_supp_reasons_focal %>%
   filter(paper_id == "24") %>%
   pivot_longer(cols = c(-paper_id, -user_name)) |>
   dplyr::arrange(name) |>
-  tidyr::separate(name, into = c("reason_num", "reason"), sep = "_") |>
+  tidyr::separate(name, into = c("reason_num", "reason"), sep = " ", extra = "merge") |>
   select(-reason) |>
   group_by(paper_id, user_name) |>
   pivot_wider(names_from = reason_num) |>
