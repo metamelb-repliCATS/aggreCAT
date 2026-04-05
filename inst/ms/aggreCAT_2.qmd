@@ -32,6 +32,46 @@ format:
       journal:
         cite-shortnames: true
         type: article
+    aog-article-pdf:
+      default: true
+      knitr:
+        opts_chunk:
+          dev: "cairo_pdf"
+      keep-tex: true
+      papersize: A4
+      fontsize: 11pt
+      mainfont: Libertinus Serif
+      sansfont: Jost
+      toc: false
+      number-sections: true
+      number-depth: 3
+      urlcolor: blue
+      include: false
+      echo: false
+      error: true
+      header-includes:
+        - \usepackage[utf8]{inputenc}
+        - \usepackage{amsmath}
+        - \usepackage{amsfonts}
+        - \usepackage{mathtools}
+        - \usepackage{pdflscape}
+        # - \usepackage{amssymb}
+        - \usepackage{xcolor}
+        - \usepackage{booktabs, caption, longtable, colortbl, array}
+        - \usepackage[font=small,labelfont={bf,small}]{caption}
+        - \usepackage{multirow}
+        - \usepackage{wrapfig}
+        - \usepackage{float}
+        - \usepackage{pdflscape}
+        - \usepackage{tabu}
+        - \usepackage{threeparttable}
+        - \usepackage{threeparttablex}
+        - \usepackage[normalem]{ulem}
+        - \usepackage{makecell}
+        - \newcommand{\blandscape}{\begin{landscape}}
+        - \newcommand{\elandscape}{\end{landscape}}
+        - \usepackage{underscore}
+        - \usepackage{fancyvrb}
     jss-html:
         number-depth: 4
         default-style: true
@@ -41,27 +81,41 @@ format:
 author:
     # use this syntax to add text on several lines
     # To add another line, use \AND at the end of the previous one as above
-  - name: 'Elliot Gould^[School of Ecosystem and Forest Sciences, University of Melbourne]'
+  - name: 'Elliot Gould'
     email: 'elliot.gould (at) unimelb.edu.au'
     orcid: '0000-0002-6585-538X'
     affiliations: 'University of Melbourne'
-    address: |
-      | School of Forest and Ecosystem Sciences
-      | University of Melbourne, Parkville, Victoria 3010
+    affiliation:
+      - ref: 1
   - name: "Charles T. Gray"
-    affiliations: 'Newcastle University'
+    affiliation:
+      - ref: 1
   - name: "Aaron Willcox"
-    affiliations:  'University of Melbourne'
     orcid: '0000-0003-2536-2596'
+    affiliation:
+      - ref: 1
   - name: "Rose O'Dea"
-    affiliations: 'University of New South Wales'
     orcid: '0000-0001-8177-5075'
+    affiliation:
+      - ref: 1
   - name: "Rebecca Groenewegen"
-    affiliations:  'University of Melbourne'
     orcid: '0000-0001-9177-8536'
+    affiliation:
+      - ref: 1
   - name: 'David P. Wilkinson'
     orcid: '0000-0002-9560-6499'
-    affiliations: 'University of Melbourne'
+    affiliation:
+      - ref: 1
+affiliations:
+  - id: 1
+    department: The University of Melbourne
+    name: School of Agriculture, Food and Ecosystem Sciences
+    address: |
+      | School of Agriculture, Food and Ecosystem Sciences
+      | University of Melbourne, Parkville, Victoria 3010
+  - id: 2
+    department: The University of Melbourne
+    name: School of Historical and Philosophical Studies
 tbl-cap-location: "top"
 abstract: |
   Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 29 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for over 4000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
@@ -93,7 +147,6 @@ library(kableExtra)
 library(tinytable)
 ```
 
-
 ```{r}
 #| include: false
 #| message: false
@@ -103,7 +156,6 @@ options(crayon.enabled = TRUE,
         cli.num_colors = 256)
 fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
-
 
 ```{=html}
 <style>
@@ -604,9 +656,8 @@ To reflect the fact that individuals may vary systematically in the interval wid
 
 Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` rescales the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-IndIntWAgg].
 
-$$
-w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}
-$$ {#eq-weightnIndivInterval}
+$$w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}$$
+ {#eq-weightnIndivInterval}
 
 $$
 \hat{p}_c\left(IndIntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{nIndivInterval}_{i,c}  B_{i,c}
@@ -682,7 +733,7 @@ If all participants are missing a reasoning score, the log-odds transformed best
 #| results: asis
 #| column: body-outset
 #| fig-width: 12
-knitr::include_graphics("images/ReasonWAgg.png")
+knitr::include_graphics(here::here("inst/ms/images/ReasonWAgg.png"))
 ```
 
 :::{.content-visible when-format="pdf"}
@@ -738,10 +789,10 @@ In these cases, if the user wish to filter aggregated estimates for a particular
 #| label: focal-claim-BayTriVar-filtered
 #| echo: true
 #| error: true
-focal_claims %>%
-  dplyr::filter(paper_id == "108") |>
-  BayesianWAgg(type = "BayTriVar",
-  percent_toggle = TRUE)
+# focal_claims %>%
+#   dplyr::filter(paper_id == "108") |>
+#   BayesianWAgg(type = "BayTriVar",
+#   percent_toggle = TRUE)
 ```
 
 ## An illustrative workflow for use in real study contexts {#sec-workflow}
@@ -1237,7 +1288,7 @@ human forecasts is required.
 \blandscape
 :::
 
-:::: {#tbl-method-summary-table tbl-cap-location="top" tbl-cap="Summary of aggregation methods and functions, including data requirements and sources."}
+::::: {#tbl-method-summary-table tbl-cap-location="top" tbl-cap="Summary of aggregation methods and functions, including data requirements and sources."}
 ::: {.content-hidden unless-format="html"}
 ```{r}
 #| column: page
@@ -1327,11 +1378,8 @@ aggreCAT:::method_summary_table %>%
   kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
 
 ```
-
 :::
-
-::::
-
+:::::
 
 ## Listings {.unnumbered}
 
@@ -1460,7 +1508,4 @@ policy of the Government, and no official endorsement should be
 inferred.
 :::
 
-
-::: {.content-hidden unless-format="html"}
 ## References {.unnumbered}
-:::
