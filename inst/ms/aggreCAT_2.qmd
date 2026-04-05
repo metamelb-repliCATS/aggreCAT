@@ -271,7 +271,7 @@ behavioural consensus.
 :::: callout
 ::: {#ideaProtocol}
 
-## Box 1: The repliCATS IDEA Protocol
+## Box 1: The repliCATS IDEA Protocol {.unnumbered}
 
 The repliCATS project used the IDEA protocol in the context of forecasting the replicability of Social and Behavioural Science (SBS) claims [@Fraser:2021]. Participants were asked to estimate the probability (0–100%) that a direct replication would produce a statistically significant effect in the same direction as the original claim, providing a best estimate plus lower and upper bounds [@hemming2017, figure 1]. Participants also provided brief justifications and supplementary ratings (e.g., comprehensibility, plausibility, and involvement in the original study).
 
@@ -440,19 +440,17 @@ study dataset supplied with the [aggreCAT]{.pkg} package.
 :::: {.callout}
 ::: {#aggWorkflow}
 
-## Box 2: Aggregation Workflow Blueprint {.unnumbered}
+## Box 2: Aggregation Workflow {.unnumbered}
 
-All aggregation wrapper functions in [aggreCAT]{.pkg} accept the following core arguments: the `type` of aggregation method to be applied to a tibble of `expert_judgements`,  an optional custom method `name` to overwrite the default `type`, a logical value `placeholder` indicating whether to return a fixed confidence score value, and a logical value `percent_toggle` indicating whether percentage inputs should be converted to probabilities.
+All [aggreCAT]{.pkg} aggregation wrappers share four core arguments: `type` (the aggregation method applied to  expert_judgements`), optional `name` (to override the default method label), `placeholder` (return a fixed confidence score), and `percent_toggle` (convert percentage inputs to probabilities).
 
-Some aggregation methods require additional arguments, especially methods that use supplementary data or multiple rounds of elicitation. For instance, `ReasoningWAgg()` requires the argument `reasons` to specify the dataset containing qualitatively coded reasoning categories, and `BayesianWAgg()` requires the argument `priors` to specify the dataset containing Bayesian priors. The core arguments above are common to all aggregation methods, and the additional arguments are method-specific.
+Some methods require extra inputs. For example, `ReasoningWAgg()` requires `reasons` (qualitatively coded reasoning categories), and `BayesianWAgg()` requires `priors` (claim-level prior information).
 
-Each aggregation function follows a standard computational workflow: input data are pre-processed (e.g., filtering by elicitation round and element type) with `pre_process_judgements()`, weights are computed if required, aggregation is performed (typically via `dplyr::summarise()`), and results are post-processed into a tidy output by `post_process_results()`.
+Each wrapper follows the same pipeline: pre-process judgements, compute weights when needed, aggregate, then post-process results into tidy output. Pre-processing with `pre_process_judgements()` standardizes inputs and filters to required rounds, elements, and questions. For example, methods requiring only `round 2` estimates remove other rounds; methods requiring only best estimates retain only that element. By default, single-round methods use `round 2`, and three-point methods use `three_point_best`, unless method-specific requirements or user inputs override this.
 
-Each aggregation function follows a standard workflow. Input data are first standardized and filtered using `pre_process_judgements()`, which ensures only relevant rounds, elements, and questions are included in the aggregation. For instance, if an aggregation method requires only `round 2` judgements, then `pre_process_judgements()` will filter out all other rounds of elicitation. Similarly, if an aggregation method requires only best estimates, then `pre_process_judgements()` will filter out all other elements. This function ensures that only relevant data are included in the aggregation, and that data are in the correct format for aggregation. Note that all aggregation methods that require only a single round of elicitation default to using `round 2` judgements, and all methods that require three-point estimates default to using the `three_point_best` element, unless specified otherwise by the user or overriden by method-specific requirements.
+When weighting is required, un-normalised weights are computed either by dedicated helper functions  or directly in the wrapper function for simpler methods (see @tbl-method-summary-table). For instance, `ReasoningWAgg(type = "ReasonWAgg")` uses `weight_reason()`. Weights are then normalised within claim by dividing each expert’s weight by the claim-level weight sum.
 
-For methods that require weighting, weights are computed prior to aggregation. Some aggregation methods compute weights using separate weighting functions (See @tbl-method-summary-table) according to the method specified in the `type` argument. For instance, if `type = "ReasonWAgg"` for `ReasoningWAgg()`, then weights are computed using the function `weight_reason()`. For methods with simpler weight computations, these are defined in-function, rather than being modularised. The weighting functions compute un-normalised weights based on the specified method, and these weights are then normalised within each claim by dividing by their sum across all experts for that claim.
-
-After weights are computed (if required) and aggregation is performed, results are formatted into a tidy output using `post_process_results()`, which returns one row per claim and the number of experts whose judgements were aggregated, alongside the method name and confidence score.
+Finally, `post_process_results()` returns one row per claim with method name, confidence score, and number of aggregated experts.
 :::
 ::::
 
