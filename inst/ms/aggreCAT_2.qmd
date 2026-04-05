@@ -49,29 +49,10 @@ format:
       include: true
       echo: true
       error: true
+      filters:
+        - pkg-format.lua
       header-includes:
-        - \usepackage[utf8]{inputenc}
-        - \usepackage{amsmath}
-        - \usepackage{amsfonts}
-        - \usepackage{mathtools}
-        - \usepackage{pdflscape}
-        # - \usepackage{amssymb}
-        - \usepackage{xcolor}
-        - \usepackage{booktabs, caption, longtable, colortbl, array}
-        - \usepackage[font=small,labelfont={bf,small}]{caption}
-        - \usepackage{multirow}
-        - \usepackage{wrapfig}
-        - \usepackage{float}
-        - \usepackage{pdflscape}
-        - \usepackage{tabu}
-        - \usepackage{threeparttable}
-        - \usepackage{threeparttablex}
-        - \usepackage[normalem]{ulem}
-        - \usepackage{makecell}
-        - \newcommand{\blandscape}{\begin{landscape}}
-        - \newcommand{\elandscape}{\end{landscape}}
-        - \usepackage{underscore}
-        - \usepackage{fancyvrb}
+        - \input{preamble.tex}
     jss-html:
         number-depth: 4
         default-style: true
