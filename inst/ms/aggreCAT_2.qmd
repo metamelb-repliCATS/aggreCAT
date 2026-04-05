@@ -46,8 +46,8 @@ format:
       number-sections: true
       number-depth: 3
       urlcolor: blue
-      include: false
-      echo: false
+      include: true
+      echo: true
       error: true
       header-includes:
         - \usepackage[utf8]{inputenc}
@@ -1381,7 +1381,52 @@ aggreCAT:::method_summary_table %>%
 :::
 :::::
 
-## Listings {.unnumbered}
+::: {.content-hidden unless-format="pdf"}
+\elandscape
+\newpage
+:::
+
+## Acknowledgments {.unnumbered}
+
+::: callout
+This project is sponsored by the Defense Advanced Research Projects
+Agency (DARPA) under cooperative agreement No.HR001118S0047. The content
+of the information does not necessarily reflect the position or the
+policy of the Government, and no official endorsement should be
+inferred.
+:::
+
+## References {.unnumbered}
+
+:::{#refs}
+:::
+
+:::{=latex}
+\newpage
+:::
+
+## Appendix {.appendix}
+
+### Computational details
+
+The analyses and results in this paper were obtained using the following
+computing environment, versions of `R` and `R` packages:
+
+::: callout
+
+```{R}
+#| label: session-info
+#| prompt: true
+devtools::session_info()
+```
+
+:::
+
+:::{=latex}
+\newpage
+:::
+
+### Listings
 
 ``` {#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
 purrr::map2_dfr(.x = list(AverageWAgg,
@@ -1479,33 +1524,3 @@ p <- plot_judgements %>%
   ggplot2::ylab(ggplot2::element_blank()) +
   ggplot2::scale_colour_brewer(palette = "Set1")
 ```
-
-::: {.content-hidden unless-format="pdf"}
-\elandscape
-\newpage
-:::
-
-## Computational details {.unnumbered}
-
-The analyses and results in this paper were obtained using the following
-computing environment, versions of `R` and `R` packages:
-
-::: callout
-```{R}
-#| label: session-info
-#| prompt: true
-devtools::session_info()
-```
-:::
-
-## Acknowledgments {.unnumbered}
-
-::: callout
-This project is sponsored by the Defense Advanced Research Projects
-Agency (DARPA) under cooperative agreement No.HR001118S0047. The content
-of the information does not necessarily reflect the position or the
-policy of the Government, and no official endorsement should be
-inferred.
-:::
-
-## References {.unnumbered}
