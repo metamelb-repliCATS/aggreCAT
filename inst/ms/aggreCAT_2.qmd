@@ -266,78 +266,29 @@ with permission from Wintle et al.
 
 ### Notation and Problem Formulation
 
-We describe some preliminary mathematical notation used to represent
-each aggregation method. The total number of research claims, $claim$,
-or unique forecasts being assessed, $C$ , is indexed by $c = 1, ..., C$.
-For each claim $c$, an individual $i$ assesses the probability of a
-claim replicating by providing three probabilities: a lower bound
-${L}_{i,c}$, an upper bound ${U}_{i,c}$, and a best estimate $B_{i,c}$,
-satisfying the inequalities: $0 \le Li,c \le Bi,c \le Ui,c \le 1$. Every
-claim $c$ is assessed by multiple experts, with the total total number
-of individuals is denoted by $N$, and is indexed by $i = 1, ..., N$.
-These probabilities are aggregated using one of the aggregation methods
-to obtain a group or aggregate probability, denoted by $\hat{p}_c$. The
-aggregated probability calculated using a specific method is given by
-$\hat{p}_{c}\left(Method \space ID \right)$. Each aggregation is
-assigned a unique $Method \space ID$ which is the abbreviation of the
-mathematical operation used in calculating the weights. Note that all
-Best, Lower and Upper estimates are taken to be `round 2` judgements
-from the repliCATS IDEA protocol [Figure 1](#fig-1), Box 1), unless
-appended by a "1", where they are `round 1` judgements, e.g. $B1_{i,c}$
-denotes the `round 1` Best estimate from individual $i$ for claim $c$.
+First, we describe some preliminary mathematical notation used to represent
+each aggregation method. The total number of forecasts assessed, $C$ , is indexed by $c = 1, ..., C$. Note that in the example dataset provided with [aggreCAT]{.pkg}, each forecast corresponds to a unique research claim, indexed by `paper_id` (see @sec-package-data). Every forecast $c$ is assessed by $N$ experts, is indexed by $i = 1, ..., N$.
 
-Equal-weighting of judgements are less calibrated, accurate and
-informative than weighted aggregation methods where judgements from
-experts who performed well in similar judgement tasks are more heavily
-weighted [@Hanea2021]. Proxies for forecasting performance, such as
-breadth and variability of qualitative reasons used by experts to
-justify their judgements, can be used to form weights in the absence of
-measures of experts' prior performance [@Hanea2021].
+For each forecast, $c$, an individual, $i$ assesses the probability of a some event occurring (e.g., a replication study finding a significant result in the same direction as the original claim) by providing three probabilities: a lower bound ${L}_{i,c}$, an upper bound ${U}_{i,c}$, and a best estimate $B_{i,c}$, satisfying the inequalities: $0 \le Li,c \le Bi,c \le Ui,c \le 1$.  These probabilities are then aggregated using one of the methods provided in [aggreCAT]{.pkg} to obtain a group or aggregate probability, denoted by $\hat{p}_c$. The aggregated probability calculated using a specific method is given by $\hat{p}_{c}\left(Method \space ID \right)$. Each aggregation is assigned a unique $Method \space ID$ which is the abbreviation of the mathematical operation used in calculating the weights.
 
-The aggregation methods other than the [AverageWAgg]{.fct} and Bayesian
-approaches in [aggreCAT]{.pkg} each employ weighting schemes that are
-informed by proxies for good forecasting performance whereby experts'
-estimates are weighted differently by measures of reasoning, engagement,
-openness to changing their mind in light of new facts, evidence or
-opinions presented in the discussion round, extremity of estimates,
-informativeness of estimates, asymmetry of estimate bounds, granularity
-of estimates, and by prior statistical knowledge as measured in a quiz.
+<!-- #TODO insert below
+- [ ] Note that all Best, Lower and Upper estimates are taken to be `round 2` judgements from the repliCATS IDEA protocol [Figure 1](#fig-1), Box 1).
+ -->
+Most aggregators employ weighting schemes that are informed by proxies for good forecasting performance whereby experts' estimates are weighted differently by measures of reasoning, engagement, openness to changing their mind in light of new facts, evidence or opinions presented in the discussion round, extremity of estimates, informativeness of estimates, asymmetry of estimate bounds, granularity of estimates, and by prior statistical knowledge as measured in a quiz.
 
-@eq-weight defines standardised notation for describing weighted linear
-combinations of individual judgements where un-normalised weights are
-denoted by $w\_method$ and normalised weights by $\tilde{w} \_ method$.
-Given that for all aggregation methods weights are
-normalised, and that the normalisation process is the same for each
-aggregation method, the equations for the aggregation methods are
-presented for un-normalised weights.
+@eq-weight defines standardised notation for describing weighted linear combinations of individual judgements where un-normalised weights are denoted by $\tilde{w} \_ method$.
 
 $$
 \hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}
 $$ {#eq-weight}
 
-Each claim *outcome* (i.e. the outcome of a replication study) assumes
-binary values, where the value is 0 if the claim is false, and 1 if the
-claim is true. '`TRUE`' claims are claims where the replication study
-found a significant result in the same direction as the original
-research claim, and '`FALSE`' claims are those where the replication
-study *did not* find a significant result in the same direction as the
-original study.
+The suite of aggregators include methods that weight judgements at the judgement-level, and methods that weight judgements at the participant-level. Judgement-level weights are calculated per participant per forecast, and therefore vary across forecasts for the same individual. Participant-level weights are calculated per participant, and therefore are identical across forecasts for the same participant. We provide the option for user-supplied weights at both levels. Some aggregation methods in [aggreCAT]{.pkg} rescale weights by some calculation of participant behaviour across all forecasts, in which case a secondary index $d = 1, ..., D$ is used to denote the different forecasts that an individual has provided judgements for, where $D$ is the total number of forecasts that an individual has provided judgements for.
 
-By default, weights are calculated across all claims on a
-per-individual, per-claim basis, such that judgements for the same
-individual are weighted differently across all claims they have provided
-judgements for. There are some exceptions to this default: `GranWAgg`,
-`QuizWAgg`, `IndIntWAgg` `IndIntAsymWAgg`, `VarIndIntWAgg`,
-`KitchSinkWAgg`. Note that `IndIntWAgg`, and methods that include its
-weighting function `weight_nIndivInterval()` as a component, re-scale
-weights by a fixed measure across all claims. Hence, for aggregation
-methods that use information from multiple claims other than the target
-claim for which the confidence score is being computed, each individual
-claim $c$ is indexed by $d = 1, ..., C$. Where the default weighting is
-used, this is coded into each function. However, where more complex and
-method-specific weighting methods are used, modularised functions have
-been created for ease of debugging, and where the weighting method is shared across aggregation methods. These function names are prefixed
-with `weight_`.
+For ease of debugging and applications across different aggregators, we make use of `weight_*` functions to calculate weights for methods that require weighting. These functions are called internally within the wrapper functions when needed, see @tbl-method-summary-table for details.
+
+For each forecast $c$, with known outcome, $j$, $j = 1$ if the event occurred and $j = 0$ if the event did not occur. The performance of each method is evaluated by comparing the aggregated confidence scores $\hat{p}_c$ to the known outcomes $j$ using scoring rules, see @sec-evaluation.
+
+> Equal-weighting of judgements are less calibrated, accurate and informative than weighted aggregation methods where judgements from experts who performed well in similar judgement tasks are more heavily weighted [@Hanea2021]. Proxies for forecasting performance, such as breadth and variability of qualitative reasons used by experts to justify their judgements, can be used to form weights in the absence of measures of experts' prior performance [@Hanea2021].
 
 ### Aggregation Wrapper Functions
 
