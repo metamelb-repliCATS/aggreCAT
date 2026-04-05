@@ -292,13 +292,7 @@ For each forecast $c$, with known outcome, $j$, $j = 1$ if the event occurred an
 
 ### Aggregation Wrapper Functions
 
-Although there are 29 aggregation methods in total, we grouped methods
-based on their mathematical properties into eight 'wrapper' functions,
-denoted by the suffix `WAgg`, the abbreviation of *weighted
-aggregation*: `LinearWAgg()` (linearly-weighted best estimates), `AverageWAgg()` (averaged best estimates), `BayesianWAgg()` (Bayesian aggregation methods), `IntervalWAgg()` (linearly-weighted best estimates, with weights influenced by interval-widths), `ShiftingWAgg()` (weights estimates based on shifts in expert opinions between rounds),
-`DistributionWAgg()` (averages distributions constructed from point-estimates across participants), and `ExtremisationWAgg()` (applies extremisation techniques to averaged estimates).
-
-The specific aggregation *method* is applied according to the `type` argument, whose options are described in each aggregation wrapper functions' help page.
+[aggreCAT]{.pkg} provides 29 aggregation methods in total, and these are grouped by type into eight wrapper functions. These functions, denoted by the `*WAgg` suffix (weighted aggregation), are: `AverageWAgg()` (calculations using definitions of the average), `LinearWAgg()` (linear-weighted aggregation), `IntervalWAgg()` (weights calculated from uncertainty bounds), `ShiftingWAgg()` (weights calculated from estimate shifts between rounds), `DistributionWAgg()` (averaged probability distributions constructed from three-point elicitation), `ExtremisationWAgg()` (applies extremisation techniques to averaged estimates), and `BayesianWAgg()` (Bayesian aggregation methods). The specific aggregation *method* is within each wrapper function and is applied according to the `type` argument.
 
 #### 'Tidy' Aggregation and Required Inputs {#sec-tidy-aggregation}
 
