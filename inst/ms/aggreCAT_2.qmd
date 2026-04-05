@@ -367,41 +367,20 @@ can be applied to the same data with the results of all aggregation
 methods row-bound together in a single `tibble` (see the example
 repliCATS workflow in @sec-workflow).
 
-#### Package Datasets
+#### Package Data {#sec-package-data}
 
-The [aggreCAT]{.pkg} package includes several datasets collected by the
-repliCATS project during a pilot study at a two-day workshop in the
-Netherlands in July 2019, at which 25 participants assessed the
-replicability of 25 unique SBS research claims with known outcomes using
-the IDEA protocol [@Hanea2021].
+The [aggreCAT]{.pkg} package includes data collected by the repliCATS project during a pilot study at a two-day workshop in the Netherlands in July 2019, at which 25 participants assessed the replicability of 25 unique social and behavioural science  research claims with known outcomes using the IDEA protocol [@Wintle2023].
 
-The core dataset `data_ratings` is a tidy [data.frame]{.class} of
-probabilistic three-point judgements (lower bound, best estimate, upper
-bound) elicited from participants for each claim, across two rounds of
-elicitation. Additional datasets [@Fraser:2021] capture participants'
-written justifications (`data_justifications`), peer comments and
-ratings (`data_comments`), and three supplementary datasets collected
-externally to the IDEA protocol: a statistical knowledge quiz
-(`data_supp_quiz`), qualitatively coded reasoning categories
-(`data_supp_reasons`), and model-derived Bayesian priors
-(`data_supp_priors`). Known replication outcomes sourced from previous
-large-scale replication projects [@Klein2014; @Klein2018ManyL2;
-@Ebersole2016; @Camerer2018; @aac4716] for a subset of claims are
-provided in `data_outcomes`.
+The dataset is distributed over eight data objects, each containing different types of data collected during the repliCATS project. The core data object `data_ratings` is a tidy [data.frame]{.class} of probabilistic three-point judgements (lower bound, best estimate, upper bound - as percentages) elicited from participants for each claim, across two rounds of elicitation. Additional data objects capture participants' written justifications (`data_justifications`), peer comments and ratings (`data_comments`), and three supplementary datasets collected externally to the IDEA protocol: a statistical knowledge quiz (`data_supp_quiz`), qualitatively coded reasoning categories (`data_supp_reasons`), and model-derived Bayesian priors (`data_supp_priors`).
 
-Full descriptions of each dataset, including variable definitions, data
-structure, and example data, are provided in the [aggreCAT]{.pkg}
-package documentation (`?data_ratings`) and in the Package Datasets
-vignette available on the [aggreCAT]{.pkg} pkgdown website.
+Known replication outcomes sourced from previous large-scale replication projects [@Klein2014; @Klein2018ManyL2; @Ebersole2016; @Camerer2018; @aac4716] for a subset of claims are provided in `data_outcomes`. And confidence scores calculated from the repliCATS dataset using 22 aggregation methods are provided in `data_confidence_scores`.
 
-Every aggregation function requires at minimum the three-point
-probabilistic judgements (`question == "direct_replication"`), however
-some methods require only best estimates
-(`element == "three_point_best"`), and some require multiple rounds of
-elicitation. Only the aggregation method *CompWAgg* additionally
-requires comprehensibility ratings (`question == "comprehension"`). For
-a full summary of each aggregation method, its calling function, and
-data requirements, see @tbl-method-summary-table.
+<!-- #TODO are we going to rerun for all 29 methods? -->
+
+Full descriptions of each data object, are provided in the [aggreCAT]{.pkg} package documentation (`?data_ratings`) and in the Package Datasets vignette available on the [aggreCAT]{.pkg} pkgdown website. For further details about the dataset, see @Wintle2023.
+
+Different aggregators require different minimum data inputs, including the type of judgements elicited (single- or three-point estimates), the number of elicitation rounds (one or two rounds), whether additional data is used to construct weights.
+For a full summary of each aggregation method, its `*WAgg` wrapper function and data requirements, see @tbl-method-summary-table.
 
 ## Demonstrating Mathematical Aggregation with aggreCAT
 
@@ -423,7 +402,7 @@ study dataset supplied with the [aggreCAT]{.pkg} package.
 
 ## Box 2: Aggregation Workflow {.unnumbered}
 
-All [aggreCAT]{.pkg} aggregation wrappers share four core arguments: `type` (the aggregation method applied to  expert_judgements`), optional `name` (to override the default method label), `placeholder` (return a fixed confidence score), and `percent_toggle` (convert percentage inputs to probabilities).
+All [aggreCAT]{.pkg} aggregation wrappers share four core arguments: `expert_judgements` (a tidy [data.frame]{.class} of expert judgements), `type` (the aggregation method applied to  `expert_judgements`), optional `name` (to override the default method label), `percent_toggle` (convert percentage inputs to probabilities), `round_2_filter` (filter to round 2 estimates), `placeholder` (returns a fixed confidence score), and .
 
 Some methods require extra inputs. For example, `ReasoningWAgg()` requires `reasons` (qualitatively coded reasoning categories), and `BayesianWAgg()` requires `priors` (claim-level prior information).
 
@@ -437,11 +416,7 @@ Finally, `post_process_results()` returns one row per claim with method name, co
 
 ### Prepare Focal Claim Data {#sec-focal-claims}
 
-Below we subset the dataset `data_ratings` to include a sample of four claims
-with judgements from five randomly-sampled participants. From these
-focal claims, we select a target claim for which we will apply an
-exemplar aggregation method from each mathematical aggregator
-(@tbl-focal-claim ).
+Below we subset the dataset `data_ratings` to include a sample of four focal claims with judgements from five randomly-sampled participants.
 
 ```{r}
 #| label: focal-claim-selection
@@ -461,21 +436,7 @@ focal_claims <- focal_claims %>%
 focal_claims
 ```
 
-`focal_claims` contains `r focal_claims  |> nrow()` rows across four claims and five
-participants. Each row records a single `element` of a participant's
-assessment for a given `paper_id` and `round`. The `question` column
-distinguishes the three-point probabilistic judgements about
-replicability (`direct_replication`, with `element` values
-`three_point_lower`, `three_point_best`, and `three_point_upper`) from
-supplementary assessment data: participants' plausibility ratings
-(`belief_binary`), comprehensibility ratings (`comprehension`), and
-involvement in the original study (`involved_binary`). All aggregation
-functions require at minimum the `direct_replication` rows, and expect
-data in this long, tidy format.
-
-We will work with data from a subset of participants from a single claim
-`108` for a subset of participants who assessed this claim
-(@tbl-focal-claim).
+We select a single claim from these focal claims to demonstrate the application of different aggregation methods, and the different data requirements of each method (@tbl-focal-claim).
 
 ```{r}
 #| label: tbl-focal-claim
@@ -504,7 +465,7 @@ focal_claims %>%
   tt()
 ```
 
-### Unweighted Linear Combination of Judgements
+### Unweighted Linear Combination of Judgements {#sec-AverageWAgg}
 
 We first demonstrate the mechanics of mathematical aggregation and its implementation using the [aggreCAT]{.pkg} package with the simplest, unweighted aggregation wrapper, `AverageWAgg()`.
 
@@ -546,11 +507,11 @@ Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differenti
 For a given claim $c$, a vector of weights for all
 individuals is calculated from their upper and lower estimates using the
 weighting function, [weight_interval]{.fct}, which calculates the
-interval width for each individual's estimate for the target claim [@eq-weightInterval]. The
+interval width for each individual's estimate for the target claim (@eq-weightInterval). The
 weights are then normalised across the claim (by dividing each weight by
 the sum of all weights per claim). Normalised weights are then
 multiplied by the corresponding individual's best estimates $B_{i,c}$
-and summed together into a single confidence score [@eq-IntWAgg].
+and summed together into a single confidence score (@eq-IntWAgg).
 
 $$
 w\_Interval_{i,c} = \frac{1}{U_{i,c} - L_{i,c}}
