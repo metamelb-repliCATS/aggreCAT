@@ -329,18 +329,9 @@ For a full summary of each aggregation method, its `*WAgg` wrapper function and 
 
 ## Demonstrating Mathematical Aggregation with aggreCAT
 
-Here we demonstrate how judgements elicited from a diverse group of
-individuals may be mathematically aggregated for a single forecasting
-problem, using the datasets provided by [aggreCAT]{.pkg}. We illustrate
-the internal mechanics of the weighting methods and the different data
-requirements of each of the different types of aggregators. Each
-group of methods differs in the type of judgements elicited (single- or
-three-point estimates), the number of elicitation rounds (one or two
-rounds), whether judgements are weighted at the judgement-, participant- or claim-level, the type of mathematical operation used to combine judgements, whether weights are calculated internally or require user-supplied data.
+Here we demonstrate how judgements elicited from a diverse group of individuals may be mathematically aggregated for a single forecasting problem, using the dataset provided in [aggreCAT]{.pkg}. We illustrate the internal mechanics of the weighting methods and the different data requirements for several different aggregation methods to illustrate how aggregation methods differ in the type of judgements elicited (single- or three-point estimates), number of elicitation rounds (one or two rounds), whether judgements are weighted at the judgement- or participant- level, the type of mathematical operation used to combine judgements, and whether weights are calculated internally or require user-supplied data.
 
-Here we demonstrate the application of aggregation methods for each
-group of methods using a set of 'focal claims' selected from the pilot
-study dataset supplied with the [aggreCAT]{.pkg} package.
+Here we demonstrate the application of aggregation methods for each group of methods using a set of 'focal claims' selected from the pilot study dataset supplied with the [aggreCAT]{.pkg} package.
 
 :::: {.callout}
 ::: {#aggWorkflow}
