@@ -121,9 +121,9 @@ affiliations:
     name: Evidence Synthesis Lab
 tbl-cap-location: "top"
 abstract: |
-  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective probabilities from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 29 unique aggregation methods for combining individual judgements into a single, probabilistic measure. The aggregation methods were developed as a part of the Defense Advanced Research Projects Agency (DARPA) 'Systematizing Confidence in Open Research and Evidence' (SCORE) programme, which aims to generate confidence scores or estimates of 'claim credibility' for over 4000 research claims from the social and behavioural sciences. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
-keywords: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, R]
-keywords-formatted: [mathematical aggregation, expert judgement, DARPA SCORE, replicability, "[R]{.proglang}"]
+  Structured elicitation protocols, such as the IDEA protocol, may be used to elicit expert judgements in the form of subjective estimates from multiple experts. Judgements from individual experts about a particular phenomena must therefore be mathematically aggregated into a single prediction. The process of aggregation may be complicated when judgements are elicited with uncertainty bounds, and also when there are several rounds of elicitation. This paper presents the new R package [aggreCAT]{.pkg}, which provides 29 unique aggregation methods for combining individual judgements into a single, probabilistic measure. We provide several worked examples illustrating the underlying mechanics of the aggregation methods. We also describe a general workflow for using the software in practice to facilitate uptake of this software for appropriate use-cases.
+keywords: [mathematical aggregation, expert judgement, replicability, R]
+keywords-formatted: [mathematical aggregation, expert judgement,replicability, "[R]{.proglang}"]
 bibliography: bibliography.bib
 editor:
   markdown:
