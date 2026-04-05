@@ -207,14 +207,11 @@ existing software tools are closed-source, are irreproducible, or
 written in programming languages rarely used by ecologists or
 metascientists. Methods implemented in R, one of the most widely used
 programming languages in the life sciences [@Gao2025], are limited in
-scope, or have been archived from CRAN. For instance, the [R]{.proglang}
-[@R] package [expert]{.pkg} provides three models of expert opinion to
-combine judgements elicited from groups of experts (CITE) , and
-[SHELF]{.pkg} implements only a single method (weighted linear pool) for
-aggregating expert judgements (CITE). Other [R]{.proglang} packages
-providing methods to mathematically aggregate expert judgements do so
-for non-point predictions, for example, [opera]{.pkg}, which generates
-time-series predictions (CITE).
+scope, or have been archived from CRAN. The [R]{.proglang}
+[@R] [SHELF]{.pkg} implements only a single method (weighted linear pool) for
+aggregating expert judgements [@Oakley2026], but integrates with [expertsurv]{.pkg} to incorporate
+expert judgement into survival analysis [@Cooney2023], while [opera]{.pkg} provides a suite of methods for aggregating time-series predictions, but does not implement methods for aggregating point-predictions with uncertainty bounds [@Gaillard2026].
+
 
 aggreCAT is an open, reliable, and modular R package for the
 mathematical aggregation of expert elicitation data with a
