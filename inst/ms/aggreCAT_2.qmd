@@ -531,13 +531,11 @@ focal_claims %>%
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
-Other aggregation wrapper functions that do not weight judgements include: `ExtremisationWAgg()`, `DistributionWAgg()`, and `BayesianWAgg()` (see @sec-BayesianWAgg).
-
-<!-- #TODO check the above sentence true?? -->
+Other aggregation wrapper functions that do not weight judgements include: `ExtremisationWAgg()`, `DistributionWAgg()` (see @tbl-tbl-method-summary-table).
 
 ### Weighted Linear Combination of Judgements
 
-Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to proxies of forecasting performance. Weights may be calculated at the judgement-level or participant-level. At the judgement-level, weights are calculated from the elicited judgements themselves for each claim. At the participant-level, weights may be calculated by additional information about the individual, such as their performance on a quiz of statistical knowledge, or their average interval width across all claims. In the latter case, participant-level weights are calculated from the elicited judgements themselves but are rescaled across all claims to reflect systematic differences in the elicited judgements across all claims for each individual.
+Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to proxies of forecasting performance. Weights may be calculated at the judgement-level or participant-level. Judgement-level weights are calculated per participant per claim, and therefore vary across claims for the same participant. Participant-level weights are calculated per participant, and therefore are identical across claims for the same participant.
 
 #### Judgement-level Weights
 
