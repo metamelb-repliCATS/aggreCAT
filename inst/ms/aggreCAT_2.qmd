@@ -446,8 +446,7 @@ We select a single claim from these focal claims to demonstrate the application 
 #| echo: false
 #| results: asis
 focal_claims %>%
-  filter(question == "direct_replication",
-         paper_id == "108",
+  filter(paper_id == "108",
          round == "round_2") %>%
   pivot_wider(names_from = element,
               values_from = value) %>%
