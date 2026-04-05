@@ -213,36 +213,30 @@ aggregating expert judgements [@Oakley2026], but integrates with [expertsurv]{.p
 expert judgement into survival analysis [@Cooney2023], while [opera]{.pkg} provides a suite of methods for aggregating time-series predictions, but does not implement methods for aggregating point-predictions with uncertainty bounds [@Gaillard2026].
 
 
-aggreCAT is an open, reliable, and modular R package for the
+[aggreCAT]{.pkg} is an open, reliable, and modular R package for the
 mathematical aggregation of expert elicitation data with a
 straightforward user interface. The [aggreCAT]{.pkg} package was developed by
 the by the repliCATS (Collaborative Assessment for Trustworthy Science)
 project [@Fraser:2021] as part of the DARPA SCORE (Systematizing
 Confidence in Open Research and Evidence) program [@alipourfard2021],
-which aimed to generate quantitative 'Confidence Scores' — estimates of
+which aimed to generate quantitative 'confidence scores' — estimates of
 the likely replicability of research claims from the social and
 behavioural sciences — for use as a proxy measure of credibility in the
 absence of direct replication effort. [aggreCAT]{.pkg} arose from the need for a
 software solution to reliably conduct mathematical aggregation at scale.
 The repliCATS project used [aggreCAT]{.pkg} to aggregate expert elicited
-judgements into Confidence Scores for $> 4000$ claims [@Mody2026]. While
+judgements into confidence scores for $> 4000$ claims [@Mody2026]. While
 originally a bespoke implementation for repliCATS, we have since
 developed [aggreCAT]{.pkg} into a more general R package that can handle most
 types of elicitation data requiring mathematical aggregation, allowing
 for wider applicability.
 
-The repliCATS project developed 29 different methods for mathematically
-aggregating judgements elicited from groups of experts into Confidence
-Scores [@Hanea2021]. We developed the [aggreCAT]{.pkg} package to
-implement these aggregation methods and deliver Confidence Scores for
-over 4000 SBS research claims as a part of the DARPA SCORE project.
-
-aggreCAT provides a suite of 29 aggregation methods that explore
+[aggreCAT]{.pkg} provides a suite of 29 aggregation methods that explore
 different approaches to mathematical aggregation from straightforward
 arithmetic calculations to Bayesian statistical models. In addition, we
 provide extra functionality such as plotting functions and performance
 evaluation against known outcomes. While the repliCATS project uses the
-IDEA protocol to structure their elicitation process (CROSS-REF), we
+IDEA protocol to structure the elicitation process [@hemming2017], we
 have generalised [aggreCAT]{.pkg} to work with a variety of elicitation
 protocols. [aggreCAT]{.pkg} fills a large void in open software for aggregating
 elicited judgements, providing enormous benefit to researchers and
@@ -250,7 +244,7 @@ decision makers across any field of research.
 
 In this paper we give an overview of the [aggreCAT]{.pkg} package so
 that researchers may apply any of the the aggregation functions
-described in [@Hanea2021] and provided by [aggreCAT]{.pkg} to their own expert
+described in [@Hanea2021], as well as additional methods provided by [aggreCAT]{.pkg}, to their own expert
 elicitation datasets where mathematical aggregation is required.
 
 ## Mathematically Aggregating Expert Judgements
@@ -326,7 +320,7 @@ Next, in the *Estimate* phase, individuals are asked to provide a second
 set of three-point probablistic judgements.
 
 During the fourth phase, *Aggregate*, judgements are mathematically
-aggregated into a single Confidence Score, or in the repliCATS case,
+aggregated into a single confidence score, or in the repliCATS case,
 forecast of replicability.
 
 ![The IDEA protocol as deployed by the repliCATS project (reproduced
@@ -403,7 +397,7 @@ judgements for. There are some exceptions to this default: `GranWAgg`,
 weighting function `weight_nIndivInterval()` as a component, re-scale
 weights by a fixed measure across all claims. Hence, for aggregation
 methods that use information from multiple claims other than the target
-claim for which the Confidence Score is being computed, each individual
+claim for which the confidence score is being computed, each individual
 claim $c$ is indexed by $d = 1, ..., C$. Where the default weighting is
 used, this is coded into each function. However, where more complex and
 method-specific weighting methods are used, modularised functions have
@@ -494,7 +488,7 @@ study dataset supplied with the [aggreCAT]{.pkg} package.
 
 ## Box 2: Aggregation Workflow Blueprint {.unnumbered}
 
-All aggregation wrapper functions in [aggreCAT]{.pkg} accept the following core arguments: the `type` of aggregation method to be applied to a tibble of `expert_judgements`,  an optional custom method `name` to overwrite the default `type`, a logical value `placeholder` indicating whether to return a fixed Confidence Score value, and a logical value `percent_toggle` indicating whether percentage inputs should be converted to probabilities.
+All aggregation wrapper functions in [aggreCAT]{.pkg} accept the following core arguments: the `type` of aggregation method to be applied to a tibble of `expert_judgements`,  an optional custom method `name` to overwrite the default `type`, a logical value `placeholder` indicating whether to return a fixed confidence score value, and a logical value `percent_toggle` indicating whether percentage inputs should be converted to probabilities.
 
 Some aggregation methods require additional arguments, especially methods that use supplementary data or multiple rounds of elicitation. For instance, `ReasoningWAgg()` requires the argument `reasons` to specify the dataset containing qualitatively coded reasoning categories, and `BayesianWAgg()` requires the argument `priors` to specify the dataset containing Bayesian priors. The core arguments above are common to all aggregation methods, and the additional arguments are method-specific.
 
@@ -626,7 +620,7 @@ interval width for each individual's estimate for the target claim [@eq-weightIn
 weights are then normalised across the claim (by dividing each weight by
 the sum of all weights per claim). Normalised weights are then
 multiplied by the corresponding individual's best estimates $B_{i,c}$
-and summed together into a single Confidence Score [@eq-IntWAgg].
+and summed together into a single confidence score [@eq-IntWAgg].
 
 $$
 w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}
@@ -654,7 +648,7 @@ Other wrapper functions that weight judgements at the judgement-level include `S
 
 To reflect the fact that individuals may vary systematically in the interval widths they give across claims, participant weights may be re-scaled. For instance, the `IndIntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals for the target claim $c$ relative to the individual's average interval width across all claims. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals on average across all claims are more confident in their estimates, and therefore may be more accurate forecasters.
 
-Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` rescales the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-IndIntWAgg].
+Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` rescales the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score [@eq-IndIntWAgg].
 
 $$w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}$$
  {#eq-weightnIndivInterval}
@@ -675,7 +669,7 @@ For example, the `ReasonWAgg` method implemented by the `ReasoningWAgg()` functi
 
 The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
-The weighting function `weight_reason()` counts the number of unique reasons used by each participant for each claim, and uses this as a proxy for forecasting performance [@eq-weightReason]. The more unique reasons a participant uses to justify their estimates, the higher their weight in the aggregation. The weights are then normalised across the claim and multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single Confidence Score [@eq-ReasonWAgg].
+The weighting function `weight_reason()` counts the number of unique reasons used by each participant for each claim, and uses this as a proxy for forecasting performance [@eq-weightReason]. The more unique reasons a participant uses to justify their estimates, the higher their weight in the aggregation. The weights are then normalised across the claim and multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score [@eq-ReasonWAgg].
 
 $$
 w\_reason_{i,c}= \sum_{r=1}^R I\left(\text{reason}_{i,c} = r\right)
@@ -708,7 +702,7 @@ data_supp_reasons_focal %>%
   tt()
 ```
 
-Then we apply the `ReasonWAgg` method to compute a Confidence Score for claim `24` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for that claim.
+Then we apply the `ReasonWAgg` method to compute a confidence score for claim `24` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for that claim.
 
 ```{r}
 #| label: focal-claim-ReasonWAgg
@@ -729,7 +723,7 @@ If all participants are missing a reasoning score, the log-odds transformed best
 ```{r}
 #| label: fig-ReasonWAgg
 #| echo: false
-#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `24`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of Confidence Scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
+#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `24`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
 #| results: asis
 #| column: body-outset
 #| fig-width: 12
@@ -764,7 +758,7 @@ In this way users can specify their own custom weights in addition to those desc
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
 
-The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participants' best estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The Confidence Score is then derived from the mean of the posterior distribution.
+The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participants' best estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The confidence score is then derived from the mean of the posterior distribution.
 
 While `BayTriVar` assumes default priors, a second method `type = "BayPriorsAgg"` applies user-supplied informative priors. This method follows the same methodology as `BayTriVar`, but instead of using default priors, it allows users to specify their own prior estimates for each claim using the `priors` argument.
 
@@ -800,7 +794,7 @@ In these cases, if the user wish to filter aggregated estimates for a particular
 Throughout the SCORE program, 752 participants assessed more than 4000
 unique claims using the repliCATS IDEA protocol, between 7th July 2019
 and 25 November 2021 (CITE). This required batch aggregation over multiple
-claims, and to generate Confidence Scores for multiple claims. We also
+claims, and to generate confidence scores for multiple claims. We also
 applied multiple aggregation methods to the same claim so that we could
 compare and evaluate the different aggregation methods. We expect that
 these are not uncommon use-cases, therefore we now
@@ -823,7 +817,7 @@ AverageWAgg(data_ratings, type = "ArMean")
 ### Comparing and Evaluating Aggregation Methods
 
 In real study contexts, such as that of the repliCATS project in the
-DARPA SCORE program, it is of interest to compute Confidence Scores
+DARPA SCORE program, it is of interest to compute confidence scores
 using multiple aggregation methods so that their performance might be
 evaluated and compared. Since different methods offer different
 mathematical properties, and therefore might be more or less appropriate
@@ -871,7 +865,7 @@ confidenceSCOREs <-
 confidenceSCOREs
 ```
 
-After generating Confidence Scores using various aggregation methods, we
+After generating confidence scores using various aggregation methods, we
 then evaluate the forecasts. We evaluated the repliCATS pilot study
 forecasts against the outcomes of previous, high-powered replication
 studies [@Hanea2021], which are contained in the `data_outcomes` dataset
@@ -889,7 +883,7 @@ aggreCAT::data_outcomes %>%
 ```
 
 The function [confidence_score_evaluation]{.fct} evaluates a set of
-aggregated forecasts or Confidence Scores against a set of known or
+aggregated forecasts or confidence scores against a set of known or
 observed outcomes, returning the Area Under the ROC Curve (AUC), the
 Brier score, and classification accuracy of each method
 (@tbl-multi-method-workflow-eval):
@@ -927,7 +921,7 @@ aggreCAT::confidence_score_evaluation(
 ### Visualising Judgements, Confidence Scores and Forecast Performance
 
 We include two functions for visualising comparison and evaluation of
-Confidence Scores across multiple aggregation methods for a suite of
+confidence scores across multiple aggregation methods for a suite of
 forecasts from multiple participants,
 [confidence_scores_ridgeplot]{.fct} and [confidencescore_heatmap]{.fct}.
 [confidence_scores_ridgeplot]{.fct} generates ridgeline plots using
@@ -940,7 +934,7 @@ mathematical properties of the aggregation method (@fig-ridgeplot).
 #| label: fig-ridgeplot
 #| fig-height: 6
 #| fig-width: 12
-#| fig-cap: "Ridgeline plots illustrating the distribution of aggregated Confidence Scores for the tibble `confidenceSCOREs`, grouped according to mathematical properties of each method."
+#| fig-cap: "Ridgeline plots illustrating the distribution of aggregated confidence scores for the tibble `confidenceSCOREs`, grouped according to mathematical properties of each method."
 #| echo: true
 #| message: false
 #| warning: false
@@ -952,7 +946,7 @@ confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
 
 ```{r}
 #| label: fig-aggregation
-#| fig-cap: "Confidence Scores for the aggregation methods `ArMean`, `BayTriVar`, `IntWAgg`, `IndIntWAgg`, `ReasonWAgg` and `ShiftWAgg` for four claims. Participants' three-point best estimates are displayed as black points, and their upper and lowr bounds displayed as black error bars. Confidence Scores are displayed as points within the upper row of plots. Lines are displayed vertically at the 0.5 probability mark, and their colour denotes the observed outcome under previous large-scale replication projects."
+#| fig-cap: "Confidence scores for the aggregation methods `ArMean`, `BayTriVar`, `IntWAgg`, `IndIntWAgg`, `ReasonWAgg` and `ShiftWAgg` for four claims. Participants' three-point best estimates are displayed as black points, and their upper and lowr bounds displayed as black error bars. Confidence scores are displayed as points within the upper row of plots. Lines are displayed vertically at the 0.5 probability mark, and their colour denotes the observed outcome under previous large-scale replication projects."
 #| message: false
 #| fig-align: center
 #| warning: false
@@ -1009,7 +1003,7 @@ p
 #| warning: false
 #| eval: true
 #| fig-pos: H
-#| fig-cap: "Blocked heatmap visualisation of confidence scores is useful for visually comparing aggregation methods and evaluating them against a set of known outcomes. In this example, Confidence Scores generated by six aggregation methods for the repliCATS pilot study are visualised for 25 claims. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate are presented in heatmap blocks on the right. Confidence Scores generated by different aggregation methods are positioned along the y-axis, with vertical groupings according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the Confidence Scores from the known outcomes."
+#| fig-cap: "Blocked heatmap visualisation of confidence scores is useful for visually comparing aggregation methods and evaluating them against a set of known outcomes. In this example, confidence scores generated by six aggregation methods for the repliCATS pilot study are visualised for 25 claims. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate are presented in heatmap blocks on the right. Confidence scores generated by different aggregation methods are positioned along the y-axis, with vertical groupings according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the confidence scores from the known outcomes."
 
 
 suppressPackageStartupMessages(library(ggforce))
@@ -1035,7 +1029,7 @@ While [confidencescore_heatmap]{.fct} is useful for comparison of
 aggregation methods, [confidencescore_heatmap]{.fct} is useful for
 visual comparative *evaluation* of aggregation methods.
 [confidencescore_heatmap]{.fct} generates heatmaps of forecasted
-Confidence Scores for each aggregation method included in the dataset
+confidence scores for each aggregation method included in the dataset
 provided to the argument `confidence_scores` organised with unique
 aggregation methods on the y-axis, and separate forecasts or `paper_id`s
 along the y-axis (@fig-heatmap). The heatmap is blocked vertically
@@ -1059,15 +1053,15 @@ others for some claims (e.g. `ReasonWAgg` for claims `109` and `138`).
 Finally, creating bespoke user-defined plots is relatively easy --
 because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or
 [tibble]{.class}s, we can easily manipulate the raw judgements,
-aggregated Confidence Scores and outcome data to plot them with
+aggregated confidence scores and outcome data to plot them with
 [ggplot2]{.pkg} [@ggplot2016] or other visualisation package. Below we
-plot the aggregated Confidence Scores along with the three-point
+plot the aggregated confidence scores along with the three-point
 judgements (subset using [preprocess_judgements]{.fct} on
 `focal_claims`, transforming judgements in percentages to probabilities
 by setting `percent_toggle` to `TRUE`, @fig-aggregation,
 @lst-confidencescores).
 
-### Extending aggreCAT to other datasets
+### Extending [aggreCAT]{.pkg} to other datasets
 
 The aggregation methods supplied by the [aggreCAT]{.pkg} package can
 easily be applied to other forecasting problems. The only requirements
@@ -1154,7 +1148,7 @@ green_turtles <-
 
 We can then apply multiple aggregation methods, using the same approach
 implemented for aggregation of the `focal_claims` dataset
-(@lst-BYO-data-aggregate), with aggregated Confidence Scores shown in
+(@lst-BYO-data-aggregate), with aggregated confidence scores shown in
 @tbl-BYO-data-aggregate. Note that because the judgements are absolute
 values rather than probabilities, we set the `percent_toggle` argument
 for each aggregation wrapper function to [FALSE]{.val}
