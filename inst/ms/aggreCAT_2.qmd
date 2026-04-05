@@ -276,7 +276,7 @@ For each forecast, $c$, an individual, $i$ assesses the probability of a some ev
  -->
 Most aggregators employ weighting schemes that are informed by proxies for good forecasting performance whereby experts' estimates are weighted differently by measures of reasoning, engagement, openness to changing their mind in light of new facts, evidence or opinions presented in the discussion round, extremity of estimates, informativeness of estimates, asymmetry of estimate bounds, granularity of estimates, and by prior statistical knowledge as measured in a quiz.
 
-@eq-weight defines standardised notation for describing weighted linear combinations of individual judgements where un-normalised weights are denoted by $\tilde{w} \_ method$.
+@eq-weight defines standardised notation for describing weighted linear combinations of individual judgements where normalised weights are denoted by $\tilde{w} \_ method$.
 
 $$
 \hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}
@@ -287,6 +287,8 @@ The suite of aggregators include methods that weight judgements at the judgement
 For ease of debugging and applications across different aggregators, we make use of `weight_*` functions to calculate weights for methods that require weighting. These functions are called internally within the wrapper functions when needed, see @tbl-method-summary-table for details.
 
 For each forecast $c$, with known outcome, $j$, $j = 1$ if the event occurred and $j = 0$ if the event did not occur. The performance of each method is evaluated by comparing the aggregated confidence scores $\hat{p}_c$ to the known outcomes $j$ using scoring rules, see @sec-evaluation.
+
+<!-- #TODO not sure where to put the following: -->
 
 > Equal-weighting of judgements are less calibrated, accurate and informative than weighted aggregation methods where judgements from experts who performed well in similar judgement tasks are more heavily weighted [@Hanea2021]. Proxies for forecasting performance, such as breadth and variability of qualitative reasons used by experts to justify their judgements, can be used to form weights in the absence of measures of experts' prior performance [@Hanea2021].
 
@@ -338,7 +340,7 @@ Here we demonstrate the application of aggregation methods for each group of met
 
 ## Box 2: Aggregation Workflow {.unnumbered}
 
-All [aggreCAT]{.pkg} aggregation wrappers share four core arguments: `expert_judgements` (a tidy [data.frame]{.class} of expert judgements), `type` (the aggregation method applied to  `expert_judgements`), optional `name` (to override the default method label), `percent_toggle` (convert percentage inputs to probabilities), `round_2_filter` (filter to round 2 estimates), `placeholder` (returns a fixed confidence score), and .
+All [aggreCAT]{.pkg} aggregation wrappers share four core arguments: `expert_judgements` (a tidy [data.frame]{.class} of expert judgements), `type` (the aggregation method applied to  `expert_judgements`), optional `name` (to override the default method label), `percent_toggle` (convert percentage inputs to probabilities), and `round_2_filter` (filter to round 2 estimates).
 
 Some methods require extra inputs. For example, `ReasoningWAgg()` requires `reasons` (qualitatively coded reasoning categories), and `BayesianWAgg()` requires `priors` (claim-level prior information).
 
@@ -619,7 +621,7 @@ In these cases, if the user wish to filter aggregated estimates for a particular
 
 Throughout the SCORE program, 752 participants assessed more than 4000
 unique claims using the repliCATS IDEA protocol, between 7th July 2019
-and 25 November 2021 (CITE). This required batch aggregation over multiple
+and 25 November 2021 (@Tyner2026). This required batch aggregation over multiple
 claims, and to generate confidence scores for multiple claims. We also
 applied multiple aggregation methods to the same claim so that we could
 compare and evaluate the different aggregation methods. We expect that
@@ -640,7 +642,7 @@ The  modular and tidy design of the aggregation functions in [aggreCAT]{.pkg} (s
 AverageWAgg(data_ratings, type = "ArMean")
 ```
 
-### Comparing and Evaluating Aggregation Methods
+### Comparing and Evaluating Aggregation Methods {#sec-evaluation}
 
 In real study contexts, such as that of the repliCATS project in the
 DARPA SCORE program, it is of interest to compute confidence scores
