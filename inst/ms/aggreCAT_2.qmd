@@ -455,7 +455,9 @@ focal_users <- focal_claims %>%
   dplyr::slice_sample(n = 5)
 # filter out non-focal users from focal claims
 focal_claims <- focal_claims %>%
-  dplyr::right_join(focal_users, by = "user_name")
+  dplyr::right_join(focal_users, by = "user_name") |>
+  dplyr::filter(stringr::str_detect(element, "three_point")) |>
+  dplyr::select(-question)
 focal_claims
 ```
 
@@ -531,7 +533,7 @@ focal_claims %>%
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
-Other aggregation wrapper functions that do not weight judgements include: `ExtremisationWAgg()`, `DistributionWAgg()` (see @tbl-tbl-method-summary-table).
+Other aggregation wrapper functions that do not weight judgements include: `ExtremisationWAgg()` `DistributionWAgg()` (see @tbl-method-summary-table).
 
 ### Weighted Linear Combination of Judgements
 
@@ -539,7 +541,7 @@ Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differenti
 
 #### Judgement-level Weights
 
-`IntervalWAgg` uses judgement-level weights by generating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
+`IntervalWAgg` uses judgement-level weights by aggregating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
 
 For a given claim $c$, a vector of weights for all
 individuals is calculated from their upper and lower estimates using the
@@ -551,11 +553,11 @@ multiplied by the corresponding individual's best estimates $B_{i,c}$
 and summed together into a single confidence score [@eq-IntWAgg].
 
 $$
-w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}
+w\_Interval_{i,c} = \frac{1}{U_{i,c} - L_{i,c}}
 $$ {#eq-weightInterval}
 
 $$
-\hat{p}_c\left(IntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{IntWAgg}_{i,c}  B_{i,c}
+\hat{p}_c(IntWAgg) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 $$ {#eq-IntWAgg}
 
 ```{r}
