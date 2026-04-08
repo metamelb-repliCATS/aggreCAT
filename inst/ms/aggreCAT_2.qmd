@@ -276,7 +276,7 @@ For each forecast, $c$, an individual, $i$ assesses the probability of a some ev
  -->
 Most aggregators employ weighting schemes that are informed by proxies for good forecasting performance whereby experts' estimates are weighted differently by measures of reasoning, engagement, openness to changing their mind in light of new facts, evidence or opinions presented in the discussion round, extremity of estimates, informativeness of estimates, asymmetry of estimate bounds, granularity of estimates, and by prior statistical knowledge as measured in a quiz.
 
-@eq-weight defines standardised notation for describing weighted linear combinations of individual judgements where normalised weights are denoted by $\tilde{w} \_ method$.
+@eq-weight defines standardised notation for describing weighted linear combinations of individual judgements where normalised weights are denoted by $\tilde{w} \_ method$:
 
 $$
 \hat{p}_c\left(Method \space ID \right) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{method}_{i,c}  B_{i,c}
@@ -287,10 +287,6 @@ The suite of aggregators include methods that weight judgements at the judgement
 For ease of debugging and applications across different aggregators, we make use of `weight_*` functions to calculate weights for methods that require weighting. These functions are called internally within the wrapper functions when needed, see @tbl-method-summary-table for details.
 
 The performance of each method is evaluated by comparing the aggregated confidence scores $\hat{p}_c$ to the known outcomes $j$ using scoring rules, see @sec-evaluation. For each forecast $c$, with known outcome, $j$, $j = 1$ if the event occurred and $j = 0$ if the event did not occur.
-
-<!-- #TODO not sure where to put the following: -->
-
-> Equal-weighting of judgements are less calibrated, accurate and informative than weighted aggregation methods where judgements from experts who performed well in similar judgement tasks are more heavily weighted [@Hanea2021]. Proxies for forecasting performance, such as breadth and variability of qualitative reasons used by experts to justify their judgements, can be used to form weights in the absence of measures of experts' prior performance [@Hanea2021].
 
 ### Aggregation Wrapper Functions
 
@@ -398,7 +394,7 @@ focal_claims %>%
          three_point_best,
          three_point_upper) %>%
   rename(`Claim ID` = paper_id,
-         `User Name` = user_name,
+         `Participant` = user_name,
          `Lower Bound` = three_point_lower,
          `Best Estimate` = three_point_best,
          `Upper Bound` = three_point_upper) %>%
@@ -464,7 +460,7 @@ $$ {#eq-IntWAgg}
 
 To account for systematic differences in interval widths across claims, participant-level weights can be rescaled. In `IndIntWAgg`, also applied `IntervalWAgg()` each participant’s best estimate $B_{i,c}$ is weighted by their interval width for claim $c$ relative to their average interval width across all claims. Narrower average intervals imply greater confidence and potentially better forecasting performance.
 
-`weight_nIndivInterval()` computes this rescaled weight [@eq-weightnIndivInterval]. The weights are then normalised within each claim, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score [@eq-IndIntWAgg].
+`weight_nIndivInterval()` computes this rescaled weight (@eq-weightnIndivInterval). The weights are then normalised within each claim, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score (@eq-IndIntWAgg).
 
 $$
 w\_nIndivInterval_{i,c}= \frac{1}{\frac{U_{i,c} - L_{i,c}}{max({ (U_{i,d} - L_{i,d}): d = 1,\dots, C})}}
@@ -481,12 +477,12 @@ The `IntervalWAgg()` wrapper function implements several methods that calculate 
 #| prompt: true
 #| echo: true
 purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"),
-               .f = ~ IntervalWAgg(focal_claim_108 =  , type = .x))
+               .f = ~ IntervalWAgg(focal_claim_108, type = .x))
 ```
 
 Other wrapper functions that weight estimates at the judgement-level include: `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)); `ReasonWAgg()` which weights estimates based on the number of unique reasoning categories used by experts to justify their estimates for the target claim (see @sec-ReasonWAgg); and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg`, which downweights extreme estimates.
 
-<!-- ? Check with @Doi90 about whether to merge the worked example code together for both functions, or whether I should separate them back out again and drop the example for IndIntWAgg -->
+<!-- ? Check with @Doi90 about whether to merge the worked example code together for both functions, or whether I should separate them back out again and drop the example for IndIntWAgg. Also, now that I've used VarIndIntWAgg below, that gives us 3 IntervalWAgg examples in a row... -->
 
 #### Participant-level Weights
 
@@ -511,13 +507,13 @@ focal_claim_108 |>
 
 See `?IntervalWAgg` for other methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds, and see @tbl-method-summary-table for a summary of all methods that use participant-level weights.
 
-### Weighted Linear Combination of Judgements with User-supplied Weights
+### Weighted Linear Combination of Judgements with Weights Constructed from User-supplied Data
 
-Several aggregation methods require user-supplied data in addition to the three-point estimates elicited from experts.
-
-For example, the `ReasonWAgg` method implemented by the `ReasoningWAgg()` function requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates, and the `QuizWAgg` method implemented by the `LinearWAgg()` function requires a dataset of participants' scores on a statistical knowledge quiz. These user-supplied datasets are used to calculate weights for each participant's best estimate $B_{i,c}$ according to the specific weighting scheme of each method.
+[aggreCAT]{.pkg} provides a suite of methods that require user-supplied data to calculate weights, which are implemented in the `ReasoningWAgg()` and `BayesianWAgg()` (see @sec-BayesianWAgg) wrapper functions. In addition, `LinearWAgg()` provides a flexible wrapper function that allows users to apply bespoke user-supplied weights to the best estimates $B_{i,c}$ at either the judgement-level or participant-level.
 
 #### User-supplied Weights: Judgement-level {#sec-ReasonWAgg}
+
+<!-- ? But the weights aren't actually user-supplied, user-supplied data is used to construct the weights -->
 
 The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
@@ -531,43 +527,54 @@ $$
 \hat{p}_c\left(ReasonWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{ReasonWAgg}_{i,c}  B_{i,c}
 $$ {#eq-ReasonWAgg}
 
-Below we apply the `ReasonWAgg` method to the focal claim `24` using the [ReasoningWAgg()]{.fct} wrapper function. First, we prepare the dataset of reasons by filtering `data_supp_reasons` to include only the focal users who assessed claim `24`.
+Below we apply the `ReasonWAgg` method to the focal claim `108` using the [ReasoningWAgg()]{.fct} wrapper function. First, we prepare the dataset of reasons by filtering `data_supp_reasons` to include only the focal users who assessed claim `108`.
 
-We reshape the output to illustrate the number of unique reasoning categories used by each participant to justify their estimates for claim `24` (@tbl-focal-claim-reasons). Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0) to justify their estimates for claim `24`. The total number of unique reasons used by each participant is then calculated by summing across the reason category columns.
+We reshape the output to illustrate the number of unique reasoning categories used by each participant to justify their estimates for claim `108` (@tbl-focal-claim-reasons). Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0) to justify their estimates for claim `108`. The total number of unique reasons used by each participant is then calculated by summing across the reason category columns.
+
+
+```{r}
+#| label: focal-claim-reason-data-prep
+#| prompt: true
+#| echo: true
+data_supp_reasons_focal <- data_supp_reasons %>%
+  right_join(focal_users, by = "user_name")
+```
 
 ```{r}
 #| label: tbl-focal-claim-reasons
-#| tbl-cap: "Reasoning Data for Focal Claim 24: The number of unique reasoning categories used by each participant to justify their estimates for claim `24`. Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0) to justify their estimates for claim `24`. The total number of unique reasons used by each participant is calculated by summing across the reason category columns."
+#| tbl-cap: |
+#|     Reasoning Data for focal claim `108` for a sample of reasoning categories. The dataset of reasons is used to construct weights for the `ReasonWAgg` method, which weights each participant's best estimate by the number of unique reasoning categories they used to justify their estimates for the target claim (see `?data_supp_reasons` for details).  Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0). The total number of unique reasons used by each participant is calculated by summing across the reason category columns.
 #| tbl-cap-location: top
-data_supp_reasons_focal <- data_supp_reasons %>%
-  right_join(focal_users, by = "user_name")
-
+#| echo: false
 data_supp_reasons_focal %>%
-  filter(paper_id == "24") %>%
-  pivot_longer(cols = c(-paper_id, -user_name)) |>
+  filter(paper_id == "108") %>%
+  select(-paper_id) |>
+  pivot_longer(cols = -user_name) |>
   dplyr::arrange(name) |>
   tidyr::separate(name, into = c("reason_num", "reason"), sep = " ", extra = "merge") |>
-  select(-reason) |>
-  group_by(paper_id, user_name) |>
-  pivot_wider(names_from = reason_num) |>
+  select(-reason_num) |>
+  group_by(reason)  |>
+  filter(sum(value)>0)  |>
+  group_by(user_name) |>
+  pivot_wider(names_from = reason) |>
   dplyr::arrange(user_name) |>
-  tt()
+  rename("Participant" = user_name) |>
+  tt(width = c(1.5, 2,2,2,2))
 ```
 
-Then we apply the `ReasonWAgg` method to compute a confidence score for claim `24` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for that claim.
+Then we apply the `ReasonWAgg` method to compute a confidence score for claim `108` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for that claim.
 
 ```{r}
 #| label: focal-claim-ReasonWAgg
 #| prompt: true
 #| echo: true
 focal_claims %>%
-  dplyr::filter(paper_id == "24") %>%
+  dplyr::filter(paper_id == "108") %>%
   ReasoningWAgg(type = "ReasonWAgg",
                 reasons = data_supp_reasons_focal)
 ```
 
-If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target claim.
-
+<!-- TODO mv to pkgdown articles: function defaults to LoArMean in situations where zero scores. If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target claim. -->
 
 :::{.content-visible when-format="pdf"}
 \blandscape
@@ -576,7 +583,7 @@ If all participants are missing a reasoning score, the log-odds transformed best
 ```{r}
 #| label: fig-ReasonWAgg
 #| echo: false
-#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `24`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
+#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
 #| results: asis
 #| column: body-outset
 #| fig-width: 12
