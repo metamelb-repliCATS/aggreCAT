@@ -383,6 +383,7 @@ We select a single claim from these focal claims to demonstrate the application 
 #| eval: true
 #| echo: false
 #| results: asis
+#| tbl-pos: "H"
 focal_claims %>%
   filter(paper_id == "108",
          round == "round_2") %>%
@@ -429,6 +430,7 @@ focal_claims %>%
 #| results: hold
 #| echo: false
 #| out-width: "600px"
+#| fig-pos: "[H]"
 knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 ```
 
