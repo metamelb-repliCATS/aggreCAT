@@ -584,7 +584,7 @@ focal_claims %>%
 ```{r}
 #| label: fig-ReasonWAgg
 #| echo: false
-#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
+#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data_supp_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
 #| results: asis
 #| column: body-outset
 #| fig-width: 25
@@ -620,6 +620,12 @@ In this way users can specify their own custom weights in addition to those desc
 ### Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
+
+In addition we have Bayesian WAgg that has two variants for fitting Bayesian model to determine the confidence score.
+BayesianWAgg family of aggregators / methods, does some Bayesian model calculations to determine the confidence.
+
+Drop bit about assuming normal distributiobn, people can go look at details of model on the help page.
+Claim-specific prior distribution means rather than letting htem be some default prior.
 
 The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participants' best estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The confidence score is then derived from the mean of the posterior distribution.
 
@@ -769,6 +775,7 @@ aggreCAT::confidence_score_evaluation(
 ```{r}
 #| label: tbl-multi-method-workflow-eval
 #| tbl-cap: "AUC and Classification Accuracy for forecasts from the aggregation methods 'ShiftWAgg', 'ArMean', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'BayTriVar' for a subset of the repliCATS pilot study claims (`focal_claims`) and known outcomes."
+#| tbl-pos: "H"
 #| message: false
 #| results: asis
 #| echo: false
