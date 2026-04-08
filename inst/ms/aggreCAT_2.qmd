@@ -490,9 +490,26 @@ Other wrapper functions that weight estimates at the judgement-level include: `S
 
 #### Participant-level Weights
 
-<!-- TODO VarIndIntWAgg is eg of participant-level weights without external data -->
+`VarIndIntWAgg` uses participant-level weights by weighting each participant's best estimate $B_{i,c}$ by the variability of their interval widths across forecasts relative to other participants. This method assumes that participants who show greater variability in their interval widths across forecasts are more responsive to the supporting evidence of different claims, and therefore more likely to be accurate forecasters.
 
-Related participant-level methods include `IndIntAsymWAgg()`, `VarIndIntWAgg()`, and `KitchSinkWAgg()`, which rescale weights using interval asymmetry or variability across claims and participants.
+$$
+w\_varIndivInterval_{i}= var{(U_{i,c} - L_{i,c}): c = 1,\dots, C}
+$$ {#eq-weightVarIndInt}
+
+Where the variance $\texttt{var}$ is calculated across claims for each participant, and the weights are then normalised across participants, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score [@eq-VarIndIntWAgg]:
+$$
+\hat{p}_c\left( VarIndIntWAgg \right) = \sum_{i=1}^N \tilde{w}\_varIndInt_{i}B_{i,c}
+$$ {#eq-VarIndIntWAgg}
+
+```{r}
+#| label: focal-claim-VarIndIntWAgg
+#| prompt: true
+#| echo: true
+focal_claim_108 |>
+  IntervalWAgg(type = "VarIndIntWAgg")
+```
+
+See `?IntervalWAgg` for other methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds, and see @tbl-method-summary-table for a summary of all methods that use participant-level weights.
 
 ### Weighted Linear Combination of Judgements with User-supplied Weights
 
