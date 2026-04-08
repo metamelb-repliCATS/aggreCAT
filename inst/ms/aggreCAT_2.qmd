@@ -586,8 +586,9 @@ focal_claims %>%
 #| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data\_supp\_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
 #| results: asis
 #| column: body-outset
-#| fig-width: 12
-knitr::include_graphics(here::here("inst/ms/images/ReasonWAgg.png"))
+#| fig-width: 25
+magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
+  magick::image_resize(geometry = "180%")
 ```
 
 :::{.content-visible when-format="pdf"}
