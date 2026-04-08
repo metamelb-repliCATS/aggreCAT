@@ -438,7 +438,11 @@ Other aggregation wrapper functions that do not weight judgements include: `Extr
 
 ### Weighted Linear Combination of Judgements
 
-Many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to proxies of forecasting performance. Weights may be calculated at the judgement-level or participant-level. Judgement-level weights are calculated per participant per claim, and therefore vary across claims for the same participant. Participant-level weights are calculated per participant, and therefore are identical across claims for the same participant.
+To improve the calibration, accuracy and informativeness of aggregated judgements, many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to both measures and proxies of forecasting performance. In the absence of measures of experts' prior performance, proxies for forecasting performance, such as breadth and variability of qualitative reasons used by experts to justify their judgements (see @sec-ReasonWAgg), can be used to form weights [@Hanea2021].
+
+Weights may be calculated at the judgement-level or participant-level. Judgement-level weights are calculated per participant per claim, and therefore vary across claims for the same participant. Participant-level weights are calculated per participant, and therefore are identical across claims for the same participant.
+
+<!-- ? duplicated content abouve types of weights, which one should be removed? -->
 
 #### Judgement-level Weights
 
@@ -497,7 +501,7 @@ Several aggregation methods require user-supplied data in addition to the three-
 
 For example, the `ReasonWAgg` method implemented by the `ReasoningWAgg()` function requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates, and the `QuizWAgg` method implemented by the `LinearWAgg()` function requires a dataset of participants' scores on a statistical knowledge quiz. These user-supplied datasets are used to calculate weights for each participant's best estimate $B_{i,c}$ according to the specific weighting scheme of each method.
 
-#### User-supplied Weights: Judgement-level
+#### User-supplied Weights: Judgement-level {#sec-ReasonWAgg}
 
 The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
