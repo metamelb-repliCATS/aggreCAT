@@ -598,19 +598,19 @@ magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
 
 #### User-supplied Weights: Participant-level
 
-Using the `LinearWAgg()` function, any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`). We show how to apply the `QuizWAgg` method described in [@Hanea2021] to the focal claims dataset, weighting each participant's best estimate $B_{i,c}$ by their score on a statistical knowledge quiz, assuming that participants with higher statistical knowledge are more likely to be accurate forecasters. See `?data_supp_quiz` for details of the quiz dataset, including the quiz questions and scoring.
+Using the `LinearWAgg()` wrapper function, any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`). We show how to apply the `QuizWAgg` method described in [@Hanea2021] to the focal claim with `LinearWAgg()`, which weights each participant's best estimate $B_{i,c}$ by their score on a on a statistical knowledge quiz under the assumption that participants with higher statistical knowledge are more likely to be accurate forecasters, and therefore should be weighted more heavily in the aggregation than those with lower statistical knowledge.
+
+`weights` are constructed from the `data_supp_quiz` dataset,  which is a dataset of quiz scores for each participant in the repliCATS pilot study (See `?data_supp_quiz` for details about the dataset). The column containing the quiz scores is renamed to `weight`, as required by `LinearWAgg()`. The weights are then normalised across participants, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score. We specify the `name` of the method to be returned in the output as "QuizWAgg":
 
 ```{r}
 #| label: focal-claim-QuizWAgg
 #| message: false
 #| echo: true
 LinearWAgg(
-  expert_judgements = focal_claims |>
-    dplyr::filter(paper_id == "108"),
+  focal_claim_108,
   type = "Participant",
   weights = data_supp_quiz |>
-    rename(weight = quiz_score) |>
-    right_join(focal_users, by = "user_name"),
+    rename(weight = quiz_score),
   name = "QuizWAgg"
 )
 ```
