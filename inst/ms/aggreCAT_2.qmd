@@ -322,7 +322,7 @@ The dataset is distributed over eight data objects, each containing different ty
 
 Known replication outcomes sourced from previous large-scale replication projects [@Klein2014; @Klein2018ManyL2; @Ebersole2016; @Camerer2018; @aac4716] for a subset of claims are provided in `data_outcomes`. And confidence scores calculated from the repliCATS dataset using 22 aggregation methods are provided in `data_confidence_scores`.
 
-<!-- #TODO are we going to rerun for all 29 methods? -->
+<!-- TODO are we going to rerun for all 29 methods? -->
 
 Full descriptions of each data object, are provided in the [aggreCAT]{.pkg} package documentation (`?data_ratings`) and in the Package Datasets vignette available on the [aggreCAT]{.pkg} pkgdown website. For further details about the dataset, see @Wintle2023.
 
@@ -371,10 +371,12 @@ focal_claims <- focal_claims %>%
   dplyr::right_join(focal_users, by = "user_name") |>
   dplyr::filter(stringr::str_detect(element, "three_point")) |>
   dplyr::select(-question)
+focal_claim_108 <- focal_claims  |>
+  dplyr::filter(paper_id == "108")
 focal_claims
 ```
 
-We select a single claim from these focal claims to demonstrate the application of different aggregation methods, and the different data requirements of each method (@tbl-focal-claim).
+Above we selected a single focal claim to demonstrate the application of different aggregation methods, and the different data requirements of each method (@tbl-focal-claim).
 
 ```{r}
 #| label: tbl-focal-claim
@@ -442,7 +444,7 @@ To improve the calibration, accuracy and informativeness of aggregated judgement
 
 Weights may be calculated at the judgement-level or participant-level. Judgement-level weights are calculated per participant per claim, and therefore vary across claims for the same participant. Participant-level weights are calculated per participant, and therefore are identical across claims for the same participant.
 
-<!-- ? duplicated content abouve types of weights, which one should be removed? -->
+<!-- ? duplicated content above types of weights, which one should be removed? -->
 
 #### Judgement-level Weights
 
@@ -458,24 +460,11 @@ $$
 \hat{p}_c(IntWAgg) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 $$ {#eq-IntWAgg}
 
-`IntervalWAgg()` wrapper function implements several methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds (see `?IntervalWAgg`). Let's apply the `IntWAgg` method to the focal claim `108` (@tbl-focal-claim) with the `IntervalWAgg()` wrapper function by specifying `type = "IntWAgg"`:
+#### Judgement-level Weights Rescaled by Participant-level Behaviour
 
-```{r}
-#| label: focal-claim-IntWAgg
-#| prompt: true
-#| echo: true
-focal_claims %>%
-  dplyr::filter(paper_id == "108") %>%
-  IntervalWAgg(type = "IntWAgg")
-```
+To account for systematic differences in interval widths across claims, participant-level weights can be rescaled. In `IndIntWAgg`, also applied `IntervalWAgg()` each participant’s best estimate $B_{i,c}$ is weighted by their interval width for claim $c$ relative to their average interval width across all claims. Narrower average intervals imply greater confidence and potentially better forecasting performance.
 
-Other wrapper functions that weight estimates at the judgement-level include: `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)); `ReasonWAgg()` which weights estimates based on the number of unique reasoning categories used by experts to justify their estimates for the target claim (see @sec-ReasonWAgg); and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg`, which downweights extreme estimates.
-
-#### Participant-level Weights
-
-To reflect the fact that individuals may vary systematically in the interval widths they give across claims, participant weights may be re-scaled. For instance, the `IndIntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals for the target claim $c$ relative to the individual's average interval width across all claims. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals on average across all claims are more confident in their estimates, and therefore may be more accurate forecasters.
-
-Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` rescales the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score [@eq-IndIntWAgg].
+`weight_nIndivInterval()` computes this rescaled weight [@eq-weightnIndivInterval]. The weights are then normalised within each claim, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score [@eq-IndIntWAgg].
 
 $$
 w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}
@@ -485,7 +474,25 @@ $$
 \hat{p}_c\left(IndIntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{nIndivInterval}_{i,c}  B_{i,c}
 $$ {#eq-IndIntWAgg}
 
-Other methods that rescale weights at the participant-level include `IndIntAsymWAgg()`, which weights each participant's best estimate $B_{i,c}$ by the asymmetry of their uncertainty intervals for the target claim $c$ relative to the individual's average interval asymmetry across all claims, `VarIndIntWAgg()`, which weights each participant's best estimate $B_{i,c}$ by the variability of their interval widths across all claims, and `KitchSinkWAgg()`, which weights each participant's best estimate $B_{i,c}$ by the variability of their interval widths across all claims relative to the variability of interval widths across all participants.
+The `IntervalWAgg()` wrapper function implements several methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds (see `?IntervalWAgg`). Let's apply both the `IntWAgg` and `IndIntWAgg` methods to the focal claim `108` (@tbl-focal-claim) using `IntervalWAgg()`, by specifying the `type` argument accordingly:
+
+```{r}
+#| label: focal-claim-IntWAgg
+#| prompt: true
+#| echo: true
+purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"),
+               .f = ~ IntervalWAgg(focal_claim_108 =  , type = .x))
+```
+
+Other wrapper functions that weight estimates at the judgement-level include: `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)); `ReasonWAgg()` which weights estimates based on the number of unique reasoning categories used by experts to justify their estimates for the target claim (see @sec-ReasonWAgg); and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg`, which downweights extreme estimates.
+
+<!-- ? Check with @Doi90 about whether to merge the worked example code together for both functions, or whether I should separate them back out again and drop the example for IndIntWAgg -->
+
+#### Participant-level Weights
+
+<!-- TODO VarIndIntWAgg is eg of participant-level weights without external data -->
+
+Related participant-level methods include `IndIntAsymWAgg()`, `VarIndIntWAgg()`, and `KitchSinkWAgg()`, which rescale weights using interval asymmetry or variability across claims and participants.
 
 ### Weighted Linear Combination of Judgements with User-supplied Weights
 
