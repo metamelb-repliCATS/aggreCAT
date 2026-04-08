@@ -448,14 +448,7 @@ Weights may be calculated at the judgement-level or participant-level. Judgement
 
 `IntervalWAgg` uses judgement-level weights by aggregating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
 
-For a given claim $c$, a vector of weights for all
-individuals is calculated from their upper and lower estimates using the
-weighting function, [weight_interval]{.fct}, which calculates the
-interval width for each individual's estimate for the target claim (@eq-weightInterval). The
-weights are then normalised across the claim (by dividing each weight by
-the sum of all weights per claim). Normalised weights are then
-multiplied by the corresponding individual's best estimates $B_{i,c}$
-and summed together into a single confidence score (@eq-IntWAgg).
+For a given claim $c$, a vector of weights for all individuals is calculated from their upper and lower estimates using the weighting function, [weight_interval]{.fct}, which calculates the interval width for each individual's estimate for the target claim (@eq-weightInterval). The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score (@eq-IntWAgg).
 
 $$
 w\_Interval_{i,c} = \frac{1}{U_{i,c} - L_{i,c}}
@@ -464,6 +457,8 @@ $$ {#eq-weightInterval}
 $$
 \hat{p}_c(IntWAgg) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 $$ {#eq-IntWAgg}
+
+`IntervalWAgg()` wrapper function implements several methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds (see `?IntervalWAgg`). Let's apply the `IntWAgg` method to the focal claim `108` (@tbl-focal-claim) with the `IntervalWAgg()` wrapper function by specifying `type = "IntWAgg"`:
 
 ```{r}
 #| label: focal-claim-IntWAgg
@@ -474,11 +469,7 @@ focal_claims %>%
   IntervalWAgg(type = "IntWAgg")
 ```
 
-The wrapper functions `DistributionWAgg()`, which calculates judgement-level weights, which calculates the arithmetic mean of distributions from individual estimates, and `ExtremisationWAgg()`, which applies extremisation techniques to averaged estimates, also use judgement-level weights, as do some of the `BayesianWAgg` methods (see @sec-BayesianWAgg).
-
-Other wrapper functions that weight judgements at the judgement-level include `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)), and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg()`, which downweights extreme estimates.
-
-<!-- #TODO check this with David! Is the above true? -->
+Other wrapper functions that weight estimates at the judgement-level include: `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)); `ReasonWAgg()` which weights estimates based on the number of unique reasoning categories used by experts to justify their estimates for the target claim (see @sec-ReasonWAgg); and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg`, which downweights extreme estimates.
 
 #### Participant-level Weights
 
@@ -486,8 +477,9 @@ To reflect the fact that individuals may vary systematically in the interval wid
 
 Hence, participants with narrower intervals on average across all claims are weighted more heavily in the aggregation than those with wider intervals on average across all claims. The weighting function `weight_nIndivInterval()` rescales the interval width for each individual's estimate for the target claim relative to their average interval width across all claims [@eq-weightnIndivInterval]. The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score [@eq-IndIntWAgg].
 
-$$w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}$$
- {#eq-weightnIndivInterval}
+$$
+w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}
+$$ {#eq-weightnIndivInterval}
 
 $$
 \hat{p}_c\left(IndIntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{nIndivInterval}_{i,c}  B_{i,c}
