@@ -1,5 +1,5 @@
 ---
-title: "aggreCAT: an R Package for Mathematically Aggregating Expert Judgements"
+title: "[aggreCAT]{.pkg}: an R Package for Mathematically Aggregating Expert Judgements"
 format:
     jss-pdf:
       number-sections: true
@@ -26,6 +26,7 @@ format:
         - \newcommand{\elandscape}{\end{landscape}}
         - \usepackage{underscore}
         - \usepackage{fancyvrb}
+        - \usepackage[section]{placeins}
         # - \input{preamble.tex}
       x11names: true
       message: false
