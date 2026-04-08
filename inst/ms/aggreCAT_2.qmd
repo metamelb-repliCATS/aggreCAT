@@ -286,7 +286,7 @@ The suite of aggregators include methods that weight judgements at the judgement
 
 For ease of debugging and applications across different aggregators, we make use of `weight_*` functions to calculate weights for methods that require weighting. These functions are called internally within the wrapper functions when needed, see @tbl-method-summary-table for details.
 
-For each forecast $c$, with known outcome, $j$, $j = 1$ if the event occurred and $j = 0$ if the event did not occur. The performance of each method is evaluated by comparing the aggregated confidence scores $\hat{p}_c$ to the known outcomes $j$ using scoring rules, see @sec-evaluation.
+The performance of each method is evaluated by comparing the aggregated confidence scores $\hat{p}_c$ to the known outcomes $j$ using scoring rules, see @sec-evaluation. For each forecast $c$, with known outcome, $j$, $j = 1$ if the event occurred and $j = 0$ if the event did not occur.
 
 <!-- #TODO not sure where to put the following: -->
 
