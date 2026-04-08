@@ -467,11 +467,11 @@ To account for systematic differences in interval widths across claims, particip
 `weight_nIndivInterval()` computes this rescaled weight [@eq-weightnIndivInterval]. The weights are then normalised within each claim, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score [@eq-IndIntWAgg].
 
 $$
-w\_nIndivInterval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}} \times \frac{1}{\frac{1}{C}\sum_{d=1}^C (U_{i,d} - L_{i,d})}
+w\_nIndivInterval_{i,c}= \frac{1}{\frac{U_{i,c} - L_{i,c}}{max({ (U_{i,d} - L_{i,d}): d = 1,\dots, C})}}
 $$ {#eq-weightnIndivInterval}
 
 $$
-\hat{p}_c\left(IndIntWAgg \right ) = \frac{1}{N}\sum_{i=1}^N \tilde{w}\_{nIndivInterval}_{i,c}  B_{i,c}
+\hat{p}_c\left( IndIntWAgg \right) = \sum_{i=1}^N \tilde{w}\_nIndivInterval_{i,c}B_{i,c}
 $$ {#eq-IndIntWAgg}
 
 The `IntervalWAgg()` wrapper function implements several methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds (see `?IntervalWAgg`). Let's apply both the `IntWAgg` and `IndIntWAgg` methods to the focal claim `108` (@tbl-focal-claim) using `IntervalWAgg()`, by specifying the `type` argument accordingly:
