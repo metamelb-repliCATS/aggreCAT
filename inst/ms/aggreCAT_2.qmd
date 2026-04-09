@@ -164,91 +164,23 @@ pre.fansi + pre.fansi {
 
 # Introduction {#sec-introduction}
 
-Expert judgement is frequently used to inform forecasting about
-uncertain future events across a range of fields and applications
-including ecological management and decision making [@Legge2022],
-biosecurity risk analyses [@Wittmann2015], replicability forecasts
-[@Mody2026], and horizon scanning exercises [@Sutherland2017].
-Judgements from groups of experts tend to perform better than a single
-expert [@Goossens2008], and it is best-practice to elicit judgements
-from diverse groups so that group members can bring "different
-perspectives, cross-examine each others' reasoning, and share
-information", however judgements or forecasts must then be distilled
-into a single forecast, ideally accompanied by estimates of uncertainty
-around those estimates [@Hanea2021]. Judgements from multiple experts
-may be combined into a single score using either behavioural approaches
-that force experts into forming consensus, or by using mathematical
-approaches [@Goossens2008].
+Expert judgement is frequently used to inform forecasting about uncertain future events across a range of fields and applications including ecological management and decision making [@Legge2022], biosecurity risk analyses [@Wittmann2015], replicability forecasts [@Mody2026], and horizon scanning exercises [@Sutherland2017]. Judgements from groups of experts tend to perform better than a single expert [@Goossens2008], and it is best-practice to elicit judgements from diverse groups so that group members can bring "different perspectives, cross-examine each others' reasoning, and share information", however judgements or forecasts must then be distilled into a single forecast, ideally accompanied by estimates of uncertainty around those estimates [@Hanea2021]. Judgements from multiple experts may be combined into a single score using either behavioural approaches that force experts into forming consensus, or by using mathematical approaches [@Goossens2008].
 
-Aggregated elicited judgements form a critical component of
-decision-making across multiple contexts, and while there are a variety
-of methods for mathematically aggregating expert judgements into single
-point-predictions, there has been a dearth of accessible tools for
-implementing any aggregation more complex than linear averages. Many
-existing software tools are closed-source, are irreproducible, or
-written in programming languages rarely used by ecologists or
-metascientists. Methods implemented in R, one of the most widely used
-programming languages in the life sciences [@Gao2025], are limited in
-scope, or have been archived from CRAN. The [R]{.proglang}
-[@R] [SHELF]{.pkg} implements only a single method (weighted linear pool) for
-aggregating expert judgements [@Oakley2026], but integrates with [expertsurv]{.pkg} to incorporate
-expert judgement into survival analysis [@Cooney2023], while [opera]{.pkg} provides a suite of methods for aggregating time-series predictions, but does not implement methods for aggregating point-predictions with uncertainty bounds [@Gaillard2026].
+Aggregated elicited judgements form a critical component of decision-making across multiple contexts, and while there are a variety of methods for mathematically aggregating expert judgements into single point-predictions, there has been a dearth of accessible tools for implementing any aggregation more complex than linear averages. Many existing software tools are closed-source, are irreproducible, or written in programming languages rarely used by ecologists or metascientists. Methods implemented in R, one of the most widely used programming languages in the life sciences [@Gao2025], are limited in scope, or have been archived from CRAN. The [R]{.proglang} [@R] [SHELF]{.pkg} implements only a single method (weighted linear pool) for aggregating expert judgements [@Oakley2026], but integrates with [expertsurv]{.pkg} to incorporate expert judgement into survival analysis [@Cooney2023], while [opera]{.pkg} provides a suite of methods for aggregating time-series predictions, but does not implement methods for aggregating point-predictions with uncertainty bounds [@Gaillard2026].
 
+[aggreCAT]{.pkg} is an open, reliable, and modular R package for the mathematical aggregation of expert elicitation data with a straightforward user interface. The [aggreCAT]{.pkg} package was developed by the by the repliCATS (Collaborative Assessment for Trustworthy Science) project [@Fraser:2021] as part of the DARPA SCORE (Systematizing Confidence in Open Research and Evidence) program [@alipourfard2021], which aimed to generate quantitative 'confidence scores' — estimates of the likely replicability of research claims from the social and behavioural sciences — for use as a proxy measure of credibility in the absence of direct replication effort. [aggreCAT]{.pkg} arose from the need for a software solution to reliably conduct mathematical aggregation at scale. The repliCATS project used [aggreCAT]{.pkg} to aggregate expert elicited judgements into confidence scores for $> 4000$ claims [@Mody2026]. While originally a bespoke implementation for repliCATS, we have since developed [aggreCAT]{.pkg} into a more general R package that can handle most types of elicitation data requiring mathematical aggregation, allowing for wider applicability.
 
-[aggreCAT]{.pkg} is an open, reliable, and modular R package for the
-mathematical aggregation of expert elicitation data with a
-straightforward user interface. The [aggreCAT]{.pkg} package was developed by
-the by the repliCATS (Collaborative Assessment for Trustworthy Science)
-project [@Fraser:2021] as part of the DARPA SCORE (Systematizing
-Confidence in Open Research and Evidence) program [@alipourfard2021],
-which aimed to generate quantitative 'confidence scores' — estimates of
-the likely replicability of research claims from the social and
-behavioural sciences — for use as a proxy measure of credibility in the
-absence of direct replication effort. [aggreCAT]{.pkg} arose from the need for a
-software solution to reliably conduct mathematical aggregation at scale.
-The repliCATS project used [aggreCAT]{.pkg} to aggregate expert elicited
-judgements into confidence scores for $> 4000$ claims [@Mody2026]. While
-originally a bespoke implementation for repliCATS, we have since
-developed [aggreCAT]{.pkg} into a more general R package that can handle most
-types of elicitation data requiring mathematical aggregation, allowing
-for wider applicability.
+[aggreCAT]{.pkg} provides a suite of 29 aggregation methods that explore different approaches to mathematical aggregation from straightforward arithmetic calculations to Bayesian statistical models. In addition, we provide extra functionality such as plotting functions and performance evaluation against known outcomes. While the repliCATS project uses the IDEA protocol to structure the elicitation process [@hemming2017], we have generalised [aggreCAT]{.pkg} to work with a variety of elicitation protocols. [aggreCAT]{.pkg} fills a large void in open software for aggregating elicited judgements, providing enormous benefit to researchers and decision makers across any field of research.
 
-[aggreCAT]{.pkg} provides a suite of 29 aggregation methods that explore
-different approaches to mathematical aggregation from straightforward
-arithmetic calculations to Bayesian statistical models. In addition, we
-provide extra functionality such as plotting functions and performance
-evaluation against known outcomes. While the repliCATS project uses the
-IDEA protocol to structure the elicitation process [@hemming2017], we
-have generalised [aggreCAT]{.pkg} to work with a variety of elicitation
-protocols. [aggreCAT]{.pkg} fills a large void in open software for aggregating
-elicited judgements, providing enormous benefit to researchers and
-decision makers across any field of research.
-
-In this paper we give an overview of the [aggreCAT]{.pkg} package so
-that researchers may apply any of the the aggregation functions
-described in [@Hanea2021], as well as additional methods provided by [aggreCAT]{.pkg}, to their own expert
-elicitation datasets where mathematical aggregation is required.
+In this paper we give an overview of the [aggreCAT]{.pkg} package so that researchers may apply any of the the aggregation functions described in [@Hanea2021], as well as additional methods provided by [aggreCAT]{.pkg}, to their own expert elicitation datasets where mathematical aggregation is required.
 
 # Mathematically Aggregating Expert Judgements
 
-The aggregation methods in [aggreCAT]{.pkg} were developed in the
-context of the IDEA protocol (Box [1](#box-1-the-replicats-idea-protocol)), a structured elicitation
-procedure that draws on the 'wisdom of crowds' to elicit probabilistic
-judgements from groups of experts about uncertain events.
+The aggregation methods in [aggreCAT]{.pkg} were developed in the context of the IDEA protocol (Box [1](#box-1-the-replicats-idea-protocol)), a structured elicitation procedure that draws on the 'wisdom of crowds' to elicit probabilistic judgements from groups of experts about uncertain events.
 
-This elicitation structure directly determines which aggregation methods
-in [aggreCAT]{.pkg} are applicable to a given dataset: most methods
-require only the post-discussion (*Round 2*) three-point judgements,
-some additionally use the pre-discussion (*Round 1*) judgements, and a
-small number require supplementary ratings or externally collected data.
-These requirements are summarised for each method in
-@tbl-method-summary-table.
+This elicitation structure directly determines which aggregation methods in [aggreCAT]{.pkg} are applicable to a given dataset: most methods require only the post-discussion (*Round 2*) three-point judgements, some additionally use the pre-discussion (*Round 1*) judgements, and a small number require supplementary ratings or externally collected data. These requirements are summarised for each method in @tbl-method-summary-table.
 
-Although the aggregation methods were developed in the context of the
-IDEA protocol, all methods requiring only a single round of elicitation
-can be applied to any structured elicitation procedure that generates
-lower, upper, and best estimates from each individual without enforcing
-behavioural consensus.
+Although the aggregation methods were developed in the context of the IDEA protocol, all methods requiring only a single round of elicitation can be applied to any structured elicitation procedure that generates lower, upper, and best estimates from each individual without enforcing behavioural consensus.
 
 :::: callout
 ::: {#ideaProtocol}
@@ -294,25 +226,11 @@ The performance of each method is evaluated by comparing the aggregated confiden
 
 ### 'Tidy' Aggregation and Required Inputs {#sec-tidy-aggregation}
 
-The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
-[@Wickham:2014vp]. Each aggregation method expects a
-[data.frame]{.class} or [tibble]{.class} of judgements as its input, and
-returns a [tibble]{.class} containing the variables `method`,
-`paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for illustration
-of outputs); where `method` is a character vector corresponding to the
-aggregation method name specified in the `type` argument. Each
-aggregation is applied as a summary function [@Wickham2017R], and
-therefore returns a single row with a single confidence score `cs` for
-each claim or `paper_id`. The number of expert judgements summarised in
-the aggregated confidence score is returned in `n_experts`. Because of
-the tidy nature of the aggregation outputs, multiple aggregation methods
-can be applied to the same data with the results of all aggregation
-methods row-bound together in a single `tibble` (see the example
-repliCATS workflow in @sec-workflow).
+The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data [@Wickham:2014vp]. Each aggregation method expects a [data.frame]{.class} or [tibble]{.class} of judgements as its input, and returns a [tibble]{.class} containing the variables `method`, `paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for illustration of outputs); where `method` is a character vector corresponding to the aggregation method name specified in the `type` argument. Each aggregation is applied as a summary function [@Wickham2017R], and therefore returns a single row with a single confidence score `cs` for each claim or `paper_id`. The number of expert judgements summarised in the aggregated confidence score is returned in `n_experts`. Because of the tidy nature of the aggregation outputs, multiple aggregation methods can be applied to the same data with the results of all aggregation methods row-bound together in a single `tibble` (see the example repliCATS workflow in @sec-workflow).
 
 ### Package Data {#sec-package-data}
 
-The [aggreCAT]{.pkg} package includes data collected by the repliCATS project during a pilot study at a two-day workshop in the Netherlands in July 2019, at which 25 participants assessed the replicability of 25 unique social and behavioural science  research claims with known outcomes using the IDEA protocol [@Wintle2023].
+The [aggreCAT]{.pkg} package includes data collected by the repliCATS project during a pilot study at a two-day workshop in the Netherlands in July 2019, at which 25 participants assessed the replicability of 25 unique social and behavioural science research claims with known outcomes using the IDEA protocol [@Wintle2023].
 
 The dataset is distributed over eight data objects, each containing different types of data collected during the repliCATS project. The core data object `data_ratings` is a tidy [data.frame]{.class} of probabilistic three-point judgements (lower bound, best estimate, upper bound - as percentages) elicited from participants for each claim, across two rounds of elicitation. Additional data objects capture participants' written justifications (`data_justifications`), peer comments and ratings (`data_comments`), and three supplementary datasets collected externally to the IDEA protocol: a statistical knowledge quiz (`data_supp_quiz`), qualitatively coded reasoning categories (`data_supp_reasons`), and model-derived Bayesian priors (`data_supp_priors`).
 
@@ -651,16 +569,7 @@ Notice that the confidence score for claim `108` differs between the two applica
 
 # An illustrative workflow for use in real study contexts {#sec-workflow}
 
-Throughout the SCORE program, 752 participants assessed more than 4000
-unique claims using the repliCATS IDEA protocol, between 7th July 2019
-and 25 November 2021 (@Tyner2026). This required batch aggregation over multiple
-claims, and to generate confidence scores for multiple claims. We also
-applied multiple aggregation methods to the same claim so that we could
-compare and evaluate the different aggregation methods. We expect that
-these are not uncommon use-cases, therefore we now
-demonstrate a general workflow for using the [aggreCAT]{.pkg} package to
-aggregate expert judgements using pilot data from DARPA SCORE program
-generated by the repliCATS project.
+Throughout the SCORE program, 752 participants assessed more than 4000 unique claims using the repliCATS IDEA protocol, between 7th July 2019 and 25 November 2021 (@Tyner2026). This required batch aggregation over multiple claims, and to generate confidence scores for multiple claims. We also applied multiple aggregation methods to the same claim so that we could compare and evaluate the different aggregation methods. We expect that these are not uncommon use-cases, therefore we now demonstrate a general workflow for using the [aggreCAT]{.pkg} package to aggregate expert judgements using pilot data from DARPA SCORE program generated by the repliCATS project.
 
 <!-- some overlap with comparing and evaluating agg methods subsection -->
 
@@ -677,24 +586,9 @@ AverageWAgg(data_ratings, type = "ArMean")
 
 ## Comparing and Evaluating Aggregation Methods {#sec-evaluation}
 
-In real study contexts, such as that of the repliCATS project, it is of interest to compute confidence scores
-using multiple aggregation methods so that their performance might be
-evaluated and compared. Since different methods offer different
-mathematical properties, and therefore might be more or less appropriate
-depending on the purpose of the aggregation and forecasting, a
-researcher or analyst might want to check how the different assumptions
-embedded in different aggregation methods influence the final Confidence
-Scores for a forecast -- i.e. how robust are the results to different
-methods and therefore to different assumptions?
+In real study contexts, such as that of the repliCATS project, it is of interest to compute confidence scores using multiple aggregation methods so that their performance might be evaluated and compared. Since different methods offer different mathematical properties, and therefore might be more or less appropriate depending on the purpose of the aggregation and forecasting, a researcher or analyst might want to check how the different assumptions embedded in different aggregation methods influence the final Confidence Scores for a forecast -- i.e. how robust are the results to different methods and therefore to different assumptions?
 
-From a computational perspective, multiple aggregation methods must
-first be applied to the forecast prior to comparison and evaluation.
-This can be achieved by applying each different aggregation method to
-`focal_claims`, and binding the results together with [dplyr]{.pkg}'s
-[bind_rows]{.fct}. However, more elegant and succinct solutions can be
-implemented using [purrr]{.pkg}'s [map_dfr]{.fct} function (@purrr2020,
-see @lst-multi-method-workflow-non-supp and
-@lst-multi-method-workflow-both).
+From a computational perspective, multiple aggregation methods must first be applied to the forecast prior to comparison and evaluation. This can be achieved by applying each different aggregation method to `focal_claims`, and binding the results together with [dplyr]{.pkg}'s [bind_rows]{.fct}. However, more elegant and succinct solutions can be implemented using [purrr]{.pkg}'s [map_dfr]{.fct} function (@purrr2020, see @lst-multi-method-workflow-non-supp and @lst-multi-method-workflow-both).
 
 ```{r}
 #| label: multi-method-workflow-non-supp
@@ -726,15 +620,7 @@ confidenceSCOREs <-
 confidenceSCOREs
 ```
 
-After generating confidence scores using various aggregation methods, we
-then evaluate the forecasts. We evaluated the repliCATS pilot study
-forecasts against the outcomes of previous, high-powered replication
-studies [@Hanea2021], which are contained in the `data_outcomes` dataset
-published with [aggreCAT]{.pkg}. `data_outcomes` records the binary
-replication outcome (`outcome`: `1` if the claim successfully
-replicated, `0` if not) for each `paper_id`, sourced from previous
-large-scale replication projects [@Klein2014; @Klein2018ManyL2;
-@Ebersole2016; @Camerer2018; @aac4716]:
+After generating confidence scores using various aggregation methods, we then evaluate the forecasts. We evaluated the repliCATS pilot study forecasts against the outcomes of previous, high-powered replication studies [@Hanea2021], which are contained in the `data_outcomes` dataset published with [aggreCAT]{.pkg}. `data_outcomes` records the binary replication outcome (`outcome`: `1` if the claim successfully replicated, `0` if not) for each `paper_id`, sourced from previous large-scale replication projects [@Klein2014; @Klein2018ManyL2; @Ebersole2016; @Camerer2018; @aac4716]:
 
 ```{r}
 #| label: replication-outcomes
@@ -744,11 +630,7 @@ aggreCAT::data_outcomes %>%
   head()
 ```
 
-The function [confidence_score_evaluation]{.fct} evaluates a set of
-aggregated forecasts or confidence scores against a set of known or
-observed outcomes, returning the Area Under the ROC Curve (AUC), the
-Brier score, and classification accuracy of each method
-(@tbl-multi-method-workflow-eval):
+The function [confidence_score_evaluation]{.fct} evaluates a set of aggregated forecasts or confidence scores against a set of known or observed outcomes, returning the Area Under the ROC Curve (AUC), the Brier score, and classification accuracy of each method (@tbl-multi-method-workflow-eval):
 
 ```{r}
 #| label: multi-method-workflow-eval
@@ -783,15 +665,7 @@ aggreCAT::confidence_score_evaluation(
 
 ## Visualising Judgements, Confidence Scores and Forecast Performance
 
-We include two functions for visualising comparison and evaluation of
-confidence scores across multiple aggregation methods for a suite of
-forecasts from multiple participants,
-[confidence_scores_ridgeplot]{.fct} and [confidencescore_heatmap]{.fct}.
-[confidence_scores_ridgeplot]{.fct} generates ridgeline plots using
-[ggridges]{.pkg} [@ggridges2021], and displays the distribution of
-predicted outcomes across a suite of forecasts for each aggregation
-method, grouped into separate 'mountain ranges' according to the
-mathematical properties of the aggregation method (@fig-ridgeplot).
+We include two functions for visualising comparison and evaluation of confidence scores across multiple aggregation methods for a suite of forecasts from multiple participants, [confidence_scores_ridgeplot]{.fct} and [confidencescore_heatmap]{.fct}. [confidence_scores_ridgeplot]{.fct} generates ridgeline plots using [ggridges]{.pkg} [@ggridges2021], and displays the distribution of predicted outcomes across a suite of forecasts for each aggregation method, grouped into separate 'mountain ranges' according to the mathematical properties of the aggregation method (@fig-ridgeplot).
 
 ```{r}
 #| label: fig-ridgeplot
@@ -886,102 +760,27 @@ worst_forecasts <- dplyr::inner_join(confidenceSCOREs, data_outcomes) %>%
   dplyr::slice_max(difference, n = 3)
 ```
 
-While [confidencescore_heatmap]{.fct} is useful for comparison of
-aggregation methods, [confidencescore_heatmap]{.fct} is useful for
-visual comparative *evaluation* of aggregation methods.
-[confidencescore_heatmap]{.fct} generates heatmaps of forecasted
-confidence scores for each aggregation method included in the dataset
-provided to the argument `confidence_scores` organised with unique
-aggregation methods on the y-axis, and separate forecasts or `paper_id`s
-along the y-axis (@fig-heatmap). The heatmap is blocked vertically
-according to the mathematical characteristics of each aggregation
-method, and horizontally into two groups, according to the binary
-outcomes in `data_outcomes`.
+While [confidencescore_heatmap]{.fct} is useful for comparison of aggregation methods, [confidencescore_heatmap]{.fct} is useful for visual comparative *evaluation* of aggregation methods. [confidencescore_heatmap]{.fct} generates heatmaps of forecasted confidence scores for each aggregation method included in the dataset provided to the argument `confidence_scores` organised with unique aggregation methods on the y-axis, and separate forecasts or `paper_id`s along the y-axis (@fig-heatmap). The heatmap is blocked vertically according to the mathematical characteristics of each aggregation method, and horizontally into two groups, according to the binary outcomes in `data_outcomes`.
 
-Horizontal grouping facilitates quick and simple evaluation of the
-aggregation methods. Perfectly accurate aggregation methods show dark
-blue squares in the left heatmap blocks, where the outcomes were `1` or
-`TRUE`, and dark red squares on the right heatmap blocks, where the
-actual outcomes were `0` or `FALSE`. Deviation from this expectation
-indicates which aggregation methods for which claim/forecast, for which
-outcome type were inaccurate, and to what degree.
+Horizontal grouping facilitates quick and simple evaluation of the aggregation methods. Perfectly accurate aggregation methods show dark blue squares in the left heatmap blocks, where the outcomes were `1` or `TRUE`, and dark red squares on the right heatmap blocks, where the actual outcomes were `0` or `FALSE`. Deviation from this expectation indicates which aggregation methods for which claim/forecast, for which outcome type were inaccurate, and to what degree.
 
-For example, in @fig-heatmap, for the dataset `confidenceSCOREs` the
-successful replication of most claims was accurately forecasted by most
-methods, except for several claims. Some methods performed better than
-others for some claims (e.g. `ReasonWAgg` for claims `109` and `138`).
+For example, in @fig-heatmap, for the dataset `confidenceSCOREs` the successful replication of most claims was accurately forecasted by most methods, except for several claims. Some methods performed better than others for some claims (e.g. `ReasonWAgg` for claims `109` and `138`).
 
-Finally, creating bespoke user-defined plots is relatively easy --
-because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or
-[tibble]{.class}s, we can easily manipulate the raw judgements,
-aggregated confidence scores and outcome data to plot them with
-[ggplot2]{.pkg} [@ggplot2016] or other visualisation package. Below we
-plot the aggregated confidence scores along with the three-point
-judgements (subset using [preprocess_judgements]{.fct} on
-`focal_claims`, transforming judgements in percentages to probabilities
-by setting `percent_toggle` to `TRUE`, @fig-aggregation,
-@lst-confidencescores).
+Finally, creating bespoke user-defined plots is relatively easy -- because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or [tibble]{.class}s, we can easily manipulate the raw judgements, aggregated confidence scores and outcome data to plot them with [ggplot2]{.pkg} [@ggplot2016] or other visualisation package. Below we plot the aggregated confidence scores along with the three-point judgements (subset using [preprocess_judgements]{.fct} on `focal_claims`, transforming judgements in percentages to probabilities by setting `percent_toggle` to `TRUE`, @fig-aggregation, @lst-confidencescores).
 
 ## Extending [aggreCAT]{.pkg} to other datasets
 
-The aggregation methods supplied by the [aggreCAT]{.pkg} package can
-easily be applied to other forecasting problems. The only requirements
-are that the data inputs adhere to the required format (Box
-[2](#aggWorkflow)), and that the expert judgements are elicited using
-the appropriate method, as required by each aggregation method (see
-Table \ref{tbl-method-summary-table}).
+The aggregation methods supplied by the [aggreCAT]{.pkg} package can easily be applied to other forecasting problems. The only requirements are that the data inputs adhere to the required format (Box [2](#aggWorkflow)), and that the expert judgements are elicited using the appropriate method, as required by each aggregation method (see Table \ref{tbl-method-summary-table}).
 
-Judgement data provided to the `expert_judgements`,
-`data_justifications` or any supplementary data inputs argument must
-contain the requisite column names, and be of the correct data type, as
-described in each method's documentation (see `?data_ratings`, for
-example). At minimum the user must supply to `expert_judgements`: the
-`round` under which each judgement is elicited, a unique ID for each
-different forecasting problem `paper_id`, a unique `user_name` for each
-individual, and the `element` of the three point elicitation that the
-recorded response or `value` in that row corresponds to. The data is
-stored in long or tidy format such that each row or observation in the
-[data.frame]{.class} references only a single `element` of a
-participants' set of three point elicitation values. When applying
-aggregation methods requiring supplementary data to the elicitation
-data, the analyst should also adhere to the requirements stipulated for
-the relevant supplementary dataset described in the documentation.
+Judgement data provided to the `expert_judgements`, `data_justifications` or any supplementary data inputs argument must contain the requisite column names, and be of the correct data type, as described in each method's documentation (see `?data_ratings`, for example). At minimum the user must supply to `expert_judgements`: the `round` under which each judgement is elicited, a unique ID for each different forecasting problem `paper_id`, a unique `user_name` for each individual, and the `element` of the three point elicitation that the recorded response or `value` in that row corresponds to. The data is stored in long or tidy format such that each row or observation in the [data.frame]{.class} references only a single `element` of a participants' set of three point elicitation values. When applying aggregation methods requiring supplementary data to the elicitation data, the analyst should also adhere to the requirements stipulated for the relevant supplementary dataset described in the documentation.
 
-Although several aggregation methods *require* judgements that are
-elicited using the IDEA protocol (See Table
-\ref{tbl-method-summary-table} for exceptions), most aggregation methods
-require only a single round of elicitation that generates a set of three
-points; a best estimate, and upper and lower bounds about those
-estimates, even if the IDEA protocol was used to elicit judgements.
-Hence, the aggregation functions contained in the [aggreCAT]{.pkg}
-package are unsuitable for use with judgements elicited with methods
-that aggregate behaviourally (e.g. using consensus) and therefore result
-in a single forecast value. Where the analyst elicits judgements for
-only a single round, the analyst should record the round in the
-judgements data as the character string `"round_1"`, and set the
-`round_2_filter` argument to `FALSE` in the aggregation wrapper function
-call.
+Although several aggregation methods *require* judgements that are elicited using the IDEA protocol (See Table \ref{tbl-method-summary-table} for exceptions), most aggregation methods require only a single round of elicitation that generates a set of three points; a best estimate, and upper and lower bounds about those estimates, even if the IDEA protocol was used to elicit judgements. Hence, the aggregation functions contained in the [aggreCAT]{.pkg} package are unsuitable for use with judgements elicited with methods that aggregate behaviourally (e.g. using consensus) and therefore result in a single forecast value. Where the analyst elicits judgements for only a single round, the analyst should record the round in the judgements data as the character string `"round_1"`, and set the `round_2_filter` argument to `FALSE` in the aggregation wrapper function call.
 
-Should the analyst wish to create their own aggregation functions, pre-
-and post-processing functions may be leveraged inside the functions
-([preprocess_judgements]{.fct} and [postprocess_judgements]{.fct},
-respectively), as we have illustrated in data preparation for
-@fig-aggregation (@lst-confidencescores). These processing functions
-modularise key components of the aggregation's computational
-implementation -- namely the data wrangling that occurs before and after
-the actual mathematical aggregation.
+Should the analyst wish to create their own aggregation functions, pre- and post-processing functions may be leveraged inside the functions ([preprocess_judgements]{.fct} and [postprocess_judgements]{.fct}, respectively), as we have illustrated in data preparation for @fig-aggregation (@lst-confidencescores). These processing functions modularise key components of the aggregation's computational implementation -- namely the data wrangling that occurs before and after the actual mathematical aggregation.
 
 ### Preparing your own Elicitation Data
 
-We demonstrate how to prepare data for applying the [aggreCAT]{.pkg}
-aggregation methods with data collected using the IDEA protocol for an
-environmental conservation problem [@Arlidge2020] . Participants were
-asked "How many green turtles in winter per month would be saved using a
-total gillnet ban, with gear switching to lobster potting or hand line
-fishing required?". We take the required data for the
-`expert_judgements` argument from Table S51 of Arlidge et al.
-[-@Arlidge2020], make the data long instead of wide, and then add the
-required additional columns `paper_id` and `question`:
+We demonstrate how to prepare data for applying the [aggreCAT]{.pkg} aggregation methods with data collected using the IDEA protocol for an environmental conservation problem [@Arlidge2020] . Participants were asked "How many green turtles in winter per month would be saved using a total gillnet ban, with gear switching to lobster potting or hand line fishing required?". We take the required data for the `expert_judgements` argument from Table S51 of Arlidge et al. [-@Arlidge2020], make the data long instead of wide, and then add the required additional columns `paper_id` and `question`:
 
 ```{r}
 #| label: lst-BYO-data-wrangle
@@ -1008,13 +807,7 @@ green_turtles <-
          question = "direct_replication")
 ```
 
-We can then apply multiple aggregation methods, using the same approach
-implemented for aggregation of the `focal_claims` dataset
-(@lst-BYO-data-aggregate), with aggregated confidence scores shown in
-@tbl-BYO-data-aggregate. Note that because the judgements are absolute
-values rather than probabilities, we set the `percent_toggle` argument
-for each aggregation wrapper function to [FALSE]{.val}
-(@lst-BYO-data-aggregate).
+We can then apply multiple aggregation methods, using the same approach implemented for aggregation of the `focal_claims` dataset (@lst-BYO-data-aggregate), with aggregated confidence scores shown in @tbl-BYO-data-aggregate. Note that because the judgements are absolute values rather than probabilities, we set the `percent_toggle` argument for each aggregation wrapper function to [FALSE]{.val} (@lst-BYO-data-aggregate).
 
 ```{r}
 #| label: tbl-BYO-data-aggregate
@@ -1048,96 +841,23 @@ turtle_CS %>%
 
 # Summary and Discussion {#sec-summary}
 
-The [aggreCAT]{.pkg} package provides a diverse suite of methods for
-mathematically aggregating judgements elicited from groups of experts
-using structured elicitation procedures, such as the IDEA protocol. The
-[aggreCAT]{.pkg} package was developed by the repliCATS project as a
-part of the DARPA SCORE program to implement the 29 aggregation methods
-described in Hanea et al. [-@Hanea2021].
+The [aggreCAT]{.pkg} package provides a diverse suite of methods for mathematically aggregating judgements elicited from groups of experts using structured elicitation procedures, such as the IDEA protocol. The [aggreCAT]{.pkg} package was developed by the repliCATS project as a part of the DARPA SCORE program to implement the 29 aggregation methods described in Hanea et al. [-@Hanea2021].
 
-There are very few open-source tools available to the researcher wishing
-to mathematically aggregate judgements. The [aggreCAT]{.pkg} package is
-therefore unique in both the diversity of aggregation methods it
-contains, as well as in its computational approach to implementing the
-aggregation methods. There is no other R or other software package with
-so many aggregation methods, and methods that use proxies of forecasting
-accuracy using weights.
+There are very few open-source tools available to the researcher wishing to mathematically aggregate judgements. The [aggreCAT]{.pkg} package is therefore unique in both the diversity of aggregation methods it contains, as well as in its computational approach to implementing the aggregation methods. There is no other R or other software package with so many aggregation methods, and methods that use proxies of forecasting accuracy using weights.
 
-The [aggreCAT]{.pkg} package is production-ready for application to data
-elicited during either a single workshop, or for contexts where data
-collection may be ongoing and continuous analysis is used for automating
-aggregation. Unlike other aggregation packages, the [aggreCAT]{.pkg}
-package is designed to work within the *tidyverse*. The package is
-premised on the principles of *tidy* data analysis whereby the user
-supplies [data.frame]{.class}s of elicited judgements, and the
-aggregation methods return [data.frame]{.class}s of aggregated
-forecasts. The benefits of this approach are three-fold. Firstly, the
-work of data-wrangling and application of the aggregation methods is
-handled internally by the aggregation methods, so that the researcher
-can focus on analysis and interpretation of the aggregation outputs.
-This is critical in data-deficient contexts where rapid assessments are
-needed, which is a common use-case for the use of expert derived
-forecasts. Secondly, the [aggreCAT]{.pkg} package is easily paired with
-other tidyverse tools, such as [purrr]{.pkg}, [dplyr]{.pkg}, and
-[ggplot2]{.pkg}, as exemplified through the repliCATS workflow described
-in @sec-workflow.
+The [aggreCAT]{.pkg} package is production-ready for application to data elicited during either a single workshop, or for contexts where data collection may be ongoing and continuous analysis is used for automating aggregation. Unlike other aggregation packages, the [aggreCAT]{.pkg} package is designed to work within the *tidyverse*. The package is premised on the principles of *tidy* data analysis whereby the user supplies [data.frame]{.class}s of elicited judgements, and the aggregation methods return [data.frame]{.class}s of aggregated forecasts. The benefits of this approach are three-fold. Firstly, the work of data-wrangling and application of the aggregation methods is handled internally by the aggregation methods, so that the researcher can focus on analysis and interpretation of the aggregation outputs. This is critical in data-deficient contexts where rapid assessments are needed, which is a common use-case for the use of expert derived forecasts. Secondly, the [aggreCAT]{.pkg} package is easily paired with other tidyverse tools, such as [purrr]{.pkg}, [dplyr]{.pkg}, and [ggplot2]{.pkg}, as exemplified through the repliCATS workflow described in @sec-workflow.
 
-Thirdly, application of the [aggreCAT]{.pkg} package aggregation methods
-and performance evaluation tools is scalable, which is evidenced by the
-application of the [aggreCAT]{.pkg} package to forecast the
-replicability of over 4000 research claims by the repliCATS project. The
-scalability and placeholder functionality allow the [aggreCAT]{.pkg}
-package to be built into production-ready pipelines for more complicated
-analyses where there are multiple forecasts being elicited and
-aggregated, where there are numerous participants, and where multiple
-aggregation methods are applied.
+Thirdly, application of the [aggreCAT]{.pkg} package aggregation methods and performance evaluation tools is scalable, which is evidenced by the application of the [aggreCAT]{.pkg} package to forecast the replicability of over 4000 research claims by the repliCATS project. The scalability and placeholder functionality allow the [aggreCAT]{.pkg} package to be built into production-ready pipelines for more complicated analyses where there are multiple forecasts being elicited and aggregated, where there are numerous participants, and where multiple aggregation methods are applied.
 
-Finally, through the provision of built-in performance metrics, the
-analyst is able to 'ground-truth' and evaluate the forecasts against
-known-outcomes, or alternative forecasting methods [e.g. @Arlidge2020].
+Finally, through the provision of built-in performance metrics, the analyst is able to 'ground-truth' and evaluate the forecasts against known-outcomes, or alternative forecasting methods [e.g. @Arlidge2020].
 
-The [aggreCAT]{.pkg} package is easily extensible and production-ready.
-Each aggregation function follows a consistent modular blueprint,
-wherein data-wrangling of the inputs and outputs of aggregation is
-largely handled by pre- and post-processing functions
-([preprocess_judgements]{.fct} and [postprocess_judgements]{.fct},
-respectively). This design expedites debugging by making it easier to
-pinpoint the exact source of errors, while also permitting the user to
-easily create their own custom aggregation methods.
+The [aggreCAT]{.pkg} package is easily extensible and production-ready. Each aggregation function follows a consistent modular blueprint, wherein data-wrangling of the inputs and outputs of aggregation is largely handled by pre- and post-processing functions ([preprocess_judgements]{.fct} and [postprocess_judgements]{.fct}, respectively). This design expedites debugging by making it easier to pinpoint the exact source of errors, while also permitting the user to easily create their own custom aggregation methods.
 
-Although the package currently requires data inputs to conform to
-nomenclature specific to the repliCATS project, future releases of the
-[aggreCAT]{.pkg} package will relax the data-input requirements so they
-are more domain-agnostic. We believe this to be a minimal barrier for
-adoption and application of the [aggreCAT]{.pkg} package. Ecologists
-should be no stranger to these naming conventions for data requirements,
-with packages like [vegan]{.pkg} also imposing strict nomenclature
-[@veganpkg2020]. We have illustrated how to extend and apply the package
-to data from domains beyond forecasting the replicability of research
-claims through our minimal example using forecasts generated using the
-IDEA protocol for a fisheries and conservation problem.
+Although the package currently requires data inputs to conform to nomenclature specific to the repliCATS project, future releases of the [aggreCAT]{.pkg} package will relax the data-input requirements so they are more domain-agnostic. We believe this to be a minimal barrier for adoption and application of the [aggreCAT]{.pkg} package. Ecologists should be no stranger to these naming conventions for data requirements, with packages like [vegan]{.pkg} also imposing strict nomenclature [@veganpkg2020]. We have illustrated how to extend and apply the package to data from domains beyond forecasting the replicability of research claims through our minimal example using forecasts generated using the IDEA protocol for a fisheries and conservation problem.
 
-The package will be actively maintained into the future, beyond the life
-of the DARPA SCORE program. Bug reports and feature-requests can easily
-be lodged on the [aggreCAT]{.pkg} GitHub repository using reproducible
-examples created with [reprex]{.pkg} [@reprexpkg2020] on the repliCATS
-pilot study datasets shipped with the [aggreCAT]{.pkg} package.
+The package will be actively maintained into the future, beyond the life of the DARPA SCORE program. Bug reports and feature-requests can easily be lodged on the [aggreCAT]{.pkg} GitHub repository using reproducible examples created with [reprex]{.pkg} [@reprexpkg2020] on the repliCATS pilot study datasets shipped with the [aggreCAT]{.pkg} package.
 
-We have described the computational implementation of the aggregation
-methods and supporting tools within the [aggreCAT]{.pkg} package,
-providing usage examples and workflows for both simple and more complex
-research contexts. Consequently, this paper should fully equip the
-analyst for applying the aggregation functions contained within the
-[aggreCAT]{.pkg} package to their own data. Where the analyst is
-uncertain as to *which* aggregation method is best for their particular
-research goals, the reader should consult Hanea et al. [-@Hanea2021] for
-a discussion on the mathematical principles and hypotheses underlying
-the design of the aggregation methods, as well as a comparative
-performance evaluation of each of the methods. In conclusion, the
-[aggreCAT]{.pkg} package will aid researchers and decision analysts in
-rapidly and easily analysing the results of IDEA protocol and other
-structured elicitation procedures where mathematical aggregation of
-human forecasts is required.
+We have described the computational implementation of the aggregation methods and supporting tools within the [aggreCAT]{.pkg} package, providing usage examples and workflows for both simple and more complex research contexts. Consequently, this paper should fully equip the analyst for applying the aggregation functions contained within the [aggreCAT]{.pkg} package to their own data. Where the analyst is uncertain as to *which* aggregation method is best for their particular research goals, the reader should consult Hanea et al. [-@Hanea2021] for a discussion on the mathematical principles and hypotheses underlying the design of the aggregation methods, as well as a comparative performance evaluation of each of the methods. In conclusion, the [aggreCAT]{.pkg} package will aid researchers and decision analysts in rapidly and easily analysing the results of IDEA protocol and other structured elicitation procedures where mathematical aggregation of human forecasts is required.
 
 ::: {.content-hidden unless-format="pdf"}
 \newpage
@@ -1244,11 +964,7 @@ aggreCAT:::method_summary_table %>%
 # Acknowledgments {.unnumbered}
 
 ::: callout
-This project is sponsored by the Defense Advanced Research Projects
-Agency (DARPA) under cooperative agreement No.HR001118S0047. The content
-of the information does not necessarily reflect the position or the
-policy of the Government, and no official endorsement should be
-inferred.
+This project is sponsored by the Defense Advanced Research Projects Agency (DARPA) under cooperative agreement No.HR001118S0047. The content of the information does not necessarily reflect the position or the policy of the Government, and no official endorsement should be inferred.
 :::
 
 # References {.unnumbered}
