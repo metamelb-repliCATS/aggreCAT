@@ -619,20 +619,11 @@ In this way users can specify their own custom weights in addition to those desc
 
 ### Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
-While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` function implements two Bayesian aggregation methods that use the elicited best estimates as data with which to update prior distributions of the estimated quantity to compute posterior distributions for each claim.
+While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` aggregation family takes a model-based approach to computing confidence scores. It implements two variants that use elicited best estimates as data with which to update prior distributions of forecasted quantity: `BayTriVar` and `BayPriorsAgg`. Both methods use the same underlying Bayesian model, but differ in how the prior distributions are specified. The `BayTriVar` method assumes forecast-specific prior means, while `BayPriorsAgg` allows users to specify their own priors.
 
-In addition we have Bayesian WAgg that has two variants for fitting Bayesian model to determine the confidence score.
-BayesianWAgg family of aggregators / methods, does some Bayesian model calculations to determine the confidence.
+The model in `BayesianWAgg` incorporates uncertainty from three sources: (i) *judgement-level variability*, based on the width of each participant’s uncertainty interval for the target forecast; (ii) *participant-level variability*, defined as variation in each participant’s best estimates across all forecasts they assessed; and (iii) *forecast-level variability*, defined as variation in best estimates across all participants for a given forecast. The confidence score is then taken as the median of the posterior distribution.
 
-Drop bit about assuming normal distributiobn, people can go look at details of model on the help page.
-Claim-specific prior distribution means rather than letting htem be some default prior.
-
-The Bayesian Triple Variability method `type = "BayTriVar"` incorporates uncertainty from three sources: variability in participants' best estimates across claims (claim-level), participant's variability in best estimates across claims (participant-level), and the width of participants' uncertainty intervals for the target claim to compute judgement-level variability (judgement-level variability). `BayTriVar` assumes that the best estimates are normally distributed, and uses the elicited best estimates to update a normal prior distribution of the estimated quantity to compute a normal posterior distribution for each claim. The confidence score is then derived from the mean of the posterior distribution.
-
-While `BayTriVar` assumes default priors, a second method `type = "BayPriorsAgg"` applies user-supplied informative priors. This method follows the same methodology as `BayTriVar`, but instead of using default priors, it allows users to specify their own prior estimates for each claim using the `priors` argument.
-
-Below we apply the `BayTriVar` method to the focal claim `108`. Note that this method expects best estimates in the form of probabilities, so to convert elicited values in the form of percentages to probabilities in the data parsed to the `expert_judgement` argument, we toggle the argument `percent_toggle` to `TRUE`:
-
+Below we apply the Bayesian Triple Variability method `BayTriVar` to the focal claim, which expects best estimates in the form of probabilities. We toggle the argument `percent_toggle` to `TRUE` to convert percentage inputs to probabilities in the data parsed to the `expert_judgement` argument. Although we compute the confidence score for a single claim only, the model computes participant-level weights using data from all forecasts within `expert_judgements`. Consequently we filter the aggregated confidence scores for claim `108` *after* applying the aggregation method to the full dataset of claims:
 ```{r}
 #| label: focal-claim-BayTriVar
 #| prompt: true
@@ -644,19 +635,22 @@ focal_claims %>%
   dplyr::filter(paper_id == "108")
 ```
 
-Users should be aware that for any aggregation methods that compute weights across multiple claims or forecasts, the aggregated estimates are sensitive to the input data. This is also true for methods applying participant-level weights that are calculated using information from across multiple claims.
+Because `BayesianWAgg()` computes participant-level weights using data from all forecasts, the aggregated estimates are sensitive to the input data. This is also true for any aggregators that use re-scaled participant-level weights, such as `IndIntWAgg` and `VarIndIntWAgg` (see @sec-sec-IntervalWAgg). As such, when calculating the confidence score for a single forecast, the user should ensure that the all available forecasts are parsed to `expert_judgements` before applying the aggregation method, and then filter the aggregated estimates for the target claim after aggregation.
+<!-- TODO check that these two methods are actually rescaling methods -->
 
-In these cases, if the user wish to filter aggregated estimates for a particular claim, they should first apply the aggregation method to the full dataset, then filter the aggregated estimates for the target claim. This is because the weights are calculated across all claims, and therefore the aggregated estimate for a particular claim is influenced by the data from all claims. If the user filters the data prior to applying the aggregation method, then the weights will be calculated using only the filtered data, which may lead to different weights and therefore different aggregated estimates. In the case of `BayesianWAgg()`, more than one claim is required to compute weights, and the aggregation will fail when $C < 1$:
+Below we illustrate this point by calculating the confidence score for claim 108 using `BayTriVar` using a different input dataset, `data_ratings`, which contains judgements for all claims in the repliCATS pilot study. We apply `BayTriVar` to the full dataset of claims, and then filter the aggregated confidence scores for claim `108` *after* applying the aggregation method to the full dataset of claims:
 
 ```{r}
 #| label: focal-claim-BayTriVar-filtered
 #| echo: true
-#| error: true
-# focal_claims %>%
-#   dplyr::filter(paper_id == "108") |>
-#   BayesianWAgg(type = "BayTriVar",
-#   percent_toggle = TRUE)
+#| cache: true
+aggreCAT::data_ratings |>
+  BayesianWAgg(type = "BayTriVar",
+  percent_toggle = TRUE) |>
+  dplyr::filter(paper_id == "108")
 ```
+
+Notice that the confidence score for claim `108` differs between the two applications of `BayTriVar`, depending on which input data was used to compute participant-level weights. This illustrates the importance of ensuring that all available forecasts are parsed to `expert_judgements` when applying aggregation methods that use participant-level weights, and then filtering the aggregated estimates for the target claim after aggregation.
 
 ## An illustrative workflow for use in real study contexts {#sec-workflow}
 
