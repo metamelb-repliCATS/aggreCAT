@@ -261,7 +261,7 @@ The IDEA protocol proceeds through four phases: *Investigate*, *Discuss*, *Estim
 
 ![The IDEA protocol as deployed by the repliCATS project (reproduced
 with permission from Wintle et al.
-2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021"){#fig-1}
+2021).](images/img_IDEA_repliCATS.png "The IDEA protocol as deployed by the repliCATS project (reproduced with permission from Wintle et al. 2021")){#fig-1}
 :::
 ::::
 
@@ -272,9 +272,8 @@ each aggregation method. The total number of forecasts assessed, $C$ , is indexe
 
 For each forecast, $c$, an individual, $i$ assesses the probability of a some event occurring (e.g., a replication study finding a significant result in the same direction as the original claim) by providing three probabilities: a lower bound ${L}_{i,c}$, an upper bound ${U}_{i,c}$, and a best estimate $B_{i,c}$, satisfying the inequalities: $0 \le L_{i,c} \le B_{i,c} \le U_{i,c} \le 1$.  These probabilities are then aggregated using one of the methods provided in [aggreCAT]{.pkg} to obtain a group or aggregate probability, denoted by $\hat{p}_c$. The aggregated probability calculated using a specific method is given by $\hat{p}_{c}\left(Method \space ID \right)$. Each aggregation is assigned a unique $Method \space ID$ which is the abbreviation of the mathematical operation used in calculating the weights.
 
-<!-- #TODO insert below
-- [ ] Note that all Best, Lower and Upper estimates are taken to be `round 2` judgements from the repliCATS IDEA protocol [Figure 1](#fig-1), Box 1).
- -->
+<!-- TODO insert below - [ ] Note that all Best, Lower and Upper estimates are taken to be `round 2` judgements from the repliCATS IDEA protocol [Figure 1](#fig-1), Box 1). -->
+
 Most aggregators employ weighting schemes that are informed by proxies for good forecasting performance whereby experts' estimates are weighted differently by measures of reasoning, engagement, openness to changing their mind in light of new facts, evidence or opinions presented in the discussion round, extremity of estimates, informativeness of estimates, asymmetry of estimate bounds, granularity of estimates, and by prior statistical knowledge as measured in a quiz.
 
 @eq-weight defines standardised notation for describing weighted linear combinations of individual judgements where normalised weights are denoted by $\tilde{w} \_ method$:
@@ -444,9 +443,9 @@ Weights may be calculated at the judgement-level or participant-level. Judgement
 
 ### Judgement-level Weights {#sec-IntervalWAgg}
 
-`IntervalWAgg` uses judgement-level weights by aggregating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
+`IntervalWAgg` uses judgement-level weights by aggregating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target forecast. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
 
-For a given claim $c$, a vector of weights for all individuals is calculated from their upper and lower estimates using the weighting function, [weight_interval]{.fct}, which calculates the interval width for each individual's estimate for the target claim (@eq-weightInterval). The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score (@eq-IntWAgg).
+For a given claim $c$, a vector of weights for all individuals is calculated from their upper and lower estimates using the weighting function, [weight_interval]{.fct}, which calculates the interval width for each individual's estimate for the target forecast (@eq-weightInterval). The weights are then normalised across the claim (by dividing each weight by the sum of all weights per claim). Normalised weights are then multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score (@eq-IntWAgg).
 
 $$
 w\_Interval_{i,c} = \frac{1}{U_{i,c} - L_{i,c}}
@@ -480,7 +479,7 @@ purrr::map_dfr(.x = c("IndIntWAgg", "IntWAgg"),
                .f = ~ IntervalWAgg(focal_claim_108, type = .x))
 ```
 
-Other wrapper functions that weight estimates at the judgement-level include: `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)); `ReasonWAgg()` which weights estimates based on the number of unique reasoning categories used by experts to justify their estimates for the target claim (see @sec-ReasonWAgg); and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg`, which downweights extreme estimates.
+Other wrapper functions that weight estimates at the judgement-level include: `ShiftingWAgg()`, which weights estimates based on shifts in expert opinions between rounds when judgements are elicited using the IDEA protocol (or similar, Box [1](#ideaProtocol)); `ReasonWAgg()` which weights estimates based on the number of unique reasoning categories used by experts to justify their estimates for the target forecast (see @sec-ReasonWAgg); and several methods implemented by the `LinearWAgg()` function, including `DistLimitWAgg`, which weights judgements based on the distance of estimates from the limits of the interval, `GranWAgg`, which calculates weights based on the granularity of estimates, and `OutWAgg`, which downweights extreme estimates.
 
 <!-- ? Check with @Doi90 about whether to merge the worked example code together for both functions, or whether I should separate them back out again and drop the example for IndIntWAgg. Also, now that I've used VarIndIntWAgg below, that gives us 3 IntervalWAgg examples in a row... -->
 
@@ -515,7 +514,7 @@ See `?IntervalWAgg` for other methods that calculate different types of weighted
 
 <!-- ? But the weights aren't actually user-supplied, user-supplied data is used to construct the weights -->
 
-The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target claim $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
+The `ReasoningWAgg()` function, which implements the `ReasonWAgg` method, requires a dataset of qualitatively coded reasons that experts provided to justify their numeric estimates. `ReasonWAgg`  weights each participant's best estimate $B_{i,c}$ by the number of unique reasoning categories they used to justify their estimates for the target forecast $c$, assuming that participants who use a greater breadth of reasoning categories to justify their estimates are more likely to be accurate forecasters.
 
 The weighting function `weight_reason()` counts the number of unique reasons used by each participant for each claim, and uses this as a proxy for forecasting performance (@eq-weightReason). The more unique reasons a participant uses to justify their estimates, the higher their weight in the aggregation. The weights are then normalised across the claim and multiplied by the corresponding individual's best estimates $B_{i,c}$ and summed together into a single confidence score (@eq-ReasonWAgg).
 
@@ -543,7 +542,7 @@ data_supp_reasons_focal <- data_supp_reasons %>%
 ```{r}
 #| label: tbl-focal-claim-reasons
 #| tbl-cap: |
-#|     Reasoning Data for focal claim `108` for a sample of reasoning categories. The dataset of reasons is used to construct weights for the `ReasonWAgg` method, which weights each participant's best estimate by the number of unique reasoning categories they used to justify their estimates for the target claim (see `?data_supp_reasons` for details).  Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0). The total number of unique reasons used by each participant is calculated by summing across the reason category columns.
+#|     Reasoning Data for focal claim `108` for a sample of reasoning categories. The dataset of reasons is used to construct weights for the `ReasonWAgg` method, which weights each participant's best estimate by the number of unique reasoning categories they used to justify their estimates for the target forecast (see `?data_supp_reasons` for details).  Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0). The total number of unique reasons used by each participant is calculated by summing across the reason category columns.
 #| tbl-cap-location: top
 #| echo: false
 data_supp_reasons_focal %>%
@@ -574,7 +573,7 @@ focal_claims %>%
                 reasons = data_supp_reasons_focal)
 ```
 
-<!-- TODO mv to pkgdown articles: function defaults to LoArMean in situations where zero scores. If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target claim. -->
+<!-- TODO mv to pkgdown articles: function defaults to LoArMean in situations where zero scores. If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target forecast. -->
 
 :::{.content-visible when-format="pdf"}
 \blandscape
@@ -583,7 +582,7 @@ focal_claims %>%
 ```{r}
 #| label: fig-ReasonWAgg
 #| echo: false
-#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data_supp_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
+#| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data_supp_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target forecast."
 #| results: asis
 #| fig-width: 25
 magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
@@ -598,7 +597,7 @@ magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
 
 Using the `LinearWAgg()` wrapper function, any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`). We show how to apply the `QuizWAgg` method described in [@Hanea2021] to the focal claim with `LinearWAgg()`, which weights each participant's best estimate $B_{i,c}$ by their score on a on a statistical knowledge quiz under the assumption that participants with higher statistical knowledge are more likely to be accurate forecasters, and therefore should be weighted more heavily in the aggregation than those with lower statistical knowledge.
 
-`weights` are constructed from the `data_supp_quiz` dataset,  which is a dataset of quiz scores for each participant in the repliCATS pilot study (See `?data_supp_quiz` for details about the dataset). The column containing the quiz scores is renamed to `weight`, as required by `LinearWAgg()`. The weights are then normalised across participants, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score. We specify the `name` of the method to be returned in the output as "QuizWAgg":
+`weights` are constructed from the `data_supp_quiz` dataset,  which is a dataset of quiz scores for each participant in the repliCATS pilot study (See `?data_supp_quiz` for details about the dataset). The column containing the quiz scores is renamed to `weight`, as required by `LinearWAgg()`. The weights are then normalised across participants, multiplied by $B_{i,c}$, and summed to give the aggregated confidence score. We specify the `name` of the method to be returned in the output as `"QuizWAgg"`:
 
 ```{r}
 #| label: focal-claim-QuizWAgg
@@ -633,10 +632,10 @@ focal_claims %>%
   dplyr::filter(paper_id == "108")
 ```
 
-Because `BayesianWAgg()` computes participant-level weights using data from all forecasts, the aggregated estimates are sensitive to the input data. This is also true for any aggregators that use re-scaled participant-level weights, such as `IndIntWAgg` and `VarIndIntWAgg` (see @sec-sec-IntervalWAgg). As such, when calculating the confidence score for a single forecast, the user should ensure that the all available forecasts are parsed to `expert_judgements` before applying the aggregation method, and then filter the aggregated estimates for the target claim after aggregation.
+Because `BayesianWAgg()` computes participant-level weights using data from all forecasts, the aggregated estimates are sensitive to the input data. This is also true for any aggregators that use re-scaled participant-level weights, such as `IndIntWAgg` and `VarIndIntWAgg` (see @sec-sec-IntervalWAgg). As such, when calculating the confidence score for a single forecast, the user should ensure that the all available forecasts are parsed to `expert_judgements` before applying the aggregation method, and then filter the aggregated estimates for the target forecast after aggregation.
 <!-- TODO check that these two methods are actually rescaling methods -->
 
-Below we illustrate this point by calculating the confidence score for claim 108 using `BayTriVar` using a different input dataset, `data_ratings`, which contains judgements for all claims in the repliCATS pilot study. We apply `BayTriVar` to the full dataset of claims, and then filter the aggregated confidence scores for claim `108` *after* applying the aggregation method to the full dataset of claims:
+Below we illustrate this point by calculating the confidence score for claim `108` using `BayTriVar` using a different input dataset, `data_ratings`, which contains judgements for all claims in the repliCATS pilot study. We apply `BayTriVar` to the full dataset of claims, and then filter the aggregated confidence scores for claim `108` *after* applying the aggregation method to the full dataset of claims:
 
 ```{r}
 #| label: focal-claim-BayTriVar-filtered
@@ -648,7 +647,7 @@ aggreCAT::data_ratings |>
   dplyr::filter(paper_id == "108")
 ```
 
-Notice that the confidence score for claim `108` differs between the two applications of `BayTriVar`, depending on which input data was used to compute participant-level weights. This illustrates the importance of ensuring that all available forecasts are parsed to `expert_judgements` when applying aggregation methods that use participant-level weights, and then filtering the aggregated estimates for the target claim after aggregation.
+Notice that the confidence score for claim `108` differs between the two applications of `BayTriVar`, depending on which input data was used to compute participant-level weights. This illustrates the importance of ensuring that all available forecasts are parsed to `expert_judgements` when applying aggregation methods that use participant-level weights, and then filtering the aggregated estimates for the target forecast after aggregation.
 
 # An illustrative workflow for use in real study contexts {#sec-workflow}
 
@@ -678,8 +677,7 @@ AverageWAgg(data_ratings, type = "ArMean")
 
 ## Comparing and Evaluating Aggregation Methods {#sec-evaluation}
 
-In real study contexts, such as that of the repliCATS project in the
-DARPA SCORE program, it is of interest to compute confidence scores
+In real study contexts, such as that of the repliCATS project, it is of interest to compute confidence scores
 using multiple aggregation methods so that their performance might be
 evaluated and compared. Since different methods offer different
 mathematical properties, and therefore might be more or less appropriate
