@@ -162,7 +162,7 @@ pre.fansi + pre.fansi {
 </style>
 ```
 
-## Introduction {#sec-introduction}
+# Introduction {#sec-introduction}
 
 Expert judgement is frequently used to inform forecasting about
 uncertain future events across a range of fields and applications
@@ -229,7 +229,7 @@ that researchers may apply any of the the aggregation functions
 described in [@Hanea2021], as well as additional methods provided by [aggreCAT]{.pkg}, to their own expert
 elicitation datasets where mathematical aggregation is required.
 
-## Mathematically Aggregating Expert Judgements
+# Mathematically Aggregating Expert Judgements
 
 The aggregation methods in [aggreCAT]{.pkg} were developed in the
 context of the IDEA protocol (Box [1](#box-1-the-replicats-idea-protocol)), a structured elicitation
@@ -253,7 +253,7 @@ behavioural consensus.
 :::: callout
 ::: {#ideaProtocol}
 
-## Box 1: The repliCATS IDEA Protocol {.unnumbered}
+# Box 1: The repliCATS IDEA Protocol {.unnumbered}
 
 The repliCATS project used the IDEA protocol in the context of forecasting the replicability of Social and Behavioural Science (SBS) claims [@Fraser:2021]. Participants were asked to estimate the probability (0–100%) that a direct replication would produce a statistically significant effect in the same direction as the original claim, providing a best estimate plus lower and upper bounds [@hemming2017, figure 1]. Participants also provided brief justifications and supplementary ratings (e.g., comprehensibility, plausibility, and involvement in the original study).
 
@@ -265,7 +265,7 @@ with permission from Wintle et al.
 :::
 ::::
 
-### Notation and Problem Formulation
+## Notation and Problem Formulation
 
 First, we describe some preliminary mathematical notation used to represent
 each aggregation method. The total number of forecasts assessed, $C$ , is indexed by $c = 1, ..., C$. Note that in the example dataset provided with [aggreCAT]{.pkg}, each forecast corresponds to a unique research claim, indexed by `paper_id` (see @sec-package-data). Every forecast $c$ is assessed by $N$ experts, is indexed by $i = 1, ..., N$.
@@ -293,7 +293,7 @@ The performance of each method is evaluated by comparing the aggregated confiden
 
 [aggreCAT]{.pkg} provides 29 aggregation methods in total, and these are grouped by type into eight wrapper functions. These functions, denoted by the `*WAgg` suffix (weighted aggregation), are: `AverageWAgg()` (calculations using definitions of the average), `LinearWAgg()` (linear-weighted aggregation), `IntervalWAgg()` (weights calculated from uncertainty bounds), `ShiftingWAgg()` (weights calculated from estimate shifts between rounds), `DistributionWAgg()` (averaged probability distributions constructed from three-point elicitation), `ExtremisationWAgg()` (applies extremisation techniques to averaged estimates), and `BayesianWAgg()` (Bayesian aggregation methods). The specific aggregation *method* is within each wrapper function and is applied according to the `type` argument.
 
-#### 'Tidy' Aggregation and Required Inputs {#sec-tidy-aggregation}
+### 'Tidy' Aggregation and Required Inputs {#sec-tidy-aggregation}
 
 The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
 [@Wickham:2014vp]. Each aggregation method expects a
@@ -311,7 +311,7 @@ can be applied to the same data with the results of all aggregation
 methods row-bound together in a single `tibble` (see the example
 repliCATS workflow in @sec-workflow).
 
-#### Package Data {#sec-package-data}
+### Package Data {#sec-package-data}
 
 The [aggreCAT]{.pkg} package includes data collected by the repliCATS project during a pilot study at a two-day workshop in the Netherlands in July 2019, at which 25 participants assessed the replicability of 25 unique social and behavioural science  research claims with known outcomes using the IDEA protocol [@Wintle2023].
 
@@ -326,7 +326,7 @@ Full descriptions of each data object, are provided in the [aggreCAT]{.pkg} pack
 Different aggregators require different minimum data inputs, including the type of judgements elicited (single- or three-point estimates), the number of elicitation rounds (one or two rounds), whether additional data is used to construct weights.
 For a full summary of each aggregation method, its `*WAgg` wrapper function and data requirements, see @tbl-method-summary-table.
 
-## Demonstrating Mathematical Aggregation with aggreCAT
+# Demonstrating Mathematical Aggregation with aggreCAT
 
 Here we demonstrate how judgements elicited from a diverse group of individuals may be mathematically aggregated for a single forecasting problem, using the dataset provided in [aggreCAT]{.pkg}. We illustrate the internal mechanics of the weighting methods and the different data requirements for several different aggregation methods to illustrate how aggregation methods differ in the type of judgements elicited (single- or three-point estimates), number of elicitation rounds (one or two rounds), whether judgements are weighted at the judgement- or participant- level, the type of mathematical operation used to combine judgements, and whether weights are calculated internally or require user-supplied data.
 
@@ -335,7 +335,7 @@ Here we demonstrate the application of aggregation methods for each group of met
 :::: {.callout}
 ::: {#aggWorkflow}
 
-## Box 2: Aggregation Workflow {.unnumbered}
+# Box 2: Aggregation Workflow {.unnumbered}
 
 All [aggreCAT]{.pkg} aggregation wrappers share four core arguments: `expert_judgements` (a tidy [data.frame]{.class} of expert judgements), `type` (the aggregation method applied to  `expert_judgements`), optional `name` (to override the default method label), `percent_toggle` (convert percentage inputs to probabilities), and `round_2_filter` (filter to round 2 estimates).
 
@@ -349,7 +349,7 @@ Finally, `post_process_results()` returns one row per claim with method name, co
 :::
 ::::
 
-### Prepare Focal Claim Data {#sec-focal-claims}
+## Prepare Focal Claim Data {#sec-focal-claims}
 
 Below we subset the dataset `data_ratings` to include a sample of four focal claims with judgements from five randomly-sampled participants.
 
@@ -402,7 +402,7 @@ focal_claims %>%
   tt()
 ```
 
-### Unweighted Linear Combination of Judgements {#sec-AverageWAgg}
+## Unweighted Linear Combination of Judgements {#sec-AverageWAgg}
 
 We first demonstrate the mechanics of mathematical aggregation and its implementation using the [aggreCAT]{.pkg} package with the simplest, unweighted aggregation wrapper, `AverageWAgg()`.
 
@@ -435,7 +435,7 @@ knitr::include_graphics(path = here::here("inst/ms/images/ArMean.png"))
 
 Other aggregation wrapper functions that do not weight judgements include: `ExtremisationWAgg()` `DistributionWAgg()` (see @tbl-method-summary-table).
 
-### Weighted Linear Combination of Judgements
+## Weighted Linear Combination of Judgements
 
 To improve the calibration, accuracy and informativeness of aggregated judgements, many aggregation methods in [aggreCAT]{.pkg} use weighting schemes to differentially weight individual judgements according to both measures and proxies of forecasting performance. In the absence of measures of experts' prior performance, proxies for forecasting performance, such as breadth and variability of qualitative reasons used by experts to justify their judgements (see @sec-ReasonWAgg), can be used to form weights [@Hanea2021].
 
@@ -443,7 +443,7 @@ Weights may be calculated at the judgement-level or participant-level. Judgement
 
 <!-- ? duplicated content above types of weights, which one should be removed? -->
 
-#### Judgement-level Weights
+### Judgement-level Weights {#sec-IntervalWAgg}
 
 `IntervalWAgg` uses judgement-level weights by aggregating linearly weighted best estimates with weights influenced by the interval width of the forecast. The `IntWAgg` method implemented by the `IntervalWAgg()` function weights each participant's best estimate $B_{i,c}$ by the width of their uncertainty intervals, i.e. the difference between an individual's upper ${U}_{i,c}$ and lower bounds ${L}_{i,c}$. The intuition behind this weighting scheme is that participants who provide narrower uncertainty intervals are more confident in their estimate, and therefore likely to be more accurate for the target claim. Hence, participants with narrower intervals are weighted more heavily in the aggregation than those with wider intervals.
 
@@ -457,7 +457,7 @@ $$
 \hat{p}_c(IntWAgg) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}
 $$ {#eq-IntWAgg}
 
-#### Judgement-level Weights Rescaled by Participant-level Behaviour
+### Judgement-level Weights Rescaled by Participant-level Behaviour {#sec-IndIntWAgg}
 
 To account for systematic differences in interval widths across claims, participant-level weights can be rescaled. In `IndIntWAgg`, also applied `IntervalWAgg()` each participant’s best estimate $B_{i,c}$ is weighted by their interval width for claim $c$ relative to their average interval width across all claims. Narrower average intervals imply greater confidence and potentially better forecasting performance.
 
@@ -485,7 +485,7 @@ Other wrapper functions that weight estimates at the judgement-level include: `S
 
 <!-- ? Check with @Doi90 about whether to merge the worked example code together for both functions, or whether I should separate them back out again and drop the example for IndIntWAgg. Also, now that I've used VarIndIntWAgg below, that gives us 3 IntervalWAgg examples in a row... -->
 
-#### Participant-level Weights
+### Participant-level Weights
 
 `VarIndIntWAgg` uses participant-level weights by weighting each participant's best estimate $B_{i,c}$ by the variability of their interval widths across forecasts relative to other participants. This method assumes that participants who show greater variability in their interval widths across forecasts are more responsive to the supporting evidence of different claims, and therefore more likely to be accurate forecasters.
 
@@ -508,11 +508,11 @@ focal_claim_108 |>
 
 See `?IntervalWAgg` for other methods that calculate different types of weighted linear combinations of best estimates with weights calculated from uncertainty bounds, and see @tbl-method-summary-table for a summary of all methods that use participant-level weights.
 
-### Weighted Linear Combination of Judgements with Weights Constructed from User-supplied Data
+## Weighted Linear Combination of Judgements with Weights Constructed from User-supplied Data
 
 [aggreCAT]{.pkg} provides a suite of methods that require user-supplied data to calculate weights, which are implemented in the `ReasoningWAgg()` and `BayesianWAgg()` (see @sec-BayesianWAgg) wrapper functions. In addition, `LinearWAgg()` provides a flexible wrapper function that allows users to apply bespoke user-supplied weights to the best estimates $B_{i,c}$ at either the judgement-level or participant-level.
 
-#### User-supplied Weights: Judgement-level {#sec-ReasonWAgg}
+### User-supplied Weights: Judgement-level {#sec-ReasonWAgg}
 
 <!-- ? But the weights aren't actually user-supplied, user-supplied data is used to construct the weights -->
 
@@ -586,7 +586,6 @@ focal_claims %>%
 #| echo: false
 #| fig-cap: "Illustration of the `ReasonWAgg` aggregation method for a subset of five participants who assessed claim `108`. `ReasonWAgg` is applied using the wrapper function `ReasoningWAgg()` and exemplifies aggregation methods that use supplementary data (`data_supp_ReasonWAgg`) collected externally to the IDEA protocol in the construction of weights and subsequent calculation of confidence scores. Weights are constructed by taking the sum of the number of unique reasons made in support of quantitative estimates for each participant, for the target claim."
 #| results: asis
-#| column: body-outset
 #| fig-width: 25
 magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
   magick::image_resize(geometry = "180%")
@@ -596,7 +595,7 @@ magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
 \elandscape
 :::
 
-#### User-supplied Weights: Participant-level
+### User-supplied Weights: Participant-level
 
 Using the `LinearWAgg()` wrapper function, any user-supplied weight can be applied at either the participant-level (`type = "Participant"`) or the judgement-level (`type = "Judgement"`). We show how to apply the `QuizWAgg` method described in [@Hanea2021] to the focal claim with `LinearWAgg()`, which weights each participant's best estimate $B_{i,c}$ by their score on a on a statistical knowledge quiz under the assumption that participants with higher statistical knowledge are more likely to be accurate forecasters, and therefore should be weighted more heavily in the aggregation than those with lower statistical knowledge.
 
@@ -617,7 +616,7 @@ LinearWAgg(
 
 In this way users can specify their own custom weights in addition to those described by @Hanea2021 by preparing a dataset of weights and parsing this to `LinearWAgg()`'s `weights` argument. The dataset of weights must contain a column named `weight` containing the weight values, and a column that can be used to join the weights to the `expert_judgements` dataset by participant (e.g. `user_name`) or by judgement (e.g. `paper_id` and `user_name`).
 
-### Bayesian Aggregation Methods {#sec-BayesianWAgg}
+## Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
 While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` aggregation family takes a model-based approach to computing confidence scores. It implements two variants that use elicited best estimates as data with which to update prior distributions of forecasted quantity: `BayTriVar` and `BayPriorsAgg`. Both methods use the same underlying Bayesian model, but differ in how the prior distributions are specified. The `BayTriVar` method assumes forecast-specific prior means, while `BayPriorsAgg` allows users to specify their own priors.
 
@@ -652,7 +651,7 @@ aggreCAT::data_ratings |>
 
 Notice that the confidence score for claim `108` differs between the two applications of `BayTriVar`, depending on which input data was used to compute participant-level weights. This illustrates the importance of ensuring that all available forecasts are parsed to `expert_judgements` when applying aggregation methods that use participant-level weights, and then filtering the aggregated estimates for the target claim after aggregation.
 
-## An illustrative workflow for use in real study contexts {#sec-workflow}
+# An illustrative workflow for use in real study contexts {#sec-workflow}
 
 Throughout the SCORE program, 752 participants assessed more than 4000
 unique claims using the repliCATS IDEA protocol, between 7th July 2019
@@ -667,7 +666,7 @@ generated by the repliCATS project.
 
 <!-- some overlap with comparing and evaluating agg methods subsection -->
 
-### Generating multiple forecasts
+## Generating multiple forecasts
 
 The  modular and tidy design of the aggregation functions in [aggreCAT]{.pkg} (see Box [2](#aggWorkflow) and @sec-tidy-aggregation) supports batch aggregation of judgements across multiple forecasts using multiple methods so that the user is free to focus their attention on the interpretation and analysis of the forecasts, rather than on data processing and implementation of the aggregation methods. Below we apply the `ArMean` aggregation method to `r length(unique(data_ratings$paper_id))` claims evaluated by 25 participants simultaneously:
 
@@ -678,7 +677,7 @@ The  modular and tidy design of the aggregation functions in [aggreCAT]{.pkg} (s
 AverageWAgg(data_ratings, type = "ArMean")
 ```
 
-### Comparing and Evaluating Aggregation Methods {#sec-evaluation}
+## Comparing and Evaluating Aggregation Methods {#sec-evaluation}
 
 In real study contexts, such as that of the repliCATS project in the
 DARPA SCORE program, it is of interest to compute confidence scores
@@ -695,10 +694,10 @@ From a computational perspective, multiple aggregation methods must
 first be applied to the forecast prior to comparison and evaluation.
 This can be achieved by applying each different aggregation method to
 `focal_claims`, and binding the results together with [dplyr]{.pkg}'s
-[row_bind]{.fct}. However, more elegant and succinct solutions can be
-implemented using [purrr]{.pkg}'s [map_dfr]{.fct} function [@purrr2020,
+[bind_rows]{.fct}. However, more elegant and succinct solutions can be
+implemented using [purrr]{.pkg}'s [map_dfr]{.fct} function (@purrr2020,
 see @lst-multi-method-workflow-non-supp and
-@lst-multi-method-workflow-both].
+@lst-multi-method-workflow-both).
 
 ```{r}
 #| label: multi-method-workflow-non-supp
@@ -785,7 +784,7 @@ aggreCAT::confidence_score_evaluation(
   format_tt(j = c(2,3), digits = 2)
 ```
 
-### Visualising Judgements, Confidence Scores and Forecast Performance
+## Visualising Judgements, Confidence Scores and Forecast Performance
 
 We include two functions for visualising comparison and evaluation of
 confidence scores across multiple aggregation methods for a suite of
@@ -926,7 +925,7 @@ judgements (subset using [preprocess_judgements]{.fct} on
 by setting `percent_toggle` to `TRUE`, @fig-aggregation,
 @lst-confidencescores).
 
-### Extending [aggreCAT]{.pkg} to other datasets
+## Extending [aggreCAT]{.pkg} to other datasets
 
 The aggregation methods supplied by the [aggreCAT]{.pkg} package can
 easily be applied to other forecasting problems. The only requirements
@@ -975,7 +974,7 @@ modularise key components of the aggregation's computational
 implementation -- namely the data wrangling that occurs before and after
 the actual mathematical aggregation.
 
-#### Preparing your own Elicitation Data
+### Preparing your own Elicitation Data
 
 We demonstrate how to prepare data for applying the [aggreCAT]{.pkg}
 aggregation methods with data collected using the IDEA protocol for an
@@ -1050,7 +1049,7 @@ turtle_CS %>%
   format_tt(j = 3, num_fmt = 'decimal', digits = 2)
 ```
 
-## Summary and Discussion {#sec-summary}
+# Summary and Discussion {#sec-summary}
 
 The [aggreCAT]{.pkg} package provides a diverse suite of methods for
 mathematically aggregating judgements elicited from groups of experts
@@ -1151,7 +1150,6 @@ human forecasts is required.
 ::::: {#tbl-method-summary-table tbl-cap-location="top" tbl-cap="Summary of aggregation methods and functions, including data requirements and sources."}
 ::: {.content-hidden unless-format="html"}
 ```{r}
-#| column: page
 #| include: true
 #| echo: false
 #| results: asis
@@ -1246,7 +1244,7 @@ aggreCAT:::method_summary_table %>%
 \newpage
 :::
 
-## Acknowledgments {.unnumbered}
+# Acknowledgments {.unnumbered}
 
 ::: callout
 This project is sponsored by the Defense Advanced Research Projects
@@ -1256,18 +1254,25 @@ policy of the Government, and no official endorsement should be
 inferred.
 :::
 
-## References {.unnumbered}
+# References {.unnumbered}
 
 :::{#refs}
 :::
 
 :::{=latex}
 \newpage
+\appendix
+\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\thecodelisting}{A\arabic{codelisting}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{codelisting}{0}
 :::
 
-## Appendix {.appendix}
+# Appendix {.appendix}
 
-### Computational details
+## Computational details
 
 The analyses and results in this paper were obtained using the following
 computing environment, versions of `R` and `R` packages:
@@ -1286,7 +1291,7 @@ devtools::session_info()
 \newpage
 :::
 
-### Listings
+## Listings
 
 ``` {#lst-multi-method-workflow-non-supp .r lst-cap="Multiple aggregation methods can be applied by binding rows rather than using the purrr package, if preferred."}
 purrr::map2_dfr(.x = list(AverageWAgg,
@@ -1305,7 +1310,7 @@ purrr::map2_dfr(.x = list(AverageWAgg,
 )
 ```
 
-``` {#lst-multi-method-workflow-both .r lst-cap="If we wish to batch aggregate claims using a combination of aggregation methods that do and do not require supplementary data, we must aggregate them separately, since the methods that require supplementary data have an additional argument for the supplementary data that must be parsed to the wrapper function call. We can chain the aggregation of the methods that do not require supplementary data, and the methods that do require supplementary data together very neatly using [dplyr]{.pkg}'s [bind_rows]{.fct} function [@dplyr2021] and the [magrittr]{.fct} pipe `%>%` [@magrittr2020]. Below we implement this approach while applying the aggregation methods `ArMean`, `IntWAgg`, `IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot program dataset `data_ratings`."}
+``` {#lst-multi-method-workflow-both .r lst-cap="Example of approach for applying a mixture of aggregation methods that do and do not require supplementary data. To batch aggregate claims using a combination of aggregation methods that do and do not require supplementary data, they must be aggregated separately, since the wrapper functions applying methods that require supplementary data have method-specific additional arguments. We can chain the aggregation of the methods that do not require supplementary data, and the methods that do require supplementary data together very neatly using `dplyr::bind_rows` function[@dplyr2021] and the `magrittr` pipe `%>%` [@magrittr2020].  We implement this approach while applying the aggregation methods `ArMean`, `IntWAgg`, `IndIntWAgg`, `ShiftWAgg` and `BayTriVar` to the repliCATS pilot program dataset `data_ratings`."}
 confidenceSCOREs <-
   list(
     AverageWAgg,
