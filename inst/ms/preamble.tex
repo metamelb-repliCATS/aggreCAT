@@ -20,3 +20,8 @@
 \newcommand{\elandscape}{\end{landscape}}
 \usepackage{underscore}
 \usepackage{fancyvrb}
+% Use jss formatting for .fct and .class pandoc attributes, pkg is in pkg-format.lua %TODO: move to pkg-format.lua
+\DeclareRobustCommand{\code}[1]{\texttt{#1}}
+\newcommand{\class}[1]{\code{#1}}
+\newcommand{\fct}[1]{\code{#1()}}
+\let\proglang=\textsf
