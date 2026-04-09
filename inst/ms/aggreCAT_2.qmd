@@ -124,7 +124,8 @@ options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE, co
 options(tinytex.verbose = TRUE)
 options(width = 80)
 suppressPackageStartupMessages(library(tidyverse))
-library(aggreCAT)
+# library(aggreCAT)
+devtools::load_all() #TODO Rebuild package and switch back to library(aggreCAT)
 library(tinytex)
 library(knitr)
 options(kableExtra.latex.load_packages = FALSE)
@@ -666,19 +667,19 @@ aggreCAT::confidence_score_evaluation(
 
 ## Visualising Judgements, Confidence Scores and Forecast Performance
 
-We include two functions for visualising comparison and evaluation of confidence scores across multiple aggregation methods for a suite of forecasts from multiple participants, [confidence_scores_ridgeplot]{.fct} and [confidencescore_heatmap]{.fct}. [confidence_scores_ridgeplot]{.fct} generates ridgeline plots using [ggridges]{.pkg} [@ggridges2021], and displays the distribution of predicted outcomes across a suite of forecasts for each aggregation method, grouped into separate 'mountain ranges' according to the mathematical properties of the aggregation method (@fig-ridgeplot).
+We include three functions for visualising comparison and evaluation of confidence scores across multiple aggregation methods for a suite of forecasts from multiple participants, [confidence_scores_ridgeplot]{.fct} and [confidencescore_heatmap]{.fct}. [confidence_score_ridgeplot]{.fct} generates ridgeline plots using [ggridges]{.pkg} [@ggridges2021], and displays the distribution of predicted outcomes across a suite of forecasts for each aggregation method, grouped into separate 'mountain ranges' according to the mathematical properties of the aggregation method (@fig-ridgeplot).
 
 ```{r}
 #| label: fig-ridgeplot
-#| fig-height: 6
+#| fig-height: 10
 #| fig-width: 12
 #| fig-cap: "Ridgeline plots illustrating the distribution of aggregated confidence scores for the tibble `confidenceSCOREs`, grouped according to mathematical properties of each method."
 #| echo: true
 #| message: false
 #| warning: false
 #| fig-pos: H
-#| eval: false
-suppressPackageStartupMessages(library(ggridges))
+#| eval: true
+library(ggridges)
 confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
 ```
 
