@@ -667,7 +667,11 @@ aggreCAT::confidence_score_evaluation(
 
 ## Visualising Judgements, Confidence Scores and Forecast Performance
 
-We include three functions for visualising comparison and evaluation of confidence scores across multiple aggregation methods for a suite of forecasts from multiple participants, [confidence_scores_ridgeplot]{.fct} and [confidencescore_heatmap]{.fct}. [confidence_score_ridgeplot]{.fct} generates ridgeline plots using [ggridges]{.pkg} [@ggridges2021], and displays the distribution of predicted outcomes across a suite of forecasts for each aggregation method, grouped into separate 'mountain ranges' according to the mathematical properties of the aggregation method (@fig-ridgeplot).
+We include three functions for visualising comparison and evaluation of confidence scores across multiple aggregation methods for a suite of forecasts from multiple participants.
+
+<!-- TODO list third function once @Doi90 has fixed the duplicated function names:  [confidence_scores_ridgeplot]{.fct} and [confidence_score_heatmap]{.fct}. https://github.com/metamelb-repliCATS/aggreCAT/issues/81 -->
+
+Here, we use [confidence_score_ridgeplot]{.fct} to generate ridgeline plots using [ggridges]{.pkg} [@ggridges2021]. The plot displays the distribution of predicted outcomes across a suite of forecasts for each aggregation method, grouped into separate 'mountain ranges' according to the mathematical properties of the aggregation method (@fig-ridgeplot).
 
 ```{r}
 #| label: fig-ridgeplot
@@ -683,53 +687,13 @@ library(ggridges)
 confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
 ```
 
-```{r}
-#| label: fig-aggregation
-#| fig-cap: "Confidence scores for the aggregation methods `ArMean`, `BayTriVar`, `IntWAgg`, `IndIntWAgg`, `ReasonWAgg` and `ShiftWAgg` for four claims. Participants' three-point best estimates are displayed as black points, and their upper and lowr bounds displayed as black error bars. Confidence scores are displayed as points within the upper row of plots. Lines are displayed vertically at the 0.5 probability mark, and their colour denotes the observed outcome under previous large-scale replication projects."
-#| message: false
-#| fig-align: center
-#| warning: false
-#| echo: true
-#| fig-width: 10
-#| fig-pos: H
-plot_cs <-
-  confidenceSCOREs %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>%
-  dplyr::mutate(data_type = "Confidence Scores") %>%
-  dplyr::rename(x_vals = cs,
-         y_vals = method) %>%
-  dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
+While [confidence_score_ridgeplot]{.fct} is useful for comparison of aggregated forecasts among methods, [confidence_score_heatmap]{.fct} facilitates comparative *evaluation* of the aggregation methods against a set of known outcomes. Next we use [confidence_score_heatmap]{.fct} to generate a blocked heatmap of confidence scores for each aggregation method for each claim in the repliCATS pilot study, grouped horizontally according to the binary outcomes in `data_outcomes` (see @sec-package-data) and vertically according to the mathematical characteristics of each aggregation method (@fig-heatmap).
 
-plot_judgements <-
-  aggreCAT::preprocess_judgements(data_ratings,
-                                  percent_toggle = TRUE) %>%
-  tidyr::pivot_wider(names_from = element,
-                     values_from = value) %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>%
-  dplyr::rename(x_vals = three_point_best,
-         y_vals = user_name) %>%
-  dplyr::select(paper_id,
-         y_vals,
-         x_vals,
-         tidyr::contains("three_point"),
-         outcome) %>%
-  dplyr::mutate(data_type = "Elicited Probabilities")
+[confidence_score_ridgeplot]{.fct} provides a visual summary of the performance of different aggregation methods for different claims, and can be used to quickly identify which methods performed better than others for different claims, depending on the outcome. This can be useful for evaluating the performance of different aggregation methods, and for identifying which methods might be more appropriate for different forecasting contexts. Perfect forecasting would result in a heatmap with dark blue squares in the left block, where the outcomes were `TRUE`, and dark red squares on the right blocks, where the actual outcomes were `FALSE`. Deviation from this expectation indicates which aggregation methods were inaccurate for a given forecast, and to what degree.
 
-p <- plot_judgements %>%
-  dplyr::bind_rows(., {dplyr::semi_join(plot_cs, plot_judgements,
-                          by = "paper_id")}) %>%
-  ggplot2::ggplot(ggplot2::aes(x = x_vals, y = y_vals)) +
-  ggplot2::geom_pointrange(ggplot2::aes(xmin = three_point_lower,
-                      xmax = three_point_upper)) +
-  ggplot2::facet_grid(data_type ~ paper_id, scales = "free_y") +
-  ggplot2::theme_classic() +
-  ggplot2::theme(legend.position = "none") +
-  ggplot2::geom_vline(aes(xintercept = 0.5, colour = as.logical(outcome))) +
-  ggplot2::xlab("Probability of Replication") +
-  ggplot2::ylab(ggplot2::element_blank()) +
-  ggplot2::scale_colour_brewer(palette = "Set1")
-p
-```
+In the case of the repliCATS pilot study, the heatmap reveals that most methods accuratley forecasted the successful replication of most claims, except for several claims (@fig-heatmap ). The heatmap reveals that some methods performed better than others for some claims, for instance, `ReasonWAgg` performed better than other methods for claims `109` and `138`, which were two claims that failed to replicate, but were forecasted to successfully replicate by most methods.
+
+<!-- TODO check my interpretation is correct with @Doi90 -->
 
 ```{r}
 #| label: fig-heatmap
@@ -742,9 +706,9 @@ p
 #| warning: false
 #| eval: true
 #| fig-pos: H
-#| fig-cap: "Blocked heatmap visualisation of confidence scores is useful for visually comparing aggregation methods and evaluating them against a set of known outcomes. In this example, confidence scores generated by six aggregation methods for the repliCATS pilot study are visualised for 25 claims. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate are presented in heatmap blocks on the right. Confidence scores generated by different aggregation methods are positioned along the y-axis, with vertical groupings according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the confidence scores from the known outcomes."
-suppressPackageStartupMessages(library(ggforce))
-suppressPackageStartupMessages(library(ggpubr))
+#| fig-cap: "Blocked heatmap of confidence scores for 25 claims generated by six different aggregation methods for the repliCATS pilot study. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate (`outcome == FALSE`) are presented in heatmap blocks on the right. Confidence scores from different aggregation methods are grouped vertically according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the confidence scores from the known outcomes. Dark blue cells where the predicted outcome was `TRUE` indicate *accurate* forecasts of successful replication, and dark red cells where the predicted outcome was `FALSE` indicate *accurate* forecasts of failed replication."
+library(ggforce)
+library(ggpubr)
 confidence_score_heatmap(confidence_scores = confidenceSCOREs,
                         data_outcomes = aggreCAT::data_outcomes)
 ```
@@ -762,13 +726,7 @@ worst_forecasts <- dplyr::inner_join(confidenceSCOREs, data_outcomes) %>%
   dplyr::slice_max(difference, n = 3)
 ```
 
-While [confidencescore_heatmap]{.fct} is useful for comparison of aggregation methods, [confidencescore_heatmap]{.fct} is useful for visual comparative *evaluation* of aggregation methods. [confidencescore_heatmap]{.fct} generates heatmaps of forecasted confidence scores for each aggregation method included in the dataset provided to the argument `confidence_scores` organised with unique aggregation methods on the y-axis, and separate forecasts or `paper_id`s along the y-axis (@fig-heatmap). The heatmap is blocked vertically according to the mathematical characteristics of each aggregation method, and horizontally into two groups, according to the binary outcomes in `data_outcomes`.
-
-Horizontal grouping facilitates quick and simple evaluation of the aggregation methods. Perfectly accurate aggregation methods show dark blue squares in the left heatmap blocks, where the outcomes were `1` or `TRUE`, and dark red squares on the right heatmap blocks, where the actual outcomes were `0` or `FALSE`. Deviation from this expectation indicates which aggregation methods for which claim/forecast, for which outcome type were inaccurate, and to what degree.
-
-For example, in @fig-heatmap, for the dataset `confidenceSCOREs` the successful replication of most claims was accurately forecasted by most methods, except for several claims. Some methods performed better than others for some claims (e.g. `ReasonWAgg` for claims `109` and `138`).
-
-Finally, creating bespoke user-defined plots is relatively easy -- because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s or [tibble]{.class}s, we can easily manipulate the raw judgements, aggregated confidence scores and outcome data to plot them with [ggplot2]{.pkg} [@ggplot2016] or other visualisation package. Below we plot the aggregated confidence scores along with the three-point judgements (subset using [preprocess_judgements]{.fct} on `focal_claims`, transforming judgements in percentages to probabilities by setting `percent_toggle` to `TRUE`, @fig-aggregation, @lst-confidencescores).
+Finally, creating bespoke user-defined plots is relatively easy - because [aggreCAT]{.pkg} functions return tidy [data.frame]{.class}s and [tibble]{.class}s, we can easily manipulate the raw judgements, aggregated confidence scores and outcome data to plot them with [ggplot2]{.pkg} [@ggplot2016] or other visualisation package. See @lst-confidencescores for an example of how to prepare the data using [aggreCAT]{.pkg}'s preprocessing functions for subsequent plotting with [ggplot2]{.pkg}.
 
 ## Extending [aggreCAT]{.pkg} to other datasets
 
