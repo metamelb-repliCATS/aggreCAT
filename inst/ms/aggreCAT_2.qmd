@@ -595,6 +595,7 @@ From a computational perspective, multiple aggregation methods must first be app
 #| message: false
 #| prompt: true
 #| echo: true
+#| cache: true
 confidenceSCOREs <-
   dplyr::bind_rows(
     AverageWAgg(data_ratings,
