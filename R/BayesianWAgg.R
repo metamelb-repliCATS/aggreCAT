@@ -417,7 +417,7 @@ BayesianWAgg <- function(expert_judgements,
 
     CSsamples <- R2jags::jags(
       progress.bar = "none",
-      # quiet = TRUE,
+      quiet = TRUE,
       data = JAGS_list,
       parameters.to.save = JAGSparams,
       n.thin = 1,
