@@ -677,7 +677,7 @@ Here, we use [confidence_score_ridgeplot]{.fct} to generate ridgeline plots usin
 
 ```{r}
 #| label: fig-ridgeplot
-#| fig-height: 15
+#| fig-height: 11.5
 #| fig-width: 10
 #| fig-cap: "Ridgeline plots illustrating the distribution of confidence scores for 22 aggregation methods on all 25 pilot data claims, grouped according to mathematical properties of each method."
 #| echo: true
@@ -688,8 +688,7 @@ Here, we use [confidence_score_ridgeplot]{.fct} to generate ridgeline plots usin
 library(ggridges)
 confidence_score_ridgeplot(confidence_scores = data_confidence_scores) +
   theme(axis.text = element_text(size = 11),
-  axis.title = element_text(size = 12)) +
-  theme(legend.position = "bottom")
+  axis.title = element_text(size = 12))
 ```
 
 While [confidence_score_ridgeplot]{.fct} is useful for comparison of aggregated forecasts among methods, [confidence_score_heatmap]{.fct} facilitates comparative *evaluation* of the aggregation methods against a set of known outcomes. Next we use [confidence_score_heatmap]{.fct} to generate a blocked heatmap of confidence scores for each aggregation method for each claim in the repliCATS pilot study, grouped horizontally according to the binary outcomes in `data_outcomes` (see @sec-package-data) and vertically according to the mathematical characteristics of each aggregation method (@fig-heatmap).
@@ -704,7 +703,7 @@ In the case of the repliCATS pilot study, the heatmap reveals that most methods 
 #| label: fig-heatmap
 #| echo: true
 #| fig-width: 10
-#| fig-height: 6
+#| fig-height: 5.5
 #| dpi: 300
 #| fig-align: center
 #| message: false
