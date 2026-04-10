@@ -619,7 +619,7 @@ confidenceSCOREs <-
                  "BayTriVar",
                  percent_toggle = TRUE),
     ReasoningWAgg(data_ratings,
-                  reasons = aggreCAT::data_supp_reasons,
+                  reasons = data_supp_reasons,
                   percent_toggle = TRUE)
   )
 
