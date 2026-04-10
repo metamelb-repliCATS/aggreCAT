@@ -677,23 +677,26 @@ Here, we use [confidence_score_ridgeplot]{.fct} to generate ridgeline plots usin
 
 ```{r}
 #| label: fig-ridgeplot
-#| fig-height: 12
-#| fig-width: 15
-#| fig-cap: "Ridgeline plots illustrating the distribution of aggregated confidence scores for the tibble `confidenceSCOREs`, grouped according to mathematical properties of each method."
+#| fig-height: 15
+#| fig-width: 10
+#| fig-cap: "Ridgeline plots illustrating the distribution of confidence scores for 22 aggregation methods on all 25 pilot data claims, grouped according to mathematical properties of each method."
 #| echo: true
 #| message: false
 #| warning: false
-#| fig-pos: H
 #| eval: true
+#| fig-pos: H
 library(ggridges)
-confidence_score_ridgeplot(confidence_scores = confidenceSCOREs)
+confidence_score_ridgeplot(confidence_scores = data_confidence_scores) +
+  theme(axis.text = element_text(size = 11),
+  axis.title = element_text(size = 12)) +
+  theme(legend.position = "bottom")
 ```
 
 While [confidence_score_ridgeplot]{.fct} is useful for comparison of aggregated forecasts among methods, [confidence_score_heatmap]{.fct} facilitates comparative *evaluation* of the aggregation methods against a set of known outcomes. Next we use [confidence_score_heatmap]{.fct} to generate a blocked heatmap of confidence scores for each aggregation method for each claim in the repliCATS pilot study, grouped horizontally according to the binary outcomes in `data_outcomes` (see @sec-package-data) and vertically according to the mathematical characteristics of each aggregation method (@fig-heatmap).
 
 [confidence_score_heatmap]{.fct} provides a visual summary of the performance of different aggregation methods for different claims, and can be used to quickly identify which methods performed better than others for different claims, depending on the outcome. This can be useful for evaluating the performance of different aggregation methods, and for identifying which methods might be more appropriate for different forecasting contexts. Perfect forecasting would result in a heatmap with dark blue squares in the left block, where the outcomes were `TRUE`, and dark red squares on the right blocks, where the actual outcomes were `FALSE`. Deviation from this expectation indicates which aggregation methods were inaccurate for a given forecast, and to what degree.
 
-In the case of the repliCATS pilot study, the heatmap reveals that most methods accuratley forecasted the successful replication of most claims, except for several claims (@fig-heatmap ). The heatmap reveals that some methods performed better than others for some claims, for instance, `ReasonWAgg` performed better than other methods for claims `109` and `138`, which were two claims that failed to replicate, but were forecasted to successfully replicate by most methods.
+In the case of the repliCATS pilot study, the heatmap reveals that most methods accuratley forecasted the successful replication of most claims (@fig-heatmap ). The heatmap reveals that some methods performed better than others for some claims, for instance, `ReasonWAgg` performed better than other methods for claims `109` and `138`, which were two claims that failed to replicate, but were forecasted to successfully replicate by most methods.
 
 <!-- TODO check my interpretation is correct with @Doi90 -->
 
