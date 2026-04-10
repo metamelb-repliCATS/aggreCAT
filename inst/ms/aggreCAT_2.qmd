@@ -125,7 +125,7 @@ options(tinytex.verbose = TRUE)
 options(width = 80)
 suppressPackageStartupMessages(library(tidyverse))
 # library(aggreCAT)
-devtools::load_all() #TODO Rebuild package and switch back to library(aggreCAT)
+devtools::load_all() # TODO Rebuild package and switch back to library(aggreCAT)
 library(tinytex)
 library(knitr)
 options(kableExtra.latex.load_packages = FALSE)
@@ -137,9 +137,11 @@ library(tinytable)
 #| include: false
 #| message: false
 #| eval: !expr knitr::is_html_output()
-#enable coloured cli text in output chunks
-options(crayon.enabled = TRUE,
-        cli.num_colors = 256)
+# enable coloured cli text in output chunks
+options(
+  crayon.enabled = TRUE,
+  cli.num_colors = 256
+)
 fansi::set_knit_hooks(knitr::knit_hooks, which = c("output", "message", "error"))
 ```
 
@@ -290,7 +292,7 @@ focal_claims <- focal_claims %>%
   dplyr::right_join(focal_users, by = "user_name") |>
   dplyr::filter(stringr::str_detect(element, "three_point")) |>
   dplyr::select(-question)
-focal_claim_108 <- focal_claims  |>
+focal_claim_108 <- focal_claims |>
   dplyr::filter(paper_id == "108")
 focal_claims
 ```
@@ -304,22 +306,30 @@ focal_claims
 #| results: asis
 #| tbl-pos: "H"
 focal_claims %>%
-  filter(paper_id == "108",
-         round == "round_2") %>%
-  pivot_wider(names_from = element,
-              values_from = value) %>%
+  filter(
+    paper_id == "108",
+    round == "round_2"
+  ) %>%
+  pivot_wider(
+    names_from = element,
+    values_from = value
+  ) %>%
   arrange(user_name) %>%
-  select(paper_id,
-         user_name,
-         three_point_lower,
-         three_point_best,
-         three_point_upper) %>%
+  select(
+    paper_id,
+    user_name,
+    three_point_lower,
+    three_point_best,
+    three_point_upper
+  ) %>%
   arrange(desc(three_point_best)) |>
-  rename(`Claim ID` = paper_id,
-         `Participant` = user_name,
-         `Lower Bound` = three_point_lower,
-         `Best Estimate` = three_point_best,
-         `Upper Bound` = three_point_upper) %>%
+  rename(
+    `Claim ID` = paper_id,
+    `Participant` = user_name,
+    `Lower Bound` = three_point_lower,
+    `Best Estimate` = three_point_best,
+    `Upper Bound` = three_point_upper
+  ) %>%
   tt()
 ```
 
@@ -491,13 +501,13 @@ data_supp_reasons_focal %>%
   dplyr::arrange(name) |>
   tidyr::separate(name, into = c("reason_num", "reason"), sep = " ", extra = "merge") |>
   select(-reason_num) |>
-  group_by(reason)  |>
-  filter(sum(value)>0)  |>
+  group_by(reason) |>
+  filter(sum(value) > 0) |>
   group_by(user_name) |>
   pivot_wider(names_from = reason) |>
   dplyr::arrange(user_name) |>
   rename("Participant" = user_name) |>
-  tt(width = c(1.5, 2,2,2,2))
+  tt(width = c(1.5, 2, 2, 2, 2))
 ```
 
 Then we apply the `ReasonWAgg` method to compute a confidence score for claim `108` weighting participants' best estimates by the number of unique reasoning categories they used to justify their estimates for that claim.
@@ -508,8 +518,10 @@ Then we apply the `ReasonWAgg` method to compute a confidence score for claim `1
 #| echo: true
 focal_claims %>%
   dplyr::filter(paper_id == "108") %>%
-  ReasoningWAgg(type = "ReasonWAgg",
-                reasons = data_supp_reasons)
+  ReasoningWAgg(
+    type = "ReasonWAgg",
+    reasons = data_supp_reasons
+  )
 ```
 
 <!-- TODO mv to pkgdown articles: function defaults to LoArMean in situations where zero scores. If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target forecast. -->
@@ -546,8 +558,10 @@ Below we apply the Bayesian Triple Variability method `BayTriVar` to the focal c
 #| cache: true
 #| echo: true
 focal_claims %>%
-  BayesianWAgg(type = "BayTriVar",
-  percent_toggle = TRUE) |>
+  BayesianWAgg(
+    type = "BayTriVar",
+    percent_toggle = TRUE
+  ) |>
   dplyr::filter(paper_id == "108")
 ```
 
@@ -562,8 +576,10 @@ Below we illustrate this point by calculating the confidence score for claim `10
 #| cache: true
 #| message: false
 data_ratings |>
-  BayesianWAgg(type = "BayTriVar",
-  percent_toggle = TRUE) |>
+  BayesianWAgg(
+    type = "BayTriVar",
+    percent_toggle = TRUE
+  ) |>
   dplyr::filter(paper_id == "108")
 ```
 
@@ -602,23 +618,29 @@ From a computational perspective, multiple aggregation methods must first be app
 confidenceSCOREs <-
   dplyr::bind_rows(
     AverageWAgg(data_ratings,
-                "ArMean",
-                percent_toggle = TRUE),
+      "ArMean",
+      percent_toggle = TRUE
+    ),
     IntervalWAgg(data_ratings,
-                 "IndIntWAgg",
-                 percent_toggle = TRUE),
+      "IndIntWAgg",
+      percent_toggle = TRUE
+    ),
     IntervalWAgg(data_ratings,
-                 "IntWAgg",
-                 percent_toggle = TRUE),
+      "IntWAgg",
+      percent_toggle = TRUE
+    ),
     ShiftingWAgg(data_ratings,
-                 "ShiftWAgg",
-                 percent_toggle = TRUE),
+      "ShiftWAgg",
+      percent_toggle = TRUE
+    ),
     BayesianWAgg(data_ratings,
-                 "BayTriVar",
-                 percent_toggle = TRUE),
+      "BayTriVar",
+      percent_toggle = TRUE
+    ),
     ReasoningWAgg(data_ratings,
-                  reasons = data_supp_reasons,
-                  percent_toggle = TRUE)
+      reasons = data_supp_reasons,
+      percent_toggle = TRUE
+    )
   )
 
 confidenceSCOREs
@@ -643,9 +665,9 @@ The function [confidence_score_evaluation]{.fct} evaluates a set of aggregated f
 #| echo: true
 #| prompt: true
 confidence_score_evaluation(
-   confidenceSCOREs,
-   data_outcomes
- )
+  confidenceSCOREs,
+  data_outcomes
+)
 ```
 
 ```{r}
@@ -657,14 +679,16 @@ confidence_score_evaluation(
 #| echo: false
 #| prompt: true
 confidence_score_evaluation(
-   confidenceSCOREs,
-   data_outcomes
- ) %>%
-  rename(Method = method,
-         `Brier Score` = Brier_Score,
-         `Classification Accuracy` = Classification_Accuracy) %>%
+  confidenceSCOREs,
+  data_outcomes
+) %>%
+  rename(
+    Method = method,
+    `Brier Score` = Brier_Score,
+    `Classification Accuracy` = Classification_Accuracy
+  ) %>%
   tt() %>%
-  format_tt(j = c(2,3), digits = 2)
+  format_tt(j = c(2, 3), digits = 2)
 ```
 
 ## Visualising Judgements, Confidence Scores and Forecast Performance
@@ -687,8 +711,10 @@ Here, we use [confidence_score_ridgeplot]{.fct} to generate ridgeline plots usin
 #| fig-pos: H
 library(ggridges)
 confidence_score_ridgeplot(confidence_scores = data_confidence_scores) +
-  theme(axis.text = element_text(size = 11),
-  axis.title = element_text(size = 12))
+  theme(
+    axis.text = element_text(size = 11),
+    axis.title = element_text(size = 12)
+  )
 ```
 
 While [confidence_score_ridgeplot]{.fct} is useful for comparison of aggregated forecasts among methods, [confidence_score_heatmap]{.fct} facilitates comparative *evaluation* of the aggregation methods against a set of known outcomes. Next we use [confidence_score_heatmap]{.fct} to generate a blocked heatmap of confidence scores for each aggregation method for each claim in the repliCATS pilot study, grouped horizontally according to the binary outcomes in `data_outcomes` (see @sec-package-data) and vertically according to the mathematical characteristics of each aggregation method (@fig-heatmap).
@@ -713,19 +739,21 @@ In the case of the repliCATS pilot study, the heatmap reveals that most methods 
 #| fig-cap: "Blocked heatmap of confidence scores for 25 claims generated by six different aggregation methods for the repliCATS pilot study. Claims where known outcomes succesfully replicated `outcome == TRUE` are presented in heatmap blocks on the left, and claims that failed to replicate (`outcome == FALSE`) are presented in heatmap blocks on the right. Confidence scores from different aggregation methods are grouped vertically according to the methods' mathematical properties. Colour and intensity of cells indicates the direction and degree of deviation respectively of the confidence scores from the known outcomes. Dark blue cells where the predicted outcome was `TRUE` indicate *accurate* forecasts of successful replication, and dark red cells where the predicted outcome was `FALSE` indicate *accurate* forecasts of failed replication."
 library(ggforce)
 library(ggpubr)
-confidence_score_heatmap(confidence_scores = confidenceSCOREs,
-                        data_outcomes = data_outcomes)
+confidence_score_heatmap(
+  confidence_scores = confidenceSCOREs,
+  data_outcomes = data_outcomes
+)
 ```
 
 ```{r}
 #| label: intext-outcomes
 #| include: false
 best_forecasts <- dplyr::inner_join(confidenceSCOREs, data_outcomes) %>%
-  dplyr::mutate(difference = abs(outcome-cs)) %>%
+  dplyr::mutate(difference = abs(outcome - cs)) %>%
   dplyr::group_by(outcome) %>%
   dplyr::slice_min(difference, n = 3)
 worst_forecasts <- dplyr::inner_join(confidenceSCOREs, data_outcomes) %>%
-  dplyr::mutate(difference = abs(outcome-cs)) %>%
+  dplyr::mutate(difference = abs(outcome - cs)) %>%
   dplyr::group_by(outcome) %>%
   dplyr::slice_max(difference, n = 3)
 ```
@@ -749,24 +777,30 @@ The wrapper functions for each method are designed to be flexible and user-frien
 #| prompt: true
 #| echo: true
 green_turtles <-
-  dplyr::tribble(~user_name, ~round, ~three_point_lower,
-          ~three_point_upper, ~three_point_best,
-          "L01", 1,	10.00,	16.43,	10.00,
-          "L01", 2,	10.00,	16.43,	10.00,
-          "L02", 1,	500.00,	522.50,	500.00,
-          "L02", 2,	293.75,	406.25,	350.00,
-          "L03", 1,	400.00,	512.50,	400.00,
-          "L03", 2,	300.00,	356.25,	300.00,
-          "L04", 1,	32.29,	65.10,	41.67,
-          "L04", 2,	32.29,	65.10,	41.67,
-          "L05", 1,	6.67,	7.74,	6.67,
-          "L05", 2,	6.67,	7.74,	6.67) %>%
+  dplyr::tribble(
+    ~user_name, ~round, ~three_point_lower,
+    ~three_point_upper, ~three_point_best,
+    "L01", 1, 10.00, 16.43, 10.00,
+    "L01", 2, 10.00, 16.43, 10.00,
+    "L02", 1, 500.00, 522.50, 500.00,
+    "L02", 2, 293.75, 406.25, 350.00,
+    "L03", 1, 400.00, 512.50, 400.00,
+    "L03", 2, 300.00, 356.25, 300.00,
+    "L04", 1, 32.29, 65.10, 41.67,
+    "L04", 2, 32.29, 65.10, 41.67,
+    "L05", 1, 6.67, 7.74, 6.67,
+    "L05", 2, 6.67, 7.74, 6.67
+  ) %>%
   dplyr::group_by(user_name) %>% # pivot longer
-  tidyr::pivot_longer(cols = tidyr::contains("three_point"),
-               names_to = "element", values_to = "value") %>%
-  dplyr::mutate(paper_id = 1,
-         round = ifelse(round ==1, "round_1", "round_2"),
-         question = "direct_replication")
+  tidyr::pivot_longer(
+    cols = tidyr::contains("three_point"),
+    names_to = "element", values_to = "value"
+  ) %>%
+  dplyr::mutate(
+    paper_id = 1,
+    round = ifelse(round == 1, "round_1", "round_2"),
+    question = "direct_replication"
+  )
 ```
 
 We can then apply multiple aggregation methods, using the same approach implemented for aggregation of the `focal_claims` dataset (@lst-BYO-data-aggregate), with aggregated confidence scores for the green turtle dataset shown in @tbl-BYO-data-aggregate. Note that some aggregators require probablistic inputs, like `BaysianWAgg`, so are not applicable to the green turtle dataset, which contains judgements as point estimates rather than probabilities. In Listings -@lst-multi-method-workflow-non-supp and -@lst-multi-method-workflow-both we illustrate how to apply several aggregation methods with different data input requirements to a single dataset simultaneously.
@@ -781,24 +815,29 @@ We can then apply multiple aggregation methods, using the same approach implemen
 #| tbl-pos: H
 turtle_CS <-
   list(
-  AverageWAgg,
-  ShiftingWAgg,
-  IntervalWAgg,
-  ShiftingWAgg
-) %>%
-  purrr::map2_dfr(.y = list("ArMean",
-                            "ShiftWAgg",
-                            "IntWAgg",
-                            "ShiftWAgg"),
-                  .f = ~ .x(green_turtles, type = .y)
+    AverageWAgg,
+    ShiftingWAgg,
+    IntervalWAgg,
+    ShiftingWAgg
+  ) %>%
+  purrr::map2_dfr(
+    .y = list(
+      "ArMean",
+      "ShiftWAgg",
+      "IntWAgg",
+      "ShiftWAgg"
+    ),
+    .f = ~ .x(green_turtles, type = .y)
   )
 turtle_CS %>%
-  rename(Method = method,
-         `Question ID` = paper_id,
-         `Confidence Score` = cs,
-         `N (experts)` = n_experts) %>%
+  rename(
+    Method = method,
+    `Question ID` = paper_id,
+    `Confidence Score` = cs,
+    `N (experts)` = n_experts
+  ) %>%
   tt() %>%
-  format_tt(j = 3, num_fmt = 'decimal', digits = 2)
+  format_tt(j = 3, num_fmt = "decimal", digits = 2)
 ```
 
 # Summary and Discussion {#sec-summary}
@@ -834,24 +873,30 @@ In this paper we have described the computational implementation of the aggregat
 #| echo: false
 #| results: asis
 aggreCAT:::method_summary_table %>%
-  ungroup %>%
+  ungroup() %>%
   mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>%
   tidyr::unite(agg_name_description,
-               aggregator_function,
-               aggregator_fun_desc, sep = " ") %>%
+    aggregator_function,
+    aggregator_fun_desc,
+    sep = " "
+  ) %>%
   select(-agg_name_description) %>%
-  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " "),
-	type_desc = textclean::add_missing_endmark(type_desc, ".")) %>%
-  rename("Method" = type,
-         "Description" = "type_desc",
-         "Data Requirements" = "supp_data_requirements",
-         "Weighting Function" = "weighting_fn",
-         "Elicitation Rounds" = "number_rounds",
-         "Elicitation Method" = "elicitation_method",
-         "Data Sources" = "judgement_data_sources_eqns") %>%
+  mutate(
+    supp_data_requirements = tidyr::replace_na(supp_data_requirements, " "),
+    type_desc = textclean::add_missing_endmark(type_desc, ".")
+  ) %>%
+  rename(
+    "Method" = type,
+    "Description" = "type_desc",
+    "Data Requirements" = "supp_data_requirements",
+    "Weighting Function" = "weighting_fn",
+    "Elicitation Rounds" = "number_rounds",
+    "Elicitation Method" = "elicitation_method",
+    "Data Sources" = "judgement_data_sources_eqns"
+  ) %>%
   tt() %>%
   group_tt(
-   i = list(
+    i = list(
       "`AverageWAgg()` *Averaged best estimates*" = 1,
       "`LinearWAgg()` *Linearly-weighted best estimates*" = 6,
       "`IntervalWAgg()` *Linearly-weighted best estimates, with weights determined by interval widths*" = 11,
@@ -864,10 +909,9 @@ aggreCAT:::method_summary_table %>%
   ) %>%
   # format_tt(j = c(3,4), markdown = TRUE) %>%
   print("markdown")
-  # style_tt(i = c(1,6,11,17,22,26,28), markdown = TRUE)
+# style_tt(i = c(1,6,11,17,22,26,28), markdown = TRUE)
 
-#TODO needs tidying up for html presentation
-
+# TODO needs tidying up for html presentation
 ```
 :::
 
@@ -877,45 +921,53 @@ aggreCAT:::method_summary_table %>%
 #| echo: false
 #| include: true
 aggreCAT:::method_summary_table %>%
-  ungroup %>%
+  ungroup() %>%
   mutate(aggregator_function = glue::glue("**{aggregator_function}**")) %>%
   tidyr::unite(agg_name_description,
-               aggregator_function,
-               aggregator_fun_desc, sep = " ") %>%
+    aggregator_function,
+    aggregator_fun_desc,
+    sep = " "
+  ) %>%
   select(-agg_name_description) %>%
-  mutate(supp_data_requirements = tidyr::replace_na(supp_data_requirements, " "),
-	type_desc = textclean::add_missing_endmark(type_desc, ".")) %>%
-  kableExtra::kbl(col.names = c(
-                             "Method",
-                             "Description",
-                             "Data Requirements",
-                             "Weighting Function",
-                             "Min. Number Elicitation Rounds Required",
-                             "Elicitation Method",
-                             "Data Sources"),
-                  escape = FALSE,
-                  booktabs = TRUE,
-                  longtable = TRUE,
-                  #caption = "\\label{tbl-method-summary-table} Summary of aggregation methods and functions, including data requirements and sources.",
-                  format = "latex") %>%
-  kableExtra::column_spec(column = c(1,7), width = "10em") %>%
+  mutate(
+    supp_data_requirements = tidyr::replace_na(supp_data_requirements, " "),
+    type_desc = textclean::add_missing_endmark(type_desc, ".")
+  ) %>%
+  kableExtra::kbl(
+    col.names = c(
+      "Method",
+      "Description",
+      "Data Requirements",
+      "Weighting Function",
+      "Min. Number Elicitation Rounds Required",
+      "Elicitation Method",
+      "Data Sources"
+    ),
+    escape = FALSE,
+    booktabs = TRUE,
+    longtable = TRUE,
+    # caption = "\\label{tbl-method-summary-table} Summary of aggregation methods and functions, including data requirements and sources.",
+    format = "latex"
+  ) %>%
+  kableExtra::column_spec(column = c(1, 7), width = "10em") %>%
   kableExtra::column_spec(column = c(3, 4), width = "15em") %>%
   kableExtra::column_spec(column = c(5), width = "5em") %>%
-  kableExtra::column_spec(column = c(2,6), width = "20em") %>%
-	# kableExtra::collapse_rows(columns = c(3,4,6), longtable_clean_cut = TRUE) |>
-  kableExtra::kable_styling(latex_options =
-                              c("HOLD_position", "repeat_header"),
-                            font_size = 6,
-                            position = "left") %>%
-  kableExtra::pack_rows("AverageWAgg(): Averaged best estimates", 1,5) %>%
-  kableExtra::pack_rows("LinearWAgg() Linearly-weighted best estimates", 6,10) %>%
-  kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights determined by interval widths", 11,16) %>%
+  kableExtra::column_spec(column = c(2, 6), width = "20em") %>%
+  # kableExtra::collapse_rows(columns = c(3,4,6), longtable_clean_cut = TRUE) |>
+  kableExtra::kable_styling(
+    latex_options =
+      c("HOLD_position", "repeat_header"),
+    font_size = 6,
+    position = "left"
+  ) %>%
+  kableExtra::pack_rows("AverageWAgg(): Averaged best estimates", 1, 5) %>%
+  kableExtra::pack_rows("LinearWAgg() Linearly-weighted best estimates", 6, 10) %>%
+  kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights determined by interval widths", 11, 16) %>%
   kableExtra::pack_rows("ShiftingWAgg() Weighted by judgements that shift most after discussion", 17, 21) %>%
-  kableExtra::pack_rows("ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data", 22,23) %>%
-  kableExtra::pack_rows("ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution",24,25) %>%
-  kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements", 26,27) %>%
-  kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28,29)
-
+  kableExtra::pack_rows("ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data", 22, 23) %>%
+  kableExtra::pack_rows("ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution", 24, 25) %>%
+  kableExtra::pack_rows("DistributionWAgg() Calculates the arithmetic mean of distributions created from expert judgements", 26, 27) %>%
+  kableExtra::pack_rows("BayesianWAgg() Bayesian aggregation methods with either uninformative or informative prior distributions", 28, 29)
 ```
 :::
 :::::
