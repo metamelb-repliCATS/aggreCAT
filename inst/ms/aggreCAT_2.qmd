@@ -1,5 +1,5 @@
 ---
-title: "[aggreCAT]{.pkg}: an R Package for Mathematically Aggregating Expert Judgements"
+title: "[aggreCAT]{.pkg}: an R package for mathematically aggregating expert judgements"
 format:
     jss-pdf:
       number-sections: true
@@ -769,7 +769,7 @@ green_turtles <-
          question = "direct_replication")
 ```
 
-We can then apply multiple aggregation methods, using the same approach implemented for aggregation of the `focal_claims` dataset (@lst-BYO-data-aggregate), with aggregated confidence scores for the green turtle dataset shown in @tbl-BYO-data-aggregate. Note that some aggregators require probablistic inputs, like `BaysianWAgg` so are not applicable to the green turtle dataset, which contains judgements as point estimates rather than probabilities. In Listings -@lst-multi-method-workflow-both and -@lst-multi-method-workflow-non-supp we illustrate how to apply several aggregation methods with different data input requirements to a single dataset simultaneously.
+We can then apply multiple aggregation methods, using the same approach implemented for aggregation of the `focal_claims` dataset (@lst-BYO-data-aggregate), with aggregated confidence scores for the green turtle dataset shown in @tbl-BYO-data-aggregate. Note that some aggregators require probablistic inputs, like `BaysianWAgg`, so are not applicable to the green turtle dataset, which contains judgements as point estimates rather than probabilities. In Listings -@lst-multi-method-workflow-non-supp and -@lst-multi-method-workflow-both we illustrate how to apply several aggregation methods with different data input requirements to a single dataset simultaneously.
 
 ```{r}
 #| label: tbl-BYO-data-aggregate
@@ -782,12 +782,12 @@ We can then apply multiple aggregation methods, using the same approach implemen
 turtle_CS <-
   list(
   AverageWAgg,
-  IntervalWAgg,
+  ShiftingWAgg,
   IntervalWAgg,
   ShiftingWAgg
 ) %>%
   purrr::map2_dfr(.y = list("ArMean",
-                            "IndIntWAgg",
+                            "ShiftWAgg",
                             "IntWAgg",
                             "ShiftWAgg"),
                   .f = ~ .x(green_turtles, type = .y)
@@ -804,7 +804,7 @@ turtle_CS %>%
 # Summary and Discussion {#sec-summary}
 
 
-The [aggreCAT]{.pkg} package provides a diverse suite of methods for mathematically aggregating judgements elicited from groups of experts using structured procedures such as the IDEA protocol. There are very few open-source tools for this purpose, and [aggreCAT]{.pkg} is distinctive both in the range of aggregation methods it implements—including methods that use proxies of forecasting accuracy via weights—and in its computational approach. To our knowledge, no other [R]{.proglang} or other software package offers such a broad collection of aggregation methods, including those that incorporate performance-based weights.
+The [aggreCAT]{.pkg} package provides a diverse suite of methods for mathematically aggregating judgements elicited from groups of experts using structured procedures such as the IDEA protocol. There are very few open-source tools for this purpose, and [aggreCAT]{.pkg} is distinctive both in the range of aggregation methods it implements—including methods that use proxies of forecasting accuracy via weights—and in its computational approach. To our knowledge, no other [R]{.proglang} package or other software offers such a broad collection of aggregation methods, including those that incorporate performance-based weights.
 
 [aggreCAT]{.pkg} is designed for practical use in both one-off workshops and larger programs in which data collection is ongoing and aggregation needs to be automated. It follows tidy data principles: users supply [data.frame]{.class}s of elicited judgements, and the aggregation functions return [data.frame]{.class}s of aggregated forecasts. This has several advantages. First, data-wrangling and method application are handled internally, allowing researchers to focus on analysing and interpreting aggregation outputs—particularly important in data-deficient contexts where rapid expert assessments are needed. Second, because inputs and outputs are tidy, [aggreCAT]{.pkg} pairs naturally with other tidyverse tools such as [purrr]{.pkg}, [dplyr]{.pkg}, and [ggplot2]{.pkg}, as illustrated in the repliCATS workflow (@sec-workflow). Third, this design scales readily to settings with many forecasts, many experts, and multiple aggregation methods, as demonstrated by its application in the repliCATS program to forecasts for more than 4000 research claims [@Wilkinson2026; @Mody2026].
 
