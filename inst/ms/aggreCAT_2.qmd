@@ -50,6 +50,7 @@ format:
       include: true
       echo: true
       error: true
+      message: false
       filters:
         - pkg-format.lua
       header-includes:
@@ -57,7 +58,6 @@ format:
     jss-html:
         number-depth: 4
         default-style: true
-        message: true
         # header-includes:
         #   - styles.css
 author:
@@ -474,21 +474,16 @@ Below we apply the `ReasonWAgg` method to the focal claim `108` using the [Reaso
 
 We reshape the output to illustrate the number of unique reasoning categories used by each participant to justify their estimates for claim `108` (@tbl-focal-claim-reasons). Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0) to justify their estimates for claim `108`. The total number of unique reasons used by each participant is then calculated by summing across the reason category columns.
 
-
-```{r}
-#| label: focal-claim-reason-data-prep
-#| prompt: true
-#| echo: true
-data_supp_reasons_focal <- data_supp_reasons %>%
-  right_join(focal_users, by = "user_name")
-```
-
 ```{r}
 #| label: tbl-focal-claim-reasons
 #| tbl-cap: |
 #|     Reasoning data for focal claim `108` for a sample of reasoning categories. The dataset of reasons is used to construct weights for the `ReasonWAgg` method, which weights each participant's best estimate by the number of unique reasoning categories they used to justify their estimates for the target forecast (see `?data_supp_reasons` for details).  Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0). The total number of unique reasons used by each participant is calculated by summing across the reason category columns.
 #| tbl-cap-location: top
 #| echo: false
+
+data_supp_reasons_focal <- data_supp_reasons |>
+  right_join(focal_users, by = "user_name")
+
 data_supp_reasons_focal %>%
   filter(paper_id == "108") %>%
   select(-paper_id) |>
@@ -514,7 +509,7 @@ Then we apply the `ReasonWAgg` method to compute a confidence score for claim `1
 focal_claims %>%
   dplyr::filter(paper_id == "108") %>%
   ReasoningWAgg(type = "ReasonWAgg",
-                reasons = data_supp_reasons_focal)
+                reasons = data_supp_reasons)
 ```
 
 <!-- TODO mv to pkgdown articles: function defaults to LoArMean in situations where zero scores. If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target forecast. -->
@@ -539,7 +534,7 @@ magick::image_read(here::here("inst/ms/images/ReasonWAgg.png")) |>
 
 ## Bayesian Aggregation Methods {#sec-BayesianWAgg}
 
-While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` aggregation family takes a model-based approach to computing confidence scores. It implements two variants that use elicited best estimates as data with which to update prior distributions of forecasted quantity: `BayTriVar` and `BayPriorsAgg`. Both methods use the same underlying Bayesian model, but differ in how the prior distributions are specified. The `BayTriVar` method assumes forecast-specific prior means, while `BayPriorsAgg` allows users to specify their own priors.
+While most aggregation methods in [aggreCAT]{.pkg} are weighted linear combinations of best estimates, the `BayesianWAgg()` aggregation family takes a model-based approach to computing confidence scores. It implements two variants that use elicited best estimates as data with which to update prior distributions of forecasts: `BayTriVar` and `BayPriorsAgg`. Both methods use the same underlying Bayesian model, but differ in how the prior distributions are specified. The `BayTriVar` method assumes forecast-specific prior means, while `BayPriorsAgg` allows users to specify their own priors.
 
 The model in `BayesianWAgg` incorporates uncertainty from three sources: (i) *judgement-level variability*, based on the width of each participant’s uncertainty interval for the target forecast; (ii) *participant-level variability*, defined as variation in each participant’s best estimates across all forecasts they assessed; and (iii) *forecast-level variability*, defined as variation in best estimates across all participants for a given forecast. The confidence score is then taken as the median of the posterior distribution.
 
@@ -547,7 +542,8 @@ Below we apply the Bayesian Triple Variability method `BayTriVar` to the focal c
 ```{r}
 #| label: focal-claim-BayTriVar
 #| prompt: true
-#| cache: true
+#| message: false
+#| cache: false
 #| echo: true
 focal_claims %>%
   BayesianWAgg(type = "BayTriVar",
@@ -555,16 +551,17 @@ focal_claims %>%
   dplyr::filter(paper_id == "108")
 ```
 
-Because `BayesianWAgg()` computes participant-level weights using data from all forecasts, the aggregated estimates are sensitive to the input data. This is also true for any aggregators that use re-scaled participant-level weights, such as `IndIntWAgg` and `VarIndIntWAgg` (see @sec-IntervalWAgg). As such, when calculating the confidence score for a single forecast, the user should ensure that the all available forecasts are parsed to `expert_judgements` before applying the aggregation method, and then filter the aggregated estimates for the target forecast after aggregation.
+Because `BayesianWAgg()` computes participant-level weights using data from all forecasts, the aggregated estimates are sensitive to the input data. This is also true for any aggregators that re-scale judgement-level weights with participant-level values, such as `IndIntWAgg` (see @sec-IntervalWAgg). As such, when calculating the confidence score for a single forecast, the user should ensure that the all available forecasts are parsed to `expert_judgements` before applying the aggregation method, and then filter the aggregated estimates for the target forecast after aggregation.
 <!-- TODO check that these two methods are actually rescaling methods -->
 
-Below we illustrate this point by calculating the confidence score for claim `108` using `BayTriVar` using a different input dataset, `data_ratings`, which contains judgements for all claims in the repliCATS pilot study. We apply `BayTriVar` to the full dataset of claims, and then filter the aggregated confidence scores for claim `108` *after* applying the aggregation method to the full dataset of claims:
+Below we illustrate this point by calculating the confidence score for claim `108` using `BayTriVar` with a different input dataset, `data_ratings`, which contains judgements for all claims in the repliCATS pilot study. We apply `BayTriVar` to the full dataset of claims, and then filter the aggregated confidence scores for claim `108` *after* applying the aggregation method to the full dataset of claims:
 
 ```{r}
 #| label: focal-claim-BayTriVar-filtered
 #| echo: true
-#| cache: true
-aggreCAT::data_ratings |>
+#| cache: false
+#| message: false
+data_ratings |>
   BayesianWAgg(type = "BayTriVar",
   percent_toggle = TRUE) |>
   dplyr::filter(paper_id == "108")
@@ -574,7 +571,7 @@ Notice that the confidence score for claim `108` differs between the two applica
 
 # An illustrative workflow for use in real study contexts {#sec-workflow}
 
-Throughout the SCORE program, 752 participants assessed more than 4000 unique claims using the repliCATS IDEA protocol, between 7th July 2019 and 25 November 2021 (@Tyner2026). This required batch aggregation over multiple claims, and to generate confidence scores for multiple claims. We also applied multiple aggregation methods to the same claim so that we could compare and evaluate the different aggregation methods. We expect that these are not uncommon use-cases, therefore we now demonstrate a general workflow for using the [aggreCAT]{.pkg} package to aggregate expert judgements using pilot data from DARPA SCORE program generated by the repliCATS project.
+Throughout the SCORE program, 752 participants assessed more than 4000 unique claims using the repliCATS IDEA protocol, between 7th July 2019 and 25 November 2021 [@Tyner2026]. This required batch aggregation over multiple claims, and to generate confidence scores for multiple claims. We also applied multiple aggregation methods to the same claim so that we could compare and evaluate the different aggregation methods. We expect that these are not uncommon use-cases, therefore we now demonstrate a general workflow for using the [aggreCAT]{.pkg} package to aggregate expert judgements using pilot data from DARPA SCORE program generated by the repliCATS project.
 
 <!-- some overlap with comparing and evaluating agg methods subsection -->
 
@@ -598,9 +595,10 @@ From a computational perspective, multiple aggregation methods must first be app
 ```{r}
 #| label: multi-method-workflow-non-supp
 #| message: false
+#| warning: false
 #| prompt: true
 #| echo: true
-#| cache: true
+#| cache: false
 confidenceSCOREs <-
   dplyr::bind_rows(
     AverageWAgg(data_ratings,
@@ -632,11 +630,11 @@ After generating confidence scores using various aggregation methods, we then ev
 #| label: replication-outcomes
 #| prompt: true
 #| echo: true
-aggreCAT::data_outcomes %>%
+data_outcomes %>%
   head()
 ```
 
-The function [confidence_score_evaluation]{.fct} evaluates a set of aggregated forecasts or confidence scores against a set of known or observed outcomes, returning the Area Under the ROC Curve (AUC), the Brier score, and classification accuracy of each method (@tbl-multi-method-workflow-eval):
+The function [confidence_score_evaluation]{.fct} evaluates a set of aggregated forecasts or confidence scores against a set of known or observed outcomes, returning the Area Under the ROC Curve (AUC), the Brier score, and classification accuracy and correlation of each method (@tbl-multi-method-workflow-eval):
 
 ```{r}
 #| label: multi-method-workflow-eval
@@ -644,27 +642,27 @@ The function [confidence_score_evaluation]{.fct} evaluates a set of aggregated f
 #| results: false
 #| echo: true
 #| prompt: true
-aggreCAT::confidence_score_evaluation(
+confidence_score_evaluation(
    confidenceSCOREs,
-   aggreCAT::data_outcomes
+   data_outcomes
  )
 ```
 
 ```{r}
 #| label: tbl-multi-method-workflow-eval
-#| tbl-cap: "AUC and Classification Accuracy for forecasts from the aggregation methods 'ShiftWAgg', 'ArMean', 'IntWAgg', 'IndIntWAgg', 'ReasonWAgg' and 'BayTriVar' for a subset of the repliCATS pilot study claims (`focal_claims`) and known outcomes."
+#| tbl-cap: "AUC and Classification Accuracy for forecasts from the aggregation methods `ShiftWAgg`, `ArMean`, `IntWAgg`, `IndIntWAgg`, `ReasonWAgg` and `BayTriVar` for a subset of the repliCATS pilot study claims (`focal_claims`) and known outcomes."
 #| tbl-pos: "H"
 #| message: false
 #| results: asis
 #| echo: false
 #| prompt: true
-aggreCAT::confidence_score_evaluation(
+confidence_score_evaluation(
    confidenceSCOREs,
-   aggreCAT::data_outcomes
+   data_outcomes
  ) %>%
   rename(Method = method,
          `Brier Score` = Brier_Score,
-         `Classification Accuracy ($\\%$)` = Classification_Accuracy) %>%
+         `Classification Accuracy` = Classification_Accuracy) %>%
   tt() %>%
   format_tt(j = c(2,3), digits = 2)
 ```
@@ -714,7 +712,7 @@ In the case of the repliCATS pilot study, the heatmap reveals that most methods 
 library(ggforce)
 library(ggpubr)
 confidence_score_heatmap(confidence_scores = confidenceSCOREs,
-                        data_outcomes = aggreCAT::data_outcomes)
+                        data_outcomes = data_outcomes)
 ```
 
 ```{r}
@@ -769,7 +767,7 @@ green_turtles <-
          question = "direct_replication")
 ```
 
-We can then apply multiple aggregation methods, using the same approach implemented for aggregation of the `focal_claims` dataset (@lst-BYO-data-aggregate), with aggregated confidence scores for the green turtle dataset shown in @tbl-BYO-data-aggregate. Note that some aggregators require probablistic inputs, like `BaysianWAgg` so are not applicable to the green turtle dataset, which contains judgements as point estimates rather than probabilities. In Listings -@lst-multi-method-workflow-both and -@lst-multi-method-workflow-non-supp we illustrate how to apply a suite of aggregation methods with different data input requirements to a single dataset simultaneously.
+We can then apply multiple aggregation methods, using the same approach implemented for aggregation of the `focal_claims` dataset (@lst-BYO-data-aggregate), with aggregated confidence scores for the green turtle dataset shown in @tbl-BYO-data-aggregate. Note that some aggregators require probablistic inputs, like `BaysianWAgg` so are not applicable to the green turtle dataset, which contains judgements as point estimates rather than probabilities. In Listings -@lst-multi-method-workflow-both and -@lst-multi-method-workflow-non-supp we illustrate how to apply several aggregation methods with different data input requirements to a single dataset simultaneously.
 
 ```{r}
 #| label: tbl-BYO-data-aggregate
@@ -854,7 +852,7 @@ aggreCAT:::method_summary_table %>%
    i = list(
       "`AverageWAgg()` *Averaged best estimates*" = 1,
       "`LinearWAgg()` *Linearly-weighted best estimates*" = 6,
-      "`IntervalWAgg()` *Linearly-weighted best estimates, with weights influenced by interval widths*" = 11,
+      "`IntervalWAgg()` *Linearly-weighted best estimates, with weights determined by interval widths*" = 11,
       "`ShiftingWAgg()` *Weighted by judgements that shift most after discussion*" = 17,
       "`ReasoningWAgg()` *Linearly-weighted best estimates, with weights constructed from supplementary reasoning data*" = 22,
       "`ExtremisationWAgg()` *Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution*" = 24,
@@ -909,7 +907,7 @@ aggreCAT:::method_summary_table %>%
                             position = "left") %>%
   kableExtra::pack_rows("AverageWAgg(): Averaged best estimates", 1,5) %>%
   kableExtra::pack_rows("LinearWAgg() Linearly-weighted best estimates", 6,10) %>%
-  kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights influenced by interval widths", 11,16) %>%
+  kableExtra::pack_rows("IntervalWAgg() Linearly-weighted best estimates, with weights determined by interval widths", 11,16) %>%
   kableExtra::pack_rows("ShiftingWAgg() Weighted by judgements that shift most after discussion", 17, 21) %>%
   kableExtra::pack_rows("ReasoningWAgg() Linearly-weighted best estimates, with weights constructed from supplementary reasoning data", 22,23) %>%
   kableExtra::pack_rows("ExtremisationWAgg() Takes the average of best-estimates and transforms it using the cumulative distribution function of a beta distribution",24,25) %>%
@@ -1002,11 +1000,11 @@ confidenceSCOREs <-
               "IntWAgg",
               "ShiftWAgg",
               "BayTriVar"),
-    .f = ~ .x(aggreCAT::data_ratings, type = .y, percent_toggle = TRUE)
+    .f = ~ .x(data_ratings, type = .y, percent_toggle = TRUE)
   ) %>%
   dplyr::bind_rows(
-    ReasoningWAgg(aggreCAT::data_ratings,
-                  reasons = aggreCAT::data_supp_reasons,
+    ReasoningWAgg(data_ratings,
+                  reasons = data_supp_reasons,
                   percent_toggle = TRUE)
   )
 ```
@@ -1031,18 +1029,18 @@ turtle_CS <-
 ``` {#lst-confidencescores .r lst-cap="Visualising Confidence Scores"}
 plot_cs <-
   confidenceSCOREs %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>%
+  dplyr::left_join(data_outcomes) %>%
   dplyr::mutate(data_type = "Confidence Scores") %>%
   dplyr::rename(x_vals = cs,
          y_vals = method) %>%
   dplyr::select(y_vals, paper_id, data_type, outcome, x_vals)
 
 plot_judgements <-
-  aggreCAT::preprocess_judgements(focal_claims,
+  preprocess_judgements(focal_claims,
                                   percent_toggle = TRUE) %>%
   tidyr::pivot_wider(names_from = element,
                      values_from = value) %>%
-  dplyr::left_join(aggreCAT::data_outcomes) %>%
+  dplyr::left_join(data_outcomes) %>%
   dplyr::rename(x_vals = three_point_best,
          y_vals = user_name) %>%
   dplyr::select(paper_id,
