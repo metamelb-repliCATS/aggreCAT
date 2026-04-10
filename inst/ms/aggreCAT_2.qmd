@@ -543,7 +543,7 @@ Below we apply the Bayesian Triple Variability method `BayTriVar` to the focal c
 #| label: focal-claim-BayTriVar
 #| prompt: true
 #| message: false
-#| cache: false
+#| cache: true
 #| echo: true
 focal_claims %>%
   BayesianWAgg(type = "BayTriVar",
@@ -559,7 +559,7 @@ Below we illustrate this point by calculating the confidence score for claim `10
 ```{r}
 #| label: focal-claim-BayTriVar-filtered
 #| echo: true
-#| cache: false
+#| cache: true
 #| message: false
 data_ratings |>
   BayesianWAgg(type = "BayTriVar",
@@ -598,7 +598,7 @@ From a computational perspective, multiple aggregation methods must first be app
 #| warning: false
 #| prompt: true
 #| echo: true
-#| cache: false
+#| cache: true
 confidenceSCOREs <-
   dplyr::bind_rows(
     AverageWAgg(data_ratings,
