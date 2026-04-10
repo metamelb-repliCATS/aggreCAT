@@ -179,9 +179,9 @@ In this paper we give an overview of the [aggreCAT]{.pkg} package so that resear
 
 The aggregation methods in [aggreCAT]{.pkg} were developed in the context of the IDEA protocol (Box [1](#box-1-the-replicats-idea-protocol)), a structured elicitation procedure that draws on the 'wisdom of crowds' to elicit probabilistic judgements from groups of experts about uncertain events.
 
-This elicitation structure directly determines which aggregation methods in [aggreCAT]{.pkg} are applicable to a given dataset: most methods require only the post-discussion (*Round 2*) three-point judgements, some additionally use the pre-discussion (*Round 1*) judgements, and a small number require supplementary ratings or externally collected data. These requirements are summarised for each method in @tbl-method-summary-table.
+This elicitation structure directly determines which aggregation methods in [aggreCAT]{.pkg} are applicable to a given dataset: most methods require only the post-discussion (*round 2*) single-point judgements, some additionally use the pre-discussion (*round 1*) judgements, and a small number require supplementary ratings or externally collected data. These requirements are summarised for each method in @tbl-method-summary-table.
 
-Although the aggregation methods were developed in the context of the IDEA protocol, all methods requiring only a single round of elicitation can be applied to any structured elicitation procedure that generates lower, upper, and best estimates from each individual without enforcing behavioural consensus.
+Although the aggregation methods were developed in the context of the IDEA protocol, all methods requiring only a single round of elicitation can be applied to any structured elicitation procedure, including those that include multiple rounds of elicitation, or that elicit three-point estimates without enforcing behavioural consensus.
 
 :::: callout
 ::: {#ideaProtocol}
