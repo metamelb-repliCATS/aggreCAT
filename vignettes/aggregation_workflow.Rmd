@@ -1,0 +1,59 @@
+---
+title: "Tidy Aggregation and Required Data Inputs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tidy Aggregation and Required Data Inputs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+date-modified: last-modified
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The design philosophy of [aggreCAT]{.pkg} is principled on 'tidy' data
+[@Wickham:2014vp]. Each aggregation method expects a
+[data.frame]{.class} or [tibble]{.class} of judgements (`data_ratings`)
+as its input, and returns a [tibble]{.class} containing the variables
+`method`, `paper_id`, `cs` and `n_experts` (see @sec-AverageWAgg for
+illustration of outputs); where `method` is a character vector
+corresponding to the aggregation method name specified in the `type`
+argument. Each aggregation is applied as a summary function
+[@Wickham2017R], and therefore returns a single row or observation with
+a single confidence score `cs` for each claim or `paper_id`. The number
+of expert judgements summarised in the aggregated confidence score is
+returned in the column `n_experts`. Because of the tidy nature of the
+aggregation outputs, multiple aggregations can be applied to the same
+data with the results of all aggregation methods row bound together in a
+single `tibble` (See the example repliCATS workflow in @sec-workflow).
+
+The tibble of judgements to be aggregated (`data_ratings`) requires the
+columns `round`, `paper_id`, `user_name`, `question`, `element`, `value`
+and `group`. Each observation in the judgement data corresponds to a
+single `value` for a single `question` elicited from a single
+`user_name` about a given `paper_id` in a single `round`. There are four
+types of `question`s that elicited `values` correspond to. Estimates
+about the event probability for a given `paper_id` correspond to
+`"direct_replication"` in the `question` variable. The type of estimate
+the `value` belongs to is recorded in the `element` variable, and may be
+one of `"three_point_lower"`, `"three_point_best"`, or
+`"three_point_upper"`.
+
+Every aggregation function requires at least one `value` derived from
+three-point elicitation (`question == "direct_replication"`) in the
+dataframe supplied to the `expert_judgements` argument, however, some
+methods require only the best-estimates
+(`element == "three_point_best"`) for mathematical aggregation.
+Similarly some aggregation methods require multiple `round`s of
+judgements, while others require only a single round. Only the
+aggregation method *CompWAgg* requires `value`s for the `comprehension`
+question. For a summary of each aggregation method, its calling function
+and data requirements and sources, see @tbl-method-summary-table.
+
+```{r setup}
+library(aggreCAT)
+```

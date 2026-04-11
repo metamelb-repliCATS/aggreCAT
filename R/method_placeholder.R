@@ -16,7 +16,6 @@
 #' @export
 
 method_placeholder <- function(expert_judgements, method_name) {
-
   placeholder = TRUE
 
   cli::cli_alert_info("Placeholder: {.val {placeholder}}")
@@ -25,9 +24,7 @@ method_placeholder <- function(expert_judgements, method_name) {
     preprocess_judgements() %>%
     dplyr::filter(element == "three_point_best") %>%
     dplyr::group_by(paper_id) %>%
-    dplyr::summarise(cs = 0.65,
-                     n_experts = 0) %>%
-    dplyr::mutate(method = {{method_name}}) %>%
+    dplyr::summarise(cs = 0.65, n_experts = 0) %>%
+    dplyr::mutate(method = {{ method_name }}) %>%
     dplyr::select(method, paper_id, cs, n_experts)
 }
-

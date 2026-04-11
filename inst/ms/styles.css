@@ -1,0 +1,17 @@
+<style>
+/* 1) Collapse spacing on the <pre> blocks produced by fansi */
+pre.fansi {
+  margin: 0 !important;
+}
+
+/* Optional: if you still see gaps, also collapse adjacent fansi blocks */
+pre.fansi + pre.fansi {
+  margin-top: 0 !important;
+}
+
+/* 2) remove the default margin that Quarto adds around output code blocks */
+.cell pre {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+</style>

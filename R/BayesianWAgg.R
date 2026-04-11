@@ -79,51 +79,45 @@
 #' @export
 #' @md
 
-BayesianWAgg <- function(expert_judgements,
-                         type = "BayTriVar",
-                         priors = NULL,
-                         name = NULL,
-                         placeholder = FALSE,
-                         percent_toggle = FALSE,
-                         round_2_filter = TRUE) {
-
-  if(!(type %in% c("BayTriVar",
-                   "BayPRIORsAgg"))){
-
+BayesianWAgg <- function(
+  expert_judgements,
+  type = "BayTriVar",
+  priors = NULL,
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+) {
+  if (!(type %in% c("BayTriVar", "BayPRIORsAgg"))) {
     stop('`type` must be one of "BayTriVar" or "BayPRIORsAgg"')
-
-  } else if(Sys.which("jags") == "") {
-    cli::cli_abort("JAGS is require for {.emph {type}}:
-                 {.url https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c}")
+  } else if (Sys.which("jags") == "") {
+    cli::cli_abort(
+      "JAGS is require for {.emph {type}}:
+                 {.url https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c}"
+    )
   }
 
   ## Check for n
-  if(dplyr::n_distinct(expert_judgements$paper_id) < 2) {
+  if (dplyr::n_distinct(expert_judgements$paper_id) < 2) {
     cli::cli_abort("Model requires n > 1 ids to successfully execute.")
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("BayesianWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("BayesianWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = {{round_2_filter}},
-                            three_point_filter = TRUE) %>%
-      dplyr::group_by(paper_id,
-                      user_name) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = {{ round_2_filter }},
+        three_point_filter = TRUE
+      ) %>%
+      dplyr::group_by(paper_id, user_name) %>%
       tidyr::pivot_wider(names_from = element)
 
     ## Standard code
@@ -144,31 +138,31 @@ BayesianWAgg <- function(expert_judgements,
 
     Best <- df %>%
       dplyr::ungroup() %>%
-      dplyr::select(user_name,
-                    paper_id,
-                    three_point_best) %>%
-      tidyr::pivot_wider(names_from = user_name,
-                         values_from = three_point_best) %>%
+      dplyr::select(user_name, paper_id, three_point_best) %>%
+      tidyr::pivot_wider(
+        names_from = user_name,
+        values_from = three_point_best
+      ) %>%
       dplyr::select(-paper_id) %>%
       as.matrix()
 
     Lower <- df %>%
       dplyr::ungroup() %>%
-      dplyr::select(user_name,
-                    paper_id,
-                    three_point_lower) %>%
-      tidyr::pivot_wider(names_from = user_name,
-                         values_from = three_point_lower) %>%
+      dplyr::select(user_name, paper_id, three_point_lower) %>%
+      tidyr::pivot_wider(
+        names_from = user_name,
+        values_from = three_point_lower
+      ) %>%
       dplyr::select(-paper_id) %>%
       as.matrix()
 
     Upper <- df %>%
       dplyr::ungroup() %>%
-      dplyr::select(user_name,
-                    paper_id,
-                    three_point_upper) %>%
-      tidyr::pivot_wider(names_from = user_name,
-                         values_from = three_point_upper) %>%
+      dplyr::select(user_name, paper_id, three_point_upper) %>%
+      tidyr::pivot_wider(
+        names_from = user_name,
+        values_from = three_point_upper
+      ) %>%
       dplyr::select(-paper_id) %>%
       as.matrix()
 
@@ -184,28 +178,28 @@ BayesianWAgg <- function(expert_judgements,
 
     claim_sd <- apply(Best, 1, sd, na.rm = TRUE)
 
-    claim_sd <- ifelse(claim_sd %in% c(0, NA),
-                       .Machine$double.eps,
-                       claim_sd)
+    claim_sd <- ifelse(claim_sd %in% c(0, NA), .Machine$double.eps, claim_sd)
 
     participant_sd <- apply(Best, 2, sd, na.rm = TRUE)
 
-    participant_sd <- ifelse(participant_sd %in% c(0, NA),
-                             .Machine$double.eps,
-                             participant_sd)
+    participant_sd <- ifelse(
+      participant_sd %in% c(0, NA),
+      .Machine$double.eps,
+      participant_sd
+    )
 
     ## Create sd matrices
 
-    claim_sd_matrix <- matrix(claim_sd,
-                              n_claim,
-                              n_participant)
+    claim_sd_matrix <- matrix(claim_sd, n_claim, n_participant)
 
     claim_sd_matrix <- claim_sd_matrix * index_matrix
 
-    participant_sd_matrix <- matrix(participant_sd,
-                                    n_claim,
-                                    n_participant,
-                                    byrow = TRUE)
+    participant_sd_matrix <- matrix(
+      participant_sd,
+      n_claim,
+      n_participant,
+      byrow = TRUE
+    )
 
     participant_sd_matrix <- participant_sd_matrix * index_matrix
 
@@ -219,92 +213,72 @@ BayesianWAgg <- function(expert_judgements,
 
     ## Build  matrices of generic participant * claim
 
-    Generic_Best <- matrix(NA,
-                           n_claim,
-                           max(p_count))
+    Generic_Best <- matrix(NA, n_claim, max(p_count))
 
     Generic_Lower <- Generic_Upper <- Generic_Claim_sd <- Generic_Participant_sd <- Generic_Best
 
-    for(i in seq_len(nrow(Generic_Best))){
-
+    for (i in seq_len(nrow(Generic_Best))) {
       val <- Best[i, ][!is.na(Best[i, ])]
 
-      val <- c(val,
-               rep(NA,
-                   max(p_count) - p_count[i]))
+      val <- c(val, rep(NA, max(p_count) - p_count[i]))
 
       Generic_Best[i, ] <- val
-
     }
 
-    for(i in seq_len(nrow(Generic_Lower))){
-
+    for (i in seq_len(nrow(Generic_Lower))) {
       val <- Lower[i, ][!is.na(Lower[i, ])]
 
-      val <- c(val,
-               rep(NA,
-                   max(p_count) - p_count[i]))
+      val <- c(val, rep(NA, max(p_count) - p_count[i]))
 
       Generic_Lower[i, ] <- val
-
     }
 
-    for(i in seq_len(nrow(Generic_Upper))){
-
+    for (i in seq_len(nrow(Generic_Upper))) {
       val <- Upper[i, ][!is.na(Upper[i, ])]
 
-      val <- c(val,
-               rep(NA,
-                   max(p_count) - p_count[i]))
+      val <- c(val, rep(NA, max(p_count) - p_count[i]))
 
       Generic_Upper[i, ] <- val
-
     }
 
-    for(i in seq_len(nrow(Generic_Claim_sd))){
-
+    for (i in seq_len(nrow(Generic_Claim_sd))) {
       val <- claim_sd_matrix[i, ][!is.na(claim_sd_matrix[i, ])]
 
-      val <- c(val,
-               rep(NA,
-                   max(p_count) - p_count[i]))
+      val <- c(val, rep(NA, max(p_count) - p_count[i]))
 
       Generic_Claim_sd[i, ] <- val
-
     }
 
-    for(i in seq_len(nrow(Generic_Participant_sd))){
-
+    for (i in seq_len(nrow(Generic_Participant_sd))) {
       val <- participant_sd_matrix[i, ][!is.na(participant_sd_matrix[i, ])]
 
-      val <- c(val,
-               rep(NA,
-                   max(p_count) - p_count[i]))
+      val <- c(val, rep(NA, max(p_count) - p_count[i]))
 
       Generic_Participant_sd[i, ] <- val
-
     }
 
     ## Logit transform Best estimate
 
     Logit_Generic_Best <- log(.99 * Generic_Best / (1 - .99 * Generic_Best))
 
-    switch(type,
-           "BayTriVar" = {
+    switch(
+      type,
+      "BayTriVar" = {
+        ## Create list of JAGS inputs
 
-             ## Create list of JAGS inputs
+        JAGS_list <- list(
+          Logit_Best = Logit_Generic_Best,
+          Lower = Generic_Lower,
+          Upper = Generic_Upper,
+          Claim_SD = Generic_Claim_sd,
+          Participant_SD = Generic_Participant_sd,
+          n_claim = n_claim,
+          n_assessments = p_count
+        )
 
-             JAGS_list <- list(Logit_Best = Logit_Generic_Best,
-                               Lower = Generic_Lower,
-                               Upper = Generic_Upper,
-                               Claim_SD = Generic_Claim_sd,
-                               Participant_SD = Generic_Participant_sd,
-                               n_claim = n_claim,
-                               n_assessments = p_count)
+        ## Define Jags Model
 
-             ## Define Jags Model
-
-             BayesModel <- "model{
+        BayesModel <- "model{
   ## PRIORS
 
   ### Prior for claim location
@@ -340,32 +314,29 @@ BayesianWAgg <- function(expert_judgements,
     }
   }
 }"
+      },
+      "BayPRIORsAgg" = {
+        ## adding prior values to the paper_ids
 
+        prior_means <- paper_id %>%
+          dplyr::left_join(priors, by = "paper_id")
 
+        ## Create list of JAGS inputs
 
-           },
-"BayPRIORsAgg" = {
+        JAGS_list <- list(
+          Logit_Best = Logit_Generic_Best,
+          Lower = Generic_Lower,
+          Upper = Generic_Upper,
+          Claim_SD = Generic_Claim_sd,
+          Participant_SD = Generic_Participant_sd,
+          Prior_means = prior_means$prior_means,
+          n_claim = n_claim,
+          n_assessments = p_count
+        )
 
-  ## adding prior values to the paper_ids
+        ## Define Jags Model
 
-  prior_means <- paper_id %>%
-    dplyr::left_join(priors,
-                     by = "paper_id")
-
-  ## Create list of JAGS inputs
-
-  JAGS_list <- list(Logit_Best = Logit_Generic_Best,
-                    Lower = Generic_Lower,
-                    Upper = Generic_Upper,
-                    Claim_SD = Generic_Claim_sd,
-                    Participant_SD = Generic_Participant_sd,
-                    Prior_means = prior_means$prior_means,
-                    n_claim = n_claim,
-                    n_assessments = p_count)
-
-  ## Define Jags Model
-
-  BayesModel <- "model{
+        BayesModel <- "model{
   ## PRIORS
 
   ### Prior for claim location
@@ -401,22 +372,20 @@ BayesianWAgg <- function(expert_judgements,
     }
   }
 }"
-
-})
+      }
+    )
 
     # Fit Model
 
     JAGSparams <- c("mu", "sigma")
 
-    JAGSinits <- function(){
-
-      list ("mu" = rnorm (1),
-            "sigma" = rgamma (1, .1, .1))
-
+    JAGSinits <- function() {
+      list("mu" = rnorm(1), "sigma" = rgamma(1, .1, .1))
     }
 
     CSsamples <- R2jags::jags(
-      # verbose = FALSE,
+      progress.bar = "none",
+      quiet = TRUE,
       data = JAGS_list,
       parameters.to.save = JAGSparams,
       n.thin = 1,
@@ -428,31 +397,26 @@ BayesianWAgg <- function(expert_judgements,
 
     CSmcmc <- coda::as.mcmc(CSsamples)
 
-    CSmu <- matrix ( , JAGS_list$n_claim, 5000) # 5000
+    CSmu <- matrix(, JAGS_list$n_claim, 5000) # 5000
 
-    for(i in seq_len(JAGS_list$n_claim)){
-
-      CSmu[i, ] <- CSmcmc[ , sprintf("mu[%s]", i)][[1]]
-
+    for (i in seq_len(JAGS_list$n_claim)) {
+      CSmu[i, ] <- CSmcmc[, sprintf("mu[%s]", i)][[1]]
     }
 
     # Extract JAGS model output
     # Values in table
 
     Out <- CSsamples$BUGSoutput$summary
-    Pars <- Out[grep ("mu", rownames(Out)), ]
+    Pars <- Out[grep("mu", rownames(Out)), ]
     ProbPars <- exp(Pars) / (1 + exp(Pars))
-    row.names (ProbPars) <- paper_id$paper_id #get the effectID's
+    row.names(ProbPars) <- paper_id$paper_id #get the effectID's
 
     aggregation_analysis_output <-
       ProbPars %>%
       tibble::as_tibble() %>%
       dplyr::select(mean) %>%
-      dplyr::mutate(method = name,
-                    paper_id = row.names(ProbPars)) %>%
-      dplyr::select(-mean,
-                    dplyr::everything(),
-                    mean) %>%
+      dplyr::mutate(method = name, paper_id = row.names(ProbPars)) %>%
+      dplyr::select(-mean, dplyr::everything(), mean) %>%
       dplyr::rename(aggregated_judgement = mean)
 
     df %>%
@@ -462,6 +426,5 @@ BayesianWAgg <- function(expert_judgements,
       ) %>%
       dplyr::right_join(aggregation_analysis_output) %>%
       postprocess_judgements()
-
   }
 }

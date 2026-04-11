@@ -24,3 +24,13 @@ relative to an individuals interval widths across all claims.
 
 \mjdeqn{w\_nIndivInterval_{i,c} = \frac{1}{\frac{U_{i,c}-L_{i,c}}{\max\left(\{(U_{i,d}-L_{i,d}):d=1,...,C\}\right)}}}{ascii}
 }
+\seealso{
+Other weighting functions: 
+\code{\link{weight_asym}()},
+\code{\link{weight_interval}()},
+\code{\link{weight_outlier}()},
+\code{\link{weight_reason}()},
+\code{\link{weight_reason2}()},
+\code{\link{weight_varIndivInterval}()}
+}
+\concept{weighting functions}

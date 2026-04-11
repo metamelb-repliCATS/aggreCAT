@@ -46,11 +46,11 @@
 #' \mathbf{CR_i}(c,r)}{C})}{ascii}
 #'
 #' \mjdeqn{\hat{p}_c(ReasonWAgg2) = \sum_{i=1}^N \tilde{w}\_varReason_{i,c}B_{i,c}}{ascii}
-#' 
-#' @note 
-#' 
+#'
+#' @note
+#'
 #' When `flag_loarmean` is set to `TRUE`, two additional columns will be returned; `method_applied` (a character variable describing the method actually applied with values of either `LoArMean` or `ReasonWAgg`) and `no_reason_score` (a logical variable describing whether no reasoning scores were supplied for any user for the given claim, where `TRUE` indicates no reasoning scores supplied and `FALSE` indicates that at least one participant for that claim had a reasoning score greater than 0).
-#' 
+#'
 #' named method_applied (with values LoArMean or ReasonWAgg), and no_reason_score, a logical variable describing whether or not there were no reasoning scores for that claim.
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
@@ -75,57 +75,48 @@
 #' @export
 #' @md
 
-ReasoningWAgg <- function(expert_judgements,
-                          reasons = NULL,
-                          type = "ReasonWAgg",
-                          name = NULL,
-                          beta_transform = FALSE,
-                          beta_param = c(6, 6),
-                          placeholder = FALSE,
-                          percent_toggle = FALSE,
-                          flag_loarmean = FALSE,
-                          round_2_filter = TRUE) {
-
-  if(!(type %in% c("ReasonWAgg",
-                   "ReasonWAgg2"))){
-
+ReasoningWAgg <- function(
+  expert_judgements,
+  reasons = NULL,
+  type = "ReasonWAgg",
+  name = NULL,
+  beta_transform = FALSE,
+  beta_param = c(6, 6),
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  flag_loarmean = FALSE,
+  round_2_filter = TRUE
+) {
+  if (!(type %in% c("ReasonWAgg", "ReasonWAgg2"))) {
     stop('`type` must be one of "ReasonWAgg" or "ReasonWAgg2"')
-
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("ReasoningWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("ReasoningWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = {{round_2_filter}}) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = {{ round_2_filter }}
+      ) %>%
       dplyr::filter(element == "three_point_best") %>%
       dplyr::group_by(paper_id)
 
-    switch(type,
-           "ReasonWAgg" = {
-
-             reason_weights <- weight_reason(reasons)
-
-           },
-           "ReasonWAgg2" = {
-
-             reason_weights <- weight_reason2(reasons)
-
-           })
+    switch(
+      type,
+      "ReasonWAgg" = {
+        reason_weights <- weight_reason(reasons)
+      },
+      "ReasonWAgg2" = {
+        reason_weights <- weight_reason2(reasons)
+      }
+    )
 
     # work out which claims have no participants with reasoning scores
 
@@ -152,28 +143,33 @@ ReasoningWAgg <- function(expert_judgements,
       loarmean_data %>%
         # Taking the core function of LOArMean
         dplyr::group_by(paper_id) %>%
-        dplyr::mutate(value = dplyr::if_else(
-          value == 1 | value == 0,
-          value + .Machine$double.eps,
-          value
-        )) %>%
-        dplyr::mutate(log_odds = log(abs(value / (1 - value)))) %>%
-        dplyr::summarise(aggregated_judgement = mean(log_odds,
-                                                     na.rm = TRUE),
-                         n_experts = dplyr::n()
-                         # first = min(timestamp,
-                         #             na.rm = TRUE),
-                         # last = max(timestamp,
-                         #            na.rm = TRUE)
+        dplyr::mutate(
+          value = dplyr::if_else(
+            value == 1 | value == 0,
+            value + .Machine$double.eps,
+            value
+          )
         ) %>%
-        dplyr::mutate(aggregated_judgement =
-                        exp(aggregated_judgement) /
-                        (1 + exp(aggregated_judgement))) %>%
+        dplyr::mutate(log_odds = log(abs(value / (1 - value)))) %>%
+        dplyr::summarise(
+          aggregated_judgement = mean(log_odds, na.rm = TRUE),
+          n_experts = dplyr::n()
+          # first = min(timestamp,
+          #             na.rm = TRUE),
+          # last = max(timestamp,
+          #            na.rm = TRUE)
+        ) %>%
+        dplyr::mutate(
+          aggregated_judgement = exp(aggregated_judgement) /
+            (1 + exp(aggregated_judgement))
+        ) %>%
         dplyr::mutate(method = name)
-    } else {NULL}
+    } else {
+      NULL
+    }
 
     # Process the no quiz scores dataframe to formatted output
-    if(!is.null(loarmean_results)){
+    if (!is.null(loarmean_results)) {
       loarmean_results <- postprocess_judgements(loarmean_results)
     }
 
@@ -188,44 +184,46 @@ ReasoningWAgg <- function(expert_judgements,
     ReasonWAgg_results <- reasonwagg_data %>%
       # calculate scaled weight by claim
       dplyr::group_by(paper_id) %>%
-      dplyr::summarise(agg_sum = sum(reason_count,
-                                     na.rm = TRUE)) %>%
+      dplyr::summarise(agg_sum = sum(reason_count, na.rm = TRUE)) %>%
       dplyr::full_join(reasonwagg_data, by = "paper_id") %>%
       dplyr::mutate(agg_weight = reason_count / agg_sum) %>%
       dplyr::group_by(paper_id) %>%
       dplyr::summarise(
-        aggregated_judgement = sum(agg_weight * value,
-                                   na.rm = TRUE),
-        n_experts = dplyr::n()) %>%
+        aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+        n_experts = dplyr::n()
+      ) %>%
       dplyr::left_join(claim_summary_data) %>%
       # output
       dplyr::mutate(method = name) %>%
       postprocess_judgements()
 
-    if(isTRUE(beta_transform)){
-
+    if (isTRUE(beta_transform)) {
       ReasonWAgg_results <- ReasonWAgg_results %>%
-        dplyr::mutate(cs = stats::pbeta(q = cs,
-                                        shape1 = beta_param[1],
-                                        shape2 = beta_param[2]))
-
+        dplyr::mutate(
+          cs = stats::pbeta(
+            q = cs,
+            shape1 = beta_param[1],
+            shape2 = beta_param[2]
+          )
+        )
     }
 
     output_data <-
       dplyr::bind_rows(loarmean_results, ReasonWAgg_results)
 
-    if(flag_loarmean) {
+    if (flag_loarmean) {
       claim_summary_data %>%
         dplyr::select(paper_id, no_reason_scores_for_claim) %>%
         dplyr::full_join(output_data) %>%
-        dplyr::mutate(method_applied =
-                        dplyr::if_else(no_reason_scores_for_claim,
-                                       "LOArMean", name))
+        dplyr::mutate(
+          method_applied = dplyr::if_else(
+            no_reason_scores_for_claim,
+            "LOArMean",
+            name
+          )
+        )
     } else {
-
       output_data
-
     }
   }
 }
-

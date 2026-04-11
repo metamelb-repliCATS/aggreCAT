@@ -20,45 +20,38 @@
 #'
 #' @param expert_judgements the long tibble exported from the `preprocess_judgements` function.
 #'
-#' @return A tibble in the form of the input `expert_judgements` argument with additional columns 
+#' @return A tibble in the form of the input `expert_judgements` argument with additional columns
 #' supplying the calculated weight for each row's observation.
 #'
 #' @export
+#'
+#' @family weighting functions
 #'
 #' @examples
 #' weight_asym(preprocess_judgements(data_ratings))
 
 weight_asym <- function(expert_judgements) {
+  expert_judgements %>%
+    tidyr::pivot_wider(names_from = element, values_from = value) %>%
+    dplyr::mutate(
+      ul = three_point_upper - three_point_lower,
+      ul = dplyr::if_else(ul == 0, .Machine$double.eps, ul),
+      weight_obs = dplyr::if_else(
+        three_point_best >= ((ul / 2) + three_point_lower),
+        1 - 2 * (three_point_upper - three_point_best) / ul,
+        1 - 2 * (three_point_best - three_point_lower) / ul
+      ),
 
-    expert_judgements %>%
-        tidyr::pivot_wider(names_from = element, values_from = value) %>%
-        dplyr::mutate(
-            ul = three_point_upper - three_point_lower,
-            ul = dplyr::if_else(ul == 0,
-                                .Machine$double.eps,
-                                ul),
-            weight_obs =
-                dplyr::if_else(
-                    three_point_best >= ((ul / 2) + three_point_lower),
-                    1 - 2 * (three_point_upper - three_point_best) / ul,
-                    1 - 2 * (three_point_best - three_point_lower) / ul
-                ),
-
-
-            agg_weight = dplyr::if_else(
-                weight_obs < 0,
-                0,
-                weight_obs
-            )
-
-        )  %>%
-        tidyr::pivot_longer(
-            c(three_point_lower,
-              three_point_best,
-              three_point_upper),
-            names_to = "element",
-            values_to = "value"
-        ) %>%
-        dplyr::filter(element == "three_point_best")
-
+      agg_weight = dplyr::if_else(
+        weight_obs < 0,
+        0,
+        weight_obs
+      )
+    ) %>%
+    tidyr::pivot_longer(
+      c(three_point_lower, three_point_best, three_point_upper),
+      names_to = "element",
+      values_to = "value"
+    ) %>%
+    dplyr::filter(element == "three_point_best")
 }

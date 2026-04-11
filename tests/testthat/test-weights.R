@@ -9,9 +9,7 @@ weight_nans <- function(method_to_test) {
   expect_false(any(is.nan(agg_weight)))
   expect_false(any(is.infinite(agg_weight)))
   expect_type(agg_weight, "double")
-
 }
-
 
 
 # test weights ------------------------------------------------------------
@@ -35,4 +33,3 @@ test_that("weight_outlier method", {
 test_that("weight_varIndivInterval method", {
   weight_nans(weight_varIndivInterval)
 })
-

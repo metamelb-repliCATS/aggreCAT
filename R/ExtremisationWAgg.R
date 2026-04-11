@@ -54,76 +54,73 @@
 #' @export
 #' @md
 
-ExtremisationWAgg <- function(expert_judgements,
-                              type = "BetaArMean",
-                              name = NULL,
-                              alpha = 6,
-                              beta = 6,
-                              cutoff_lower = NULL,
-                              cutoff_upper = NULL,
-                              placeholder = FALSE,
-                              percent_toggle = FALSE,
-                              round_2_filter = TRUE) {
-
-  if(!(type %in% c("BetaArMean",
-                   "BetaArMean2"))){
-
+ExtremisationWAgg <- function(
+  expert_judgements,
+  type = "BetaArMean",
+  name = NULL,
+  alpha = 6,
+  beta = 6,
+  cutoff_lower = NULL,
+  cutoff_upper = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+) {
+  if (!(type %in% c("BetaArMean", "BetaArMean2"))) {
     stop('`type` must be one of "BetaArMean" or "BetaArMean2')
-
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("ExtremisationWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("ExtremisationWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = {{round_2_filter}}) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = {{ round_2_filter }}
+      ) %>%
       dplyr::filter(element == "three_point_best") %>%
       dplyr::group_by(paper_id)
 
-    switch(type,
-           "BetaArMean" = {
-
-             df <- df %>%
-               dplyr::summarise(mean_judgement = mean(value,
-                                                      na.rm = TRUE),
-                                n_experts = dplyr::n()) %>%
-               dplyr::mutate(aggregated_judgement = stats::pbeta(q = mean_judgement,
-                                                                 shape1 = alpha,
-                                                                 shape2 = beta))
-
-           },
-           "BetaArMean2" = {
-
-             df <- df %>%
-               dplyr::summarise(mean_judgement = mean(value,
-                                                      na.rm = TRUE),
-                                n_experts = dplyr::n()) %>%
-               dplyr::mutate(aggregated_judgement = dplyr::if_else(
-                 mean_judgement < cutoff_lower | mean_judgement > cutoff_upper,
-                 stats::pbeta(q = mean_judgement,
-                              shape1 = alpha,
-                              shape2 = beta),
-                 mean_judgement))
-
-           })
+    switch(
+      type,
+      "BetaArMean" = {
+        df <- df %>%
+          dplyr::summarise(
+            mean_judgement = mean(value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          ) %>%
+          dplyr::mutate(
+            aggregated_judgement = stats::pbeta(
+              q = mean_judgement,
+              shape1 = alpha,
+              shape2 = beta
+            )
+          )
+      },
+      "BetaArMean2" = {
+        df <- df %>%
+          dplyr::summarise(
+            mean_judgement = mean(value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          ) %>%
+          dplyr::mutate(
+            aggregated_judgement = dplyr::if_else(
+              mean_judgement < cutoff_lower | mean_judgement > cutoff_upper,
+              stats::pbeta(q = mean_judgement, shape1 = alpha, shape2 = beta),
+              mean_judgement
+            )
+          )
+      }
+    )
 
     df %>%
       dplyr::mutate(method = name) %>%
       postprocess_judgements()
-
   }
 }
