@@ -242,14 +242,12 @@ The dataset is distributed over eight data objects, each containing different ty
 
 Known replication outcomes sourced from previous large-scale replication projects [@Klein2014; @Klein2018ManyL2; @Ebersole2016; @Camerer2018; @aac4716] are provided in `data_outcomes`. And confidence scores calculated from 22 aggregation methods on the repliCATS dataset are provided in `data_confidence_scores`.
 
-<!-- TODO are we going to rerun for all 29 methods? -->
-
 Full descriptions of each data object, are provided in the [aggreCAT]{.pkg} package documentation (`?data_ratings`) and in the 'Package Datasets' vignette available on the [aggreCAT]{.pkg} pkgdown website. For further details about the dataset, see @Wintle2023.
 
 Different aggregators require different minimum data inputs, including the type of judgements elicited (single- or three-point estimates), the number of elicitation rounds (one or two rounds), whether additional data is used to construct weights.
 For a full summary of each aggregation method, its `*WAgg` wrapper function and data requirements, see @tbl-method-summary-table.
 
-# Demonstrating Mathematical Aggregation with aggreCAT
+# Demonstrating Mathematical Aggregation with [aggreCAT]{.pkg} {#sec-examples}
 
 Here, we demonstrate the application of several aggregation methods in [aggreCAT]{.pkg} to a subset of the repliCATS dataset. We first describe the general workflow for applying aggregation methods in [aggreCAT]{.pkg} (Box [2](#aggWorkflow)), then demonstrate the application of several different aggregators to a single claim with judgements from five participants, highlighting the different data requirements and mechanics of each method, including; the type of judgements elicited (single- or three-point estimates), number of elicitation rounds (one or two rounds), whether judgements are weighted at the judgement- or participant- level, the type of mathematical operation used to combine judgements, and whether weights are calculated internally or require user-supplied data.
 
