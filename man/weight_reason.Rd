@@ -13,10 +13,20 @@ weight_reason(expert_reasons)
 A tibble of three columns \code{paper_id}, \code{user_name}, and \code{reason_count}
 }
 \description{
-This function is used by \link{ReasoningWAgg} to calculate weights for the aggregation
+This function is used by \link{ReasoningWAgg} to weighting functions for the aggregation
 type \code{"ReasonWAgg"}. Calculates weights based on the number of judgement reasoning
 methods used by an individual
 }
 \details{
 Individuals' weight is equal to the maximum number of judgement reasons given
 }
+\seealso{
+Other weighting functions: 
+\code{\link{weight_asym}()},
+\code{\link{weight_interval}()},
+\code{\link{weight_nIndivInterval}()},
+\code{\link{weight_outlier}()},
+\code{\link{weight_reason2}()},
+\code{\link{weight_varIndivInterval}()}
+}
+\concept{weighting functions}

@@ -1,15 +1,10 @@
-
 # Place holder Unit Tests Function -----------------------------------------
 
-
-placeholder_test <- function(method_to_test, type){
-
-
+placeholder_test <- function(method_to_test, type) {
   tbl <- data_ratings %>%
-    method_to_test(placeholder = TRUE, type = {{type}})
+    method_to_test(placeholder = TRUE, type = {{ type }})
 
   test_that("column `method` exists", {
-
     pointblank::expect_col_exists(
       tbl,
       columns = c("method"),
@@ -18,7 +13,6 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("column `paper_id` exists", {
-
     pointblank::expect_col_exists(
       tbl,
       columns = c("paper_id"),
@@ -27,7 +21,6 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("column `cs` exists", {
-
     pointblank::expect_col_exists(
       tbl,
       columns = c("cs"),
@@ -36,7 +29,6 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("column `n_experts` exists", {
-
     pointblank::expect_col_exists(
       tbl,
       columns = c("n_experts"),
@@ -45,7 +37,6 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("values in `cs` should be == `0.65`", {
-
     pointblank::expect_col_vals_equal(
       tbl,
       columns = c("cs"),
@@ -55,7 +46,6 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("values in `n_experts` should be == `0`", {
-
     pointblank::expect_col_vals_equal(
       tbl,
       columns = c("n_experts"),
@@ -65,7 +55,6 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("column `method` is of type: character", {
-
     pointblank::expect_col_is_character(
       tbl,
       columns = c("method"),
@@ -74,14 +63,12 @@ placeholder_test <- function(method_to_test, type){
   })
 
   test_that("column `paper_id` is of type: character", {
-
     pointblank::expect_col_is_character(
       tbl,
       columns = c("paper_id"),
       threshold = 1
     )
   })
-
 }
 
 

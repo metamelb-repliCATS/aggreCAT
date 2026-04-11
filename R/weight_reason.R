@@ -17,17 +17,16 @@
 #' @export
 
 weight_reason <- function(expert_reasons) {
-
   ## Calculate reason counts
 
   expert_reasons %>%
-    dplyr::mutate(dplyr::across(.cols = dplyr::starts_with("RW"),
-                                .fns = ~dplyr::if_else(.x > 1, 1, .x))) %>%
-    dplyr::mutate(reason_count = rowSums(dplyr::select(., -paper_id, -user_name)),
-                  reason_count = dplyr::na_if(reason_count,
-                                              0)) %>%
-    dplyr::select(paper_id,
-                  user_name,
-                  reason_count)
-
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::starts_with("RW"),
+      .fns = ~ dplyr::if_else(.x > 1, 1, .x)
+    )) %>%
+    dplyr::mutate(
+      reason_count = rowSums(dplyr::select(., -paper_id, -user_name)),
+      reason_count = dplyr::na_if(reason_count, 0)
+    ) %>%
+    dplyr::select(paper_id, user_name, reason_count)
 }

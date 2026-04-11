@@ -25,23 +25,22 @@
 #' @export
 
 weight_varIndivInterval <- function(expert_judgements) {
-    diff <- expert_judgements %>%
-        tidyr::pivot_wider(names_from = element, values_from = value) %>%
-        dplyr::mutate(
-            diff = abs(three_point_upper - three_point_lower),
-            diff = dplyr::if_else(diff == 0,
-                                  .Machine$double.eps,
-                                  diff))
+  diff <- expert_judgements %>%
+    tidyr::pivot_wider(names_from = element, values_from = value) %>%
+    dplyr::mutate(
+      diff = abs(three_point_upper - three_point_lower),
+      diff = dplyr::if_else(diff == 0, .Machine$double.eps, diff)
+    )
 
-    diff %>%
-        dplyr::group_by(user_name) %>%
-        dplyr::summarise(agg_var = var(diff, na.rm = TRUE)) %>%
-        dplyr::left_join(expert_judgements, by = "user_name") %>%
-        dplyr::mutate(
-            agg_weight = dplyr::if_else(
-                !is.na(agg_var),
-                agg_var,
-                0)
-        )
-
-    }
+  diff %>%
+    dplyr::group_by(user_name) %>%
+    dplyr::summarise(agg_var = var(diff, na.rm = TRUE)) %>%
+    dplyr::left_join(expert_judgements, by = "user_name") %>%
+    dplyr::mutate(
+      agg_weight = dplyr::if_else(
+        !is.na(agg_var),
+        agg_var,
+        0
+      )
+    )
+}

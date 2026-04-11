@@ -84,398 +84,367 @@
 #' @export
 #' @md
 
-ShiftingWAgg <- function(expert_judgements,
-                         type = "ShiftWAgg",
-                         name = NULL,
-                         placeholder = FALSE,
-                         percent_toggle = FALSE) {
-
-  if(!(type %in% c("ShiftWAgg",
-                   "BestShiftWAgg",
-                   "IntShiftWAgg",
-                   "DistShiftWAgg",
-                   "DistIntShiftWAgg"))){
-
-    stop('`type` must be one of "ShiftWAgg", "BestShiftWAgg", "IntShiftWAgg", "DistShiftWAgg", or "DistIntShiftWAgg"')
-
+ShiftingWAgg <- function(
+  expert_judgements,
+  type = "ShiftWAgg",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE
+) {
+  if (
+    !(type %in%
+      c(
+        "ShiftWAgg",
+        "BestShiftWAgg",
+        "IntShiftWAgg",
+        "DistShiftWAgg",
+        "DistIntShiftWAgg"
+      ))
+  ) {
+    stop(
+      '`type` must be one of "ShiftWAgg", "BestShiftWAgg", "IntShiftWAgg", "DistShiftWAgg", or "DistIntShiftWAgg"'
+    )
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("ShiftingWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("ShiftingWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = FALSE) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = FALSE
+      ) %>%
       dplyr::group_by(paper_id)
 
-    switch(type,
-           "ShiftWAgg" = {
+    switch(
+      type,
+      "ShiftWAgg" = {
+        n_experts <- df %>%
+          dplyr::group_by(paper_id, user_name) %>%
+          dplyr::summarise(n = dplyr::n()) %>%
+          dplyr::count() %>%
+          dplyr::rename(n_experts = n)
 
-             n_experts <- df %>%
-               dplyr::group_by(paper_id, user_name) %>%
-               dplyr::summarise(n = dplyr::n()) %>%
-               dplyr::count() %>%
-               dplyr::rename(n_experts = n)
+        ## Calculate absolute value of change between rounds
 
-             ## Calculate absolute value of change between rounds
+        weights_best <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          dplyr::mutate(row = dplyr::row_number()) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::select(-row) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(diff_best = abs(round_1 - round_2))
 
-             weights_best <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               dplyr::mutate(row = dplyr::row_number()) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::select(-row) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(diff_best = abs(round_1 - round_2))
+        weights_lower <- df %>%
+          dplyr::filter(element == "three_point_lower") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          dplyr::mutate(row = dplyr::row_number()) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::select(-row) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(diff_lower = abs(round_1 - round_2)) %>%
+          dplyr::select(paper_id, user_name, diff_lower)
 
-             weights_lower <- df %>%
-               dplyr::filter(element == "three_point_lower") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               dplyr::mutate(row = dplyr::row_number()) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::select(-row) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(diff_lower = abs(round_1 - round_2)) %>%
-               dplyr::select(paper_id,
-                             user_name,
-                             diff_lower)
+        weights_upper <- df %>%
+          dplyr::filter(element == "three_point_upper") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          dplyr::mutate(row = dplyr::row_number()) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::select(-row) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(diff_upper = abs(round_1 - round_2)) %>%
+          dplyr::select(paper_id, user_name, diff_upper)
 
-             weights_upper <- df %>%
-               dplyr::filter(element == "three_point_upper") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               dplyr::mutate(row = dplyr::row_number()) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::select(-row) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(diff_upper = abs(round_1 - round_2)) %>%
-               dplyr::select(paper_id,
-                             user_name,
-                             diff_upper)
+        weights <- weights_best %>%
+          dplyr::left_join(weights_lower, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(weights_upper, by = c("paper_id", "user_name")) %>%
+          dplyr::mutate(
+            aggregate_diff = diff_best + (diff_lower / 2) + (diff_upper / 2)
+          ) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            aggregate_diff = dplyr::case_when(
+              all(aggregate_diff == 0) ~ 1,
+              TRUE ~ aggregate_diff
+            )
+          ) %>%
+          dplyr::ungroup()
 
-             weights <- weights_best %>%
-               dplyr::left_join(weights_lower, by = c("paper_id",
-                                                      "user_name")) %>%
-               dplyr::left_join(weights_upper, by = c("paper_id",
-                                                      "user_name")) %>%
-               dplyr::mutate(aggregate_diff = diff_best + (diff_lower / 2) + (diff_upper / 2)) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(aggregate_diff = dplyr::case_when(all(aggregate_diff == 0) ~ 1,
-                                                               TRUE ~ aggregate_diff)) %>%
-               dplyr::ungroup()
+        ## Weight calculation
 
-             ## Weight calculation
+        agg_weights <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            agg_sum = sum(aggregate_diff, na.rm = TRUE),
+            # set to arbitrarily small number if 0
+            agg_sum = dplyr::if_else(agg_sum == 0, .Machine$double.eps, agg_sum)
+          )
 
-             agg_weights <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(aggregate_diff,
-                                              na.rm = TRUE),
-                                # set to arbitrarily small number if 0
-                                agg_sum = dplyr::if_else(agg_sum == 0,
-                                                         .Machine$double.eps,
-                                                         agg_sum)
-               )
+        df <- weights %>%
+          dplyr::left_join(agg_weights, by = "paper_id") %>%
+          dplyr::mutate(
+            agg_weight = aggregate_diff / agg_sum
+          ) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * round_2, na.rm = TRUE),
+          ) %>%
+          dplyr::left_join(n_experts, by = "paper_id")
+      },
+      "BestShiftWAgg" = {
+        n_experts <- df %>%
+          dplyr::group_by(paper_id, user_name) %>%
+          dplyr::summarise(n = dplyr::n()) %>%
+          dplyr::count() %>%
+          dplyr::rename(n_experts = n)
 
-             df <- weights %>%
-               dplyr::left_join(agg_weights, by = "paper_id") %>%
-               dplyr::mutate(
-                 agg_weight = aggregate_diff /  agg_sum
-               ) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(
-                 aggregated_judgement = sum(agg_weight * round_2,
-                                            na.rm = TRUE),
-               ) %>%
-               dplyr::left_join(n_experts, by = "paper_id")
+        ## Calculate absolute value of change between rounds
 
-           },
-           "BestShiftWAgg" = {
+        weights <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          dplyr::mutate(row = dplyr::row_number()) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::select(-row) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(
+            diff_best = dplyr::if_else(
+              round_2 < round_1 &
+                round_1 <= 0.5 |
+                round_1 > round_2 & round_2 > 0.5 |
+                round_1 > 0.5 & round_2 <= 0.5,
+              abs(round_1 - round_2) / round_1,
+              abs(round_1 - round_2) / (1 - round_1)
+            )
+          ) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            aggregate_diff = dplyr::case_when(
+              all(diff_best == 0) ~ 1,
+              TRUE ~ diff_best
+            )
+          ) %>%
+          dplyr::ungroup()
 
-             n_experts <- df %>%
-               dplyr::group_by(paper_id, user_name) %>%
-               dplyr::summarise(n = dplyr::n()) %>%
-               dplyr::count() %>%
-               dplyr::rename(n_experts = n)
+        ## Weight calculation
 
+        agg_weights <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            agg_sum = sum(aggregate_diff, na.rm = TRUE),
+            # set to arbitrarily small number if 0
+            agg_sum = dplyr::if_else(agg_sum == 0, .Machine$double.eps, agg_sum)
+          )
 
-             ## Calculate absolute value of change between rounds
+        df <- weights %>%
+          dplyr::left_join(agg_weights, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = aggregate_diff / agg_sum) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * round_2, na.rm = TRUE)
+          ) %>%
+          dplyr::left_join(n_experts, by = "paper_id")
+      },
+      "IntShiftWAgg" = {
+        n_experts <- df %>%
+          dplyr::group_by(paper_id, user_name) %>%
+          dplyr::summarise(n = dplyr::n()) %>%
+          dplyr::count() %>%
+          dplyr::rename(n_experts = n)
 
-             weights <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               dplyr::mutate(row = dplyr::row_number()) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::select(-row) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(diff_best = dplyr::if_else(
-                 round_2 < round_1 & round_1 <= 0.5 |
-                   round_1 > round_2 & round_2 > 0.5 |
-                   round_1 > 0.5 & round_2 <= 0.5,
-                 abs(round_1 - round_2)/round_1,
-                 abs(round_1 - round_2)/(1 - round_1)
-               )
-               ) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(aggregate_diff = dplyr::case_when(all(diff_best == 0) ~ 1,
-                                                               TRUE ~ diff_best)) %>%
-               dplyr::ungroup()
+        ## Calculate interval width change between rounds
 
-             ## Weight calculation
+        weights <- df %>%
+          tidyr::pivot_wider(names_from = "element", values_from = "value") %>%
+          dplyr::mutate(width = three_point_upper - three_point_lower) %>%
+          dplyr::select(user_name, paper_id, round, width) %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          dplyr::mutate(row = dplyr::row_number()) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "width",
+            values_fill = NA
+          ) %>%
+          dplyr::select(-row) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(diff_width = round_2 - round_1) %>%
+          dplyr::select(-round_2, -round_1)
 
-             agg_weights <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(aggregate_diff,
-                                              na.rm = TRUE),
-                                # set to arbitrarily small number if 0
-                                agg_sum = dplyr::if_else(agg_sum == 0,
-                                                         .Machine$double.eps,
-                                                         agg_sum)
-               )
+        agg_weights <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::left_join(weights, by = c("paper_id", "user_name")) %>%
+          dplyr::mutate(agg_weight = 1 / (diff_width + 1)) %>%
+          dplyr::ungroup()
 
-             df <- weights %>%
-               dplyr::left_join(agg_weights, by = "paper_id") %>%
-               dplyr::mutate(agg_weight = aggregate_diff /  agg_sum) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * round_2,
-                                            na.rm = TRUE)) %>%
-               dplyr::left_join(n_experts,
-                                by = "paper_id")
+        # standardise weight
+        df <- agg_weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(agg_weight, na.rm = TRUE)) %>%
+          dplyr::full_join(agg_weights, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
+          # calculate aggregated judgement by claim
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * round_2, na.rm = TRUE)
+          ) %>%
+          dplyr::left_join(n_experts, by = "paper_id")
+      },
+      "DistShiftWAgg" = {
+        n_experts <- df %>%
+          dplyr::group_by(paper_id, user_name) %>%
+          dplyr::summarise(n = dplyr::n()) %>%
+          dplyr::count() %>%
+          dplyr::rename(n_experts = n)
 
-           },
-           "IntShiftWAgg" = {
+        ## Calculate absolute value of change between rounds
 
-             n_experts <- df %>%
-               dplyr::group_by(paper_id, user_name) %>%
-               dplyr::summarise(n = dplyr::n()) %>%
-               dplyr::count() %>%
-               dplyr::rename(n_experts = n)
+        weights <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(
+            dist_1 = min(round_1, 1 - round_1, na.rm = TRUE),
+            dist_2 = min(round_2, 1 - round_2, na.rm = TRUE),
+            diff_dist = dist_2 - dist_1,
+            aggregate_diff = 1 - diff_dist
+          )
 
-             ## Calculate interval width change between rounds
+        ## Weight calculation
 
-             weights <- df %>%
-               tidyr::pivot_wider(names_from = "element",
-                                  values_from = "value") %>%
-               dplyr::mutate(width = three_point_upper - three_point_lower) %>%
-               dplyr::select(user_name,
-                             paper_id,
-                             round,
-                             width) %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               dplyr::mutate(row = dplyr::row_number()) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "width",
-                                  values_fill = NA) %>%
-               dplyr::select(-row) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(diff_width = round_2 - round_1) %>%
-               dplyr::select(-round_2,
-                             -round_1)
+        agg_weights <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(aggregate_diff, na.rm = TRUE))
 
-             agg_weights <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::left_join(weights,
-                                by = c("paper_id",
-                                       "user_name")) %>%
-               dplyr::mutate(agg_weight = 1 / (diff_width + 1)) %>%
-               dplyr::ungroup()
+        df <- weights %>%
+          dplyr::left_join(agg_weights, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = aggregate_diff / agg_sum) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * round_2, na.rm = TRUE)
+          ) %>%
+          dplyr::left_join(n_experts, by = "paper_id")
+      },
+      "DistIntShiftWAgg" = {
+        n_experts <- df %>%
+          dplyr::group_by(paper_id, user_name) %>%
+          dplyr::summarise(n = dplyr::n()) %>%
+          dplyr::count() %>%
+          dplyr::rename(n_experts = n)
 
-             # standardise weight
-             df <- agg_weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(agg_weight,
-                                              na.rm = TRUE)) %>%
-               dplyr::full_join(agg_weights,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
-               # calculate aggregated judgement by claim
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * round_2,
-                                                           na.rm = TRUE)) %>%
-               dplyr::left_join(n_experts,
-                                by = "paper_id")
+        ## Calculate interval width change between rounds
 
-           },
-           "DistShiftWAgg" = {
+        weights <- df %>%
+          tidyr::pivot_wider(names_from = "element", values_from = "value") %>%
+          dplyr::mutate(width = three_point_upper - three_point_lower) %>%
+          dplyr::select(user_name, paper_id, round, width) %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          dplyr::mutate(row = dplyr::row_number()) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "width",
+            values_fill = NA
+          ) %>%
+          dplyr::select(-row) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(diff_width = round_2 - round_1) %>%
+          dplyr::select(-round_2, -round_1)
 
-             n_experts <- df %>%
-               dplyr::group_by(paper_id, user_name) %>%
-               dplyr::summarise(n = dplyr::n()) %>%
-               dplyr::count() %>%
-               dplyr::rename(n_experts = n)
+        int_shift <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::left_join(weights, by = c("paper_id", "user_name")) %>%
+          dplyr::mutate(agg_weight = 1 / (diff_width + 1)) %>%
+          dplyr::rename(int_shift = agg_weight) %>%
+          dplyr::ungroup()
 
+        dist_shift <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::group_by(user_name, paper_id, round) %>%
+          tidyr::pivot_wider(
+            names_from = "round",
+            values_from = "value",
+            values_fill = NA
+          ) %>%
+          dplyr::filter(!is.na(round_2)) %>%
+          dplyr::mutate(
+            dist_1 = min(round_1, 1 - round_1, na.rm = TRUE),
+            dist_2 = min(round_2, 1 - round_2, na.rm = TRUE),
+            diff_dist = dist_2 - dist_1,
+            dist_shift = 1 - diff_dist
+          ) %>%
+          dplyr::select(paper_id, user_name, dist_shift)
 
-             ## Calculate absolute value of change between rounds
+        ## Weight calculation
 
-             weights <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(dist_1 = min(round_1, 1 - round_1,
-                                          na.rm = TRUE),
-                             dist_2 = min(round_2, 1 - round_2,
-                                          na.rm = TRUE),
-                             diff_dist = dist_2 - dist_1,
-                             aggregate_diff = 1 - diff_dist)
+        agg_weights <- int_shift %>%
+          dplyr::left_join(dist_shift, by = c("paper_id", "user_name")) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            int_weight = int_shift /
+              sum(int_shift, na.rm = TRUE),
+            dist_shift = dist_shift /
+              sum(dist_shift, na.rm = TRUE),
+            agg_weight = int_weight * dist_shift
+          )
 
-             ## Weight calculation
-
-             agg_weights <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(aggregate_diff,
-                                              na.rm = TRUE))
-
-             df <- weights %>%
-               dplyr::left_join(agg_weights,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = aggregate_diff /  agg_sum) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * round_2,
-                                                           na.rm = TRUE)) %>%
-               dplyr::left_join(n_experts,
-                                by = "paper_id")
-
-           },
-           "DistIntShiftWAgg" = {
-
-             n_experts <- df %>%
-               dplyr::group_by(paper_id, user_name) %>%
-               dplyr::summarise(n = dplyr::n()) %>%
-               dplyr::count() %>%
-               dplyr::rename(n_experts = n)
-
-             ## Calculate interval width change between rounds
-
-             weights <- df %>%
-               tidyr::pivot_wider(names_from = "element",
-                                  values_from = "value") %>%
-               dplyr::mutate(width = three_point_upper - three_point_lower) %>%
-               dplyr::select(user_name,
-                             paper_id,
-                             round,
-                             width) %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               dplyr::mutate(row = dplyr::row_number()) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "width",
-                                  values_fill = NA) %>%
-               dplyr::select(-row) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(diff_width = round_2 - round_1) %>%
-               dplyr::select(-round_2,
-                             -round_1)
-
-             int_shift <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::left_join(weights, by = c("paper_id",
-                                                "user_name")) %>%
-               dplyr::mutate(agg_weight = 1/(diff_width+1)) %>%
-               dplyr::rename(int_shift = agg_weight) %>%
-               dplyr::ungroup()
-
-             dist_shift <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::group_by(user_name,
-                               paper_id,
-                               round) %>%
-               tidyr::pivot_wider(names_from = "round",
-                                  values_from = "value",
-                                  values_fill = NA) %>%
-               dplyr::filter(!is.na(round_2)) %>%
-               dplyr::mutate(dist_1 = min(round_1, 1 - round_1,
-                                          na.rm = TRUE),
-                             dist_2 = min(round_2, 1 - round_2,
-                                          na.rm = TRUE),
-                             diff_dist = dist_2 - dist_1,
-                             dist_shift = 1 - diff_dist) %>%
-               dplyr::select(paper_id,
-                             user_name,
-                      dist_shift)
-
-             ## Weight calculation
-
-             agg_weights <- int_shift %>%
-               dplyr::left_join(dist_shift,
-                                by = c("paper_id",
-                                       "user_name")) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(int_weight = int_shift /
-                               sum(int_shift, na.rm = TRUE),
-                             dist_shift = dist_shift /
-                               sum(dist_shift, na.rm = TRUE),
-                             agg_weight = int_weight * dist_shift)
-
-             # standardise weight
-             df <- agg_weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(agg_weight,
-                                              na.rm = TRUE)) %>%
-               dplyr::full_join(agg_weights,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
-               # calculate aggregated judgement by claim
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * round_2,
-                                                           na.rm = TRUE)) %>%
-               dplyr::left_join(n_experts,
-                                by = "paper_id")
-
-
-           })
+        # standardise weight
+        df <- agg_weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(agg_weight, na.rm = TRUE)) %>%
+          dplyr::full_join(agg_weights, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
+          # calculate aggregated judgement by claim
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * round_2, na.rm = TRUE)
+          ) %>%
+          dplyr::left_join(n_experts, by = "paper_id")
+      }
+    )
 
     df %>%
       dplyr::mutate(method = name) %>%
       postprocess_judgements()
-
   }
 }

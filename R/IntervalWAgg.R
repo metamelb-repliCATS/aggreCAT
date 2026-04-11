@@ -98,285 +98,276 @@
 #' @export
 #' @md
 
-IntervalWAgg <- function(expert_judgements,
-                         type = "IntWAgg",
-                         name = NULL,
-                         placeholder = FALSE,
-                         percent_toggle = FALSE,
-                         round_2_filter = TRUE) {
-
-  if(!(type %in% c("IntWAgg",
-                   "IndIntWAgg",
-                   "AsymWAgg",
-                   "IndIntAsymWAgg",
-                   "VarIndIntWAgg",
-                   "KitchSinkWAgg"))){
-
-    stop('`type` must be one of "IntWAgg", "IndIntWAgg", "AsymWAgg", "IndIntAsymWAgg", "VarIndIntWAgg" or "KitchSinkWAgg"')
-
+IntervalWAgg <- function(
+  expert_judgements,
+  type = "IntWAgg",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+) {
+  if (
+    !(type %in%
+      c(
+        "IntWAgg",
+        "IndIntWAgg",
+        "AsymWAgg",
+        "IndIntAsymWAgg",
+        "VarIndIntWAgg",
+        "KitchSinkWAgg"
+      ))
+  ) {
+    stop(
+      '`type` must be one of "IntWAgg", "IndIntWAgg", "AsymWAgg", "IndIntAsymWAgg", "VarIndIntWAgg" or "KitchSinkWAgg"'
+    )
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("IntervalWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("IntervalWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = {{round_2_filter}}) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = {{ round_2_filter }}
+      ) %>%
       dplyr::group_by(paper_id)
 
-    switch(type,
-           "IntWAgg" = {
+    switch(
+      type,
+      "IntWAgg" = {
+        weights <- df %>%
+          weight_interval() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::select(-ub) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight)
 
-             weights <- df %>%
-               weight_interval() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::select(-ub) %>%
-               dplyr::ungroup()  %>%
-               dplyr::select(paper_id,
-                      user_name,
-                      agg_weight)
+        # standardise weight
+        weights_sum <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(agg_weight, na.rm = TRUE))
 
-             # standardise weight
-             weights_sum <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(agg_weight,
-                                              na.rm = TRUE))
+        df <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::left_join(weights, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(weights_sum, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
+          # calculate aggregated judgement by claim
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          )
+      },
+      "IndIntWAgg" = {
+        weights <- df %>%
+          weight_nIndivInterval() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight)
 
-             df <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::left_join(weights,
-                                by = c("paper_id",
-                                       "user_name")) %>%
-               dplyr::left_join(weights_sum,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
-               # calculate aggregated judgement by claim
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * value,
-                                                           na.rm = TRUE),
-                                n_experts = dplyr::n())
+        # standardise weight
+        weights_sum <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(agg_weight, na.rm = TRUE))
 
-           },
-           "IndIntWAgg" = {
+        df <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::left_join(weights, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(weights_sum, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
+          # calculate aggregated judgement by claim
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          )
+      },
+      "AsymWAgg" = {
+        weights <- df %>%
+          weight_asym() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight)
 
-             weights <- df %>%
-               weight_nIndivInterval() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup()  %>%
-               dplyr::select(paper_id,
-                      user_name,
-                      agg_weight)
+        # standardise weight
+        weights_sum <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(agg_weight, na.rm = TRUE))
 
-             # standardise weight
-             weights_sum <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(agg_weight,
-                                              na.rm = TRUE))
+        df <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::left_join(weights, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(weights_sum, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
+          # calculate aggregated judgement by claim
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          )
+      },
+      "VarIndIntWAgg" = {
+        weights <- df %>%
+          weight_varIndivInterval() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight) %>%
+          dplyr::distinct()
 
-             df <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::left_join(weights,
-                                by = c("paper_id",
-                                       "user_name")) %>%
-               dplyr::left_join(weights_sum,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
-               # calculate aggregated judgement by claim
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * value,
-                                                           na.rm = TRUE),
-                                n_experts = dplyr::n())
+        # standardise weight
+        weights_sum <- weights %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(agg_sum = sum(agg_weight, na.rm = TRUE))
 
-           },
-           "AsymWAgg" = {
+        df <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::left_join(weights, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(weights_sum, by = "paper_id") %>%
+          dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
+          # calculate aggregated judgement by claim
+          dplyr::group_by(paper_id) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          )
+      },
+      "IndIntAsymWAgg" = {
+        nindiv_weight <- df %>%
+          weight_nIndivInterval() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight) %>%
+          dplyr::rename(indiv = agg_weight)
 
-             weights <- df %>%
-               weight_asym() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup()  %>%
-               dplyr::select(paper_id,
-                      user_name,
-                      agg_weight)
+        asym_weight <- df %>%
+          weight_asym() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight) %>%
+          dplyr::rename(asym = agg_weight)
 
-             # standardise weight
-             weights_sum <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(agg_weight,
-                                              na.rm = TRUE))
+        df <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::left_join(nindiv_weight, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(asym_weight, by = c("paper_id", "user_name")) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            indiv_weight = indiv / sum(indiv, na.rm = TRUE),
+            asym_weight = asym / sum(asym, na.rm = TRUE),
+            agg_weight = indiv_weight * asym_weight,
+            agg_weight = agg_weight / sum(agg_weight, na.rm = TRUE)
+          ) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          )
+      },
+      "KitchSinkWAgg" = {
+        nindiv_weight <- df %>%
+          weight_nIndivInterval() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight) %>%
+          dplyr::rename(indiv = agg_weight)
 
-             df <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::left_join(weights,
-                                by = c("paper_id",
-                                       "user_name")) %>%
-               dplyr::left_join(weights_sum,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
-               # calculate aggregated judgement by claim
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * value,
-                                                           na.rm = TRUE),
-                                n_experts = dplyr::n())
+        asym_weight <- df %>%
+          weight_asym() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight) %>%
+          dplyr::rename(asym = agg_weight)
 
-           },
-           "VarIndIntWAgg" = {
+        var_weight <- df %>%
+          weight_varIndivInterval() %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            agg_weight = dplyr::case_when(
+              all(agg_weight == 0) ~ 1,
+              TRUE ~ agg_weight
+            )
+          ) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(paper_id, user_name, agg_weight) %>%
+          dplyr::distinct() %>%
+          dplyr::rename(var = agg_weight)
 
-             weights <- df %>%
-               weight_varIndivInterval() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup()  %>%
-               dplyr::select(paper_id,
-                      user_name,
-                      agg_weight) %>%
-               dplyr::distinct()
-
-             # standardise weight
-             weights_sum <- weights %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(agg_sum = sum(agg_weight,
-                                              na.rm = TRUE))
-
-             df <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::left_join(weights,
-                                by = c("paper_id",
-                                       "user_name")) %>%
-               dplyr::left_join(weights_sum,
-                                by = "paper_id") %>%
-               dplyr::mutate(agg_weight = agg_weight / agg_sum) %>%
-               # calculate aggregated judgement by claim
-               dplyr::group_by(paper_id) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * value,
-                                                           na.rm = TRUE),
-                                n_experts = dplyr::n())
-
-           },
-           "IndIntAsymWAgg" = {
-
-             nindiv_weight <- df %>%
-               weight_nIndivInterval() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup() %>%
-               dplyr::select(paper_id, user_name, agg_weight) %>%
-               dplyr::rename(indiv = agg_weight)
-
-             asym_weight <- df %>%
-               weight_asym() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup() %>%
-               dplyr::select(paper_id, user_name, agg_weight) %>%
-               dplyr::rename(asym = agg_weight)
-
-             df <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::left_join(nindiv_weight,
-                         by = c("paper_id",
-                                "user_name")) %>%
-               dplyr::left_join(asym_weight,
-                         by = c("paper_id",
-                                "user_name")) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(indiv_weight = indiv / sum(indiv,
-                                                        na.rm = TRUE),
-                             asym_weight = asym / sum(asym,
-                                                      na.rm = TRUE),
-                             agg_weight = indiv_weight * asym_weight,
-                             agg_weight = agg_weight / sum(agg_weight,
-                                                           na.rm = TRUE)) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * value,
-                                                           na.rm = TRUE),
-                                n_experts = dplyr::n())
-
-           },
-           "KitchSinkWAgg" = {
-
-             nindiv_weight <- df %>%
-               weight_nIndivInterval() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup() %>%
-               dplyr::select(paper_id,
-                             user_name,
-                             agg_weight) %>%
-               dplyr::rename(indiv = agg_weight)
-
-             asym_weight <- df %>%
-               weight_asym() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup() %>%
-               dplyr::select(paper_id, user_name, agg_weight) %>%
-               dplyr::rename(asym = agg_weight)
-
-             var_weight <- df %>%
-               weight_varIndivInterval() %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(agg_weight = dplyr::case_when(all(agg_weight == 0) ~ 1,
-                                                           TRUE ~ agg_weight)) %>%
-               dplyr::ungroup() %>%
-               dplyr::select(paper_id,
-                             user_name,
-                             agg_weight) %>%
-               dplyr::distinct() %>%
-               dplyr::rename(var = agg_weight)
-
-             df <- df %>%
-               dplyr::filter(element == "three_point_best") %>%
-               dplyr::left_join(nindiv_weight,
-                         by = c("paper_id",
-                                "user_name")) %>%
-               dplyr::left_join(asym_weight,
-                         by = c("paper_id",
-                                "user_name")) %>%
-               dplyr::left_join(var_weight,
-                         by = c("paper_id",
-                                "user_name")) %>%
-               dplyr::group_by(paper_id) %>%
-               dplyr::mutate(indiv_weight = indiv / sum(indiv,
-                                                        na.rm = TRUE),
-                             asym_weight = asym / sum(asym,
-                                                      na.rm = TRUE),
-                             var_weight = var / sum(var,
-                                                    na.rm = TRUE),
-                             agg_weight = indiv_weight * asym_weight * var_weight,
-                             agg_weight = agg_weight / sum(agg_weight,
-                                                           na.rm = TRUE)) %>%
-               dplyr::summarise(aggregated_judgement = sum(agg_weight * value,
-                                                           na.rm = TRUE),
-                                n_experts = dplyr::n())
-
-           })
+        df <- df %>%
+          dplyr::filter(element == "three_point_best") %>%
+          dplyr::left_join(nindiv_weight, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(asym_weight, by = c("paper_id", "user_name")) %>%
+          dplyr::left_join(var_weight, by = c("paper_id", "user_name")) %>%
+          dplyr::group_by(paper_id) %>%
+          dplyr::mutate(
+            indiv_weight = indiv / sum(indiv, na.rm = TRUE),
+            asym_weight = asym / sum(asym, na.rm = TRUE),
+            var_weight = var / sum(var, na.rm = TRUE),
+            agg_weight = indiv_weight * asym_weight * var_weight,
+            agg_weight = agg_weight / sum(agg_weight, na.rm = TRUE)
+          ) %>%
+          dplyr::summarise(
+            aggregated_judgement = sum(agg_weight * value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          )
+      }
+    )
 
     df %>%
       dplyr::mutate(method = name) %>%
       postprocess_judgements()
-
   }
 }
