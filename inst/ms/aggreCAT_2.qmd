@@ -113,7 +113,7 @@ editor:
 callout-appearance: simple
 callout-icon: false
 appendix-style: none
-# pdf-engine: citeproc #until quarto repsects classoption:shortnames #have hard-coded appropriate bib in jss.csl
+# pdf-engine: citeproc #until quarto respects classoption:shortnames #have hard-coded appropriate bib in jss.csl
 ---
 
 ```{r}
@@ -181,7 +181,7 @@ In this paper we give an overview of the [aggreCAT]{.pkg} package so that resear
 
 The aggregation methods in [aggreCAT]{.pkg} were developed in the context of the IDEA protocol (Box [1](#box-1-the-replicats-idea-protocol)), a structured elicitation procedure that draws on the 'wisdom of crowds' to elicit probabilistic judgements from groups of experts about uncertain events.
 
-This elicitation structure directly determines which aggregation methods in [aggreCAT]{.pkg} are applicable to a given dataset: most methods require only the post-discussion (*round 2*) single-point judgements, some additionally use the pre-discussion (*round 1*) judgements, and a small number require supplementary ratings or externally collected data. These requirements are summarised for each method in @tbl-method-summary-table.
+This elicitation structure directly determines which aggregation methods in [aggreCAT]{.pkg} are applicable to a given dataset: most methods require only the post-discussion (*Round 2*) single-point judgements, some additionally use the pre-discussion (*Round 1*) judgements, and a small number require supplementary ratings or externally collected data. These requirements are summarised for each method in @tbl-method-summary-table.
 
 Although the aggregation methods were developed in the context of the IDEA protocol, all methods requiring only a single round of elicitation can be applied to any structured elicitation procedure, including those that include multiple rounds of elicitation, or that elicit three-point estimates without enforcing behavioural consensus.
 
@@ -279,11 +279,11 @@ Below we subset the dataset `data_ratings` to include a sample of four focal cla
 #| prompt: true
 #| echo: true
 set.seed(1234)
-focal_claims <- data_ratings %>%
+focal_claims <- data_ratings |>
   dplyr::filter(paper_id %in% c("24", "138", "186", "108"))
 # select 5 users to highlight in focal claim demonstration
-focal_users <- focal_claims %>%
-  dplyr::distinct(user_name) %>%
+focal_users <- focal_claims |>
+  dplyr::distinct(user_name) |>
   dplyr::slice_sample(n = 5)
 # filter out non-focal users from focal claims
 focal_claims <- focal_claims %>%
@@ -303,15 +303,15 @@ focal_claims
 #| echo: false
 #| results: asis
 #| tbl-pos: "H"
-focal_claims %>%
+focal_claims |>
   filter(
     paper_id == "108",
     round == "round_2"
-  ) %>%
+  ) |>
   pivot_wider(
     names_from = element,
     values_from = value
-  ) %>%
+  ) |>
   arrange(user_name) %>%
   select(
     paper_id,
@@ -319,7 +319,7 @@ focal_claims %>%
     three_point_lower,
     three_point_best,
     three_point_upper
-  ) %>%
+  ) |>
   arrange(desc(three_point_best)) |>
   rename(
     `Claim ID` = paper_id,
@@ -327,7 +327,7 @@ focal_claims %>%
     `Lower Bound` = three_point_lower,
     `Best Estimate` = three_point_best,
     `Upper Bound` = three_point_upper
-  ) %>%
+  ) |>
   tt()
 ```
 
@@ -347,8 +347,8 @@ $$ {#eq-ArMean}
 #| label: focal-claim-ArMean
 #| prompt: true
 #| echo: true
-focal_claims %>%
-  dplyr::filter(paper_id == "108") %>%
+focal_claims |>
+  dplyr::filter(paper_id == "108") |>
   AverageWAgg(type = "ArMean")
 ```
 
@@ -453,13 +453,13 @@ Using the `LinearWAgg()` wrapper function, any user-supplied weight can be appli
 #| label: focal-claim-QuizWAgg
 #| message: false
 #| echo: true
-LinearWAgg(
-  focal_claim_108,
-  type = "Participant",
-  weights = data_supp_quiz |>
-    rename(weight = quiz_score),
-  name = "QuizWAgg"
-)
+focal_claim_108 |>
+  LinearWAgg(
+    type = "Participant",
+    weights = data_supp_quiz |>
+      rename(weight = quiz_score),
+    name = "QuizWAgg"
+  )
 ```
 
 In this way users can specify their own custom weights in addition to those described by @Hanea2021 by preparing a dataset of weights and parsing this to `LinearWAgg()`'s `weights` argument. The dataset of weights must contain a column named `weight` containing the weight values, and a column that can be used to join the weights to the `expert_judgements` dataset by participant (e.g. `user_name`) or by judgement (e.g. `paper_id` and `user_name`).
@@ -488,16 +488,19 @@ We reshape the output to illustrate the number of unique reasoning categories us
 #|     Reasoning data for focal claim `108` for a sample of reasoning categories. The dataset of reasons is used to construct weights for the `ReasonWAgg` method, which weights each participant's best estimate by the number of unique reasoning categories they used to justify their estimates for the target forecast (see `?data_supp_reasons` for details).  Each column corresponds to a unique reason category, and the value in each cell indicates whether a participant used that reason category (1) or not (0). The total number of unique reasons used by each participant is calculated by summing across the reason category columns.
 #| tbl-cap-location: top
 #| echo: false
-
 data_supp_reasons_focal <- data_supp_reasons |>
   right_join(focal_users, by = "user_name")
-
 data_supp_reasons_focal %>%
   filter(paper_id == "108") %>%
   select(-paper_id) |>
   pivot_longer(cols = -user_name) |>
   dplyr::arrange(name) |>
-  tidyr::separate(name, into = c("reason_num", "reason"), sep = " ", extra = "merge") |>
+  tidyr::separate(
+    name,
+    into = c("reason_num", "reason"),
+    sep = " ",
+    extra = "merge"
+  ) |>
   select(-reason_num) |>
   group_by(reason) |>
   filter(sum(value) > 0) |>
@@ -514,12 +517,9 @@ Then we apply the `ReasonWAgg` method to compute a confidence score for claim `1
 #| label: focal-claim-ReasonWAgg
 #| prompt: true
 #| echo: true
-focal_claims %>%
-  dplyr::filter(paper_id == "108") %>%
-  ReasoningWAgg(
-    type = "ReasonWAgg",
-    reasons = data_supp_reasons
-  )
+focal_claims |>
+  dplyr::filter(paper_id == "108") |>
+  ReasoningWAgg(type = "ReasonWAgg", reasons = data_supp_reasons)
 ```
 
 <!-- TODO mv to pkgdown articles: function defaults to LoArMean in situations where zero scores. If all participants are missing a reasoning score, the log-odds transformed best estimates (see `?AverageWAgg`, `type = "LoArMean"`) is returned instead of the weighted linear combination of best estimates, as the weighting function `weight_reason()` returns a vector of zeroes, which cannot be normalised. To flag which claims have missing reasoning scores, the user can toggle the argument `flag_loarmean` to `TRUE`, and `ReasoningWAgg()` returns two additional columns indicating whether `ReasonWAgg` or `LoArMean` was applied, and whether no reasoning scores were supplied for any user for the target forecast. -->
@@ -556,10 +556,7 @@ Below we apply the Bayesian Triple Variability method `BayTriVar` to the focal c
 #| cache: true
 #| echo: true
 focal_claims %>%
-  BayesianWAgg(
-    type = "BayTriVar",
-    percent_toggle = TRUE
-  ) |>
+  BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) |>
   dplyr::filter(paper_id == "108")
 ```
 
@@ -574,10 +571,7 @@ Below we illustrate this point by calculating the confidence score for claim `10
 #| cache: true
 #| message: false
 data_ratings |>
-  BayesianWAgg(
-    type = "BayTriVar",
-    percent_toggle = TRUE
-  ) |>
+  BayesianWAgg(type = "BayTriVar", percent_toggle = TRUE) |>
   dplyr::filter(paper_id == "108")
 ```
 
@@ -640,7 +634,6 @@ confidenceSCOREs <-
       percent_toggle = TRUE
     )
   )
-
 confidenceSCOREs
 ```
 
@@ -650,7 +643,7 @@ After generating confidence scores using various aggregation methods, we then ev
 #| label: replication-outcomes
 #| prompt: true
 #| echo: true
-data_outcomes %>%
+data_outcomes |>
   head()
 ```
 
@@ -679,13 +672,13 @@ confidence_score_evaluation(
 confidence_score_evaluation(
   confidenceSCOREs,
   data_outcomes
-) %>%
+) |>
   rename(
     Method = method,
     `Brier Score` = Brier_Score,
     `Classification Accuracy` = Classification_Accuracy
-  ) %>%
-  tt() %>%
+  ) |>
+  tt() |>
   format_tt(j = c(2, 3), digits = 2)
 ```
 
