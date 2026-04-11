@@ -10,3 +10,5 @@
 *reprex.R
 *reprex.md
 inst/doc
+inst/ms/bibliography.bib.bak
+.gitignore
