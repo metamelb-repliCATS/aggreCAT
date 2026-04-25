@@ -1,75 +1,75 @@
-#' Confidence Score Ridge Plot
-#'
-#' Display a ridge plot of confidence scores for each aggregation method faceted by its linear, non-linear
-#' and Bayesian characteristic.
-#'
-#' @param confidence_scores A data frame of confidence scores in long format in the form of [data_confidence_scores]
-#'
-#' @importFrom stats quantile
+#' #' Confidence Score Ridge Plot
+#' #'
+#' #' Display a ridge plot of confidence scores for each aggregation method faceted by its linear, non-linear
+#' #' and Bayesian characteristic.
+#' #'
+#' #' @param confidence_scores A data frame of confidence scores in long format in the form of [data_confidence_scores]
+#' #'
+#' #' @importFrom stats quantile
+#' #' 
+#' #' @return A density ridge plot of aggregation methods
+#' #'
+#' #' @examples
+#' #' \donttest{confidence_score_plot(data_confidence_scores)}
+#' #'
+#' #'
+#' #' @export
+#' confidence_score_plot <- function(confidence_scores = NULL){
 #' 
-#' @return A density ridge plot of aggregation methods
-#'
-#' @examples
-#' \donttest{confidence_score_ridgeplot(data_confidence_scores)}
-#'
-#'
-#' @export
-confidence_score_ridgeplot <- function(confidence_scores = NULL){
-
-  if(is.null(confidence_scores)){
-    cli::cli_alert_info("No Confidence Scores Provided. Using Package Default")
-    confidence_scores <- aggreCAT::data_confidence_scores
-  } else {
-    confidence_scores <- confidence_scores
-  }
-
-  number_of_claims <- dplyr::n_distinct(confidence_scores$paper_id)
-
-  confidence_scores <- method_types(confidence_scores)
-
-  confidence_scores %>%
-    ggplot2::ggplot(ggplot2::aes(x = cs,
-                                 y = factor(method,
-                                            levels = rev(levels(factor(method)))),
-                                 fill = factor(ggplot2::after_stat(quantile))
-    )) +
-    ggridges::stat_density_ridges(
-      geom = "density_ridges_gradient",
-      calc_ecdf = TRUE,
-      quantiles = c(0.025, 0.975)) +
-    ggplot2::scale_fill_manual(
-      name = "Probability", values = c("#D55E00", "#A0A0A0A0", "#0072B2"), # colour friendly
-      labels = c("(0, 0.025]", "(0.025, 0.975]", "(0.975, 1]")) +
-    ggplot2::scale_x_continuous(breaks = c(0, .25, .5, .75, 1)) +
-    ggplot2::scale_y_discrete(expand = c(0,0)) +
-    ggplot2::geom_vline(xintercept=.50,
-                        linetype="dashed",
-                        color = "white",
-                        alpha = .75,
-                        show.legend = TRUE) +
-    ggplot2::theme(axis.ticks = ggplot2::element_blank(),
-                   axis.ticks.x = ggplot2::element_blank(),
-                   axis.ticks.y = ggplot2::element_blank(),
-                   axis.text.y = ggplot2::element_text(face = "bold"),
-                   axis.text.x = ggplot2::element_text(face = "bold"),
-                   axis.line = ggplot2::element_blank(),
-                   panel.grid = ggplot2::element_blank(),
-                   panel.background = ggplot2::element_rect(fill = "transparent",
-                                                            colour = NA),
-                   plot.background = ggplot2::element_rect(fill = "white",
-                                                           colour = NA),
-                   strip.placement = "outside",
-                   strip.background = ggplot2::element_blank(),
-                   strip.text = ggplot2::element_text(face = "bold"),
-                   plot.title = ggplot2::element_text(face = "bold"),
-                   plot.title.position = "plot") +
-    ggplot2::labs(title = "Density Plot of Aggregated Confidence Scores",
-                  subtitle = paste0("Claims Assessed N = ", number_of_claims),
-                  x = "Predicted Replication Scores",
-                  y = "Aggregation Method",
-                  caption = "Prediction cutoff threshold depicted by dashed line (0.5)") +
-    ggforce::facet_row(~type, scales = "free", space = "fixed")
-}
+#'   if(is.null(confidence_scores)){
+#'     cli::cli_alert_info("No Confidence Scores Provided. Using Package Default")
+#'     confidence_scores <- aggreCAT::data_confidence_scores
+#'   } else {
+#'     confidence_scores <- confidence_scores
+#'   }
+#' 
+#'   number_of_claims <- dplyr::n_distinct(confidence_scores$paper_id)
+#' 
+#'   confidence_scores <- method_types(confidence_scores)
+#' 
+#'   confidence_scores %>%
+#'     ggplot2::ggplot(ggplot2::aes(x = cs,
+#'                                  y = factor(method,
+#'                                             levels = rev(levels(factor(method)))),
+#'                                  fill = factor(ggplot2::after_stat(quantile))
+#'     )) +
+#'     ggridges::stat_density_ridges(
+#'       geom = "density_ridges_gradient",
+#'       calc_ecdf = TRUE,
+#'       quantiles = c(0.025, 0.975)) +
+#'     ggplot2::scale_fill_manual(
+#'       name = "Probability", values = c("#D55E00", "#A0A0A0A0", "#0072B2"), # colour friendly
+#'       labels = c("(0, 0.025]", "(0.025, 0.975]", "(0.975, 1]")) +
+#'     ggplot2::scale_x_continuous(breaks = c(0, .25, .5, .75, 1)) +
+#'     ggplot2::scale_y_discrete(expand = c(0,0)) +
+#'     ggplot2::geom_vline(xintercept=.50,
+#'                         linetype="dashed",
+#'                         color = "white",
+#'                         alpha = .75,
+#'                         show.legend = TRUE) +
+#'     ggplot2::theme(axis.ticks = ggplot2::element_blank(),
+#'                    axis.ticks.x = ggplot2::element_blank(),
+#'                    axis.ticks.y = ggplot2::element_blank(),
+#'                    axis.text.y = ggplot2::element_text(face = "bold"),
+#'                    axis.text.x = ggplot2::element_text(face = "bold"),
+#'                    axis.line = ggplot2::element_blank(),
+#'                    panel.grid = ggplot2::element_blank(),
+#'                    panel.background = ggplot2::element_rect(fill = "transparent",
+#'                                                             colour = NA),
+#'                    plot.background = ggplot2::element_rect(fill = "white",
+#'                                                            colour = NA),
+#'                    strip.placement = "outside",
+#'                    strip.background = ggplot2::element_blank(),
+#'                    strip.text = ggplot2::element_text(face = "bold"),
+#'                    plot.title = ggplot2::element_text(face = "bold"),
+#'                    plot.title.position = "plot") +
+#'     ggplot2::labs(title = "Density Plot of Aggregated Confidence Scores",
+#'                   subtitle = paste0("Claims Assessed N = ", number_of_claims),
+#'                   x = "Predicted Replication Scores",
+#'                   y = "Aggregation Method",
+#'                   caption = "Prediction cutoff threshold depicted by dashed line (0.5)") +
+#'     ggforce::facet_row(~type, scales = "free", space = "fixed")
+#' }
 
 
 #' Confidence Score Heat Map
@@ -239,33 +239,33 @@ confidence_score_heatmap <- function(confidence_scores = NULL,
                                                      just = "centre"))
 }
 
-
-method_types <- function(conf_scores){
-
-  # Aggregation type grouping
-  NWL = c("ArMean", "GeoMean", "Median", "LOArMean", "LOGeoMean", "ProbitArMean")
-  WLCI = c("ShiftWAgg", "BestShiftWAgg", "IntShiftWAgg", "DistShiftWAgg", "DistIntShiftWAgg",
-           "IntWAgg", "IndIntWAgg", "AsymWAgg", "IndIntAsymWAgg", "VarIndIntWAgg", "KitchSinkWAgg",
-           "DistLimitWAgg", "GranWAgg", "OutWAgg", "BetaArMean", "BetaArMean2", "DistribArMean", "TriDistribArMean",
-           "CompWAgg", "EngWAgg","ReasonWAgg", "ReasonWAgg2", "QuizWAgg", "QuizWAgg2", "QuizWAgg3",
-           "BetaReasonWAgg", "BetaReasonWAgg2", "BadgeWAgg",
-           "ExperienceWAgg", "ExperienceWAgg2", "ExperienceWAgg3")
-  BAYES = c("BayTriVar", "BayPRIORsAgg")
-
-  conf_scores <- conf_scores %>%
-    dplyr::mutate(type = dplyr::case_when(method %in% NWL ~ "Non-weighted Linear Combintation",
-                                          method %in% WLCI ~ "Weighted Linear Combinations",
-                                          #method %in% WLCE ~ "Weighted Linear Combinations (Supplementary Data)",
-                                          method %in% BAYES ~ "Bayesian Methods"))
-
-
-  # Levels for the plot output
-  conf_scores$type <- factor(conf_scores$type,
-                             levels = c("Non-weighted Linear Combintation",
-                                        "Weighted Linear Combinations",
-                                        #"Weighted Linear Combinations (Supplementary Data)",
-                                        "Bayesian Methods"))
-
-  return(conf_scores)
-
-}
+# 
+# method_types <- function(conf_scores){
+# 
+#   # Aggregation type grouping
+#   NWL = c("ArMean", "GeoMean", "Median", "LOArMean", "LOGeoMean", "ProbitArMean")
+#   WLCI = c("ShiftWAgg", "BestShiftWAgg", "IntShiftWAgg", "DistShiftWAgg", "DistIntShiftWAgg",
+#            "IntWAgg", "IndIntWAgg", "AsymWAgg", "IndIntAsymWAgg", "VarIndIntWAgg", "KitchSinkWAgg",
+#            "DistLimitWAgg", "GranWAgg", "OutWAgg", "BetaArMean", "BetaArMean2", "DistribArMean", "TriDistribArMean",
+#            "CompWAgg", "EngWAgg","ReasonWAgg", "ReasonWAgg2", "QuizWAgg", "QuizWAgg2", "QuizWAgg3",
+#            "BetaReasonWAgg", "BetaReasonWAgg2", "BadgeWAgg",
+#            "ExperienceWAgg", "ExperienceWAgg2", "ExperienceWAgg3")
+#   BAYES = c("BayTriVar", "BayPRIORsAgg")
+# 
+#   conf_scores <- conf_scores %>%
+#     dplyr::mutate(type = dplyr::case_when(method %in% NWL ~ "Non-weighted Linear Combintation",
+#                                           method %in% WLCI ~ "Weighted Linear Combinations",
+#                                           #method %in% WLCE ~ "Weighted Linear Combinations (Supplementary Data)",
+#                                           method %in% BAYES ~ "Bayesian Methods"))
+# 
+# 
+#   # Levels for the plot output
+#   conf_scores$type <- factor(conf_scores$type,
+#                              levels = c("Non-weighted Linear Combintation",
+#                                         "Weighted Linear Combinations",
+#                                         #"Weighted Linear Combinations (Supplementary Data)",
+#                                         "Bayesian Methods"))
+# 
+#   return(conf_scores)
+# 
+# }
