@@ -36,12 +36,12 @@
 #' \begin{cases}
 #' \frac{|B1_{i,c} - B_{i,c}|}{B1_{i,c}},
 #' \begin{aligned}
-#' \displaystyle &\ for\ (B1_{i,c} > 0.5\ and\ B_{i,c} \leq 0.5) \cr
-#' \displaystyle &\ or\ B_{i,c} < B1_{i,c} \leq 0.5\ or\ B1_{i,c} > B_{i,c} > 0.5
+#' \displaystyle &\ for\ (B1_{i,c} > 0.5\ and\ B_{i,c} \le 0.5) \cr
+#' \displaystyle &\ or\ B_{i,c} < B1_{i,c} \le 0.5\ or\ B1_{i,c} > B_{i,c} > 0.5
 #' \end{aligned} \cr
 #' \frac{|B1_{i,c} - B_{i,c}|}{1- B1_{i,c}},
 #' \begin{aligned}
-#' \displaystyle &\ for\ (B1_{i,c} < 0.5\ and\ B_{i,c} \geq 0.5) \cr
+#' \displaystyle &\ for\ (B1_{i,c} < 0.5\ and\ B_{i,c} \ge 0.5) \cr
 #' \displaystyle &\ or\ B1_{i,c} < B_{i,c} < 0.5\ or\ B_{i,c} > B1_{i,c} > 0.5.
 #' \end{aligned}
 #' \end{cases}}{ascii}

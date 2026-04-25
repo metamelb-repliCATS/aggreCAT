@@ -27,9 +27,9 @@
 #' **BetaArMean2**: Beta transformation applied only to calculated confidence scores that are outside a specified middle range. The premise being that we don't extremise "fence-sitter" confidence scores.
 #'
 #' \mjdeqn{\hat{p}_c\left( \text{BetaArMean2} \right) = \begin{cases}
-#' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} < \textit{cutoff\_lower} \cr
-#' \displaystyle \frac{1}{N} \sum_{i=1}^N B_{i,c}, \text{ for } \textit{cutoff\_lower} \leq \frac{1}{N} \sum_{i=1}^N B_{i,c} \leq \textit{cutoff\_upper} \cr
-#' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} > \textit{cutoff\_upper} \cr
+#' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} \lt \textit{cutoff\_lower} \cr
+#' \displaystyle \frac{1}{N} \sum_{i=1}^N B_{i,c}, \text{ for } \textit{cutoff\_lower} \leq \frac{1}{N} \sum_{i=1}^N B_{i,c} \le \textit{cutoff\_upper} \cr
+#' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} \gt \textit{cutoff\_upper} \cr
 #' \end{cases}}{ascii}
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
