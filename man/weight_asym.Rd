@@ -30,6 +30,3 @@ expert judgements (long format) are first converted to wide format then weighted
 Data is converted back to long format, with only the weighted best estimates
 retained.
 }
-\examples{
-weight_asym(preprocess_judgements(data_ratings))
-}
