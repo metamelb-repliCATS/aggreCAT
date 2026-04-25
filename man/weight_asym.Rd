@@ -22,7 +22,7 @@ aggregation type \code{"AsymWAgg"}, \code{"IndIntAsymWAgg"} and \code{"KitchSink
 expert judgements (long format) are first converted to wide format then weighted by:
 \loadmathjax
 \mjdeqn{w\_asym_{i,c}= \begin{cases}
-1 - 2 \cdot \frac{U_{i,c}-B_{i,c}}{U_{i,c}-L_{i,c}}, \text{for}\ B_{i,c} \geq
+1 - 2 \cdot \frac{U_{i,c}-B_{i,c}}{U_{i,c}-L_{i,c}}, \text{for}\ B_{i,c} \ge
 \frac{U_{i,c}-L_{i,c}}{2}+L_{i,c}\cr
 1 - 2 \cdot \frac{B_{i,c}-L_{i,c}}{U_{i,c}-L_{i,c}}, \text{otherwise}
 \end{cases}}{ascii}
