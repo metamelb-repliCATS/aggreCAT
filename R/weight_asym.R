@@ -25,8 +25,6 @@
 #'
 #' @export
 #'
-#' @examples
-#' weight_asym(preprocess_judgements(data_ratings))
 
 weight_asym <- function(expert_judgements) {
 
