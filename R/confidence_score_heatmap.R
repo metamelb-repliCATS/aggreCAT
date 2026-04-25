@@ -90,9 +90,9 @@ confidence_score_heatmap <- function(confidence_scores = NULL,
                   y = "Aggregation Method",
                   title = "",
                   fill = "Confidence \nScore", color = "Confidence \nScore") +
-    ggplot2::theme(axis.text.x = element_text(angle = 90,
-                                              hjust = 1,
-                                              vjust = 0.5)) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                       hjust = 1,
+                                                       vjust = 0.5)) +
     ggplot2::facet_wrap(~replicated_outcome,
                         scales = "free_x")
   
