@@ -7,7 +7,6 @@
 #' Defaults to [data_confidence_scores] if no argument supplied.
 #' @param data_outcomes A data frame of unique claims and the associated binary outcome in the form of [data_outcomes]. If no argument supplied
 #' then defaults to [data_outcomes] supplied within package.
-#' @param x_label Bottom x axis label name or ID. Default is blank.
 #'
 #' @importFrom insight format_capitalize
 #'
