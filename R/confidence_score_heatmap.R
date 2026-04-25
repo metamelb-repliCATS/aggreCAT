@@ -55,7 +55,7 @@ confidence_score_heatmap <- function(confidence_scores = NULL,
                   replicated_outcome)
   
   # Generate accuracy scores
-  evaluated_outcomes <- aggreCAT::confidence_score_evaluation(confidence_scores = data_confidencescores_lf,
+  evaluated_outcomes <- aggreCAT::confidence_score_evaluation(confidence_scores = confidence_scores,
                                                               outcomes = data_outcomes)
   
   # Plot
