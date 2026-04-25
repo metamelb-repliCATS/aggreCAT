@@ -4,6 +4,7 @@
 #'
 #' @docType package
 #' @name aggreCAT
+#' @import mathjaxr
 #'
 #' @keywords internal
 "_PACKAGE"
