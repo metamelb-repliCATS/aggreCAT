@@ -9,3 +9,6 @@
 /Meta/
 *reprex.R
 *reprex.md
+
+vnu-runtime-image/*
+vnu.osx.zip

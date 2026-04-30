@@ -1,0 +1,2107 @@
+<!DOCTYPE html><html lang="en"><head><title>Help for package aggreCAT</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+<script>
+const macros = { "\\R": "\\textsf{R}", "\\mbox": "\\text", "\\code": "\\texttt"};
+function processMathHTML() {
+    var l = document.getElementsByClassName('reqn');
+    for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+    return;
+}</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+    onload="processMathHTML();"></script>
+<link rel="stylesheet" type="text/css" href="/Library/Frameworks/R.framework/Resources/doc/html/R-nav.css">
+</head><body><div class="container"><nav class="package" aria-label="Topic Navigation">
+<div class="dropdown-menu">
+<h1>Package {aggreCAT}</h1>
+<h2>Contents</h2>
+<ul class="menu">
+<li><a href='#aggreCAT'><p>aggreCAT: mathematically aggregating expert judgements</p></a></li>
+<li><a href='#+25+26gt+3B+25'><p>Pipe operator</p></a></li>
+<li><a href='#AverageWAgg'><p>Aggregation Method: AverageWAgg</p></a></li>
+<li><a href='#BayesianWAgg'><p>Aggregation Method: BayesianWAgg</p></a></li>
+<li><a href='#confidence_score_evaluation'><p>Confidence Score Evaluation</p></a></li>
+<li><a href='#confidence_score_heatmap'><p>Confidence Score Heat Map</p></a></li>
+<li><a href='#confidence_score_ridgeplot'><p>Confidence Score Ridge Plot</p></a></li>
+<li><a href='#data_comments'><p>data_comments</p></a></li>
+<li><a href='#data_confidence_scores'><p>Confidence Scores generated for 25 papers with 22 aggregation methods</p></a></li>
+<li><a href='#data_justifications'><p>Free-text justifications for expert judgements</p></a></li>
+<li><a href='#data_outcomes'><p>Replication outcomes for the papers</p></a></li>
+<li><a href='#data_ratings'><p>P1_ratings</p></a></li>
+<li><a href='#data_supp_priors'><p>A table of prior means, to be fed into the BayPRIORsAgg aggregation method</p></a></li>
+<li><a href='#data_supp_quiz'><p>A table of scores on the quiz to assess prior knowledge, to be fed into the QuizWAgg aggregation method</p></a></li>
+<li><a href='#data_supp_reasons'><p>Categories of reasons provided by participants for their expert judgements</p></a></li>
+<li><a href='#DistributionWAgg'><p>Aggregation Method: DistributionWAgg</p></a></li>
+<li><a href='#ExtremisationWAgg'><p>Aggregation Method: ExtremisationWAgg</p></a></li>
+<li><a href='#IntervalWAgg'><p>Aggregation Method: IntervalWAgg</p></a></li>
+<li><a href='#LinearWAgg'><p>Aggregation Method: LinearWAgg</p></a></li>
+<li><a href='#method_placeholder'><p>Placeholder function with TA2 output</p></a></li>
+<li><a href='#postprocess_judgements'><p>Post-processing.</p></a></li>
+<li><a href='#preprocess_judgements'><p>Pre-process the data</p></a></li>
+<li><a href='#ReasoningWAgg'><p>Aggregation Method: ReasoningWAgg</p></a></li>
+<li><a href='#ShiftingWAgg'><p>Aggregation Method: ShiftingWAgg</p></a></li>
+<li><a href='#weight_asym'><p>Weighting method: Asymmetry of intervals</p></a></li>
+<li><a href='#weight_interval'><p>Weighting method: Width of intervals</p></a></li>
+<li><a href='#weight_nIndivInterval'><p>Weighting method: Individually scaled interval widths</p></a></li>
+<li><a href='#weight_outlier'><p>Weighting method: Down weighting outliers</p></a></li>
+<li><a href='#weight_reason'><p>Weighting method: Total number of judgement reasons</p></a></li>
+<li><a href='#weight_reason2'><p>Weighting method: Total number and diversity of judgement reasons</p></a></li>
+<li><a href='#weight_varIndivInterval'><p>Weighting method: Variation in individuals’ interval widths</p></a></li>
+</ul>
+</div>
+<hr>
+</nav>
+<main>
+<table role='presentation'>
+<tr>
+<td>Title:</td>
+<td>Mathematically Aggregating Expert Judgments</td>
+</tr>
+<tr>
+<td>Version:</td>
+<td>1.0.1</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>The use of structured elicitation to inform decision making has grown dramatically in recent decades, however, judgements from multiple experts must be aggregated into a single estimate. Empirical evidence suggests that mathematical aggregation provides more reliable estimates than enforcing behavioural consensus on group estimates. 'aggreCAT' provides state-of-the-art mathematical aggregation methods for elicitation data including those defined in Hanea, A. et al. (2021) &lt;<a href="https://doi.org/10.1371%2Fjournal.pone.0256919">doi:10.1371/journal.pone.0256919</a>&gt;. The package also provides functions to visualise and evaluate the performance of your aggregated estimates on validation data.</td>
+</tr>
+<tr>
+<td>URL:</td>
+<td><a href="https://replicats.research.unimelb.edu.au/">https://replicats.research.unimelb.edu.au/</a></td>
+</tr>
+<tr>
+<td>License:</td>
+<td><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file LICENSE</td>
+</tr>
+<tr>
+<td>Encoding:</td>
+<td>UTF-8</td>
+</tr>
+<tr>
+<td>LazyData:</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Roxygen:</td>
+<td>list(markdown = TRUE)</td>
+</tr>
+<tr>
+<td>Suggests:</td>
+<td>testthat (&ge; 2.1.0), knitr, rmarkdown, covr, pointblank,
+janitor, qualtRics, here, readxl, readr, lubridate, forcats,
+ggforce, ggpubr, ggridges, rjags, tidybayes, tidyverse,
+usethis, nlme, gt, gtExtras, R.rsp</td>
+</tr>
+<tr>
+<td>RoxygenNote:</td>
+<td>7.3.3</td>
+</tr>
+<tr>
+<td>Depends:</td>
+<td>R (&ge; 2.10)</td>
+</tr>
+<tr>
+<td>Imports:</td>
+<td>magrittr, GoFKernel, purrr, R2jags, coda, precrec, mathjaxr,
+cli, VGAM, crayon, dplyr, stats, stringr, tidyr, tibble,
+ggplot2, insight, DescTools, MLmetrics</td>
+</tr>
+<tr>
+<td>VignetteBuilder:</td>
+<td>knitr, R.rsp</td>
+</tr>
+<tr>
+<td>RdMacros:</td>
+<td>mathjaxr</td>
+</tr>
+<tr>
+<td>Config/testthat/parallel:</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Config/testthat/edition:</td>
+<td>3</td>
+</tr>
+<tr>
+<td>NeedsCompilation:</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Packaged:</td>
+<td>2026-04-30 04:51:01 UTC; elliotgould</td>
+</tr>
+<tr>
+<td>Author:</td>
+<td>David Wilkinson <a href="https://orcid.org/0000-0002-9560-6499"><img alt="ORCID iD"  src="https://cloud.R-project.org/web/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut, cre],
+  Elliot Gould <a href="https://orcid.org/0000-0002-6585-538X"><img alt="ORCID iD"  src="https://cloud.R-project.org/web/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut],
+  Aaron Willcox <a href="https://orcid.org/0000-0003-2536-2596"><img alt="ORCID iD"  src="https://cloud.R-project.org/web/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut],
+  Charles T. Gray [aut],
+  Rose E. O'Dea <a href="https://orcid.org/0000-0001-8177-5075"><img alt="ORCID iD"  src="https://cloud.R-project.org/web/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut],
+  Rebecca Groenewegen <a href="https://orcid.org/0000-0001-9177-8536"><img alt="ORCID iD"  src="https://cloud.R-project.org/web/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut]</td>
+</tr>
+<tr>
+<td>Maintainer:</td>
+<td>David Wilkinson &lt;david.wilkinson.research@gmail.com&gt;</td>
+</tr>
+</table>
+<hr>
+<h2 id='aggreCAT'>aggreCAT: mathematically aggregating expert judgements</h2><span id='topic+aggreCAT-package'></span><span id='topic+aggreCAT'></span>
+
+<h3>Description</h3>
+
+<p>To learn more about <span class="pkg">aggreCAT</span>, start with the vignettes: <code>vignette(package = "aggreCAT")</code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p><strong>Maintainer</strong>: David Wilkinson <a href="mailto:david.wilkinson.research@gmail.com">david.wilkinson.research@gmail.com</a> (<a href="https://orcid.org/0000-0002-9560-6499">ORCID</a>)
+</p>
+<p>Authors:
+</p>
+
+<ul>
+<li><p> Elliot Gould (<a href="https://orcid.org/0000-0002-6585-538X">ORCID</a>)
+</p>
+</li>
+<li><p> Aaron Willcox <a href="mailto:aaron@willcox.io">aaron@willcox.io</a> (<a href="https://orcid.org/0000-0003-2536-2596">ORCID</a>)
+</p>
+</li>
+<li><p> Charles T. Gray
+</p>
+</li>
+<li><p> Rose E. O'Dea (<a href="https://orcid.org/0000-0001-8177-5075">ORCID</a>)
+</p>
+</li>
+<li><p> Rebecca Groenewegen (<a href="https://orcid.org/0000-0001-9177-8536">ORCID</a>)
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>Useful links:
+</p>
+
+<ul>
+<li> <p><a href="https://replicats.research.unimelb.edu.au/">https://replicats.research.unimelb.edu.au/</a>
+</p>
+</li></ul>
+
+
+<hr>
+<h2 id='+25+26gt+3B+25'>Pipe operator</h2><span id='topic++25+3E+25'></span>
+
+<h3>Description</h3>
+
+<p>See <code>magrittr::<a href="magrittr.html#topic+pipe">%&gt;%</a></code> for details.
+</p>
+<p>See <code>magrittr::<a href="magrittr.html#topic+pipe">%&gt;%</a></code> for details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>lhs %&gt;% rhs
+
+lhs %&gt;% rhs
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="+2B25+2B26gt+2B3B+2B25_+3A_lhs">lhs</code></td>
+<td>
+<p>A value or the magrittr placeholder.</p>
+</td></tr>
+<tr><td><code id="+2B25+2B26gt+2B3B+2B25_+3A_rhs">rhs</code></td>
+<td>
+<p>A function call using the magrittr semantics.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The result of calling <code>rhs(lhs)</code>.
+</p>
+
+<hr>
+<h2 id='AverageWAgg'>Aggregation Method: AverageWAgg</h2><span id='topic+AverageWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Calculate one of several types of averaged best estimates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>AverageWAgg(
+  expert_judgements,
+  type = "ArMean",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="AverageWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="AverageWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"ArMean"</code>, <code>"Median"</code>, <code>"GeoMean"</code>, <code>"LOArMean"</code>, or <code>"ProbitArMean"</code>.</p>
+</td></tr>
+<tr><td><code id="AverageWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="AverageWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="AverageWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="AverageWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function returns the average, median and transformed averages of
+best-estimate judgements for each claim.
+</p>
+<p><code>type</code> may be one of the following:
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+</p>
+<p><strong>ArMean</strong>: Arithmetic mean of the best estimates
+\[\hat{p}_c\left(ArMean \right ) = \frac{1}{N}\sum_{i=1}^N B_{i,c}\]
+<strong>Median</strong>: Median of the best estimates
+\[\hat{p}_c \left(\text{median} \right) = \text{median} { B^i_c}_{i=1,...,N}\]
+<strong>GeoMean</strong>: Geometric mean of the best estimates
+\[GeoMean_{c}=  \left(\prod_{i=1}^N  B_{i,c}\right)^{\frac{1}{N}}\]
+<strong>LOArMean</strong>: Arithmetic mean of the log odds transformed best estimates
+\[LogOdds_{i,c}= \frac{1}{N} \sum_{i=1}^N log\left( \frac{B_{i,c}}{1-B_{i,c}}\right)\]
+The average log odds estimate is then back transformed to give a final group estimate:
+\[\hat{p}_c\left( LOArMean \right) = \frac{e^{LogOdds_{i,c}}}{1+e^{LogOdds_{i,c}}}\]
+<strong>ProbitArMean</strong>: Arithmetic mean of the probit transformed best estimates
+\[Probit_{c}= \frac{1}{N} \sum_{i=1}^N \Phi^{-1}\left( B_{i,c}\right)\]
+The average probit estimate is then back transformed to give a final group estimate:
+\[\hat{p}_c\left(ProbitArMean \right) = \Phi\left({Probit_{c}}\right)\]
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>AverageWAgg(data_ratings)
+
+</code></pre>
+
+<hr>
+<h2 id='BayesianWAgg'>Aggregation Method: BayesianWAgg</h2><span id='topic+BayesianWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Bayesian aggregation methods with either uninformative or informative prior distributions.
+</p>
+<p><strong>JAGS Install</strong>
+</p>
+<p>For instructions on installing JAGS onto your system visit <a href="https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c">https://gist.github.com/dennisprangle/e26923fae7477566510757ab3341f54c</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>BayesianWAgg(
+  expert_judgements,
+  type = "BayTriVar",
+  priors = NULL,
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="BayesianWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="BayesianWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"BayTriVar"</code>, or <code>"BayPRIORsAgg"</code>.</p>
+</td></tr>
+<tr><td><code id="BayesianWAgg_+3A_priors">priors</code></td>
+<td>
+<p>(Optional) A dataframe of priors in the format of <a href="#topic+data_supp_priors">data_supp_priors</a>, required for <code>type</code> <code>BayPRIORsAgg</code>.</p>
+</td></tr>
+<tr><td><code id="BayesianWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="BayesianWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="BayesianWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="BayesianWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>type</code> may be one of the following:
+</p>
+<p><strong>BayTriVar</strong>: The Bayesian Triple-Variability Method, fit with JAGS.
+</p>
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+<p>Three kinds of variability around best estimates are considered:
+</p>
+
+<ol>
+<li><p> generic claim variability: variation across individuals within a claim
+</p>
+</li>
+<li><p> generic participant variability: variation within an individual across claims
+</p>
+</li>
+<li><p> claim - participant specific uncertainty (operationalised by bounds): informed
+by interval widths given by individual \(i\) for claim \(c\).
+</p>
+</li></ol>
+
+<p>The model takes the log odds transformed individual best estimates as input (data),
+uses a normal likelihood function and derives a posterior distribution for the
+probability of replication.
+</p>
+\[log( \frac{B_{i,c}}{1-B_{i,c}}) \sim N(\mu_c, \sigma_{i,c}),\]
+<p>where \(\mu_c\) denotes the mean estimated probability of replication for claim
+\(c\), and  \(\sigma_{i,c}\) denotes the standard deviation of the
+estimated probability of replication for claim \(c\) and individual
+\(i\) (on the logit scale).  Parameter \(\sigma_{i,c}\) is calculated as:
+\[\sigma_{i,c} = (U_{i,c} - L_{i,c} + 0.01) \times \sqrt{\sigma_i^2+\sigma_c^2}\]
+with \(\sigma_i\) denoting the standard deviation of estimated probabilities of
+replication for individual \(i\) and  \(\sigma_c\) denoting the standard
+deviation of the estimated probability of replication for claim \(c\).
+</p>
+<p>The uninformative priors for specifying this Bayesian model are
+\(\mu_c \sim N(0,\ 3)\), \(\sigma_i \sim U(0,\ 10)\) and
+\(\sigma_c \sim U(0,\ 10)\). After obtaining the median of the posterior
+distribution of \(\mu_c\), we can back transform to obtain
+\(\hat{p}_c\):
+</p>
+\[\hat{p}_c\left( BayTriVar \right) = \frac{e^{\mu_c}}{1+e^{\mu_c}}\]
+<p><strong>BayPRIORsAgg</strong>: Priors derived from predictive models, updated with best estimates.
+</p>
+<p>This method uses Bayesian updating to update a prior probability of
+replication estimated from a predictive model with an aggregate of the individuals’ best
+estimates for any given claim. Methodology is the same as <code>type</code> <code>"BayTriVar"</code> except an
+informative prior is used for \(\mu_c\). Conceptually the parameters of the prior
+distribution of \(\mu_c\) are informed by the PRIORS model (Gould et al. 2021)
+which is a multilevel logistic regression model that predicts the probability of
+replication using attributes of the original study. However, any model providing predictions of
+the probability of replication can be used to generate the required priors.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>Both <code>BayTriVar</code> and <code>BayPRIORsAgg</code> methods require a minimum of two claims for which judgements are supplied to <code>expert_judgements</code>. This is due to the mathematical definition of these aggregators: <code>BayesianWAgg</code> calculates the variance in best estimates across multiple claims as well as the variance in best estimates across claims per individual. Thus when only one claim is provided in <code>expert_judgements</code>, the variance is 0, hence more than one claim is required for the successful execution of both Bayesian methods.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: BayesianWAgg(data_ratings, percent_toggle = TRUE)
+
+</code></pre>
+
+<hr>
+<h2 id='confidence_score_evaluation'>Confidence Score Evaluation</h2><span id='topic+confidence_score_evaluation'></span>
+
+<h3>Description</h3>
+
+<p>Evaluate the performance of the confidence scores generated by one or more aggregation
+methods. Assumes probabilistic confidence scores for the metrics selected.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>confidence_score_evaluation(confidence_scores, outcomes)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="confidence_score_evaluation_+3A_confidence_scores">confidence_scores</code></td>
+<td>
+<p>A dataframe in the format output by the <code style="white-space: pre;">&#8288;aggreCAT::&#8288;</code> aggregation methods</p>
+</td></tr>
+<tr><td><code id="confidence_score_evaluation_+3A_outcomes">outcomes</code></td>
+<td>
+<p>A dataframe with two columns: <code>paper_id</code> (corresponding to the id's from the
+confidence_scores), and <code>outcome</code> containing the known outcome of replication studies</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Evaluated dataframe with five columns: <code>method</code> (character variable describing the aggregation method),
+<code>AUC</code> (Area Under the Curve (AUC) scores of ROC curves - see <code>?precrec::auc</code>), <code>Brier_Score</code> (see
+<code>?DescTools::BrierScore</code>), <code>Classification_Accuracy</code>(classification accuracy measured for pcc =
+percent correctly classified; see <code>?MLmetrics::Accuracy</code>), and <code>Correlation</code> (point-biserial correlation;
+see <code>?stats::cor</code>).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>
+confidence_score_evaluation(data_confidence_scores,
+                            data_outcomes)
+
+
+</code></pre>
+
+<hr>
+<h2 id='confidence_score_heatmap'>Confidence Score Heat Map</h2><span id='topic+confidence_score_heatmap'></span>
+
+<h3>Description</h3>
+
+<p>Confidence scores displayed on a colour spectrum across generated methods and
+assessed claims, split into predicted replication outcomes (TRUE/FALSE).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>confidence_score_heatmap(confidence_scores = NULL, data_outcomes = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="confidence_score_heatmap_+3A_confidence_scores">confidence_scores</code></td>
+<td>
+<p>A data frame of confidence scores generated from the aggregation methods in the form of <a href="#topic+data_confidence_scores">data_confidence_scores</a>.
+Defaults to <a href="#topic+data_confidence_scores">data_confidence_scores</a> if no argument supplied.</p>
+</td></tr>
+<tr><td><code id="confidence_score_heatmap_+3A_data_outcomes">data_outcomes</code></td>
+<td>
+<p>A data frame of unique claims and the associated binary outcome in the form of <a href="#topic+data_outcomes">data_outcomes</a>. If no argument supplied
+then defaults to <a href="#topic+data_outcomes">data_outcomes</a> supplied within package.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Plot in viewer
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>confidence_score_heatmap(data_confidence_scores, data_outcomes)
+
+</code></pre>
+
+<hr>
+<h2 id='confidence_score_ridgeplot'>Confidence Score Ridge Plot</h2><span id='topic+confidence_score_ridgeplot'></span>
+
+<h3>Description</h3>
+
+<p>Display a ridge plot of confidence scores for each aggregation method
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>confidence_score_ridgeplot(confidence_scores = NULL)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="confidence_score_ridgeplot_+3A_confidence_scores">confidence_scores</code></td>
+<td>
+<p>A data frame of confidence scores in long format in the form of <a href="#topic+data_confidence_scores">data_confidence_scores</a></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A density ridge plot of aggregation methods
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>confidence_score_ridgeplot(data_confidence_scores)
+
+</code></pre>
+
+<hr>
+<h2 id='data_comments'>data_comments</h2><span id='topic+data_comments'></span>
+
+<h3>Description</h3>
+
+<p>data_comments
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_comments
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A tibble with 2 rows and 10 columns
+</p>
+
+<dl>
+<dt>round</dt><dd><p>character string, both 'round_1' (before discussion)</p>
+</dd>
+<dt>paper_id</dt><dd><p>character string identifying 2 unique papers</p>
+</dd>
+<dt>user_name</dt><dd><p>factor for anonymized IDs for two participants</p>
+</dd>
+<dt>question</dt><dd><p>character string for the type of question, both 'comprehension'</p>
+</dd>
+<dt>justification_id</dt><dd><p>character string identifying 2 unique justifications</p>
+</dd>
+<dt>comment_id</dt><dd><p>character string identifying 2 unique comments</p>
+</dd>
+<dt>commenter</dt><dd><p>redundant column, same as user_name</p>
+</dd>
+<dt>comment</dt><dd><p>character string with free-text response for the user</p>
+</dd>
+<dt>vote_count</dt><dd><p>numeric, both 0</p>
+</dd>
+<dt>vote_sum</dt><dd><p>numeric, both 0</p>
+</dd>
+<dt>group</dt><dd><p>character string of group IDs that contained the participants</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_confidence_scores'>Confidence Scores generated for 25 papers with 22 aggregation methods</h2><span id='topic+data_confidence_scores'></span>
+
+<h3>Description</h3>
+
+<p>Confidence Scores generated for 25 papers with 22 aggregation methods
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_confidence_scores
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>a tibble with 550 rows and 5 columns
+</p>
+
+<dl>
+<dt>method</dt><dd><p>character string of method name</p>
+</dd>
+<dt>paper_id</dt><dd><p>character string of paper IDs</p>
+</dd>
+<dt>cs</dt><dd><p>numeric of generated confidence scores</p>
+</dd>
+<dt>n_experts</dt><dd><p>numeric of the number of expert judgements aggregated in confidence score</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_justifications'>Free-text justifications for expert judgements</h2><span id='topic+data_justifications'></span>
+
+<h3>Description</h3>
+
+<p>Free-text justifications for expert judgements
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_justifications
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A table with 5630 rows and 9 columns:
+</p>
+
+<dl>
+<dt>round</dt><dd><p>character string identifying whether the round was 1 (pre-discussion) or 2 (post-discussion)</p>
+</dd>
+<dt>paper_id</dt><dd><p>character string of the paper ids (25 papers total)</p>
+</dd>
+<dt>user_name</dt><dd><p>character string of anonymized IDs for each participant (25 participants included in this dataset)</p>
+</dd>
+<dt>question</dt><dd><p>character string for the question type, with five options: flushing_freetext, involved_binary, belief_binary, direct_replication, and comprehension</p>
+</dd>
+<dt>justification</dt><dd><p>character string with participant's free-text rationale for their responses</p>
+</dd>
+<dt>justification_id</dt><dd><p>character string with a unique ID for each row</p>
+</dd>
+<dt>vote_count</dt><dd><p>numeric of recorded votes (all 0 or 1)</p>
+</dd>
+<dt>vote_sum</dt><dd><p>numeric of summed vote counts(all 0 or 1)</p>
+</dd>
+<dt>group</dt><dd><p>character string of group IDs that contained the participants</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_outcomes'>Replication outcomes for the papers</h2><span id='topic+data_outcomes'></span>
+
+<h3>Description</h3>
+
+<p>Replication outcomes for the papers
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_outcomes
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>a tibble with 25 rows and 2 columns
+</p>
+
+<dl>
+<dt>paper_id</dt><dd><p>character string for the paper ID</p>
+</dd>
+<dt>outcome</dt><dd><p>numeric value of replication outcome. 1 = replication success, 0 = replication failure</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_ratings'>P1_ratings</h2><span id='topic+data_ratings'></span>
+
+<h3>Description</h3>
+
+<p>Anonymized expert judgements of known-outcome
+claims, assessed at the 2019 SIPS repliCATS workshop
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_ratings
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A table with 6880 rows and 7 columns:
+</p>
+
+<dl>
+<dt>round</dt><dd><p>character string identifying whether the round was 1 (pre-discussion) or 2 (post-discussion)</p>
+</dd>
+<dt>paper_id</dt><dd><p>character string of the claim ids (25 unique claims total)</p>
+</dd>
+<dt>user_name</dt><dd><p>character string of anonymized IDs for each participant (25 participants included in this dataset)</p>
+</dd>
+<dt>question</dt><dd><p>character string for the question type, with four options: direct_replication, involved_binary, belief_binary, or comprehension</p>
+</dd>
+<dt>element</dt><dd><p>character string for the type of response coded in the row, with five options: three_point_lower, three_point_best, three_point_upper, binary_question, or likert_binary</p>
+</dd>
+<dt>value</dt><dd><p>numeric value for the participant's response</p>
+</dd>
+<dt>group</dt><dd><p>character string of group IDs that contained the participants</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_supp_priors'>A table of prior means, to be fed into the BayPRIORsAgg aggregation method</h2><span id='topic+data_supp_priors'></span>
+
+<h3>Description</h3>
+
+<p>A table of prior means, to be fed into the BayPRIORsAgg aggregation method
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_supp_priors
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A tibble of 25 rows and 2 columns
+</p>
+
+<dl>
+<dt>paper_id</dt><dd><p>character string with a unique id for each row corresponding to the assessed claim (from 125 papers total)</p>
+</dd>
+<dt>prior_means</dt><dd><p>numeric with the average prior probability for the claim corresponding to the paper_id</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_supp_quiz'>A table of scores on the quiz to assess prior knowledge, to be fed into the QuizWAgg aggregation method</h2><span id='topic+data_supp_quiz'></span>
+
+<h3>Description</h3>
+
+<p>A table of scores on the quiz to assess prior knowledge, to be fed into the QuizWAgg aggregation method
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_supp_quiz
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>A tibble 19 rows and 2 columns
+</p>
+
+<dl>
+<dt>user_name</dt><dd><p>factor for anonymized IDs for each participant</p>
+</dd>
+<dt>quiz_score</dt><dd><p>numeric for the participant's score on the quiz (min of 0, max of 16, NA if no questions answered)</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='data_supp_reasons'>Categories of reasons provided by participants for their expert judgements</h2><span id='topic+data_supp_reasons'></span>
+
+<h3>Description</h3>
+
+<p>Categories of reasons provided by participants for their expert judgements
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>data_supp_reasons
+</code></pre>
+
+
+<h3>Format</h3>
+
+<p>a tibble with 625 rows and 15 columns
+</p>
+
+<dl>
+<dt>paper_id</dt><dd><p>character string for the paper ID</p>
+</dd>
+<dt>user_name</dt><dd><p>character string for participant ID</p>
+</dd>
+<dt>RW04 Date of publication</dt><dd><p>numeric; references to the date of publication, for example in relation to something being published prior to the 'replication crisis' within the relevant discipline, or a study being difficult to re-run now because of changes in social expectations. </p>
+</dd>
+<dt>RW15 Effect size</dt><dd><p>numeric; any references to the effect size that indicate that the participant considered the size of the effect when assessing the claim. Don’t use if the term &quot;effect size&quot; is used in unrelated ways, but err on the side of considering statements as relevant to the participant’s assessment.</p>
+</dd>
+<dt>RW16 Interaction effect</dt><dd><p>numeric; references to when the effect was an interaction effect (rather than a direct effect).</p>
+</dd>
+<dt>RW17 Interval or range measure for statistical uncertainty (CI, SD, etc )</dt><dd><p>numeric; references to the inclusion, absence, or size of the uncertainty measure for a given effect.</p>
+</dd>
+<dt>RW18 Outside participants areas of expertise</dt><dd><p>numeric; references to the claim under assessment being outside the participant's areas of expertise.</p>
+</dd>
+<dt>RW20 Plausibility</dt><dd><p>numeric; references to the plausibility of the claim.</p>
+</dd>
+<dt>RW21 Population or subject characteristics (sampling practices)</dt><dd><p>numeric; references to the characteristics of the sample population or subjects used in a study that affect the participant’s assessment of the claim, including references to low response rate and any other questions or appreciation of the sampling practices.</p>
+</dd>
+<dt>RW22 Power adequacy and or sample size</dt><dd><p>numeric; combines 2 nodes for references to the adequacy (or not) of the statistical power of the study &amp;/or sample size.</p>
+</dd>
+<dt>RW32 Reputation</dt><dd><p>numeric; references to the reputation of the journal/institute/author.</p>
+</dd>
+<dt>RW37 Revision statements</dt><dd><p>numeric; .</p>
+</dd>
+<dt>RW42 Significance, statistical (p-value etc )</dt><dd><p>numeric; references to a test of statistical significance for the claim as it impacts on the participant’s assessment. This explicitly includes p-values, t-values, critical alpha and p-rep.</p>
+</dd>
+</dl>
+
+
+<hr>
+<h2 id='DistributionWAgg'>Aggregation Method: DistributionWAgg</h2><span id='topic+DistributionWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Calculate the arithmetic mean of distributions created with expert judgements.
+The aggregate is the median of the average distribution fitted on the individual estimates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>DistributionWAgg(
+  expert_judgements,
+  type = "DistribArMean",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="DistributionWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="DistributionWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"DistribArMean"</code> or <code>"TriDistribArMean"</code>.</p>
+</td></tr>
+<tr><td><code id="DistributionWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="DistributionWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="DistributionWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="DistributionWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+<p>This method assumes that the elicited probabilities and bounds can be considered
+to represent participants' subjective distributions associated with relative
+frequencies (rather than unique events). That is to say that we considered that
+the lower bound of the individual per claim corresponds to the 5th percentile
+of their subjective distribution on the probability of replication, denoted
+\(q_{5,i}\), the best estimate corresponds to the median, \(q_{50,i}\), and the upper
+bound corresponds to the 95th percentile, \(q_{95,i}\). With these three
+percentiles, we can fit parametric or non-parametric distributions and aggregate
+them rather than the (point) best estimates.
+</p>
+<p><code>type</code> may be one of the following:
+</p>
+<p><strong>DistribArMean</strong>: Applies a non-parametric distribution evenly across upper, lower and best estimates.
+</p>
+<p>Using the three percentiles we can build the minimally
+informative non-parametric distribution that spreads the mass uniformly between
+the three percentiles.
+</p>
+\[F_{i}(x) = \begin{cases}
+\displaystyle 0, \text{ for } x \lt 0 \cr
+\displaystyle \frac{0.05}{q_{5,i}}\cdot x, \text{ for } 0 \le x \lt q_{5,i}\cr
+\displaystyle \frac{0.45}{q_{50,i}-q_{5,i}}\cdot(x-q_{5,i})+0.05, \text{ for } q_{5,i}\le x \lt q_{50,i}\cr
+\displaystyle \frac{0.45}{q_{95,i}-q_{50,i}}\cdot(x-q_{50,i})+0.5, \text{ for } q_{50,i}\le x \lt q_{95,i}\cr
+\displaystyle \frac{0.05}{1 - q_{95,i}}\cdot(x-q_{95,i})+0.95, \text{ for } q_{95,i}\le x \lt 1\cr
+\displaystyle 1,  \text{ for } x\ge 1.
+\end{cases}\]
+<p>Then take the average of all constructed distributions of participants for each claim:
+</p>
+\[AvDistribution = \frac{1}{N}\sum_{i=1}^N F_i(x),\]
+<p>and the aggregation is the median of the average distribution:
+</p>
+\[\hat{p}_c\left( DistribArMean \right) = AvDistribution^{-1}(0.5).\]
+<p><strong>TriDistribArMean</strong>: Applies a triangular distribution to the upper, lower and best estimates.
+</p>
+<p>A more restrictive fit with different assumptions about the
+elicited best estimates, upper and lower bounds. We can assume that the lower and upper
+bounds form the support of the distribution, and the best estimate corresponds to the mode.
+</p>
+\[F_i(x)=
+\begin{cases}
+\displaystyle 0, \text{ for } x \lt L_{i} \cr
+\displaystyle \frac{\left( x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left( B_{i}-L_{i}
+\right)}, \text{ for } L_{i} \le x \lt B_{i}\cr
+\displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left
+( U_{i}-B_{i}\right)}, \text{ for } B_{i} \le x \lt U_{i}\cr
+\displaystyle 1,  \text{ for } x \ge U_{i}.
+\end{cases}\]
+<p>Then take the average of all constructed distributions of participants for each claim:
+</p>
+\[    AvDistribution = \frac{1}{N}\sum_{i=1}^N F_i(x),\]
+<p>and the aggregation is the median of the average distribution:
+</p>
+\[    \hat{p}_c\left(TriDistribArMean\right) = AvDistribution^{-1}(0.5).\]
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>DistributionWAgg(data_ratings, percent_toggle = TRUE)
+
+</code></pre>
+
+<hr>
+<h2 id='ExtremisationWAgg'>Aggregation Method: ExtremisationWAgg</h2><span id='topic+ExtremisationWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Calculate beta-transformed arithmetic means of best estimates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ExtremisationWAgg(
+  expert_judgements,
+  type = "BetaArMean",
+  name = NULL,
+  alpha = 6,
+  beta = 6,
+  cutoff_lower = NULL,
+  cutoff_upper = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="ExtremisationWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"BetaArMean"</code> or <code>"BetaArMean2"</code>.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_alpha">alpha</code></td>
+<td>
+<p>parameter for the 'shape1' argument in the <code>stats::pbeta</code> function (defaults to 6)</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_beta">beta</code></td>
+<td>
+<p>parameter for the 'shape2' argument in the <code>stats::pbeta</code> function (defaults to 6)</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_cutoff_lower">cutoff_lower</code></td>
+<td>
+<p>Lower bound of middle region without extremisation in <code>"BetaArMean2"</code> aggregation <code>type</code>s.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_cutoff_upper">cutoff_upper</code></td>
+<td>
+<p>Upper bound of middle region without extremisation in <code>"BetaArMean2"</code> aggregation <code>type</code>s.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="ExtremisationWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This method takes the average of best estimates and transforms it using the cumulative
+distribution function of a beta distribution.
+</p>
+<p><code>type</code> may be one of the following:
+</p>
+<p><strong>BetaArMean</strong>: Beta transformation applied across the entire range of calculated confidence scores.
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+</p>
+\[\hat{p}_c\left( \text{BetaArMean} \right) = H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right),\]
+<p>where \(H_{\alpha \beta}\) is the cumulative distribution function of the beta distribution
+with parameters \(\alpha\) and \(\beta\), which default to 6 in the function.
+</p>
+<p>The justification for equal parameters (the 'shape1' and 'shape2' arguments in the <code>stats::pbeta</code> function)
+are outlined in Satopää et al (2014) and the references therein (note that the method outlined in that paper
+is called a beta-transformed linear opinion pool).
+To decide on the default shape value of <code>6</code>, we explored the <code>data_ratings</code> dataset with random subsets of 5 assessments per claim,
+which we expect to have for most of the claims assessed by repliCATS.
+</p>
+<p><strong>BetaArMean2</strong>: Beta transformation applied only to calculated confidence scores that are outside a specified middle range. The premise being that we don't extremise &quot;fence-sitter&quot; confidence scores.
+</p>
+\[\hat{p}_c\left( \text{BetaArMean2} \right) = \begin{cases}
+\displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} \lt \textit{cutoff\_lower} \cr
+\displaystyle \frac{1}{N} \sum_{i=1}^N B_{i,c}, \text{ for } \textit{cutoff\_lower} \leq \frac{1}{N} \sum_{i=1}^N B_{i,c} \le \textit{cutoff\_upper} \cr
+\displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} \gt \textit{cutoff\_upper} \cr
+\end{cases}\]
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>ExtremisationWAgg(data_ratings, percent_toggle = TRUE)
+
+</code></pre>
+
+<hr>
+<h2 id='IntervalWAgg'>Aggregation Method: IntervalWAgg</h2><span id='topic+IntervalWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Calculate one of several types of linear-weighted best estimates where the weights
+are dependent on the lower and upper bounds of three-point elicitation (interval widths).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>IntervalWAgg(
+  expert_judgements,
+  type = "IntWAgg",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="IntervalWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="IntervalWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"IntWAgg"</code>, <code>"IndIntWAgg"</code>, <code>"AsymWAgg"</code>, <code>"IndIntAsymWAgg"</code>, <code>"VarIndIntWAgg"</code>,
+<code>"KitchSinkWAgg"</code>.</p>
+</td></tr>
+<tr><td><code id="IntervalWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="IntervalWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="IntervalWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="IntervalWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The width of the interval provided by individuals may be an indicator of certainty,
+and arguably of accuracy of the best estimate contained between the bounds of the interval.
+</p>
+<p><code>type</code> may be one of the following:
+</p>
+<p><strong>IntWAgg</strong>: Weighted according to the interval width across individuals for that claim, rewarding narrow interval widths.
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+\[w\_Interval_{i,c}= \frac{1}{U_{i,c} - L_{i,c}}\]
+\[\hat{p}_c( IntWAgg) = \sum_{i=1}^N \tilde{w}\_Interval_{i,c}B_{i,c}\]
+</p>
+<p>where \(U_{i,d}  - L_{i,d}\) are individual \(i\)'s judgements for claim \(d\). Then
+</p>
+<p><strong>IndIntWAgg</strong>: Weighted by the rescaled interval width (interval width relative to largest
+interval width provided by that individual)
+</p>
+<p>Because of the variability in interval widths between individuals across claims,
+it may be beneficial to account for this individual variability by rescaling interval
+widths across all claims per individual. This results in a re-scaled interval width weight,
+for individual \(i\) for claim \(c\), relative to the widest interval provided by
+that individual across all claims \(C\):
+</p>
+\[w\_nIndivInterval_{i,c}= \frac{1}{\frac{U_{i,c} - L_{i,c}}{max({ (U_{i,d}
+- L_{i,d}): d = 1,\dots, C})}}\]
+\[\hat{p}_c\left( IndIntWAgg \right) = \sum_{i=1}^N \tilde{w}\_nIndivInterval_{i,c}B_{i,c}\]
+<p><strong>AsymWAgg</strong>: Weighted by the asymmetry of individuals' intervals, rewarding increasing asymmetry.
+</p>
+<p>We use the asymmetry of an interval relative to the corresponding best estimate
+to define the following weights:
+</p>
+\[w\_asym_{i,c}= \begin{cases}
+1 - 2 \cdot \frac{U_{i,c}-B_{i,c}}{U_{i,c}-L_{i,c}}, \text{for}\ B_{i,c} \ge
+\frac{U_{i,c}-L_{i,c}}{2}+L_{i,c}\cr
+1 - 2 \cdot \frac{B_{i,c}-L_{i,c}}{U_{i,c}-L_{i,c}}, \text{otherwise}
+\end{cases}\]
+<p>then,
+</p>
+\[\hat{p}_c(AsymWAgg) = \sum_{i=1}^N \tilde{w}\_asym_{i,c}B_{i,c}.\]
+<p><strong>IndIntAsymWAgg</strong>: Weighted by individuals’ interval widths and asymmetry
+</p>
+<p>This rewards both asymmetric and narrow intervals. We simply multiply the weights calculated
+in the <code>"AsymWAgg"</code> and <code>"IndIntWAgg"</code> methods.
+</p>
+\[w\_nIndivInterval\_asym_{i,c} = \tilde{w}\_nIndivInterval_{i,c} \cdot \tilde{w}\_asym_{i,c}\]
+\[\hat{p}_c( IndIntAsymWAgg) = \sum_{i=1}^N \tilde{w}\_nIndivInterval\_asym_{i,c}B_{i,c}\]
+<p><strong>VarIndIntWAgg</strong>: Weighted by the variation in individuals’ interval widths
+</p>
+<p>A higher variance in individuals' interval width across claims may indicate a higher responsiveness
+to the supporting evidence of different claims. Such responsiveness might be predictive of more
+accurate assessors. We define:
+</p>
+\[w\_varIndivInterval_{i}= var{(U_{i,c} - L_{i,c}): c = 1,\dots, C},\]
+<p>where the variance (\(var\)) is calculated across all claims for individual \(i\).
+Then,
+</p>
+\[\hat{p}_c(VarIndIntWAgg) = \sum_{i=1}^N \tilde{w}\_varIndivInterval_{i}B_{i,c}\]
+<p><strong>KitchSinkWAgg</strong>: Weighted by everything but the kitchen sink
+</p>
+<p>This method is informed by the intuition that we want to reward narrow and asymmetric intervals,
+as well as the variability of individuals' interval widths (across their estimates). Again, we multiply
+the weights calculated in the <code>"AsymWAgg"</code>, <code>"IndIntWAgg"</code> and <code>"VarIndIntWAgg"</code> methods above.
+</p>
+\[w\_kitchSink_{i,c} = \tilde{w}\_nIndivInterval_{i,c} \cdot \tilde{w}\_asym_{i,c} \cdot \tilde{w}\_varIndivInterval_{i}\]
+\[\hat{p}_c(KitchSinkWAgg) = \sum_{i=1}^N \tilde{w}\_kitchSink_{i,c}B_{i,c}\]
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>IntervalWAgg(data_ratings)
+
+</code></pre>
+
+<hr>
+<h2 id='LinearWAgg'>Aggregation Method: LinearWAgg</h2><span id='topic+LinearWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Calculate one of several types of linear-weighted best estimates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>LinearWAgg(
+  expert_judgements,
+  type = "DistLimitWAgg",
+  weights = NULL,
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  flag_loarmean = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="LinearWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"Judgement"</code>, <code>"Participant"</code>, <code>"DistLimitWAgg"</code>, <code>"GranWAgg"</code>, or <code>"OutWAgg"</code>.</p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_weights">weights</code></td>
+<td>
+<p>(Optional) A two column dataframe (<code>user_name</code> and <code>weight</code>) for <code>type = "Participant"</code>
+or a three two column dataframe (<code style="white-space: pre;">&#8288;paper_id', 'user_name&#8288;</code> and <code>weight</code>) for <code>type = "Judgement"</code></p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_flag_loarmean">flag_loarmean</code></td>
+<td>
+<p>A toggle to impute log mean (defaults <code>FALSE</code>).</p>
+</td></tr>
+<tr><td><code id="LinearWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function returns weighted linear combinations of the best-estimate judgements for each claim.
+</p>
+<p><code>type</code> may be one of the following:
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+</p>
+<p><strong>Judgement</strong>: Weighted by user-supplied weights at the judgement level
+\[\hat{p}_c\left( JudgementWeights \right) = \sum_{i=1}^N
+\tilde{w}\_judgement_{i,c}B_{i,c}\]
+</p>
+<p><strong>Participant</strong>: Weighted by user-supplied weights at the participant level
+\[\hat{p}_c\left( ParticipantWeights \right) = \sum_{i=1}^N
+\tilde{w}\_participant_{i}B_{i,c}\]
+</p>
+<p><strong>DistLimitWAgg</strong>: Weighted by the distance of the best estimate from the
+closest certainty limit. Giving greater weight to best estimates that are closer to certainty
+limits may be beneficial.
+\[w\_distLimit_{i,c} = \max \left(B_{i,c}, 1-B_{i,c}\right)\]
+\[\hat{p}_c\left( DistLimitWAgg \right) = \sum_{i=1}^N
+\tilde{w}\_distLimit_{i,c}B_{i,c}\]
+</p>
+<p><strong>GranWAgg</strong>: Weighted by the granularity of best estimates
+</p>
+<p>Individuals are weighted by whether or not their best estimates are more
+granular than a level of 0.05 (i.e., not a multiple of 0.05).
+\[w\_gran_{i} = \frac{1}{C} \sum_{d=1}^C \left\lceil{\frac{B_{i,d}}
+{0.05}-\left\lfloor{\frac{B_{i,d}}{0.05}}\right\rfloor}\right\rceil,\]
+</p>
+<p>where \(\lfloor{\ }\rfloor\) and \(\lceil{\ }\rceil\)
+are the mathematical floor and ceiling functions respectively.
+\[\hat{p}_c\left( GranWAgg \right) = \sum_{i=1}^N \tilde{w}\_gran_{i}
+B_{i,c}\]
+</p>
+<p><strong>OutWAgg</strong>: Down weighting outliers
+</p>
+<p>This method down-weights outliers by using the differences from the central
+tendency (median) of an individual's best estimates.
+\[d_{i,c} = \left(median{{B_{i,c}}_{_{i=1,...,N}}} - B_{i,c}\right)^2\]
+\[w\_out_{i} = 1 - \frac{d_{i,c}}{\max({d_c})})\]
+\[\hat{p}_c\left( OutWAgg \right) = \sum_{i=1}^N \tilde{w}\_out_{i}B_{i,c}\]
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>LinearWAgg(data_ratings, percent_toggle = TRUE)
+
+</code></pre>
+
+<hr>
+<h2 id='method_placeholder'>Placeholder function with TA2 output</h2><span id='topic+method_placeholder'></span>
+
+<h3>Description</h3>
+
+<p>This functions stands in for when we haven't completed coding the method.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>method_placeholder(expert_judgements, method_name)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="method_placeholder_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A data frame in the form of ratings</p>
+</td></tr>
+<tr><td><code id="method_placeholder_+3A_method_name">method_name</code></td>
+<td>
+<p>Aggregation method to place into placeholder mode</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function expects input from <a href="#topic+preprocess_judgements">preprocess_judgements</a> and outputs
+for <a href="#topic+postprocess_judgements">postprocess_judgements</a>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run: method_placeholder(data_ratings, method_name = "TestMethod")
+
+</code></pre>
+
+<hr>
+<h2 id='postprocess_judgements'>Post-processing.</h2><span id='topic+postprocess_judgements'></span>
+
+<h3>Description</h3>
+
+<p>Standardise the output from aggregation method's.
+This function is called by every aggregation method as a final step.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>postprocess_judgements(method_output)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="postprocess_judgements_+3A_method_output">method_output</code></td>
+<td>
+<p>tibble created from one of the aggregation methods after
+pre-processing' with columns for the aggregation <code>method</code>, <code>paper_id</code>, <code>aggregated_judgement</code> and
+<code>n_experts</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>, corresponding
+with an aggregation <code>method</code> (character).
+</p>
+
+<hr>
+<h2 id='preprocess_judgements'>Pre-process the data</h2><span id='topic+preprocess_judgements'></span>
+
+<h3>Description</h3>
+
+<p>Process input data with filters and meaningful variable names.
+</p>
+<p>This function is called at the head of every aggregation method function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>preprocess_judgements(
+  expert_judgements,
+  round_2_filter = TRUE,
+  three_point_filter = TRUE,
+  percent_toggle = FALSE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="preprocess_judgements_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe with the same variables (columns) as
+<a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="preprocess_judgements_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+<tr><td><code id="preprocess_judgements_+3A_three_point_filter">three_point_filter</code></td>
+<td>
+<p>Defaults <code>TRUE</code> to filter three point estimates. <code>FALSE</code> will
+filter the involved_binary question.</p>
+</td></tr>
+<tr><td><code id="preprocess_judgements_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities from percentages. Default is <code>FALSE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This pre-processing function takes input data in the format of
+<a href="#topic+data_ratings">data_ratings</a> and outputs a dataframe that:
+</p>
+
+<ol>
+<li><p> Applies any filters or manipulations required by the aggregation method.
+</p>
+</li>
+<li><p> Converts the input data into variables with more
+meaningful names for coding, to avoid errors in the wrangling process.
+</p>
+</li></ol>
+
+
+
+<h3>Value</h3>
+
+<p>a long tibble of expert judgements, with six columns:
+<code>round</code>, <code>paper_id</code>, <code>user_name</code>, <code>element</code> (i.e. question type),
+and <code>value</code> (i.e. participant response).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>preprocess_judgements(data_ratings)
+
+</code></pre>
+
+<hr>
+<h2 id='ReasoningWAgg'>Aggregation Method: ReasoningWAgg</h2><span id='topic+ReasoningWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Calculate one of several types of linear-weighted best estimates using supplementary
+participant reasoning data to create weights.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ReasoningWAgg(
+  expert_judgements,
+  reasons = NULL,
+  type = "ReasonWAgg",
+  name = NULL,
+  beta_transform = FALSE,
+  beta_param = c(6, 6),
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  flag_loarmean = FALSE,
+  round_2_filter = TRUE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="ReasoningWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_reasons">reasons</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_supp_reasons">data_supp_reasons</a></p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"ReasonWAgg"</code>, <code>"ReasonWAgg2"</code>.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_beta_transform">beta_transform</code></td>
+<td>
+<p>Toggle switch to extremise confidence scores with the beta distribution. Defaults to <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_beta_param">beta_param</code></td>
+<td>
+<p>Length two vector of alpha and beta parameters of the beta distribution. Defaults to <code>c(6,6)</code>.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_flag_loarmean">flag_loarmean</code></td>
+<td>
+<p>A toggle to impute LOArMean instead of ArMean when no participants have a reasoning weight for a specific claim (defaults <code>FALSE</code>).</p>
+</td></tr>
+<tr><td><code id="ReasoningWAgg_+3A_round_2_filter">round_2_filter</code></td>
+<td>
+<p>Note that the IDEA protocol results in both a Round 1
+and Round 2 set of probabilities for each claim. Unless otherwise specified,
+we will assume that the final Round 2 responses (after discussion) are being
+referred to.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Weighted by the breadth of reasoning provided to support the individuals’ estimate.
+</p>
+<p><code>type</code> may be one of the following:
+</p>
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+<p><strong>ReasonWAgg</strong>: Weighted by the number of supporting reasons
+</p>
+<p>Giving greater weight to best estimates that are accompanied by a greater number of
+supporting reasons may be beneficial. We will consider \(w\_{reason}_{i,c}\)
+to be the number of unique reasons provided by that individual \(i\) in
+support of their estimate for claim \(c\).
+</p>
+\[\hat{p}_c(ReasonWAgg) = \sum_{i=1}^N \tilde{w}\_reason_{i,c}B_{i,c}\]
+<p>See Hanea et al. (2021) for an example of reason coding.
+</p>
+<p><strong>ReasonWAgg2</strong>: Incorporates both the number of reasons and their diversity across claims.
+</p>
+<p>The claim diversity component of this score is calculated per individual from all claims
+they assessed. We assume each individual answers at least two claims. If an individual has
+assessed only one claim, there weighting for that claim is equivalent to &quot;ReasonWAgg&quot;.
+</p>
+<p>We will consider \(w\_{varReason}_{i,c}\) to be the weighted &quot;number of unique
+reasons&quot; provided by participant \(i\) in support of their estimate for claim
+\(c\). Assume there are \(R\) total unique reasons any participant
+can use to justify their numerical answers. Then, for each participant \(i\) we
+can construct a matrix \(\mathbf{CR_i}\) with \(R\) columns, each
+corresponding to a unique reason, \(r\), and \(C\) rows, where
+\(C\) is the number of claims assessed by that participant. Each element of
+this matrix \(\mathbf{CR_i}(r,c)\) can be either 1 or 0.
+\(\mathbf{CR_i}(r,c) = 1\) if reason \(R_r\) was used to justify
+the estimates assessed for \(c\), and \(\mathbf{CR_i}(r,c) = 0\) if
+reason \(R_r\) was not mentioned when assessing claim \(c\). The
+more frequently that a participant uses a given reason reduces the amount it contributes
+to the weight assigned to that participant.
+</p>
+\[w\_{varReason}_{i,c} =\sum_{r=1}^{R} \mathbf{CR_i}(c,r) \cdot (1 - \frac{\sum_{c=1}^C
+\mathbf{CR_i}(c,r)}{C})\]
+\[\hat{p}_c(ReasonWAgg2) = \sum_{i=1}^N \tilde{w}\_varReason_{i,c}B_{i,c}\]
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>When <code>flag_loarmean</code> is set to <code>TRUE</code>, two additional columns will be returned; <code>method_applied</code> (a character variable describing the method actually applied with values of either <code>LoArMean</code> or <code>ReasonWAgg</code>) and <code>no_reason_score</code> (a logical variable describing whether no reasoning scores were supplied for any user for the given claim, where <code>TRUE</code> indicates no reasoning scores supplied and <code>FALSE</code> indicates that at least one participant for that claim had a reasoning score greater than 0).
+</p>
+<p>named method_applied (with values LoArMean or ReasonWAgg), and no_reason_score, a logical variable describing whether or not there were no reasoning scores for that claim.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>ReasoningWAgg(data_ratings, data_supp_reasons)
+
+</code></pre>
+
+<hr>
+<h2 id='ShiftingWAgg'>Aggregation Method: ShiftingWAgg</h2><span id='topic+ShiftingWAgg'></span>
+
+<h3>Description</h3>
+
+<p>Weighted by judgements that shift the most after discussion
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>ShiftingWAgg(
+  expert_judgements,
+  type = "ShiftWAgg",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE
+)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="ShiftingWAgg_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the format of <a href="#topic+data_ratings">data_ratings</a>.</p>
+</td></tr>
+<tr><td><code id="ShiftingWAgg_+3A_type">type</code></td>
+<td>
+<p>One of <code>"ShiftWAgg"</code>, <code>"BestShiftWAgg"</code>, <code>"IntShiftWAgg"</code>, <code>"DistShiftWAgg"</code>, or <code>"DistIntShiftWAgg"</code>.</p>
+</td></tr>
+<tr><td><code id="ShiftingWAgg_+3A_name">name</code></td>
+<td>
+<p>Name for aggregation method. Defaults to <code>type</code> unless specified.</p>
+</td></tr>
+<tr><td><code id="ShiftingWAgg_+3A_placeholder">placeholder</code></td>
+<td>
+<p>Toggle the output of the aggregation method to impute placeholder data.</p>
+</td></tr>
+<tr><td><code id="ShiftingWAgg_+3A_percent_toggle">percent_toggle</code></td>
+<td>
+<p>Change the values to probabilities. Default is <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When judgements are elicited using the IDEA protocol (or any other protocol that allows
+experts to revisit their original estimates), the second round of estimates may differ
+from the original first set of estimates an expert provides. Greater changes between rounds
+will be given greater weight.
+</p>
+<p><code>type</code> may be one of the following:
+</p>
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+<p><strong>ShiftWAgg</strong>: Takes into account the shift in all three estimates
+</p>
+<p>Considers shifts across lower, \(L_{i,c}\), and upper,
+\(U_{i,c}\), confidence limits, and the best estimate, \(B_{i,c}\).
+More emphasis is placed on changes in the best estimate such that:
+</p>
+\[w\_Shift_{i,c} = |B1_{i,c} - B_{i,c}| + \frac{|L1_{i,c} - L_{i,c}|+|U1_{i,c} - U_{i,c}|}{2},\]
+<p>where \(L1_{i,c}, B1_{i,c},U1_{i,c}\) are the first round lower, best and upper estimates (prior
+to discussion) and \(L_{i,c}, B_{i,c},U1_{i,c}\) are the individual’s revised second round estimates
+(after discussion).
+</p>
+\[\hat{p}_c(ShiftWAgg) = \sum_{i=1}^N \tilde{w}\_Shift_{i,c}B_{i,c}\]
+<p><strong>BestShiftWAgg</strong>: Weighted according to shifts in best estimates alone
+</p>
+<p>Taking into account the fact that the scales best estimates are measured on are bounded,
+we can calculate shifts relative to the largest possible shift.
+</p>
+\[w\_BestShift_{i,c}=
+\begin{cases}
+\frac{|B1_{i,c} - B_{i,c}|}{B1_{i,c}},
+\begin{aligned}
+\displaystyle &\ for\ (B1_{i,c} \gt 0.5\ and\ B_{i,c} \le 0.5) \cr
+\displaystyle &\ or\ B_{i,c} \lt B1_{i,c} \le 0.5\ or\ B1_{i,c} \gt B_{i,c} \gt 0.5
+\end{aligned} \cr
+\frac{|B1_{i,c} - B_{i,c}|}{1- B1_{i,c}},
+\begin{aligned}
+\displaystyle &\ for\ (B1_{i,c} \lt 0.5\ and\ B_{i,c} \ge 0.5) \cr
+\displaystyle &\ or\ B1_{i,c} \lt B_{i,c} \lt 0.5\ or\ B_{i,c} \gt B1_{i,c} \gt 0.5.
+\end{aligned}
+\end{cases}\]
+\[\hat{p}_c(BestShiftWAgg) = \sum_{i=1}^N \tilde{w}\_BestShift_{i,c}B_{i,c}\]
+<p><strong>IntShiftWAgg</strong>: Weighted by shifts in interval widths alone.
+</p>
+<p>Individuals whose interval widths narrow between rounds are given more weight.
+</p>
+\[w\_IntShift_{i,c} = \frac{1}{(U_{i,c}-L_{i,c})-(U1_{i,c}-L1_{i,c})+1}\]
+\[\hat{p}_c(IntShiftWAgg) = \sum_{i=1}^N \tilde{w}\_IntShift_{i,c}B_{i,c}\]
+<p><strong>DistShiftWAgg</strong>: Weighted by whether best estimates become more extreme (closer to 0 or 1) between rounds.
+</p>
+\[w\_DistShift_{i,c} = 1 - (\min (B_{i,c}, 1-B_{i,c}) - \min (B1_{i,c}, 1-B1_{i,c}))\]
+\[\hat{p}_c(DistShiftWAgg) = \sum_{i=1}^N \tilde{w}\_DistShift_{i,c}B_{i,c}\]
+<p><strong>DistIntShiftWAgg</strong>: Rewards both narrowing of intervals and shifting towards the certainty limits between rounds.
+</p>
+<p>We simply multiply the weights calculated in the &quot;DistShiftWAgg&quot; and &quot;IntShiftWAgg&quot; methods.
+</p>
+\[w\_DistIntShift_{i,c} = \tilde{w}\_IntShift_{i,c} \cdot \tilde{w}\_DistShift_{i,c}\]
+\[\hat{p}_c(DistIntShiftWAgg) = \sum_{i=1}^N \tilde{w}\_DistIntShift_{i,c}B_{i,c}\]
+
+
+<h3>Value</h3>
+
+<p>A tibble of confidence scores <code>cs</code> for each <code>paper_id</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>ShiftingWAgg(data_ratings)
+
+</code></pre>
+
+<hr>
+<h2 id='weight_asym'>Weighting method: Asymmetry of intervals</h2><span id='topic+weight_asym'></span>
+
+<h3>Description</h3>
+
+<p>Calculates weights by asymmetry of intervals
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_asym(expert_judgements)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_asym_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>the long tibble exported from the <code>preprocess_judgements</code> function.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used inside <a href="#topic+IntervalWAgg">IntervalWAgg</a> to calculate the weights for the
+aggregation type <code>"AsymWAgg"</code>, <code>"IndIntAsymWAgg"</code> and <code>"KitchSinkWAgg"</code>. Pre-processed
+expert judgements (long format) are first converted to wide format then weighted by:
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+\[w\_asym_{i,c}= \begin{cases}
+1 - 2 \cdot \frac{U_{i,c}-B_{i,c}}{U_{i,c}-L_{i,c}}, \text{for}\ B_{i,c} \ge
+\frac{U_{i,c}-L_{i,c}}{2}+L_{i,c}\cr
+1 - 2 \cdot \frac{B_{i,c}-L_{i,c}}{U_{i,c}-L_{i,c}}, \text{otherwise}
+\end{cases}\]
+</p>
+<p>Data is converted back to long format, with only the weighted best estimates
+retained.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble in the form of the input <code>expert_judgements</code> argument with additional columns
+supplying the calculated weight for each row's observation.
+</p>
+
+<hr>
+<h2 id='weight_interval'>Weighting method: Width of intervals</h2><span id='topic+weight_interval'></span>
+
+<h3>Description</h3>
+
+<p>Calculates weights by interval width
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_interval(expert_judgements)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_interval_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_ratings">data_ratings</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used inside <a href="#topic+IntervalWAgg">IntervalWAgg</a> for aggregation type <code>"IntWAgg"</code>. It
+calculates the width of each three-point judgement (upper - lower), then returns
+the weight as the inverse of this interval.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble in the form of the input <code>expert_judgements</code> argument with additional columns
+supplying the calculated weight for each row's observation.
+</p>
+
+<hr>
+<h2 id='weight_nIndivInterval'>Weighting method: Individually scaled interval widths</h2><span id='topic+weight_nIndivInterval'></span>
+
+<h3>Description</h3>
+
+<p>Weighted by the rescaled interval width within individuals across claims.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_nIndivInterval(expert_judgements)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_nIndivInterval_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_ratings">data_ratings</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+<p>This function is used inside <a href="#topic+IntervalWAgg">IntervalWAgg</a> for aggregation types <code>"IndIntWAgg"</code>,
+<code>"IndIntAsymWAgg"</code> and <code>"KitchSinkWAgg"</code>. Interval width weights are rescaled
+relative to an individuals interval widths across all claims.
+</p>
+\[w\_nIndivInterval_{i,c} = \frac{1}{\frac{U_{i,c}-L_{i,c}}{\max\left({(U_{i,d}-L_{i,d}):d=1,...,C}\right)}}\]
+
+
+<h3>Value</h3>
+
+<p>A tibble in the form of the input <code>expert_judgements</code> argument with additional columns
+supplying the calculated weight for each row's observation.
+</p>
+
+<hr>
+<h2 id='weight_outlier'>Weighting method: Down weighting outliers</h2><span id='topic+weight_outlier'></span>
+
+<h3>Description</h3>
+
+<p>This method down-weights outliers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_outlier(expert_judgements)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_outlier_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_ratings">data_ratings</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used by <a href="#topic+LinearWAgg">LinearWAgg</a> to calculate weights for the aggregation type
+<code>"OutWAgg"</code>. Outliers are given less weight by using the squared difference between the
+median of an individual's best estimates across all claims and their best estimate
+for the claim being assessed:
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+\[d_{i,c} = \left(median{{B_{i,c}}_{_{i=1,...,N}}} - B_{i,c}\right)^2\]
+</p>
+<p>Weights are given by 1 minus the proportion of the individual's squared difference
+relative to the maximum squared difference for the claim across all individuals:
+</p>
+\[w\_out_{i} = 1 - \frac{d_{i,c}}{\max({d_c})})\]
+
+
+<h3>Value</h3>
+
+<p>A tibble in the form of the input <code>expert_judgements</code> argument with additional columns
+supplying the calculated weight for each row's observation.
+</p>
+
+<hr>
+<h2 id='weight_reason'>Weighting method: Total number of judgement reasons</h2><span id='topic+weight_reason'></span>
+
+<h3>Description</h3>
+
+<p>This function is used by <a href="#topic+ReasoningWAgg">ReasoningWAgg</a> to calculate weights for the aggregation
+type <code>"ReasonWAgg"</code>. Calculates weights based on the number of judgement reasoning
+methods used by an individual
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_reason(expert_reasons)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_reason_+3A_expert_reasons">expert_reasons</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_supp_reasons">data_supp_reasons</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Individuals' weight is equal to the maximum number of judgement reasons given
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble of three columns <code>paper_id</code>, <code>user_name</code>, and <code>reason_count</code>
+</p>
+
+<hr>
+<h2 id='weight_reason2'>Weighting method: Total number and diversity of judgement reasons</h2><span id='topic+weight_reason2'></span>
+
+<h3>Description</h3>
+
+<p>This function is used by <a href="#topic+ReasoningWAgg">ReasoningWAgg</a> to calculate weights for the aggregation
+type <code>"ReasonWAgg2"</code>. Weights are based on the number and diversity of reasoning
+methods used by the participant to support their judgement.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_reason2(expert_reasons)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_reason2_+3A_expert_reasons">expert_reasons</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_supp_reasons">data_supp_reasons</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+<p>An individual's weight is a product of the number of reasons given in support of
+their judgement and the diversity of these reasons.
+\[w\_{varReason}_{i,c} =\sum_{r=1}^{R} \mathbf{CR_i}(c,r) \cdot (1 - \frac{\sum_{c=1}^C
+\mathbf{CR_i}(c,r)}{C})\]
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble of three columns <code>paper_id</code>, <code>user_name</code>, and <code>reason_count</code>
+</p>
+
+<hr>
+<h2 id='weight_varIndivInterval'>Weighting method: Variation in individuals’ interval widths</h2><span id='topic+weight_varIndivInterval'></span>
+
+<h3>Description</h3>
+
+<p>Calculates weights based on the variability of interval widths
+within individuals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre><code class='language-R'>weight_varIndivInterval(expert_judgements)
+</code></pre>
+
+
+<h3>Arguments</h3>
+
+<table role = "presentation">
+<tr><td><code id="weight_varIndivInterval_+3A_expert_judgements">expert_judgements</code></td>
+<td>
+<p>A dataframe in the form of <a href="#topic+data_ratings">data_ratings</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used inside <a href="#topic+IntervalWAgg">IntervalWAgg</a> for aggregation types <code>"VarIndIntWAgg"</code>
+and <code>"KitchSinkWAgg"</code>. It calculates the difference between individual's upper and
+lower estimates, then calculates the variance in this interval across each individual's
+claim assessments.
+<script>MathJax = {output: {font: "mathjax-newcm", fontPath: "../../mathjaxr/doc/mathjax/font",}};</script><script defer src="../../mathjaxr/doc/mathjax/tex-chtml.js"></script>
+\[w\_varIndivInterval_{i} = var{(U_{i,d}-L_{i,d}):c=1,...,C}\]
+</p>
+
+
+<h3>Value</h3>
+
+<p>A tibble in the form of the input <code>expert_judgements</code> argument with additional columns
+supplying the calculated weight for each row's observation.
+</p>
+
+</main>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+</body></html>
