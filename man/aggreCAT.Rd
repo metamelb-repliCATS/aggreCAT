@@ -2,8 +2,8 @@
 % Please edit documentation in R/aggreCAT_package.R
 \docType{package}
 \name{aggreCAT}
-\alias{aggreCAT-package}
 \alias{aggreCAT}
+\alias{aggreCAT-package}
 \title{aggreCAT: mathematically aggregating expert judgements}
 \description{
 To learn more about \pkg{aggreCAT}, start with the vignettes: \code{vignette(package = "aggreCAT")}
@@ -21,7 +21,7 @@ Useful links:
 Authors:
 \itemize{
   \item Elliot Gould (\href{https://orcid.org/0000-0002-6585-538X}{ORCID})
-  \item Aaron Willcox \email{aaron@willcox.io} (\href{https://orcid.org/0000-0003-2536-2596}{ORCID})
+  \item Aaron Willcox (\href{https://orcid.org/0000-0003-2536-2596}{ORCID})
   \item Charles T. Gray
   \item Rose E. O'Dea (\href{https://orcid.org/0000-0001-8177-5075}{ORCID})
   \item Rebecca Groenewegen (\href{https://orcid.org/0000-0001-9177-8536}{ORCID})
