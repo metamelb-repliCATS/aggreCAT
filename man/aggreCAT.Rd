@@ -12,6 +12,8 @@ To learn more about \pkg{aggreCAT}, start with the vignettes: \code{vignette(pac
 Useful links:
 \itemize{
   \item \url{https://replicats.research.unimelb.edu.au/}
+  \item \url{https://github.com/metamelb-repliCATS/aggreCAT}
+  \item \url{https://metamelb-replicats.github.io/aggreCAT/}
 }
 
 }

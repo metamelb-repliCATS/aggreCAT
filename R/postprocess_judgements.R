@@ -16,13 +16,8 @@
 
 postprocess_judgements <- function(method_output) {
   method_output %>%
-    dplyr::select(method,
-                  paper_id,
-                  aggregated_judgement,
-                  n_experts) %>%
+    dplyr::select(method, paper_id, aggregated_judgement, n_experts) %>%
     dplyr::rename(
       cs = aggregated_judgement
     )
-
 }
-

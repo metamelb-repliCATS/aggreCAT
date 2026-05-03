@@ -13,7 +13,7 @@ weight_reason2(expert_reasons)
 A tibble of three columns \code{paper_id}, \code{user_name}, and \code{reason_count}
 }
 \description{
-This function is used by \link{ReasoningWAgg} to calculate weights for the aggregation
+This function is used by \link{ReasoningWAgg} to weighting functions for the aggregation
 type \code{"ReasonWAgg2"}. Weights are based on the number and diversity of reasoning
 methods used by the participant to support their judgement.
 }
@@ -24,3 +24,13 @@ their judgement and the diversity of these reasons.
 \mjdeqn{w\_{varReason}_{i,c} =\sum_{r=1}^{R} \mathbf{CR_i}(c,r) \cdot (1 - \frac{\sum_{c=1}^C
 \mathbf{CR_i}(c,r)}{C})}{ascii}
 }
+\seealso{
+Other weighting functions: 
+\code{\link{weight_asym}()},
+\code{\link{weight_interval}()},
+\code{\link{weight_nIndivInterval}()},
+\code{\link{weight_outlier}()},
+\code{\link{weight_reason}()},
+\code{\link{weight_varIndivInterval}()}
+}
+\concept{weighting functions}
