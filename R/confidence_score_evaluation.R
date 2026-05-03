@@ -14,7 +14,7 @@
 #' @importFrom precrec auc
 #' @importFrom precrec evalmod
 #' @importFrom stats cor
-#' 
+#'
 #' @return
 #' Evaluated dataframe with five columns: `method` (character variable describing the aggregation method),
 #' `AUC` (Area Under the Curve (AUC) scores of ROC curves - see `?precrec::auc`), `Brier_Score` (see
@@ -30,14 +30,11 @@
 #'
 #' @export
 
-confidence_score_evaluation <- function(confidence_scores,
-                                        outcomes){
-
+confidence_score_evaluation <- function(confidence_scores, outcomes) {
   ## Combine inputs
 
   cs_df <- confidence_scores %>%
-    dplyr::left_join(outcomes,
-                     by = "paper_id")
+    dplyr::left_join(outcomes, by = "paper_id")
 
   ## Add threshold prediction to be able to calculate Accuracy
 
@@ -49,16 +46,18 @@ confidence_score_evaluation <- function(confidence_scores,
   eval_df <- cs_df %>%
     dplyr::filter(!is.na(outcome)) %>%
     dplyr::group_by(method) %>%
-    dplyr::summarise(AUC = precrec::auc(precrec::evalmod(scores = cs,
-                                                         labels = outcome))[1, "aucs"],
-                     Brier_Score = DescTools::BrierScore(x = outcome,
-                                                         pred = cs),
-                     Classification_Accuracy = MLmetrics::Accuracy(y_pred = cl,
-                                                                   y_true = outcome),
-                     Correlation = stats::cor(x = cs,
-                                              y = outcome,
-                                              method = "pearson"))
+    dplyr::summarise(
+      AUC = precrec::auc(precrec::evalmod(scores = cs, labels = outcome))[
+        1,
+        "aucs"
+      ],
+      Brier_Score = DescTools::BrierScore(x = outcome, pred = cs),
+      Classification_Accuracy = MLmetrics::Accuracy(
+        y_pred = cl,
+        y_true = outcome
+      ),
+      Correlation = stats::cor(x = cs, y = outcome, method = "pearson")
+    )
 
   return(eval_df)
-
 }

@@ -65,6 +65,8 @@
 #' \describe{
 #'   \item{user_name}{factor for anonymized IDs for each participant}
 #'   \item{quiz_score}{numeric for the participant's score on the quiz (min of 0, max of 16, NA if no questions answered)}
+#'   \item{quiz_score_even}{numeric quiz scores where all questions are weighted equally (the original quiz score assigned only half marks for true/false questions)}
+#'   \item{quiz_score_stats}{numeric participant score based only on questions pertaining to statistics}
 #' }
 #'
 "data_supp_quiz"

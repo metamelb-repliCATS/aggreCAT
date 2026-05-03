@@ -30,3 +30,16 @@ expert judgements (long format) are first converted to wide format then weighted
 Data is converted back to long format, with only the weighted best estimates
 retained.
 }
+\examples{
+weight_asym(preprocess_judgements(data_ratings))
+}
+\seealso{
+Other weighting functions: 
+\code{\link{weight_interval}()},
+\code{\link{weight_nIndivInterval}()},
+\code{\link{weight_outlier}()},
+\code{\link{weight_reason}()},
+\code{\link{weight_reason2}()},
+\code{\link{weight_varIndivInterval}()}
+}
+\concept{weighting functions}

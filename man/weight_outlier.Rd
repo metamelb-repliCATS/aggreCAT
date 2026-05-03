@@ -17,7 +17,7 @@ supplying the calculated weight for each row's observation.
 This method down-weights outliers.
 }
 \details{
-This function is used by \link{LinearWAgg} to calculate weights for the aggregation type
+This function is used by \link{LinearWAgg} to weighting functions for the aggregation type
 \code{"OutWAgg"}. Outliers are given less weight by using the squared difference between the
 median of an individual's best estimates across all claims and their best estimate
 for the claim being assessed:
@@ -29,3 +29,13 @@ relative to the maximum squared difference for the claim across all individuals:
 
 \mjdeqn{w\_out_{i} = 1 - \frac{d_{i,c}}{\max({d_c})})}{ascii}
 }
+\seealso{
+Other weighting functions: 
+\code{\link{weight_asym}()},
+\code{\link{weight_interval}()},
+\code{\link{weight_nIndivInterval}()},
+\code{\link{weight_reason}()},
+\code{\link{weight_reason2}()},
+\code{\link{weight_varIndivInterval}()}
+}
+\concept{weighting functions}
