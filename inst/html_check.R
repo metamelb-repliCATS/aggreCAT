@@ -18,3 +18,5 @@ library(W3CMarkupValidator)
 results <- w3c_markup_validate(file = out, jar = TRUE)
 
 if (length(results$type) > 0) results |> tibble::as_tibble()
+
+file.remove(out)
