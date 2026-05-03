@@ -7,7 +7,6 @@
 #' Defaults to [data_confidence_scores] if no argument supplied.
 #' @param data_outcomes A data frame of unique claims and the associated binary outcome in the form of [data_outcomes]. If no argument supplied
 #' then defaults to [data_outcomes] supplied within package.
-#' @param x_label Bottom x axis label name or ID. Default is blank.
 #'
 #' @importFrom insight format_capitalize
 #'
@@ -57,11 +56,9 @@ confidence_score_heatmap <- function(
     dplyr::select(paper_id, method, cs, outcome, replicated_outcome)
 
   # Generate accuracy scores
-  evaluated_outcomes <- aggreCAT::confidence_score_evaluation(
-    confidence_scores = data_confidencescores_lf,
-    outcomes = data_outcomes
-  )
-
+  evaluated_outcomes <- aggreCAT::confidence_score_evaluation(confidence_scores = confidence_scores,
+                                                              outcomes = data_outcomes)
+  
   # Plot
 
   evaluated_outcomes %>%
@@ -78,32 +75,27 @@ confidence_score_heatmap <- function(
       )
     ) %>%
     ggplot2::ggplot() +
-    ggplot2::aes(
-      x = paper_id,
-      y = factor(method, levels = rev(levels(factor(method)))),
-      fill = cs,
-      colour = cs
-    ) +
-    ggplot2::geom_tile(linetype = 1, linejoin = "mitre") +
-    ggplot2::scale_fill_distiller(
-      palette = "RdYlBu",
-      direction = 1,
-      breaks = seq(0, 1, 0.2)
-    ) +
-    ggplot2::scale_color_distiller(
-      palette = "RdYlBu",
-      direction = 1,
-      breaks = seq(0, 1, 0.2)
-    ) +
-    ggplot2::labs(
-      x = "Paper ID",
-      y = "Aggregation Method",
-      title = "",
-      fill = "Confidence \nScore",
-      color = "Confidence \nScore"
-    ) +
-    ggplot2::theme(
-      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
-    ) +
-    ggplot2::facet_wrap(~replicated_outcome, scales = "free_x")
+    ggplot2::aes(x = paper_id, 
+                 y = factor(method, 
+                            levels = rev(levels(factor(method)))),
+                 fill = cs,
+                 colour = cs) +
+    ggplot2::geom_tile(linetype = 1, 
+                       linejoin = "mitre") +
+    ggplot2::scale_fill_distiller(palette = "RdYlBu", 
+                                  direction = 1, 
+                                  breaks = seq(0,1,0.2)) +
+    ggplot2::scale_color_distiller(palette = "RdYlBu", 
+                                   direction = 1, 
+                                   breaks = seq(0,1,0.2)) +
+    ggplot2::labs(x = "Paper ID",
+                  y = "Aggregation Method",
+                  title = "",
+                  fill = "Confidence \nScore", color = "Confidence \nScore") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                       hjust = 1,
+                                                       vjust = 0.5)) +
+    ggplot2::facet_wrap(~replicated_outcome,
+                        scales = "free_x")
+  
 }
