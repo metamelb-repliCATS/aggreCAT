@@ -55,7 +55,6 @@ Suggests:
     gt, 
     gtExtras,
     R.rsp
-RoxygenNote: 7.3.3
 Depends:
     R (>= 2.10)
 Imports: 
@@ -84,3 +83,4 @@ VignetteBuilder:
 RdMacros: mathjaxr
 Config/testthat/parallel: true
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
