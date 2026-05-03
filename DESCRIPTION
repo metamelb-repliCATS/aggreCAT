@@ -1,5 +1,5 @@
 Package: aggreCAT
-Type: Manuscript
+Type: Package
 Title: Mathematically Aggregating Expert Judgments
 Version: 1.0.1.9000
 Authors@R: c(person(given = "David",
