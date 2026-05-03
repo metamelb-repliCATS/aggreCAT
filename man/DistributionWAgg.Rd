@@ -57,13 +57,22 @@ Using the three percentiles we can build the minimally
 informative non-parametric distribution that spreads the mass uniformly between
 the three percentiles.
 
-\mjdeqn{F_{i}(x) = \begin{cases}
+\mjtdeqn{
+F_{i}(x) = \begin{cases}
+\displaystyle 0, \text{ for } x < 0 \cr
+\displaystyle \frac{0.05}{q_{5,i}}\cdot x, \text{ for } 0 < x < q_{5,i}\cr
+\displaystyle \frac{0.45}{q_{50,i}-q_{5,i}}\cdot(x-q_{5,i})+0.05, \text{ for } q_{5,i}\le x < q_{50,i}\cr
+\displaystyle \frac{0.45}{q_{95,i}-q_{50,i}}\cdot(x-q_{50,i})+0.5, \text{ for } q_{50,i}\le x < q_{95,i}\cr
+\displaystyle \frac{0.05}{1 - q_{95,i}}\cdot(x-q_{95,i})+0.95, \text{ for } q_{95,i}\le x < 1\cr
+\displaystyle 1,  \text{ for } x \ge 1.
+\end{cases}}{%
+F_{i}(x) = \begin{cases}
 \displaystyle 0, \text{ for } x \lt 0 \cr
 \displaystyle \frac{0.05}{q_{5,i}}\cdot x, \text{ for } 0 \le x \lt q_{5,i}\cr
 \displaystyle \frac{0.45}{q_{50,i}-q_{5,i}}\cdot(x-q_{5,i})+0.05, \text{ for } q_{5,i}\le x \lt q_{50,i}\cr
 \displaystyle \frac{0.45}{q_{95,i}-q_{50,i}}\cdot(x-q_{50,i})+0.5, \text{ for } q_{50,i}\le x \lt q_{95,i}\cr
 \displaystyle \frac{0.05}{1 - q_{95,i}}\cdot(x-q_{95,i})+0.95, \text{ for } q_{95,i}\le x \lt 1\cr
-\displaystyle 1,  \text{ for } x\ge 1.
+\displaystyle 1,  \text{ for } x \ge 1.
 \end{cases}}{ascii}
 
 Then take the average of all constructed distributions of participants for each claim:
@@ -80,13 +89,17 @@ A more restrictive fit with different assumptions about the
 elicited best estimates, upper and lower bounds. We can assume that the lower and upper
 bounds form the support of the distribution, and the best estimate corresponds to the mode.
 
-\mjdeqn{F_i(x)=
-\begin{cases}
+\mjtdeqn{
+F_{i}(x) = \begin{cases}
+\displaystyle 0, \text{ for } x < L_{i} \cr
+\displaystyle \frac{\left(x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left(B_{i}-L_{i}\right)}, \text{ for } L_{i} \le x < B_{i}\cr
+\displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left( U_{i}-B_{i}\right)}, \text{ for } B_{i} \le x < U_{i}\cr
+\displaystyle 1,  \text{ for } x \ge U_{i}.
+\end{cases}}{%
+F_{i}(x) = \begin{cases}
 \displaystyle 0, \text{ for } x \lt L_{i} \cr
-\displaystyle \frac{\left( x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left( B_{i}-L_{i}
-\right)}, \text{ for } L_{i} \le x \lt B_{i}\cr
-\displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left
-( U_{i}-B_{i}\right)}, \text{ for } B_{i} \le x \lt U_{i}\cr
+\displaystyle \frac{\left(x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left(B_{i}-L_{i}\right)}, \text{ for } L_{i} \le x \lt B_{i}\cr
+\displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left( U_{i}-B_{i}\right)}, \text{ for } B_{i} \le x \lt U_{i}\cr
 \displaystyle 1,  \text{ for } x \ge U_{i}.
 \end{cases}}{ascii}
 
