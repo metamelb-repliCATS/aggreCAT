@@ -32,7 +32,21 @@
 #' Taking into account the fact that the scales best estimates are measured on are bounded,
 #' we can calculate shifts relative to the largest possible shift.
 #'
-#' \mjdeqn{w\_BestShift_{i,c}=
+#' \mjtdeqn{
+#' w\_BestShift_{i,c}=
+#' \begin{cases}
+#' \frac{|B1_{i,c} - B_{i,c}|}{B1_{i,c}},
+#' \begin{aligned}
+#' \displaystyle &\ for\ (B1_{i,c} > 0.5\ and\ B_{i,c} \le 0.5) \cr
+#' \displaystyle &\ or\ B_{i,c} < B1_{i,c} \le 0.5\ or\ B1_{i,c} > B_{i,c} > 0.5
+#' \end{aligned} \cr
+#' \frac{|B1_{i,c} - B_{i,c}|}{1- B1_{i,c}},
+#' \begin{aligned}
+#' \displaystyle &\ for\ (B1_{i,c} < 0.5\ and\ B_{i,c} \ge 0.5) \cr
+#' \displaystyle &\ or\ B1_{i,c} < B_{i,c} < 0.5\ or\ B_{i,c} > B1_{i,c} > 0.5.
+#' \end{aligned}
+#' \end{cases}}{%
+#' w\_BestShift_{i,c}=
 #' \begin{cases}
 #' \frac{|B1_{i,c} - B_{i,c}|}{B1_{i,c}},
 #' \begin{aligned}
