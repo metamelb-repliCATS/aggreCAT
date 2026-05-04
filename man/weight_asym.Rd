@@ -34,12 +34,12 @@ retained.
 weight_asym(preprocess_judgements(data_ratings))
 }
 \seealso{
-Other weighting functions: 
-\code{\link{weight_interval}()},
-\code{\link{weight_nIndivInterval}()},
-\code{\link{weight_outlier}()},
-\code{\link{weight_reason}()},
-\code{\link{weight_reason2}()},
-\code{\link{weight_varIndivInterval}()}
+Other weighting functions:
+\code{\link[=weight_interval]{weight_interval()}},
+\code{\link[=weight_nIndivInterval]{weight_nIndivInterval()}},
+\code{\link[=weight_outlier]{weight_outlier()}},
+\code{\link[=weight_reason]{weight_reason()}},
+\code{\link[=weight_reason2]{weight_reason2()}},
+\code{\link[=weight_varIndivInterval]{weight_varIndivInterval()}}
 }
 \concept{weighting functions}

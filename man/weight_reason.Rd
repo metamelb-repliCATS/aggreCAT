@@ -21,12 +21,12 @@ methods used by an individual
 Individuals' weight is equal to the maximum number of judgement reasons given
 }
 \seealso{
-Other weighting functions: 
-\code{\link{weight_asym}()},
-\code{\link{weight_interval}()},
-\code{\link{weight_nIndivInterval}()},
-\code{\link{weight_outlier}()},
-\code{\link{weight_reason2}()},
-\code{\link{weight_varIndivInterval}()}
+Other weighting functions:
+\code{\link[=weight_asym]{weight_asym()}},
+\code{\link[=weight_interval]{weight_interval()}},
+\code{\link[=weight_nIndivInterval]{weight_nIndivInterval()}},
+\code{\link[=weight_outlier]{weight_outlier()}},
+\code{\link[=weight_reason2]{weight_reason2()}},
+\code{\link[=weight_varIndivInterval]{weight_varIndivInterval()}}
 }
 \concept{weighting functions}

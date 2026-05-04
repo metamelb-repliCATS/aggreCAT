@@ -25,12 +25,12 @@ their judgement and the diversity of these reasons.
 \mathbf{CR_i}(c,r)}{C})}{ascii}
 }
 \seealso{
-Other weighting functions: 
-\code{\link{weight_asym}()},
-\code{\link{weight_interval}()},
-\code{\link{weight_nIndivInterval}()},
-\code{\link{weight_outlier}()},
-\code{\link{weight_reason}()},
-\code{\link{weight_varIndivInterval}()}
+Other weighting functions:
+\code{\link[=weight_asym]{weight_asym()}},
+\code{\link[=weight_interval]{weight_interval()}},
+\code{\link[=weight_nIndivInterval]{weight_nIndivInterval()}},
+\code{\link[=weight_outlier]{weight_outlier()}},
+\code{\link[=weight_reason]{weight_reason()}},
+\code{\link[=weight_varIndivInterval]{weight_varIndivInterval()}}
 }
 \concept{weighting functions}

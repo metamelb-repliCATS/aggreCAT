@@ -30,12 +30,12 @@ relative to the maximum squared difference for the claim across all individuals:
 \mjdeqn{w\_out_{i} = 1 - \frac{d_{i,c}}{\max({d_c})})}{ascii}
 }
 \seealso{
-Other weighting functions: 
-\code{\link{weight_asym}()},
-\code{\link{weight_interval}()},
-\code{\link{weight_nIndivInterval}()},
-\code{\link{weight_reason}()},
-\code{\link{weight_reason2}()},
-\code{\link{weight_varIndivInterval}()}
+Other weighting functions:
+\code{\link[=weight_asym]{weight_asym()}},
+\code{\link[=weight_interval]{weight_interval()}},
+\code{\link[=weight_nIndivInterval]{weight_nIndivInterval()}},
+\code{\link[=weight_reason]{weight_reason()}},
+\code{\link[=weight_reason2]{weight_reason2()}},
+\code{\link[=weight_varIndivInterval]{weight_varIndivInterval()}}
 }
 \concept{weighting functions}

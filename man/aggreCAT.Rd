@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item David Wilkinson \email{david.wilkinson.research@gmail.com} (\href{https://orcid.org/0000-0002-9560-6499}{ORCID})
   \item Elliot Gould (\href{https://orcid.org/0000-0002-6585-538X}{ORCID})
   \item Aaron Willcox (\href{https://orcid.org/0000-0003-2536-2596}{ORCID})
   \item Charles T. Gray
