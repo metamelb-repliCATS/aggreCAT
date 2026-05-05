@@ -8,10 +8,12 @@ message: 'To cite package "aggreCAT" in publications use:'
 type: software
 license: MIT
 title: 'aggreCAT: Mathematically Aggregating Expert Judgments'
-version: 1.0.0
+version: 1.1.0
 identifiers:
 - type: doi
   value: 10.32614/CRAN.package.aggreCAT
+- type: url
+  value: https://metamelb-replicats.github.io/aggreCAT/
 abstract: The use of structured elicitation to inform decision making has grown dramatically
   in recent decades, however, judgements from multiple experts must be aggregated
   into a single estimate. Empirical evidence suggests that mathematical aggregation
@@ -30,7 +32,6 @@ authors:
   orcid: https://orcid.org/0000-0002-6585-538X
 - family-names: Willcox
   given-names: Aaron
-  email: aaron@willcox.io
   orcid: https://orcid.org/0000-0003-2536-2596
 - family-names: Gray
   given-names: Charles T.
@@ -257,16 +258,6 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.readr
 - type: software
-  title: stats
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Suggests
-  authors:
-  - name: R Core Team
-  institution:
-    name: R Foundation for Statistical Computing
-    address: Vienna, Austria
-  year: '2026'
-- type: software
   title: lubridate
   abstract: 'lubridate: Make Dealing with Dates a Little Easier'
   notes: Suggests
@@ -406,6 +397,7 @@ references:
     given-names: Douglas
   - name: R Core Team
     email: R-core@R-project.org
+    website: https://ror.org/02zz1nj61
   year: '2026'
   doi: 10.32614/CRAN.package.nlme
 - type: software
@@ -482,11 +474,14 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
   year: '2026'
-  version: '>= 2.10'
+  doi: 10.32614/R.manuals
+  version: '>= 3.5'
 - type: software
   title: magrittr
   abstract: 'magrittr: A Forward-Pipe Operator for R'
@@ -664,6 +659,19 @@ references:
     orcid: https://orcid.org/0000-0003-4777-038X
   year: '2026'
   doi: 10.32614/CRAN.package.dplyr
+- type: software
+  title: stats
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+    website: https://ror.org/02zz1nj61
+  institution:
+    name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
+    address: Vienna, Austria
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: stringr
   abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
