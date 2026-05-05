@@ -26,10 +26,16 @@
 #'
 #' **BetaArMean2**: Beta transformation applied only to calculated confidence scores that are outside a specified middle range. The premise being that we don't extremise "fence-sitter" confidence scores.
 #'
-#' \mjdeqn{\hat{p}_c\left( \text{BetaArMean2} \right) = \begin{cases}
+#' \mjtdeqn{
+#' \hat{p}_c\left( \text{BetaArMean2} \right) = \begin{cases}
 #' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} < \textit{cutoff\_lower} \cr
-#' \displaystyle \frac{1}{N} \sum_{i=1}^N B_{i,c}, \text{ for } \textit{cutoff\_lower} \leq \frac{1}{N} \sum_{i=1}^N B_{i,c} \leq \textit{cutoff\_upper} \cr
+#' \displaystyle \frac{1}{N} \sum_{i=1}^N B_{i,c}, \text{ for } \textit{cutoff\_lower} \leq \frac{1}{N} \sum_{i=1}^N B_{i,c} \le \textit{cutoff\_upper} \cr
 #' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} > \textit{cutoff\_upper} \cr
+#' \end{cases}}{%
+#' \hat{p}_c\left( \text{BetaArMean2} \right) = \begin{cases}
+#' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} \lt \textit{cutoff\_lower} \cr
+#' \displaystyle \frac{1}{N} \sum_{i=1}^N B_{i,c}, \text{ for } \textit{cutoff\_lower} \leq \frac{1}{N} \sum_{i=1}^N B_{i,c} \le \textit{cutoff\_upper} \cr
+#' \displaystyle H_{\alpha \beta}\left(\frac{1}{N} \sum_{i=1}^N B_{i,c} \right), \text{ for } \frac{1}{N} \sum_{i=1}^N B_{i,c} \gt \textit{cutoff\_upper} \cr
 #' \end{cases}}{ascii}
 #'
 #' @param expert_judgements A dataframe in the format of [data_ratings].
@@ -49,81 +55,78 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \donttest{ExtremisationWAgg(data_ratings)}
+#' \donttest{ExtremisationWAgg(data_ratings, percent_toggle = TRUE)}
 #'
 #' @export
 #' @md
 
-ExtremisationWAgg <- function(expert_judgements,
-                              type = "BetaArMean",
-                              name = NULL,
-                              alpha = 6,
-                              beta = 6,
-                              cutoff_lower = NULL,
-                              cutoff_upper = NULL,
-                              placeholder = FALSE,
-                              percent_toggle = FALSE,
-                              round_2_filter = TRUE) {
-
-  if(!(type %in% c("BetaArMean",
-                   "BetaArMean2"))){
-
+ExtremisationWAgg <- function(
+  expert_judgements,
+  type = "BetaArMean",
+  name = NULL,
+  alpha = 6,
+  beta = 6,
+  cutoff_lower = NULL,
+  cutoff_upper = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+) {
+  if (!(type %in% c("BetaArMean", "BetaArMean2"))) {
     stop('`type` must be one of "BetaArMean" or "BetaArMean2')
-
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("ExtremisationWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("ExtremisationWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = {{round_2_filter}}) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = {{ round_2_filter }}
+      ) %>%
       dplyr::filter(element == "three_point_best") %>%
       dplyr::group_by(paper_id)
 
-    switch(type,
-           "BetaArMean" = {
-
-             df <- df %>%
-               dplyr::summarise(mean_judgement = mean(value,
-                                                      na.rm = TRUE),
-                                n_experts = dplyr::n()) %>%
-               dplyr::mutate(aggregated_judgement = stats::pbeta(q = mean_judgement,
-                                                                 shape1 = alpha,
-                                                                 shape2 = beta))
-
-           },
-           "BetaArMean2" = {
-
-             df <- df %>%
-               dplyr::summarise(mean_judgement = mean(value,
-                                                      na.rm = TRUE),
-                                n_experts = dplyr::n()) %>%
-               dplyr::mutate(aggregated_judgement = dplyr::if_else(
-                 mean_judgement < cutoff_lower | mean_judgement > cutoff_upper,
-                 stats::pbeta(q = mean_judgement,
-                              shape1 = alpha,
-                              shape2 = beta),
-                 mean_judgement))
-
-           })
+    switch(
+      type,
+      "BetaArMean" = {
+        df <- df %>%
+          dplyr::summarise(
+            mean_judgement = mean(value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          ) %>%
+          dplyr::mutate(
+            aggregated_judgement = stats::pbeta(
+              q = mean_judgement,
+              shape1 = alpha,
+              shape2 = beta
+            )
+          )
+      },
+      "BetaArMean2" = {
+        df <- df %>%
+          dplyr::summarise(
+            mean_judgement = mean(value, na.rm = TRUE),
+            n_experts = dplyr::n()
+          ) %>%
+          dplyr::mutate(
+            aggregated_judgement = dplyr::if_else(
+              mean_judgement < cutoff_lower | mean_judgement > cutoff_upper,
+              stats::pbeta(q = mean_judgement, shape1 = alpha, shape2 = beta),
+              mean_judgement
+            )
+          )
+      }
+    )
 
     df %>%
       dplyr::mutate(method = name) %>%
       postprocess_judgements()
-
   }
 }

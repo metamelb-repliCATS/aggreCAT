@@ -1,0 +1,198 @@
+---
+title: "aggreCAT datasets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{aggreCAT datasets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: vignette_references.bib
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE, warning=FALSE}
+library(aggreCAT)
+library(tidyverse)
+```
+
+### DARPA SCORE program and the repliCATS project
+
+The [aggreCAT]{.pkg} package, and the mathematical aggregators therein,
+were developed by [the repliCATS (Collaborative Assessment for
+Trustworthy Science)
+project](https://replicats.research.unimelb.edu.au/) as a part of the
+[SCORE
+program](https://www.darpa.mil/program/systematizing-confidence-in-open-research-and-evidence)
+(Systematizing Confidence in Open Research and Evidence), funded by
+DARPA (Defense Advanced Research Projects Agency) [@alipourfard2021].
+The SCORE program is the largest replication project in science to date,
+and aims to build automated tools that can rapidly and reliably assign
+"Confidence Scores" to research claims from empirical studies in the
+Social and Behavioural Sciences (SBS). Confidence Scores are
+quantitative measures of the likely reproducibility or replicability of
+a research claim or result, and may be used by consumers of scientific
+research as a proxy measure for their credibility in the absence of
+replication effort [@alipourfard2021].
+
+Replications are time-consuming and costly [@Isager2020], and studies
+have shown that replication outcomes can be reliably elicited from
+researchers [@Gordon2020]. Consequently, the DARPA SCORE program
+generated Confidence Scores for $> 4000$ SBS claims using expert
+elicitation based on two very different strategies -- prediction markets
+[@Gordon2020] and the IDEA protocol [@hemming2017], the latter of which
+is used by the repliCATS project [@Fraser:2021]. A proportion of these
+research claims were randomly selected for direct replication, against
+which the elicited and aggregated Confidence Scores are 'ground-truthed'
+or verified. The aim of the DARPA SCORE project is to aid the
+development of artificial intelligence tools that can automatically
+assign Confidence Scores.
+
+
+# Datasets
+
+The [aggreCAT]{.pkg} package includes the core dataset `data_ratings`
+consisting of judgements elicited during a pilot experiment exploring
+the performance of IDEA groups in assessing replicability of a set of
+claims with "known outcomes." "Known-outcome" claims are SBS research
+claims that have been subject to replication studies in previous
+large-scale replication projects[^1]. Data were collected using the
+repliCATS IDEA protocol at a two day workshop[^2] in the Netherlands, on
+July 2019, at which 25 participants assessed the replicability of 25
+unique SBS claims. In addition to the probabilistic estimates provided
+for each research claim assessed, participants were also asked to rate
+the claim's plausibility and comprehensibility, answer whether they were
+involved in any aspect of the original study, and to provide their
+reasoning in support of their quantitative estimates, which were used to
+form measures of reasoning breadth and engagement [@Fraser:2021].
+
+[^1]: Many labs 1, 2 and 3 @Klein2014, @Klein2018ManyL2, @Ebersole2016,
+    the Social Sciences Replication Project @Camerer2018 and the
+    Reproducibility Project Psychology @aac4716.
+
+[^2]: See @Hanea2021 for details. The workshop was held at the annual
+    meeting of the Society for the Improvement of Psychological Science
+    (SIPS), [\<https://osf.io/ndzpt/\>](https://osf.io/ndzpt/){.uri}.
+
+## Formatted Judgement Data
+
+`data_ratings` is a *tidy* [data.frame]{.class} wherein each
+*observation* (or row) corresponds to a single value in the set of
+`value`s constituting a participant's complete assessment of a research
+claim. Each research claim is assigned a unique `paper_id`, and each
+participant has a unique (and anonymous) `user_name`. The variable
+`round` denotes the round in which each `value` was elicited (`round_1`
+or `round_2`). `question` denotes the type of question the `value`
+pertains to; `direct_replication` for probabilistic judgements about the
+replicability of the claim, `belief_binary` for participants' belief in
+the plausibility of the claim, `comprehension` for participants'
+comprehensibility ratings, and `involved_binary` for involvement in the
+original study. An additional column `element` maintains the tidy
+structure of the data, while capturing the multiple `value`s that
+comprise a full assessment of the replicability (`direct_replication`)
+of a claim; `three_point_best`, `three_point_lower` and
+`three_point_upper` denote the best estimate and lower and upper bounds
+respectively. `binary_question` describes the `element` for both the
+plausibility rating (`belief_binary`) and involvement
+(`involved_binary`) questions, whereas `likert_binary` is the `element`
+describing a participant's `comprehension` rating. Judgements are
+recorded in column `value` in the form of percentage probabilities
+ranging from (0,100). The `binary_question`s corresponding to
+comprehensibility and involvement consist of binary values (`1` for the
+affirmative, and `-1` for the negative). Finally, values corresponding
+to participants' comprehension ratings are on a `likert_binary` scale
+from `1` through `7`. Note that additional columns with participant
+attributes can be included in the ratings dataset if required by the
+user; we include the `group` column in `data-ratings`, which describes
+the group number the participant was a part of. Below we show some
+example data for a single user for a single claim to illustrate this
+structure of the core `data_ratings` dataset.
+
+```{r data_ratings-sample, message=TRUE, results='hold'}
+aggreCAT::data_ratings %>%
+  dplyr::filter(paper_id == dplyr::first(paper_id),
+                user_name == dplyr::first(user_name)) %>%
+  head()
+
+```
+
+Not all data necessary for constructing weights on performance is
+contained in `data_ratings`. Additional data collected as part of the
+repliCATS IDEA protocol are contained within separate datasets to
+`data_ratings`. Participants provided justifications for giving
+particular judgements, and these are contained in `data_justifications`.
+On the repliCATS platform users were given the option to comment on
+others' justifications (`data_comments`), to vote on others' comments
+(`data_comment_ratings`) and on others' justifications
+(`data_justification_ratings`). Finally, [aggreCAT]{.pkg} contains three
+'supplementary' datasets containing data collected externally to the
+repliCATS IDEA protocol: `data_supp_quiz`, `data_supp_priors`, and
+`data_supp_reasons`.
+
+## Quiz Score Data {#sec-quiz-supplementary-data}
+
+Prior to the workshop, participants were asked to complete an optional
+quiz on statistical concepts and meta-research which we thought would
+aid in reliably evaluating the replicability of research claims. Quiz
+responses are contained in `data_supp_quiz` and are used to construct
+performance weights for the aggregation method `QuizWAgg`, where each
+participant receives a `quiz_score` if they completed the quiz, and `NA`
+if they did not attempt the quiz [see @Hanea2021 for further details]. Additional methods of scoring the quiz responses are provided in `data_supp_quiz`.
+
+```{r data_supp_quiz-sample, message=TRUE, results='hold'}
+aggreCAT::data_supp_quiz
+```
+
+
+## Reasoning Data {#sec-reasonwagg-supplementary-data}
+
+The `ReasonWAgg` aggregation type uses the number of unique reasons given by participants to
+support a Best Estimate for a given claim $B_{i,c}$ to construct
+performance weights, and is contained within `data_supp_reasons`.
+Qualitative statements made by individuals during claim evaluation were
+recorded on the repliCATS platform [@Pearson2021] and coded as falling
+into one of 25 unique reasoning categories by the repliCATS Reasoning
+team [@Wintle:2021]. Reasoning categories include plausibility of the
+claim, effect size, sample size, presence of a power analysis,
+transparency of reporting, and journal reporting [@Hanea2021]. Within
+`data_supp_reasons`, each of the reasoning categories that passed our
+inter-coder reliability threshold are distributed as columns in the
+dataset whose names are prefixed with `RW`, and for each claim
+`paper_id`, each participant `user_id` is assigned a logical `1` or `0`
+if they included that reasoning category in support of their Best
+estimate for that claim. See `ReasoningWAgg()` for details on the
+`ReasonWAgg` aggregation method.
+
+```{r data_supp_reasons-sample}
+aggreCAT::data_supp_reasons %>%
+  glimpse()
+```
+
+
+## Bayesian Prior Data {#sec-bayesian-supplementary-data}
+
+The method `BayPRIORsAgg` (implemented in `BayesianWAgg()`) uses Bayesian updating to update a prior
+probability of a claim replicating estimated from a predictive model
+[@Gould2021a] using an aggregate of the best estimates for all
+participants assessing a given claim $c$ [@Hanea2021]. The prior data is
+contained in `data_supp_priors` with each claim in column `paper_id`
+being assigned a prior probability (on the logit scale) of the claim
+replicating in column `prior_means`.
+
+```{r data_supp_priors-sample}
+aggreCAT::data_supp_priors
+```
+
+
+# TODO
+
+- [ ] `data_comments`
+- [ ] `data_confidence_scores`
+- [ ] `data_justifications`
+- [ ] `data_outcomes`
+
+# References

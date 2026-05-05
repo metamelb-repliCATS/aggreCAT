@@ -27,13 +27,22 @@
 #' informative non-parametric distribution that spreads the mass uniformly between
 #' the three percentiles.
 #'
-#' \mjdeqn{F_{i}(x) = \begin{cases}
-#' \displaystyle 0, \text{ for } x<0 \cr
-#' \displaystyle \frac{0.05}{q_{5,i}}\cdot x, \text{ for } 0 \leq x< q_{5,i}\cr
-#' \displaystyle \frac{0.45}{q_{50,i}-q_{5,i}}\cdot(x-q_{5,i})+0.05, \text{ for } q_{5,i}\leq x< q_{50,i}\cr
-#' \displaystyle \frac{0.45}{q_{95,i}-q_{50,i}}\cdot(x-q_{50,i})+0.5, \text{ for } q_{50,i}\leq x< q_{95,i}\cr
-#' \displaystyle \frac{0.05}{1 - q_{95,i}}\cdot(x-q_{95,i})+0.95, \text{ for } q_{95,i}\leq x< 1\cr
-#' \displaystyle 1,  \text{ for } x\geq 1.
+#' \mjtdeqn{
+#' F_{i}(x) = \begin{cases}
+#' \displaystyle 0, \text{ for } x < 0 \cr
+#' \displaystyle \frac{0.05}{q_{5,i}}\cdot x, \text{ for } 0 < x < q_{5,i}\cr
+#' \displaystyle \frac{0.45}{q_{50,i}-q_{5,i}}\cdot(x-q_{5,i})+0.05, \text{ for } q_{5,i}\le x < q_{50,i}\cr
+#' \displaystyle \frac{0.45}{q_{95,i}-q_{50,i}}\cdot(x-q_{50,i})+0.5, \text{ for } q_{50,i}\le x < q_{95,i}\cr
+#' \displaystyle \frac{0.05}{1 - q_{95,i}}\cdot(x-q_{95,i})+0.95, \text{ for } q_{95,i}\le x < 1\cr
+#' \displaystyle 1,  \text{ for } x \ge 1.
+#' \end{cases}}{%
+#' F_{i}(x) = \begin{cases}
+#' \displaystyle 0, \text{ for } x \lt 0 \cr
+#' \displaystyle \frac{0.05}{q_{5,i}}\cdot x, \text{ for } 0 \le x \lt q_{5,i}\cr
+#' \displaystyle \frac{0.45}{q_{50,i}-q_{5,i}}\cdot(x-q_{5,i})+0.05, \text{ for } q_{5,i}\le x \lt q_{50,i}\cr
+#' \displaystyle \frac{0.45}{q_{95,i}-q_{50,i}}\cdot(x-q_{50,i})+0.5, \text{ for } q_{50,i}\le x \lt q_{95,i}\cr
+#' \displaystyle \frac{0.05}{1 - q_{95,i}}\cdot(x-q_{95,i})+0.95, \text{ for } q_{95,i}\le x \lt 1\cr
+#' \displaystyle 1,  \text{ for } x \ge 1.
 #' \end{cases}}{ascii}
 #'
 #' Then take the average of all constructed distributions of participants for each claim:
@@ -50,14 +59,18 @@
 #' elicited best estimates, upper and lower bounds. We can assume that the lower and upper
 #' bounds form the support of the distribution, and the best estimate corresponds to the mode.
 #'
-#' \mjdeqn{F_i(x)=
-#' \begin{cases}
+#' \mjtdeqn{
+#' F_{i}(x) = \begin{cases}
 #' \displaystyle 0, \text{ for } x < L_{i} \cr
-#' \displaystyle \frac{\left( x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left( B_{i}-L_{i}
-#' \right)}, \text{ for } L_{i} \leq x < B_{i}\cr
-#' \displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left
-#' ( U_{i}-B_{i}\right)}, \text{ for } B_{i} < x < U_{i}\cr
-#' \displaystyle 1,  \text{ for } x \geq U_{i}.
+#' \displaystyle \frac{\left(x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left(B_{i}-L_{i}\right)}, \text{ for } L_{i} \le x < B_{i}\cr
+#' \displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left( U_{i}-B_{i}\right)}, \text{ for } B_{i} \le x < U_{i}\cr
+#' \displaystyle 1,  \text{ for } x \ge U_{i}.
+#' \end{cases}}{%
+#' F_{i}(x) = \begin{cases}
+#' \displaystyle 0, \text{ for } x \lt L_{i} \cr
+#' \displaystyle \frac{\left(x-L_{i}\right)^2}{\left( U_{i}-L_{i}\right)\left(B_{i}-L_{i}\right)}, \text{ for } L_{i} \le x \lt B_{i}\cr
+#' \displaystyle 1 - \frac{\left( U_{i}-x\right)^2}{\left( U_{i}-L_{i}\right)\left( U_{i}-B_{i}\right)}, \text{ for } B_{i} \le x \lt U_{i}\cr
+#' \displaystyle 1,  \text{ for } x \ge U_{i}.
 #' \end{cases}}{ascii}
 #'
 #' Then take the average of all constructed distributions of participants for each claim:
@@ -81,130 +94,126 @@
 #' @return A tibble of confidence scores `cs` for each `paper_id`.
 #'
 #' @examples
-#' \donttest{DistributionWAgg(data_ratings)}
+#' \donttest{DistributionWAgg(data_ratings, percent_toggle = TRUE)}
 #'
 #' @export
 #' @md
 
-DistributionWAgg <- function(expert_judgements,
-                             type = "DistribArMean",
-                             name = NULL,
-                             placeholder = FALSE,
-                             percent_toggle = FALSE,
-                             round_2_filter = TRUE) {
-
-  if(!(type %in% c("DistribArMean",
-                   "TriDistribArMean"))){
-
+DistributionWAgg <- function(
+  expert_judgements,
+  type = "DistribArMean",
+  name = NULL,
+  placeholder = FALSE,
+  percent_toggle = FALSE,
+  round_2_filter = TRUE
+) {
+  if (!(type %in% c("DistribArMean", "TriDistribArMean"))) {
     stop('`type` must be one of "DistribArMean" or "TriDistribArMean"')
-
   }
 
   ## Set name argument
 
-  name <- ifelse(is.null(name),
-                 type,
-                 name)
+  name <- ifelse(is.null(name), type, name)
 
-  cli::cli_h1(sprintf("DistributionWAgg: %s",
-                      name))
+  cli::cli_h1(sprintf("DistributionWAgg: %s", name))
 
-  if(isTRUE(placeholder)){
-
-    method_placeholder(expert_judgements,
-                       name)
-
+  if (isTRUE(placeholder)) {
+    method_placeholder(expert_judgements, name)
   } else {
-
     df <- expert_judgements %>%
-      preprocess_judgements(percent_toggle = {{percent_toggle}},
-                            round_2_filter = {{round_2_filter}}) %>%
+      preprocess_judgements(
+        percent_toggle = {{ percent_toggle }},
+        round_2_filter = {{ round_2_filter }}
+      ) %>%
       dplyr::group_by(paper_id)
 
-    switch(type,
-           "DistribArMean" = {
+    switch(
+      type,
+      "DistribArMean" = {
+        Fx_fun <- function(x, lower, best, upper) {
+          dplyr::case_when(
+            x < 0 ~ 0,
+            x >= 0 & x < lower ~ 0.05 / lower * x,
+            x >= lower &
+              x < best ~ 0.45 / (best - lower) * (x - lower) + 0.05,
+            x >= best &
+              x < upper ~ 0.45 / (upper - best) * (x - best) + 0.5,
+            x >= upper &
+              x < 1 ~ 0.05 / (1 - upper) * (x - upper) + 0.95,
+            x > 1 ~ 1
+          )
+        }
 
-             Fx_fun <- function(x, lower, best, upper) {
-               dplyr::case_when(
-                 x < 0 ~ 0,
-                 x >= 0 & x < lower ~ 0.05 / lower * x,
-                 x >= lower &
-                   x < best ~ 0.45 / (best - lower) * (x - lower) + 0.05,
-                 x >= best &
-                   x < upper ~ 0.45 / (upper - best) * (x - best) + 0.5,
-                 x >= upper &
-                   x < 1 ~ 0.05 / (1 - upper) * (x - upper) + 0.95,
-                 x > 1 ~ 1
-               )
-             }
+        avdist_fun <- function(dq, claim_input) {
+          claim_input %>%
+            dplyr::mutate(
+              Fx = purrr::pmap(
+                list(three_point_lower, three_point_best, three_point_upper),
+                .f = function(l, b, u) {
+                  function(x) {
+                    Fx_fun(
+                      x,
 
-             avdist_fun <- function(dq, claim_input) {
-               claim_input %>%
-                 dplyr::mutate(Fx = purrr::pmap(
-                   list(three_point_lower,
-                        three_point_best,
-                        three_point_upper),
-                   .f = function(l, b, u) {
-                     function(x) {
-                       Fx_fun(x,
-
-                              lower = l,
-                              best = b,
-                              upper = u)
-                     }
-                   }
-                 ))  %>%
-                 purrr::pluck("Fx") %>%
-                 purrr::map_dbl(
-                   .f = function(Fx_fun) {
-                     Fx_fun(dq)
-                   }
-                 ) %>%
-                 mean()
-             }
-
-           },
-           "TriDistribArMean" = {
-
-             Fx_fun <- function(x, lower, best, upper) {
-               dplyr::case_when(
-                 x < lower ~ 0,
-                 x >= lower &
-                   x < best ~ ((x-lower) ^ 2) / ((upper - lower) * (best - lower)),
-                 x >= best &
-                   x < upper ~ 1 - (((upper - x) ^ 2) / ((upper - lower) * (upper - best))),
-                 x >= upper ~ 1
-               )
-             }
-
-             avdist_fun <- function(dq, claim_input) {
-               claim_input %>%
-                 dplyr::mutate(Fx = purrr::pmap(
-                   list(three_point_lower,
-                        three_point_best,
-                        three_point_upper),
-                   .f = function(l, b, u) {
-                     function(x) {
-                       Fx_fun(x,
-
-                              lower = l,
-                              best = b,
-                              upper = u)
-                     }
-                   }
-                 ))  %>%
-                 purrr::pluck("Fx") %>%
-                 purrr::map_dbl(
-                   .f = function(Fx_fun) {
-                     Fx_fun(dq)
-                   }
-                 ) %>%
-                 mean()
+                      lower = l,
+                      best = b,
+                      upper = u
+                    )
+                  }
+                }
+              )
+            ) %>%
+            purrr::pluck("Fx") %>%
+            purrr::map_dbl(
+              .f = function(Fx_fun) {
+                Fx_fun(dq)
               }
+            ) %>%
+            mean()
+        }
+      },
+      "TriDistribArMean" = {
+        Fx_fun <- function(x, lower, best, upper) {
+          dplyr::case_when(
+            x < lower ~ 0,
+            x >= lower &
+              x < best ~ ((x - lower)^2) / ((upper - lower) * (best - lower)),
+            x >= best &
+              x < upper ~ 1 -
+              (((upper - x)^2) / ((upper - lower) * (upper - best))),
+            x >= upper ~ 1
+          )
+        }
 
-           })
+        avdist_fun <- function(dq, claim_input) {
+          claim_input %>%
+            dplyr::mutate(
+              Fx = purrr::pmap(
+                list(three_point_lower, three_point_best, three_point_upper),
+                .f = function(l, b, u) {
+                  function(x) {
+                    Fx_fun(
+                      x,
 
-    agg_judge_df <- df  %>%
+                      lower = l,
+                      best = b,
+                      upper = u
+                    )
+                  }
+                }
+              )
+            ) %>%
+            purrr::pluck("Fx") %>%
+            purrr::map_dbl(
+              .f = function(Fx_fun) {
+                Fx_fun(dq)
+              }
+            ) %>%
+            mean()
+        }
+      }
+    )
+
+    agg_judge_df <- df %>%
       tidyr::pivot_wider(names_from = element, values_from = value) %>%
       dplyr::mutate(
         three_point_upper = dplyr::if_else(
@@ -231,31 +240,36 @@ DistributionWAgg <- function(expert_judgements,
       ) %>%
       dplyr::group_by(paper_id) %>%
       tidyr::nest() %>%
-      dplyr::mutate(avdist = purrr::map(
-        data,
-        .f = function(data) {
-          function(x) {
-            avdist_fun(x, claim_input = data)
+      dplyr::mutate(
+        avdist = purrr::map(
+          data,
+          .f = function(data) {
+            function(x) {
+              avdist_fun(x, claim_input = data)
+            }
           }
-        }
-      )) %>% dplyr::ungroup()
+        )
+      ) %>%
+      dplyr::ungroup()
 
     quantiles <- agg_judge_df %>%
-      dplyr::mutate(avdist_preimage = purrr::map(
-        avdist,
-        .f = function(f) {
-          GoFKernel::inverse(f, lower = 0, upper = 1)
-        }
-      )) %>%
-      dplyr::mutate(aggregated_judgement =
-                      purrr::map_dbl(
-                        avdist_preimage,
-                        .f = function(f) {
-                          # suppressing warnings on preimage
-                          f(0.5)
-                        }
-                      ))
-
+      dplyr::mutate(
+        avdist_preimage = purrr::map(
+          avdist,
+          .f = function(f) {
+            GoFKernel::inverse(f, lower = 0, upper = 1)
+          }
+        )
+      ) %>%
+      dplyr::mutate(
+        aggregated_judgement = purrr::map_dbl(
+          avdist_preimage,
+          .f = function(f) {
+            # suppressing warnings on preimage
+            f(0.5)
+          }
+        )
+      )
 
     n_experts <- df %>%
       dplyr::group_by(paper_id, user_name) %>%
@@ -264,7 +278,7 @@ DistributionWAgg <- function(expert_judgements,
       dplyr::rename("n_experts" = "n") %>%
       dplyr::ungroup()
 
-    x <-  quantiles %>%
+    x <- quantiles %>%
       dplyr::left_join(n_experts, by = "paper_id") %>%
       dplyr::select(paper_id, aggregated_judgement, n_experts) %>%
       dplyr::ungroup()
@@ -274,6 +288,5 @@ DistributionWAgg <- function(expert_judgements,
       dplyr::mutate(method = name) %>%
       dplyr::ungroup() %>%
       postprocess_judgements()
-
   }
 }

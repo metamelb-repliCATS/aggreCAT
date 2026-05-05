@@ -21,3 +21,13 @@ This function is used inside \link{IntervalWAgg} for aggregation type \code{"Int
 calculates the width of each three-point judgement (upper - lower), then returns
 the weight as the inverse of this interval.
 }
+\seealso{
+Other weighting functions:
+\code{\link[=weight_asym]{weight_asym()}},
+\code{\link[=weight_nIndivInterval]{weight_nIndivInterval()}},
+\code{\link[=weight_outlier]{weight_outlier()}},
+\code{\link[=weight_reason]{weight_reason()}},
+\code{\link[=weight_reason2]{weight_reason2()}},
+\code{\link[=weight_varIndivInterval]{weight_varIndivInterval()}}
+}
+\concept{weighting functions}

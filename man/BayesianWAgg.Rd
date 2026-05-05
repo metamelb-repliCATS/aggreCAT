@@ -95,6 +95,6 @@ Both \code{BayTriVar} and \code{BayPRIORsAgg} methods require a minimum of two c
 }
 
 \examples{
-\dontrun{BayesianWAgg(data_ratings)}
+\dontrun{BayesianWAgg(data_ratings, percent_toggle = TRUE)}
 
 }

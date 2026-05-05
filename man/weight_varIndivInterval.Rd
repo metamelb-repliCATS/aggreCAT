@@ -25,3 +25,13 @@ claim assessments.
 \loadmathjax
 \mjdeqn{w\_varIndivInterval_{i} = var\{(U_{i,d}-L_{i,d}):c=1,...,C\}}{ascii}
 }
+\seealso{
+Other weighting functions:
+\code{\link[=weight_asym]{weight_asym()}},
+\code{\link[=weight_interval]{weight_interval()}},
+\code{\link[=weight_nIndivInterval]{weight_nIndivInterval()}},
+\code{\link[=weight_outlier]{weight_outlier()}},
+\code{\link[=weight_reason]{weight_reason()}},
+\code{\link[=weight_reason2]{weight_reason2()}}
+}
+\concept{weighting functions}

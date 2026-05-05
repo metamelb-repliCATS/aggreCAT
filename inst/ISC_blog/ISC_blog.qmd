@@ -1,16 +1,30 @@
 ---
+<<<<<<< HEAD
+format:
+=======
 format: 
+>>>>>>> master
   html:
     code-copy: hover
     code-link: true
     embed-resources: true #TODO turn off for submission, only for sharing output .html
+<<<<<<< HEAD
+  pdf:
+    documentclass: scrreprt
+    papersize: A4
+=======
+>>>>>>> master
 title: "Introducing {aggreCAT}: Mathematical aggregation of expert judgments"
 bibliography: ISC_blog.bib
 csl: cell.csl
 eval: true
 date-modified: last-modified
 fig-responsive: true
+<<<<<<< HEAD
+author:
+=======
 author: 
+>>>>>>> master
   - name: David P. Wilkinson
     orcid: 0000-0002-9560-6499
     email: dwilkinson@unimelb.edu.au

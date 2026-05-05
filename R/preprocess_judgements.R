@@ -33,37 +33,31 @@
 #'
 #' @export
 
-preprocess_judgements <- function(expert_judgements,
+preprocess_judgements <- function(
+  expert_judgements,
   round_2_filter = TRUE,
   three_point_filter = TRUE,
-  percent_toggle = FALSE){
-
-
+  percent_toggle = FALSE
+) {
   # Processing Alerts -------------------------------------------------------
-
 
   cli::cli_h2("Pre-Processing Options")
   cli::cli_alert_info("Round Filter: {.val {round_2_filter}}")
   cli::cli_alert_info("Three Point Filter: {.val {three_point_filter}}")
   cli::cli_alert_info("Percent Toggle: {.val {percent_toggle}}")
 
-  if(any(is.na(expert_judgements$value))) cli::cli_abort("NAs Found in Values")
+  if (any(is.na(expert_judgements$value))) {
+    cli::cli_abort("NAs Found in Values")
+  }
 
   # Variables of focus
   expert_judgements <- expert_judgements %>%
-    dplyr::select(round,
-      paper_id,
-      user_name,
-      element,
-      value)
-
+    dplyr::select(round, paper_id, user_name, element, value)
 
   # Round Filter ------------------------------------------------------------
 
-
-  filter_round <- function(expert_judgements, round_2_filter){
-
-    output_df <-  if(isTRUE(round_2_filter)){
+  filter_round <- function(expert_judgements, round_2_filter) {
+    output_df <- if (isTRUE(round_2_filter)) {
       expert_judgements %>%
         dplyr::filter(round %in% "round_2")
     } else {
@@ -71,57 +65,60 @@ preprocess_judgements <- function(expert_judgements,
     }
   }
 
-
   # Three Point Filter ------------------------------------------------------
 
-
-  filter_element <- function(expert_judgements, three_point_filter){
+  filter_element <- function(expert_judgements, three_point_filter) {
     # Default
     # Filters to three point estimates
     # Otherwise removes the involved binary
-    output_df <- if(isTRUE(three_point_filter)){
+    output_df <- if (isTRUE(three_point_filter)) {
       expert_judgements %>%
         dplyr::group_by(round, paper_id, user_name) %>%
-        dplyr::filter(element %in% c("three_point_best",
-          "three_point_lower",
-          "three_point_upper"))
+        dplyr::filter(
+          element %in%
+            c("three_point_best", "three_point_lower", "three_point_upper")
+        )
     } else {
       expert_judgements %>%
         dplyr::filter(element != "binary_question")
     }
-
   }
-
 
   # Convert Values ----------------------------------------------------------
 
-
-  change_value <- function(expert_judgements, percent_toggle){
+  change_value <- function(expert_judgements, percent_toggle) {
     # Converts values to 0,1
-    output_df <- if(isTRUE(percent_toggle)){
+    output_df <- if (isTRUE(percent_toggle)) {
       expert_judgements %>%
-        dplyr::mutate(value =
-            dplyr::case_when(
-              element %in% c("three_point_best",
+        dplyr::mutate(
+          value = dplyr::case_when(
+            element %in%
+              c(
+                "three_point_best",
                 "three_point_lower",
-                "three_point_upper") ~ value / 100,
-              TRUE ~ value
-            ))
-
+                "three_point_upper"
+              ) ~ value / 100,
+            TRUE ~ value
+          )
+        )
     } else {
       expert_judgements
     }
-
   }
-
 
   # Validator ---------------------------------------------------------------
 
-  check_values <- function(expert_judgements, round_2_filter, three_point_filter, percent_toggle){
-
-    if(isTRUE(percent_toggle)){
-      if(isTRUE(max(expert_judgements$value) > 1)) {
-        cli::cli_alert_warning("Non probability value {.val {max(expert_judgements$value)}} outside 0,1 ")
+  check_values <- function(
+    expert_judgements,
+    round_2_filter,
+    three_point_filter,
+    percent_toggle
+  ) {
+    if (isTRUE(percent_toggle)) {
+      if (isTRUE(max(expert_judgements$value) > 1)) {
+        cli::cli_alert_warning(
+          "Non probability value {.val {max(expert_judgements$value)}} outside 0,1 "
+        )
       }
     }
 
@@ -130,8 +127,7 @@ preprocess_judgements <- function(expert_judgements,
 
   # Processing Data Frame ---------------------------------------------------
 
-
-  method_out <-  expert_judgements %>%
+  method_out <- expert_judgements %>%
     filter_round(round_2_filter) %>%
     filter_element(three_point_filter) %>%
     change_value(percent_toggle) %>%
@@ -140,6 +136,4 @@ preprocess_judgements <- function(expert_judgements,
     dplyr::ungroup()
 
   return(method_out)
-
 }
-
