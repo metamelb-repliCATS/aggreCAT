@@ -87,3 +87,4 @@ BuildManual: TRUE
 Config/testthat/parallel: true
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
+BugReports: https://github.com/metamelb-repliCATS/aggreCAT/issues

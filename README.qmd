@@ -68,6 +68,8 @@ Then load the package:
 library(aggreCAT)
 ```
 
+Note, if you wish to use any of the Bayesian aggregation methods,you will need to have [JAGS](https://sourceforge.net/projects/mcmc-jags/files/) installed. Note that some mac users may need to install jags dependencies from source: `install.packages("rjags",type = "source")`.
+
 # Getting Started with `aggreCAT`
 
 Below we provide a brief summary of the package, for a detailed overview, please consult the manuscript [@Gould2022].

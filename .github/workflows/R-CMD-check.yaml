@@ -17,8 +17,13 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
+      - name: Install MLmetrics from GitHub
+        run: |
+          Rscript -e 'if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")'
+          Rscript -e 'remotes::install_github("yanyachen/MLmetrics")'
+      
       - name: Session-info
         run: |
           options(width = 100)
