@@ -18,3 +18,5 @@ inst/ms/aggreCAT_2_cache/*
 inst/ms/aggreCAT_files/*
 vnu-runtime-image/*
 vnu.osx.zip
+.vscode/settings.json
+.luarc.json
