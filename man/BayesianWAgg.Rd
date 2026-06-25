@@ -73,7 +73,7 @@ deviation of the estimated probability of replication for claim \mjeqn{c}{ascii}
 
 The uninformative priors for specifying this Bayesian model are
 \mjeqn{\mu_c \sim N(0,\ 3)}{ascii}, \mjeqn{\sigma_i \sim U(0,\ 10)}{ascii} and
-\mjeqn{\sigma_c \sim U(0,\ 10)}{ascii}. After obtaining the median of the posterior
+\mjeqn{\sigma_c \sim U(0,\ 10)}{ascii}. After obtaining the mean of the posterior
 distribution of \mjeqn{\mu_c}{ascii}, we can back transform to obtain
 \mjeqn{\hat{p}_c}{ascii}:
 
